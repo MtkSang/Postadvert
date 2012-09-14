@@ -62,9 +62,9 @@
 //    HUD.userInteractionEnabled = NO;
 //    [HUD setLabelText:@"Loading..."];
 //    [HUD showWhileExecuting:@selector(loadCellsInBackground) onTarget:self withObject:nil animated:YES];
-    
+     NSLog(@"LoadActivity");
     [self loadActivity];
-    NSLog(@"UITablePostViewController %@ %@",self.view, self.tableView);
+    NSLog(@"UITablePostViewController");
 
 }
 

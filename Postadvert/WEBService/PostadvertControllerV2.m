@@ -613,7 +613,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
             content.like_type = [dict objectForKey:@"like_type"];
             content.target_id = [[dict objectForKey:@"target_id"] integerValue];
             content.target_name = [dict objectForKey:@"target_name"];
-            content.title =  [NSData stringDecodeFromBase64String:[dict objectForKey:@"title"]];
+            content.title =  [NSData stringDecodeFromBase64String:[dict objectForKey:@"action"]];
             //total comments
             content.totalComment = [[dict objectForKey:@"total_comments"] integerValue];
             

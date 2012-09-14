@@ -297,6 +297,10 @@
     cell.backgroundView.backgroundColor = [UIColor whiteColor];
 }
 
+- (void) updateCellWhenRotate
+{
+    
+}
 - (void) reloadTableView
 {
     currentCellLoad = 0;

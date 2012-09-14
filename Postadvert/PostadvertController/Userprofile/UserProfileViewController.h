@@ -11,6 +11,11 @@
 @interface UserProfileViewController :PullRefreshTableViewController
 {
     IBOutlet UIView *headerViewSection;
+    IBOutlet UIScrollView   *scrollingBar;
+    IBOutlet UIImageView    *userAvatar;
+    IBOutlet UILabel        *userFullName;
+    IBOutlet UILabel        *userName;
+    
 }
 @property (nonatomic, strong) IBOutlet UIView *headerViewSection;
 @end

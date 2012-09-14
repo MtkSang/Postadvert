@@ -7,9 +7,11 @@
 //
 
 #import "UserProfileViewController.h"
+#import "UserPAInfo.h"
 
 @interface UserProfileViewController ()
 
+- (IBAction)btn_scrolling_bar_clicked:(id)sender;
 @end
 
 @implementation UserProfileViewController
@@ -58,6 +60,10 @@
 //        self.headerViewSection.frame = headerFrame;
 //        self.view.frame = viewFrame;
 //    }
+    userAvatar.image = [[UserPAInfo sharedUserPAInfo] imgAvatar];
+    userFullName.text = [[UserPAInfo sharedUserPAInfo] fullName];
+    userName.text = [[UserPAInfo sharedUserPAInfo] usernamePU];
+    scrollingBar.contentSize = CGSizeMake(478, scrollingBar.frame.size.height);
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -142,6 +148,22 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
+}
+
+#pragma -
+#pragma customAction
+- (IBAction)btn_scrolling_bar_clicked:(id)sender
+{
+    //Just using for this UI
+    UIButton *btn = (UIButton*)sender;
+    
+    for (UIButton *subBtn in btn.superview.subviews) {
+        [subBtn setSelected:NO];
+        [subBtn setBackgroundImage:[UIImage imageNamed:@"btnUserProfile_(active)"] forState:UIControlStateSelected];
+        [subBtn setBackgroundImage:[UIImage imageNamed:@"btnUserProfile_(inactive)"] forState:UIControlStateNormal];
+    }
+    [btn setSelected:YES];
+    
 }
 
 @end
