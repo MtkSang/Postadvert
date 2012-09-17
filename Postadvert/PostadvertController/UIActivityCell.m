@@ -12,11 +12,13 @@
 #import "UIImageView+URL.h"
 #import <QuartzCore/QuartzCore.h>
 #import "NSAttributedString+Attributes.h"
+#import "SDWebImageController/SDWebImageRootViewController.h"
 
 @interface UIActivityCell()
 
 - (void) refreshClapCommentsView;
 - (NSString*) setNameWithAction;
+
 @end
 
 @implementation UIActivityCell
@@ -68,7 +70,7 @@
         //textContent.delegate = self;
         textContent.extendBottomToFit = YES;
         linkView   = (LinkPreview*)[self viewWithTag:5];
-        thumbnailView = (ThumbnailPostCellView*)[self viewWithTag:6];
+        thumbnailView = (UIView*)[self viewWithTag:6];
         botView    =[self viewWithTag:7];
         clapComment= [self viewWithTag:8];
         clapBtn    = (UIButton*)[self viewWithTag:9];
@@ -158,27 +160,29 @@
             textContent.hidden = YES;
         }
         //Add Image
-        //if (_content.listImages.count) {
-//            frame = videoFrame;
-//            frame.origin.x = 0;
-//            frame.origin.y = 0;
-//            frame.size.height = cImageHeight + 2 * CELL_MARGIN_BETWEEN_IMAGE ;
-//            //[thumbnailView CreateImagesViewWithFrame:frame];
-//            //new version here
-//            newController = [[SDWebImageRootViewController alloc] initWithFrame:frame andArray:_content.listImages];
-//            newController.navigationController = navigationController;
-//            [newController LoadThumbnail];
-//            newController.view.frame = frame;
-//            [thumbnailView addSubview:newController.view];
-//            thumbnailView.backgroundColor = self.backgroundColor;
-//            frame = videoFrame;
-//            frame.origin.y = cellHeight;
-//            thumbnailView.frame = frame;
-//            cellHeight += cImageHeight + 2 * CELL_MARGIN_BETWEEN_IMAGE + CELL_MARGIN_BETWEEN_CONTROLL;
-//            thumbnailView.hidden = NO;
-        //}else {
-            //thumbnailView.hidden = YES;
-        //}
+        if ([_content.app_type isEqualToString:@"photos"] && [_content.commnent_type isEqualToString:@"photos"]) {
+            NSLog(@"Images %@", _content.listImages);
+            frame = videoFrame;
+            frame.origin.x = 0;
+            frame.origin.y = 0;
+            frame.size.height = cImageHeight + 2 * CELL_MARGIN_BETWEEN_IMAGE ;
+            //[thumbnailView CreateImagesViewWithFrame:frame];
+            //new version here
+            imageViewCtr = [[SDWebImageRootViewController alloc] initWithFrame:frame andArray:_content.listImages];
+            imageViewCtr.navigationController = navigationController;
+            [imageViewCtr LoadThumbnail];
+            imageViewCtr.view.frame = frame;
+            [thumbnailView addSubview:imageViewCtr.view];
+            thumbnailView.backgroundColor = self.backgroundColor;
+            frame = videoFrame;
+            frame.origin.y = cellHeight;
+            thumbnailView.frame = frame;
+            cellHeight += cImageHeight + 2 * CELL_MARGIN_BETWEEN_IMAGE + CELL_MARGIN_BETWEEN_CONTROLL;
+            thumbnailView.hidden = NO;
+        }else {
+            [_content.listImages removeAllObjects];
+            thumbnailView.hidden = YES;
+        }
         //add link here
 //        if (_content.linkWebsite) {
 //            linkView.autoresizesSubviews = YES;
@@ -223,9 +227,10 @@
         numClap.text = [NSString stringWithFormat:@"%d", _content.totalClap];
         //- - > button comments
         
+        [commentBtn setTitle:[NSString stringWithFormat:@"%d comments",_content.totalComment] forState:UIControlStateNormal];
         commentBtn.titleLabel.textColor = [UIColor colorWithRed:79.0/255 green:178.0/255 blue:187.0/255 alpha:1];
         //commentBtn.titleLabel.textColor = [UIColor blueColor];
-        [commentBtn setTitle:[NSString stringWithFormat:@"%d comments",_content.totalComment] forState:UIControlStateNormal];
+        
         [commentBtn addTarget:self action:@selector(commentButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         //- - > Quick commentBtn
         [quickCommentBtn addTarget:self action:@selector(plusButtonClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -250,17 +255,17 @@
             textContent.frame = frame;
             cellHeight += size.height + CELL_MARGIN_BETWEEN_CONTROLL;
         }
-//        //Add Image
-//        if (_content.listImages.count) {
-//            frame = videoFrame;
-//            frame.origin.x = 0;
-//            frame.origin.y = 0;
-//            newController.view.frame = frame;
-//            frame = videoFrame;
-//            frame.origin.y = cellHeight;
-//            thumbnailView.frame = frame;
-//            cellHeight += cImageHeight + 2 * CELL_MARGIN_BETWEEN_IMAGE + CELL_MARGIN_BETWEEN_CONTROLL;
-//        }
+        //Add Image
+        if ([_content.app_type isEqualToString:@"photos"] && [_content.commnent_type isEqualToString:@"photos"]) {
+            frame = videoFrame;
+            frame.origin.x = 0;
+            frame.origin.y = 0;
+            imageViewCtr.view.frame = frame;
+            frame = videoFrame;
+            frame.origin.y = cellHeight;
+            thumbnailView.frame = frame;
+            cellHeight += cImageHeight + 2 * CELL_MARGIN_BETWEEN_IMAGE + CELL_MARGIN_BETWEEN_CONTROLL;
+        }
 //        //add link here
 //        if (_content.listLinks.count) {
 //            //[linkView reDrawWithFrame:videoFrame];
@@ -353,9 +358,9 @@
         cellHeight += size.height + CELL_MARGIN_BETWEEN_CONTROLL;
     }
 //    //Add Image
-//    if (content.listImages.count) {
-//        cellHeight += cImageHeight + 2 * CELL_MARGIN_BETWEEN_IMAGE + CELL_MARGIN_BETWEEN_CONTROLL;
-//    }
+    if (content.listImages.count) {
+        cellHeight += cImageHeight + 2 * CELL_MARGIN_BETWEEN_IMAGE + CELL_MARGIN_BETWEEN_CONTROLL;
+    }
 //    //add link here
 //    if (content.listLinks.count) {
 //        cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
@@ -426,16 +431,16 @@
         cellHeight += size.height + CELL_MARGIN_BETWEEN_CONTROLL;
     }
     //Add Image
-//    if (_content.listImages.count) {
-//        frame = thumbnailView.frame;
-//        frame.origin.x = 0;
-//        frame.origin.y = 0;
-//        newController.view.frame = frame;
-//        frame = videoFrame;
-//        frame.origin.y = cellHeight;
-//        thumbnailView.frame = frame;
-//        cellHeight += cImageHeight + 2 * CELL_MARGIN_BETWEEN_IMAGE + CELL_MARGIN_BETWEEN_CONTROLL;
-//    }
+    if (_content.listImages.count) {
+        frame = thumbnailView.frame;
+        frame.origin.x = 0;
+        frame.origin.y = 0;
+        imageViewCtr.view.frame = frame;
+        frame = videoFrame;
+        frame.origin.y = cellHeight;
+        thumbnailView.frame = frame;
+        cellHeight += cImageHeight + 2 * CELL_MARGIN_BETWEEN_IMAGE + CELL_MARGIN_BETWEEN_CONTROLL;
+    }
 //    //add link here
 //    if (_content.listLinks.count) {
 //        //[linkView reDrawWithFrame:videoFrame];
@@ -529,6 +534,22 @@
     return [_userName stringByAppendingString:actionDescription];
 }
 
++ (NSMutableAttributedString*) makeActionStringWithContent:(ActivityContent*)content;
+{
+    NSString *actionStr =@"";
+    NSMutableAttributedString* attrStr = [[NSMutableAttributedString alloc]init];
+    if ([content.app_type isEqualToString:@"photos"] && [content.commnent_type isEqualToString:@"photos"]) {
+        actionStr = [NSString stringWithFormat:@"%@ add new photo", content.actor_name];
+        
+        attrStr = [NSMutableAttributedString attributedStringWithString:actionStr];
+        [attrStr setFont:[UIFont fontWithName:@"Helvetica" size:14]];
+        [attrStr setTextColor:[UIColor grayColor]];
+        [attrStr setTextAlignment:kCTJustifiedTextAlignment lineBreakMode:kCTLineBreakByWordWrapping];
+        [attrStr setTextColor:[UIColor colorWithRed:79.0/255 green:178.0/255 blue:187.0/255 alpha:1] range:[actionStr rangeOfString:content.actor_name]];
+        [attrStr setTextBold:YES range:[actionStr rangeOfString:content.actor_name]];
+    }
+    return attrStr;
+}
 #pragma mark - UIActionSheet Delegate
 
 - (void)actionSheet:(UIActionSheet *)uias clickedButtonAtIndex:(NSInteger)buttonIndex

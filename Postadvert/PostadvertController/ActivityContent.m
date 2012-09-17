@@ -29,8 +29,9 @@
 @synthesize title;
 @synthesize album_url;
 @synthesize photo_info_id;
-@synthesize photo_info_image;
-@synthesize photo_info_thumb;
+//@synthesize photo_info_image;
+//@synthesize photo_info_thumb;
+@synthesize listImages;
 @synthesize commentContent;
 
 @end

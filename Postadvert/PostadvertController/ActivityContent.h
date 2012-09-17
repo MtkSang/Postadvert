@@ -29,7 +29,8 @@
 @property(nonatomic, strong)        NSString *title;
 @property(nonatomic, strong)        NSString *album_url;
 @property(nonatomic)                NSInteger photo_info_id;
-@property(nonatomic, strong)        NSString *photo_info_image;//URL
-@property(nonatomic, strong)        NSString *photo_info_thumb;//Image via base64
+//@property(nonatomic, strong)        NSString *photo_info_image;//URL
+//@property(nonatomic, strong)        NSString *photo_info_thumb;//Image via base64
+@property(nonatomic, strong)        NSMutableArray *listImages;
 @property(nonatomic, strong)        NSString *commentContent;
 @end

@@ -614,7 +614,15 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
             content.target_id = [[dict objectForKey:@"target_id"] integerValue];
             content.target_name = [dict objectForKey:@"target_name"];
             content.title =  [NSData stringDecodeFromBase64String:[dict objectForKey:@"action"]];
+            //photo_info
+            NSDictionary *photo_info = [dict objectForKey:@"photo_info"];
+            content.photo_info_id = [[photo_info objectForKey:@"id"] integerValue];;
+//            content.photo_info_image = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"image"]];
+//            content.photo_info_thumb = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"photo_thumb_url"]];
+            content.listImages = [[NSMutableArray alloc]init];
+            [content.listImages addObject:[NSArray arrayWithObjects:[NSData stringDecodeFromBase64String:[photo_info objectForKey:@"image"]],[NSData stringDecodeFromBase64String:[photo_info objectForKey:@"photo_thumb_url"]], nil]];
             //total comments
+            NSLog(@"image %@", content.listImages);
             content.totalComment = [[dict objectForKey:@"total_comments"] integerValue];
             
             [listContent addObject:content];
