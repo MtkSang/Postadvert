@@ -29,7 +29,7 @@
 
 @implementation UITablePostViewController
 
-@synthesize myTableView = _myTableView;
+//@synthesize myTableView = myTableView;
 @synthesize navigationController = _navigationCtr;
 //
 //- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

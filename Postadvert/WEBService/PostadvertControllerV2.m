@@ -621,8 +621,19 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
 //            content.photo_info_thumb = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"photo_thumb_url"]];
             content.listImages = [[NSMutableArray alloc]init];
             [content.listImages addObject:[NSArray arrayWithObjects:[NSData stringDecodeFromBase64String:[photo_info objectForKey:@"image"]],[NSData stringDecodeFromBase64String:[photo_info objectForKey:@"photo_thumb_url"]], nil]];
+            //video_info
+            content.video = [dict objectForKey:@"video_info"];
+            if ([content.video isKindOfClass:[NSDictionary class]]) {
+//                content.video = [[NSMutableDictionary alloc]init];
+//                [content.video setValue:[NSData stringDecodeFromBase64String: [video objectForKey:@"description"]  ]forKey:@"description"];
+//                [content.video setValue:[NSData stringDecodeFromBase64String: [video objectForKey:@"thumb"]  ]forKey:@"thumb"];
+//                [content.video setValue:[NSData stringDecodeFromBase64String: [video objectForKey:@"title"]  ]forKey:@"title"];
+//                [content.video setValue:[NSData stringDecodeFromBase64String: [video objectForKey:@"url"]  ]forKey:@"url"];
+//                [content.video setValue:[video objectForKey:@"id"] forKey:@"id"];
+            }else
+                content.video = nil;
+            //content.video = nil;
             //total comments
-            NSLog(@"image %@", content.listImages);
             content.totalComment = [[dict objectForKey:@"total_comments"] integerValue];
             
             [listContent addObject:content];

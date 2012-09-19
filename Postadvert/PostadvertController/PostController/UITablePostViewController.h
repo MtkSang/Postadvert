@@ -27,9 +27,10 @@
     UIActivityIndicatorView *activityView;
     BOOL isLoadData;
     NSInteger internalValue;
+    //IBOutlet UITableView *myTableView;
 }
 
-@property (nonatomic, weak) IBOutlet UITableView *myTableView;
+//@property (nonatomic, weak) IBOutlet UITableView *myTableView;
 @property (nonatomic, weak) UINavigationController *navigationController;
 - (void) loadCellsWithWallID:(NSInteger)wallID From:(NSInteger)from Count:(NSInteger) count;
 @end

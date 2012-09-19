@@ -157,9 +157,9 @@ static void singleton_remover() {
     //return (interfaceOrientation == UIInterfaceOrientationPortrait);
     return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight);
 }
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [self performSelector:@selector(resizeViewsForNavigationBar) withObject:nil afterDelay:(0.5f * duration)];
-}
+//- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+//    [self performSelector:@selector(resizeViewsForNavigationBar) withObject:nil afterDelay:(0.5f * duration)];
+//}
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
 {
     [self performSelector:@selector(updateWhenRotate) withObject:nil afterDelay:0.0];

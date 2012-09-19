@@ -33,5 +33,6 @@
 //@synthesize photo_info_thumb;
 @synthesize listImages;
 @synthesize commentContent;
+@synthesize video;
 
 @end

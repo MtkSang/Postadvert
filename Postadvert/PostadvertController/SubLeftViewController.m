@@ -115,7 +115,9 @@
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.0];
+    
+    //[self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.0];
+    [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 }
 
 #pragma mark - Table view data source

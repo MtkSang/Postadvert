@@ -62,4 +62,5 @@
 - (void) loadNibFile;
 - (void) updateView;
 + (Float32) getCellHeightWithContent:(ActivityContent*)content;
++ (NSMutableAttributedString*) makeActionStringWithContent:(ActivityContent*)content;
 @end

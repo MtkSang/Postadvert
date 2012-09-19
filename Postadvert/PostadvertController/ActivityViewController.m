@@ -13,11 +13,12 @@
 #import "Constants.h"
 @interface ActivityViewController ()
 - (void) loadCellsInBackground;
-- (void) initPostCell;
+- (void) initActivityCell;
 - (void) reloadTableView;
 - (void) drawACell:(int) index;
 - (void) loadCellAtIndex:(NSNumber*)num;
 - (void) loadActivity;
+- (void) addBottomCells;
 @end
 
 @implementation ActivityViewController
@@ -256,14 +257,14 @@
         [self.tableView setContentOffset:CGPointZero];
     }
     
-    [self initPostCell];
+    [self initActivityCell];
     isLoadData = NO;
     self.tableView.scrollEnabled = YES;
     [self stopLoading];
     data = nil;
 }
 
-- (void) initPostCell
+- (void) initActivityCell
 {
     if (!listActivityCell) {
         listActivityCell = [[NSMutableArray alloc]initWithCapacity:listContent.count];
@@ -323,6 +324,7 @@
 
 - (void) addBottomCells
 {
+    
     int beforeLoad = listActivityCell.count;
     isLoadData = YES;
     NSString *total = [NSString stringWithFormat:@"%d", [[NSUserDefaults standardUserDefaults] integerForKey:@"StatusUpdate.total"]];
@@ -355,7 +357,9 @@
         [self reloadTableView];
     }
     //[self performSelector:@selector(stopLoading) withObject:nil afterDelay:0.01];
-    [self stopLoading];
+    [self performSelectorOnMainThread:@selector(stopLoading) withObject:nil waitUntilDone:NO];
+    //[self stopLoading];
+    
     isLoadData = NO;
     
 }
@@ -372,6 +376,7 @@
     }
     isLoadData = YES;
     [loadingHideView showWhileExecuting:@selector(addTopCells) onTarget:self withObject:nil animated:NO];
+    //[self performSelector:@selector(addTopCells) withObject:nil afterDelay:0.00];
 }
 
 @end

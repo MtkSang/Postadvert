@@ -33,4 +33,5 @@
 //@property(nonatomic, strong)        NSString *photo_info_thumb;//Image via base64
 @property(nonatomic, strong)        NSMutableArray *listImages;
 @property(nonatomic, strong)        NSString *commentContent;
+@property(nonatomic, strong)        NSDictionary *video;
 @end

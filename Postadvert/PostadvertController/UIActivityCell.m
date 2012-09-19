@@ -13,6 +13,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "NSAttributedString+Attributes.h"
 #import "SDWebImageController/SDWebImageRootViewController.h"
+#import "LinkPreview.h"
 
 @interface UIActivityCell()
 
@@ -145,12 +146,12 @@
             
         //Fixsize
         
-        
-        if (![content.title isEqualToString:@""]) {
-            textContent.text = content.title;
+        NSMutableAttributedString *mStr = [UIActivityCell makeActionStringWithContent:content];
+        if (![[mStr string] isEqualToString:@""]) {
+            textContent.attributedText = mStr;
             [textContent setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
             constraint = CGSizeMake(cellFrame.size.width - 20 - leftMarginContent - CELL_CONTENT_MARGIN_RIGHT, 20000.0f);
-            size = [textContent.text sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+            size = [[mStr string] sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
             frame = CGRectMake(leftMarginContent, cellHeight, size.width, size.height);
             textContent.frame = frame;
             //Set Link here
@@ -195,18 +196,19 @@
 //        }else {
 //            linkView.hidden = YES;
 //        }
-//        //Video
-//        if (_content.linkYoutube) {
-//            videoView.autoresizesSubviews = YES;
-//            frame = videoFrame;
-//            [videoView loadContentWithFrame:frame LinkInfo:_content.linkYoutube Type:linkPreviewTypeYoutube];
-//            frame.origin.y = cellHeight;
-//            videoView.frame = frame;
-//            cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
-//            videoView.hidden = NO;
-//        }else {
-//            videoView.hidden = YES;
-//        }
+        //Video
+        if (content.video) {
+            linkView.autoresizesSubviews = YES;
+            frame = videoFrame;
+            NSLog(@"%@",[_content.video objectForKey:@"url"]);
+            [linkView loadContentWithFrame:frame LinkInfo:_content.video Type:linkPreviewTypeYoutube];
+            frame.origin.y = cellHeight;
+            linkView.frame = frame;
+            cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+            linkView.hidden = NO;
+        }else {
+            linkView.hidden = YES;
+        }
         
         
         //BotView
@@ -275,15 +277,15 @@
 //            cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
 //        }
 //        
-//        //Video
-//        if (_content.listVideos.count) {
-//            [videoView reDrawWithFrame:videoFrame];
-//            frame = videoFrame;
-//            frame.origin.y = cellHeight;
-//            videoView.frame = frame;
-//            
-//            cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
-//        }
+        //Video
+        if (_content.video) {
+            [linkView reDrawWithFrame:videoFrame];
+            frame = videoFrame;
+            frame.origin.y = cellHeight;
+            linkView.frame = frame;
+            
+            cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+        }
         
         //BotView
         frame = botView.frame;
@@ -351,9 +353,10 @@
 //    
 //    cellHeight = cellHeight > tempHeight ? cellHeight : tempHeight;
     //text
-    if (![content.title isEqualToString:@""]) {
+    NSMutableAttributedString *mStr = [UIActivityCell makeActionStringWithContent:content];
+    if (![[mStr string] isEqualToString:@""] ) {
         constraint = CGSizeMake(cellFrame.size.width - 20 - leftMarginContent - CELL_CONTENT_MARGIN_RIGHT, 20000.0f);
-        size = [content.title sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+        size = [[mStr string] sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
         frame = CGRectMake(leftMarginContent, cellHeight, size.width, size.height);
         cellHeight += size.height + CELL_MARGIN_BETWEEN_CONTROLL;
     }
@@ -365,10 +368,10 @@
 //    if (content.listLinks.count) {
 //        cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
 //    }
-//    //Video
-//    if (content.listVideos.count) {
-//        cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
-//    }
+    //Video
+    if (content.video) {
+        cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+    }
     
     
     //Bot view
@@ -449,15 +452,15 @@
 //        linkView.frame = frame;
 //        cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
 //    }
-//    //Video
-//    if (_content.listVideos.count) {
-//        [videoView reDrawWithFrame:videoFrame];
-//        frame = videoFrame;
-//        frame.origin.y = cellHeight;
-//        videoView.frame = frame;
-//        
-//        cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
-//    }
+    //Video
+    if (_content.video) {
+        [linkView reDrawWithFrame:videoFrame];
+        frame = videoFrame;
+        frame.origin.y = cellHeight;
+        linkView.frame = frame;
+        
+        cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+    }
     
     
     //BotView
@@ -534,7 +537,7 @@
     return [_userName stringByAppendingString:actionDescription];
 }
 
-+ (NSMutableAttributedString*) makeActionStringWithContent:(ActivityContent*)content;
++ (NSMutableAttributedString*) makeActionStringWithContent:(ActivityContent*)content
 {
     NSString *actionStr =@"";
     NSMutableAttributedString* attrStr = [[NSMutableAttributedString alloc]init];
@@ -547,6 +550,32 @@
         [attrStr setTextAlignment:kCTJustifiedTextAlignment lineBreakMode:kCTLineBreakByWordWrapping];
         [attrStr setTextColor:[UIColor colorWithRed:79.0/255 green:178.0/255 blue:187.0/255 alpha:1] range:[actionStr rangeOfString:content.actor_name]];
         [attrStr setTextBold:YES range:[actionStr rangeOfString:content.actor_name]];
+        
+        return attrStr;
+    }
+    
+    // Add Event
+    if ([content.app_type isEqualToString:@"events"] && [content.commnent_type isEqualToString:@"groups.event"])  {
+        if ([content.target_name isKindOfClass:[NSString class]]) {
+            if (content.target_name != @"") {
+                
+            }else
+                content.target_name = @" ";
+        }else
+            content.target_name = @" ";
+        actionStr = [NSString stringWithFormat:@"%@ add new event: %@", content.actor_name, content.target_name];
+        
+        attrStr = [NSMutableAttributedString attributedStringWithString:actionStr];
+        [attrStr setFont:[UIFont fontWithName:@"Helvetica" size:14]];
+        [attrStr setTextColor:[UIColor grayColor]];
+        [attrStr setTextAlignment:kCTJustifiedTextAlignment lineBreakMode:kCTLineBreakByWordWrapping];
+        [attrStr setTextColor:[UIColor colorWithRed:79.0/255 green:178.0/255 blue:187.0/255 alpha:1] range:[actionStr rangeOfString:content.actor_name]];
+        [attrStr setTextBold:YES range:[actionStr rangeOfString:content.actor_name]];
+        [attrStr setTextColor:[UIColor colorWithRed:79.0/255 green:178.0/255 blue:187.0/255 alpha:1] range:[actionStr rangeOfString:content.target_name]];
+        [attrStr setTextBold:YES range:[actionStr rangeOfString:content.target_name]];
+        
+        return attrStr;
+
     }
     return attrStr;
 }

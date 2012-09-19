@@ -10,7 +10,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LeftViewController.h"
-//#import "RightViewController.h"
+#import "PostController/UITablePostViewController.h"
 #import "MBProgressHUD.h"
 #import "PostViewController.h"
 #import "WEPopoverController.h"
@@ -37,7 +37,7 @@
     LeftViewController *leftViewController;
     MessageViewController *messageCtr;
     UIViewController    *customViewCtr;
-    //RightViewController *rightViewController;
+    UITablePostViewController  *postViewController;
     IBOutlet UIButton *button;
     NSMutableArray *listCells;
     NSMutableArray *listContent;

@@ -954,35 +954,35 @@
     for (UIView *view in overlay.subviews) {
         [view removeFromSuperview];
     }
-    if (customViewCtr == nil) {
+    if (postViewController == nil) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
-            customViewCtr = [[UITablePostViewController alloc] initWithStyle:UITableViewStyleGrouped];
+            postViewController = [[UITablePostViewController alloc] initWithStyle:UITableViewStyleGrouped];
         }else
         {
-            customViewCtr = [[UITablePostViewController alloc] initWithNibName:@"UITablePostViewController_IPad" bundle:nil];
+            postViewController = [[UITablePostViewController alloc] initWithNibName:@"UITablePostViewController_IPad" bundle:nil];
         }
     }
     else {
-        if (![customViewCtr isKindOfClass:[UITablePostViewController class]]) {
-            customViewCtr = nil;
+        if (![postViewController isKindOfClass:[UITablePostViewController class]]) {
+            postViewController = nil;
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
-                customViewCtr = [[UITablePostViewController alloc] initWithStyle:UITableViewStyleGrouped];
+                postViewController = [[UITablePostViewController alloc] initWithStyle:UITableViewStyleGrouped];
             }else
             {
-                customViewCtr = [[UITablePostViewController alloc] initWithNibName:@"UITablePostViewController_IPad" bundle:nil];
+                postViewController = [[UITablePostViewController alloc] initWithNibName:@"UITablePostViewController_IPad" bundle:nil];
             }
             
         }
     }
-    [self addChildViewController:customViewCtr];
-    [(UITablePostViewController*)customViewCtr setNavigationController:self.navigationController];
-    [[(UITablePostViewController*)customViewCtr tableView] setScrollEnabled:NO];
+    [self addChildViewController:postViewController];
+    [(UITablePostViewController*)postViewController setNavigationController:self.navigationController];
+    [[(UITablePostViewController*)postViewController tableView] setScrollEnabled:NO];
     
     CGRect frame = self.overlay.frame;
     frame.origin.y = cCellHeight;
     frame.size.height = frame.size.height - cCellHeight;
-    customViewCtr.view.frame = frame;
-    [topView addSubview:customViewCtr.view];
+    postViewController.view.frame = frame;
+    [topView addSubview:postViewController.view];
     
     [self.overlay addSubview: topView];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"showDetailFromSubView_SideBar" object:nil];
@@ -992,9 +992,9 @@
     NSInteger countryID = 190;
     countryID = [SupportFunction GetCountryIdFromConutryName:[UserPAInfo sharedUserPAInfo].userCountryPA];
     wallID = [SupportFunction getWallIdFromCountryID:countryID andItemName:itemName];
-    [(UITablePostViewController*)customViewCtr loadCellsWithWallID:wallID From:0 Count:5];
-    [customViewCtr.view setAutoresizingMask:self.overlay.autoresizingMask];
-    [customViewCtr.view setAutoresizesSubviews:YES];
+    [(UITablePostViewController*)postViewController loadCellsWithWallID:wallID From:0 Count:5];
+    [postViewController.view setAutoresizingMask:self.overlay.autoresizingMask];
+    [postViewController.view setAutoresizesSubviews:YES];
 }
 - (void) showUserProfile
 {

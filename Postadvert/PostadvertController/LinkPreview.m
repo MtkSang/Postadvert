@@ -243,6 +243,8 @@
      NSString *urlStr = [dict objectForKey:@"url"];
     urlString = [NSData stringDecodeFromBase64String:urlStr];
     NSLog(@"Dict %@",dict);
+    [webView setScalesPageToFit:YES];
+    [webView setContentMode:UIViewContentModeScaleAspectFit];
     if (type == linkPreviewTypeYoutube ) {
         webView.scrollView.scrollEnabled = NO;
         CGFloat w = webView.frame.size.width;
@@ -264,6 +266,8 @@
         [buttonOnWebView addTarget:self action:@selector(openURLWhenTitleClicked:) forControlEvents:UIControlEventTouchUpInside];
         [buttonOnTitle addTarget:self action:@selector(openURLWhenTitleClicked:) forControlEvents:UIControlEventTouchUpInside];
         [webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]]];
+        [webView setScalesPageToFit:YES];
+        [webView setContentMode:UIViewContentModeScaleAspectFit];
     }
     
     //Title
@@ -329,6 +333,8 @@
          NSLog(@"Webview-LinkPreview DidLoad Type=Website");
         [title setText:[_webView stringByEvaluatingJavaScriptFromString:@"document.title"]];
         [title sizeToFit];
+        [webView setScalesPageToFit:YES];
+        [webView setContentMode:UIViewContentModeScaleAspectFit];
         //title.text = [webView.request.URL absoluteString];
         
     }else {
