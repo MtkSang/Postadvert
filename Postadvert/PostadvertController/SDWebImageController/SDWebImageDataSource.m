@@ -106,8 +106,10 @@
 
 - (void)imageAtIndex:(NSInteger)index photoView:(KTPhotoView *)photoView {
    NSArray *imageUrls = [images_ objectAtIndex:index];
-   NSString *url = [imageUrls objectAtIndex:FULL_SIZE_INDEX];
-   [photoView setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"photoDefault.png"]];
+   NSString *urlF = [imageUrls objectAtIndex:FULL_SIZE_INDEX];
+   NSString *urlThumb = [imageUrls objectAtIndex:THUMBNAIL_INDEX];
+   [photoView setImageWithURL:[NSURL URLWithString:urlF] placeholderURL:[NSURL URLWithString:urlThumb] placeholderImage:[UIImage imageNamed:@"photoDefault.png"]];
+    NSLog(@"Load Full Image %@", urlF);
 }
 
 - (void)thumbImageAtIndex:(NSInteger)index thumbView:(KTThumbView *)thumbView {

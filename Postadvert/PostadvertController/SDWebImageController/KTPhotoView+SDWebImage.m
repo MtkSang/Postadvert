@@ -16,7 +16,8 @@
 
 - (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder {
    SDWebImageManager *manager = [SDWebImageManager sharedManager];
-   
+    [activityView_ setHidden:NO];
+    [activityView_ startAnimating];
    // Remove in progress downloader from queue
    [manager cancelForDelegate:self];
    
@@ -26,6 +27,7 @@
    }
    
    if (cachedImage) {
+       [self setImage:cachedImage];
       [self setImage:cachedImage];
    }
    else {
@@ -38,8 +40,45 @@
       }
    }
 }
+- (void)setImageWithURL:(NSURL *)url placeholderURL:(NSURL *)placeholderURL placeholderImage:(UIImage *)placeholderImage {
+    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+    [activityView_ setHidden:NO];
+    [activityView_ startAnimating];
+    // Remove in progress downloader from queue
+    [manager cancelForDelegate:self];
+    
+    UIImage *cachedImage = nil;
+    if (url) {
+        cachedImage = [manager imageWithURL:url];
+    }
+    
+    if (cachedImage) {
+        [activityView_ stopAnimating];
+        [self setImage:cachedImage];
+    }
+    else {
+        
+        if (placeholderURL) {
+            //Load Thumbnail
+            cachedImage = [manager imageWithURL:placeholderURL];
+            if (cachedImage) {
+                [self setImage:cachedImage];
+            }else
+                if (placeholderImage) {
+                    //Set temp-image while load URL-Image
+                    [self setImage:placeholderImage];
+                }
+        }
+        //Download Image
+        if (url) {
+            [manager downloadWithURL:url delegate:self];
+        }
+    }
+}
+
 
 - (void)webImageManager:(SDWebImageManager *)imageManager didFinishWithImage:(UIImage *)image {
+   [activityView_ stopAnimating];
    [self setImage:image];
 }
 

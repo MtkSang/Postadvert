@@ -14,6 +14,7 @@
 @interface KTPhotoView : UIScrollView <UIScrollViewDelegate>
 {
    UIImageView *imageView_;
+    UIActivityIndicatorView *activityView_;
    KTPhotoScrollViewController *scroller_;
    NSInteger index_;
 }
@@ -29,6 +30,6 @@
 - (CGFloat)scaleToRestoreAfterRotation;
 - (void)setMaxMinZoomScalesForCurrentBounds;
 - (void)restoreCenterPoint:(CGPoint)oldCenter scale:(CGFloat)oldScale;
-
+- (void)centerActivityWithPoint:(CGPoint)centerPoint;
 
 @end

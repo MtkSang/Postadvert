@@ -24,6 +24,7 @@
 - (void)dealloc 
 {
    [imageView_ release], imageView_ = nil;
+    [activityView_ release], activityView_ = nil;
    [super dealloc];
 }
 
@@ -46,6 +47,18 @@
    imageView_ = [[UIImageView alloc] initWithFrame:frame];
    [imageView_ setContentMode:UIViewContentModeScaleAspectFit];
    [self addSubview:imageView_];
+    
+    activityView_ = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityView_.center = CGPointMake((0 + frame.size.width ) / 2.0, (0 + frame.size.height) / 2.0);
+    activityView_.userInteractionEnabled = NO;
+    [activityView_ setHidden:YES];
+    [activityView_ setHidesWhenStopped:YES];
+    [imageView_ addSubview:activityView_];
+}
+
+- (void)centerActivityWithPoint:(CGPoint)centerPoint
+{
+    activityView_.center = centerPoint;
 }
 
 - (void)setImage:(UIImage *)newImage 
@@ -233,7 +246,6 @@
    offset.y = MAX(minOffset.y, MIN(maxOffset.y, offset.y));
    self.contentOffset = offset;
 }
-
 
 
 @end

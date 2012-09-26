@@ -510,9 +510,17 @@ const CGFloat ktkDefaultToolbarHeight = 44;
 {
    [self startChromeDisplayTimer];
     NSLog(@"TOOLBAR_%@",toolbar_);
+    if (currentIndex_ >=0 && currentIndex_ < photoCount_) {
+        id currentPhotoView = [photoViews_ objectAtIndex:currentIndex_];
+        if ([currentPhotoView isKindOfClass:[KTPhotoView class]]) {
+            CGRect frame = [(KTPhotoView*)currentPhotoView frame];
+            CGPoint centerPoint = CGPointMake(frame.size.width/2.0, frame.size.height/2.0);
+            [currentPhotoView centerActivityWithPoint:centerPoint];
+        }
+    }
 }
 
-- (UIView *)rotatingFooterView 
+- (UIView *)rotatingFooterView
 {
    return toolbar_;
 }
@@ -612,6 +620,15 @@ const CGFloat ktkDefaultToolbarHeight = 44;
    NSInteger page = floor(fractionalPage);
 	if (page != currentIndex_) {
 		[self setCurrentIndex:page];
+        //Set center activity
+        if (currentIndex_ >=0 && currentIndex_ < photoCount_) {
+            id currentPhotoView = [photoViews_ objectAtIndex:currentIndex_];
+            if ([currentPhotoView isKindOfClass:[KTPhotoView class]]) {
+                CGRect frame = [(KTPhotoView*)currentPhotoView frame];
+                CGPoint centerPoint = CGPointMake(frame.size.width/2.0, frame.size.height/2.0);
+                [currentPhotoView centerActivityWithPoint:centerPoint];
+            }
+        }
 	}
 }
 
