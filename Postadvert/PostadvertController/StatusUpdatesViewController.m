@@ -70,8 +70,8 @@
 {
    // NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://postadvert.com/Webservice/Client_Soap.php"]];
     //NSLog(@"data :%@",data.description);
-    NSMutableURLRequest *theRequest = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:@"http://postadvert.com/Webservice/Client_Soap.php"]];
-    NSURLConnection *connect = [[NSURLConnection alloc]initWithRequest:theRequest delegate:self];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:@"http://postadvert.com/Webservice/Client_Soap.php"]];
+    NSURLConnection *connect = [[NSURLConnection alloc]initWithRequest:request delegate:self];
     if (connect) {
         NSLog(@"Connection OK");
         webData = [[NSMutableData alloc]init];

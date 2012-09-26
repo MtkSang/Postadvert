@@ -611,7 +611,11 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
             content.totalClap = [[likeInfo objectForKey:@"like_total"] integerValue];
             
             content.like_type = [dict objectForKey:@"like_type"];
-            content.target_id = [[dict objectForKey:@"target_id"] integerValue];
+            //target
+            if ([[dict objectForKey:@"target_id"] isKindOfClass:[NSNull class]]) {
+                content.target_id = 0;
+            }else
+                content.target_id = [[dict objectForKey:@"target_id"] integerValue];
             content.target_name = [dict objectForKey:@"target_name"];
             content.title =  [NSData stringDecodeFromBase64String:[dict objectForKey:@"action"]];
             //photo_info

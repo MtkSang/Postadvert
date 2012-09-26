@@ -28,7 +28,6 @@
 		FA0321B4157731EC002EB93D /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0321AC157731EC002EB93D /* DetailViewController.m */; };
 		FA0321B5157731EC002EB93D /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA0321AD157731EC002EB93D /* DetailViewController.xib */; };
 		FA0321B6157731EC002EB93D /* LeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0321AF157731EC002EB93D /* LeftViewController.m */; };
-		FA0321B7157731EC002EB93D /* LeftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA0321B0157731EC002EB93D /* LeftViewController.xib */; };
 		FA0321B8157731EC002EB93D /* SideBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0321B2157731EC002EB93D /* SideBarViewController.m */; };
 		FA0321B9157731EC002EB93D /* SideBarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA0321B3157731EC002EB93D /* SideBarViewController.xib */; };
 		FA03220F157734E3002EB93D /* NewAccountBaseVwContrl.m in Sources */ = {isa = PBXBuildFile; fileRef = FA032205157734E3002EB93D /* NewAccountBaseVwContrl.m */; };
@@ -419,6 +418,9 @@
 		FA12397F159B08A30026838C /* AlertCellContent.m in Sources */ = {isa = PBXBuildFile; fileRef = FA12397E159B08A30026838C /* AlertCellContent.m */; };
 		FA123982159B0C660026838C /* UIAlertCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA123981159B0C650026838C /* UIAlertCell.m */; };
 		FA123984159B0C7C0026838C /* UIAlertCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA123983159B0C7C0026838C /* UIAlertCell.xib */; };
+		FA293814161171A400FE8D8D /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA293813161171A400FE8D8D /* MediaPlayer.framework */; };
+		FA2DFEDF160FFDEB00CC23DE /* LeftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA2DFEDE160FFDEB00CC23DE /* LeftViewController.xib */; };
+		FA3CC02C160C485F00F8C903 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA3CC02B160C485F00F8C903 /* Default-568h@2x.png */; };
 		FA49688515901D89000339F6 /* UIMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA49688415901D89000339F6 /* UIMessageCell.xib */; };
 		FA49688B15908864000339F6 /* popoverBackgroundCustom.png in Resources */ = {isa = PBXBuildFile; fileRef = FA49688715908864000339F6 /* popoverBackgroundCustom.png */; };
 		FA49688C15908864000339F6 /* popoverBoundCustom.png in Resources */ = {isa = PBXBuildFile; fileRef = FA49688815908864000339F6 /* popoverBoundCustom.png */; };
@@ -575,7 +577,6 @@
 		FA0321AD157731EC002EB93D /* DetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DetailViewController.xib; path = ../DetailViewController.xib; sourceTree = "<group>"; };
 		FA0321AE157731EC002EB93D /* LeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftViewController.h; sourceTree = "<group>"; };
 		FA0321AF157731EC002EB93D /* LeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftViewController.m; sourceTree = "<group>"; };
-		FA0321B0157731EC002EB93D /* LeftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LeftViewController.xib; sourceTree = "<group>"; };
 		FA0321B1157731EC002EB93D /* SideBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideBarViewController.h; sourceTree = "<group>"; };
 		FA0321B2157731EC002EB93D /* SideBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideBarViewController.m; sourceTree = "<group>"; };
 		FA0321B3157731EC002EB93D /* SideBarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideBarViewController.xib; sourceTree = "<group>"; };
@@ -1052,6 +1053,9 @@
 		FA123980159B0C650026838C /* UIAlertCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIAlertCell.h; sourceTree = "<group>"; };
 		FA123981159B0C650026838C /* UIAlertCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAlertCell.m; sourceTree = "<group>"; };
 		FA123983159B0C7C0026838C /* UIAlertCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIAlertCell.xib; sourceTree = "<group>"; };
+		FA293813161171A400FE8D8D /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		FA2DFEDE160FFDEB00CC23DE /* LeftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LeftViewController.xib; sourceTree = "<group>"; };
+		FA3CC02B160C485F00F8C903 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		FA49688415901D89000339F6 /* UIMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIMessageCell.xib; sourceTree = "<group>"; };
 		FA49688715908864000339F6 /* popoverBackgroundCustom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverBackgroundCustom.png; sourceTree = "<group>"; };
 		FA49688815908864000339F6 /* popoverBoundCustom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverBoundCustom.png; sourceTree = "<group>"; };
@@ -1228,6 +1232,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA293814161171A400FE8D8D /* MediaPlayer.framework in Frameworks */,
 				FA9BB9B015E4E4EA00818F1E /* QuartzCore.framework in Frameworks */,
 				FA6DDB0515E3299B0016C755 /* CoreText.framework in Frameworks */,
 				FA03230B1577492C002EB93D /* MobileCoreServices.framework in Frameworks */,
@@ -1281,6 +1286,7 @@
 		FA03215615772BEB002EB93D = {
 			isa = PBXGroup;
 			children = (
+				FA3CC02B160C485F00F8C903 /* Default-568h@2x.png */,
 				FAB4E56115ECA00400C3CF55 /* templateF */,
 				FA03216D15772BEB002EB93D /* Postadvert */,
 				FA03218915772BEC002EB93D /* PostadvertTests */,
@@ -1301,6 +1307,7 @@
 		FA03216415772BEB002EB93D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FA293813161171A400FE8D8D /* MediaPlayer.framework */,
 				FA9BB9AF15E4E4EA00818F1E /* QuartzCore.framework */,
 				FA6DDB0415E3299B0016C755 /* CoreText.framework */,
 				FA03230A1577492C002EB93D /* MobileCoreServices.framework */,
@@ -1410,7 +1417,7 @@
 				FAFA7770157E154A00A55669 /* UserPAInfo.m */,
 				FA0321AE157731EC002EB93D /* LeftViewController.h */,
 				FA0321AF157731EC002EB93D /* LeftViewController.m */,
-				FA0321B0157731EC002EB93D /* LeftViewController.xib */,
+				FA2DFEDE160FFDEB00CC23DE /* LeftViewController.xib */,
 				FA0321B1157731EC002EB93D /* SideBarViewController.h */,
 				FA0321B2157731EC002EB93D /* SideBarViewController.m */,
 				FA0321B3157731EC002EB93D /* SideBarViewController.xib */,
@@ -2440,7 +2447,6 @@
 			files = (
 				FA03217215772BEB002EB93D /* InfoPlist.strings in Resources */,
 				FA0321B5157731EC002EB93D /* DetailViewController.xib in Resources */,
-				FA0321B7157731EC002EB93D /* LeftViewController.xib in Resources */,
 				FA0321B9157731EC002EB93D /* SideBarViewController.xib in Resources */,
 				FA032213157734E3002EB93D /* NewAccountVwCtrl.xib in Resources */,
 				FA032214157734E3002EB93D /* SignInVwCtrl.xib in Resources */,
@@ -2809,6 +2815,8 @@
 				FA4EF7C21601E456008FD7E6 /* btn_UserProfile(normal).png in Resources */,
 				FA4EF7C51601EA37008FD7E6 /* btnUserProfile_(inactive).png in Resources */,
 				FA4EF7C61601EA37008FD7E6 /* btnUserProfile_(active).png in Resources */,
+				FA3CC02C160C485F00F8C903 /* Default-568h@2x.png in Resources */,
+				FA2DFEDF160FFDEB00CC23DE /* LeftViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3042,9 +3050,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = "-lxml2";
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -3062,10 +3071,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-lxml2";
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -3076,7 +3086,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Postadvert/Postadvert-Prefix.pch";
 				INFOPLIST_FILE = "Postadvert/Postadvert-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
@@ -3089,7 +3099,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Postadvert/Postadvert-Prefix.pch";
 				INFOPLIST_FILE = "Postadvert/Postadvert-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;

@@ -173,26 +173,26 @@
 {
     //No sort this time
     [self filterContentForSearchText:[self.searchDisplayController.searchBar text]];
-    [filteredListContent setArray:[filteredListContent sortedArrayUsingComparator:^(id firstObject, id secondObject) {
+    [filteredListContent setArray:[filteredListContent sortedArrayUsingComparator:^(id firstObject, id secondObject)
+    {
         if (searchOption == 1) {
             return [((NSString *)firstObject) compare:((NSString *)secondObject) options:NSNumericSearch | NSForcedOrderingSearch];
         }
         if (searchOption == 2) {
             NSComparisonResult result= [((NSString *)firstObject) compare:((NSString *)secondObject) options:NSNumericSearch | NSForcedOrderingSearch];
             if (result ==  NSOrderedAscending) {
-                
-                return NSOrderedDescending;
+                return result;
+                //return NSOrderedDescending;
                 
             } else {
                 
                 if (result == NSOrderedAscending) {
-                    return NSOrderedAscending;
+                   // return NSOrderedAscending;
+                    return result;
                 }
             }
         }
-        return NSOrderedSame;
-        
-        
+        return [@"abc" compare:@"abc"];
     }]] ;
     return YES;
 }

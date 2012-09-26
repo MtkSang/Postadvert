@@ -18,6 +18,7 @@
     IBOutlet UIView             *resetPasswordVw;
     IBOutlet UIButton           *loginBtn;
     IBOutlet UIButton           *signupBtn;
+    BOOL                        _autoLogin;
 //    IBOutlet UIView             *loginErrorVw;
 }
 
@@ -29,6 +30,7 @@
 
 
 -(id) initWithPostAdvertController:(PostAdvertController *) postAdvertController;
+- (id)initWithAultoLogin:(BOOL)autoLogin;
 //-(void) didParseDatafromServer;
 
 -(IBAction) didEndOnExitTxt:(id) sender;

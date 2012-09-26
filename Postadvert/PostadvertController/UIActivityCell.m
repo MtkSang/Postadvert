@@ -149,6 +149,8 @@
         NSMutableAttributedString *mStr = [UIActivityCell makeActionStringWithContent:content];
         if (![[mStr string] isEqualToString:@""]) {
             textContent.attributedText = mStr;
+            textContent.text = [mStr string];
+            NSLog(@"%@ %@",    textContent.text, textContent);
             [textContent setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
             constraint = CGSizeMake(cellFrame.size.width - 20 - leftMarginContent - CELL_CONTENT_MARGIN_RIGHT, 20000.0f);
             size = [[mStr string] sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
@@ -424,7 +426,7 @@
     NSLog(@"User Name %@", userName.text);
     if (![textContent.text isEqualToString:@""]) {
         if (self.isShowFullText) {
-            textContent.text = _content.title;
+            textContent.attributedText = [UIActivityCell makeActionStringWithContent:_content];
         }
         NSLog(@"Text : %@", textContent.text);
         constraint = CGSizeMake(cellFrame.size.width - 20 - leftMarginContent - CELL_CONTENT_MARGIN_RIGHT, 20000.0f);

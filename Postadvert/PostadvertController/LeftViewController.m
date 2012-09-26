@@ -151,6 +151,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    NSLog(@"%@",self.view);
     //self.navigationController.navigationBarHidden = NO;
     //[self showPopUpDialog:[LeftViewController  createLoginListView ] :CGPointMake(0.0, 20.0)];
     

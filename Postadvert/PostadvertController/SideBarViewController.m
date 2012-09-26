@@ -103,6 +103,8 @@ static void singleton_remover() {
     navDetail.view.frame = frame;
     [self.view addSubview:navLeft.view];
     [self.view addSubview:navDetail.view];
+    NSLog(@"Left %@, Right %@", navLeft.view, navDetail.view);
+    NSLog(@"Left %@, Right %@", sideBar.view, mainCtr.view);
     [self addChildViewController:navDetail];
     [self addChildViewController:navLeft];
     
@@ -194,7 +196,14 @@ static void singleton_remover() {
             if (!loginView) {
                 loginView = [self createLoginListView];
             }
-            [self onTouchSignInBtn:self];
+            //[self onTouchSignInBtn:self];
+            {
+                [self hidePopUpDialog:overlay];
+                self.overlay = nil;
+                SignInVwCtrl *signInVwCtrl = [[SignInVwCtrl alloc] initWithAultoLogin:YES];
+                [self.navigationController pushViewController:signInVwCtrl animated:YES];
+                self.navigationController.navigationBarHidden = YES;
+            }
         }else {
             didShowListLogin = 2;
             //set the Main Page as the very first page
@@ -216,10 +225,16 @@ static void singleton_remover() {
             navDetail.view.hidden = NO;
             navLeft.view.hidden = NO;
             botView.hidden = NO;
-            
-            
-           
         }
+        CGRect frame = navLeft.view.frame;
+        frame.size.height = self.view.frame.size.height;
+        navLeft.view.frame = frame;
+        
+        frame = navDetail.view.frame;
+        frame.size.height = self.view.frame.size.height;
+        navDetail.view.frame = frame;
+
+         NSLog(@"Self %@, navleft %@ navdetail %@", self.view, navLeft.view, navDetail.view);
         instance_SideBar = self;
     }
 }
@@ -599,7 +614,8 @@ static void singleton_remover() {
     
 	// Hide the overlay
 	[overlay performSelector:@selector(setAlpha:) withObject:nil afterDelay:0.3f];
-    [[self modalViewController] dismissModalViewControllerAnimated:NO];
+    //[[self modalViewController] dismissModalViewControllerAnimated:NO];// version < 6.0
+    [[self presentedViewController] dismissViewControllerAnimated:NO completion:nil];
     [view removeFromSuperview];
 }
 

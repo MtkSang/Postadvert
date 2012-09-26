@@ -252,7 +252,7 @@
     [UIView setAnimationDuration:1];
     [UIView setAnimationDelegate:self];
     [UIView setAnimationDidStopSelector:@selector( animationDidStop:finished:context: )];
-    [UIView beginAnimations:@"showHideToolbar" context:(__bridge void *)self.view];
+    [UIView beginAnimations:@"showHideToolbar" context:( void *)self.view];
     if (toolbar.hidden) {// to do: Show toolbar
         toolbar.frame = CGRectMake(0.0, webView.frame.origin.y, self.view.frame.size.width, toolbar.frame.size.height);
         CGRect frame = webView.frame;

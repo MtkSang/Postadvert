@@ -13,7 +13,7 @@
 #import "BrowserViewController.h"
 #import "ThumbnailViewController.h"
 #import "NSData+Base64.h"
-
+#import <MediaPlayer/MediaPlayer.h>
 @implementation LinkPreview
  
 @synthesize webView;
@@ -185,6 +185,7 @@
     //});
     buttonOnWebView.backgroundColor = [UIColor clearColor];
     if (type == linkPreviewTypeYoutube ) {
+        webView.delegate = self;
         webView.scrollView.scrollEnabled = NO;
         CGFloat w = webView.frame.size.width;
         CGFloat h = webView.frame.size.height;
@@ -243,12 +244,13 @@
      NSString *urlStr = [dict objectForKey:@"url"];
     urlString = [NSData stringDecodeFromBase64String:urlStr];
     NSLog(@"Dict %@",dict);
-    [webView setScalesPageToFit:YES];
-    [webView setContentMode:UIViewContentModeScaleAspectFit];
     if (type == linkPreviewTypeYoutube ) {
+        //urlString = @"http://www.youtube.com/watch?v=53Sr4Ori-AI";
         webView.scrollView.scrollEnabled = NO;
         CGFloat w = webView.frame.size.width;
         CGFloat h = webView.frame.size.height;
+        NSString *videoID = [dict objectForKey:@"video_id"];
+        //NSString *videoID = @"53Sr4Ori-AI";
         NSString *embed = [NSString stringWithFormat:@"<html><head><meta name=\"viewport\""\
                            " content=\"initial-scale=1.0, user-scalable=no, width=%0.0f\"/></head><body "\
                            "style=\"background-color:transparent;margin-top:0px;margin-left:0px\"><div><object "\
@@ -258,16 +260,41 @@
                            "\" allowfullscreen=\"true\" wmode=\"transparent\" width=\"%0.0f\" height=\"%0.0f\" />"\
                            "</object></div></body></html>", w, w, h, urlString, urlString, w, h];
         NSLog(@"Ember %@", embed);
+        w = 250;
+        h = 250;
+        embed = [NSString stringWithFormat:@"<iframe height=\"%00.0fpx\" width=\"%00.0fpx\" src=\"http://www.youtube.com/embed/%@\"></iframe> ", h, w, videoID];
+        //embed = [NSString stringWithFormat:@" <embed src=\"http://www.youtube.com/watch?v=%@\" type=\"application/x-shockwave-flash\"     widht=\"64\" height=\"64\"></embed>", videoID];
         webView.userInteractionEnabled = YES;
+        [webView setScalesPageToFit:YES];
+        [webView setContentMode:UIViewContentModeScaleAspectFit];
+        webView.autoresizesSubviews = YES;
         buttonOnWebView.hidden = YES;
+        //webView.delegate = self;
         [webView loadHTMLString:embed baseURL:nil];
         [buttonOnTitle addTarget:self action:@selector(buttonPlayClicked:) forControlEvents:UIControlEventTouchUpInside];
+        
+        //buttonOnWebView
+        [buttonOnWebView addTarget:self action:@selector(openURLWhenTitleClicked:) forControlEvents:UIControlEventTouchUpInside];
+        //[buttonOnTitle addTarget:self action:@selector(openURLWhenTitleClicked:) forControlEvents:UIControlEventTouchUpInside];
+        NSData *imageData = [NSData dataFromBase64String:[dict objectForKey:@"thumb"]];
+        UIImage *image = [UIImage imageWithData:imageData];
+        if (image == nil) {
+            image = [UIImage imageNamed:@"user_default_thumb.png"];
+        }
+
     }else {
         [buttonOnWebView addTarget:self action:@selector(openURLWhenTitleClicked:) forControlEvents:UIControlEventTouchUpInside];
         [buttonOnTitle addTarget:self action:@selector(openURLWhenTitleClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]]];
-        [webView setScalesPageToFit:YES];
-        [webView setContentMode:UIViewContentModeScaleAspectFit];
+        NSData *imageData = [NSData dataFromBase64String:[dict objectForKey:@"thumb"]];
+        UIImage *image = [UIImage imageWithData:imageData];
+        if (image == nil) {
+            image = [UIImage imageNamed:@"user_default_thumb.png"];
+        }
+
+        [buttonOnWebView setBackgroundImage:image forState:UIControlStateNormal];
+//        [webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]]];
+//        [webView setScalesPageToFit:YES];
+        //[webView setContentMode:UIViewContentModeScaleAspectFit];
     }
     
     //Title
@@ -301,7 +328,7 @@
 //    buttonOnTitle.frame = title.frame;
     //Set posittion for title & description
     CGSize constraint, size;
-    constraint = CGSizeMake(title.frame.size.width ,self.frame.size.height - (2*CELL_MARGIN_BETWEEN_IMAGE));
+    constraint = CGSizeMake(frame.size.width - webView.frame.size.width - webView.frame.origin.x -  CELL_CONTENT_MARGIN_LEFT - CELL_CONTENT_MARGIN_RIGHT ,self.frame.size.height - (2*CELL_MARGIN_BETWEEN_IMAGE));
     size = [title.text sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
     frame = title.frame;
     frame.size = size;
@@ -339,7 +366,11 @@
         
     }else {
         NSLog(@"Webview-LinkPreview DidLoad Type=Youtube");
-        [buttonOnTitle addTarget:self action:@selector(buttonPlayClicked:) forControlEvents:UIControlEventTouchUpInside];
+        //[buttonOnTitle addTarget:self action:@selector(buttonPlayClicked:) forControlEvents:UIControlEventTouchUpInside];
+        buttonOnWebView.hidden = YES;
+        [webView setScalesPageToFit:YES];
+        [webView setContentMode:UIViewContentModeScaleAspectFit];
+        webView.clipsToBounds = YES;
 
     }
 }
@@ -360,6 +391,7 @@
 - (UIButton *)findButtonInView:(UIView *)view {
 	UIButton *button = nil;
 	
+    
 	if ([view isMemberOfClass:[UIButton class]]) {
 		return (UIButton *)view;
 	}
@@ -381,7 +413,7 @@
         [self openURLWhenTitleClicked:title];
     }else {
         [b sendActionsForControlEvents:UIControlEventTouchUpInside];
-        b = nil;
+        //b = nil;
     }
 	
 }
@@ -419,6 +451,22 @@
     [mainView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
     [self addSubview:mainView];
 }
+//
+//- (UIView*) hitTest:(CGPoint)point withEvent:(UIEvent *)event
+//{
+//    UIView *view = [super hitTest:point withEvent:event];
+//    NSLog(@"%@", view);
+//    //if ([view isKindOfClass:[UIButton class]]) {
+//        //return [[webView subviews] lastObject];
+//        for (UIView *view in [[webView.subviews objectAtIndex:0] subviews]) {
+//            if ([NSStringFromClass([view class]) isEqualToString:@"UIWebBrowserView"]) {
+//                return view;
+//            }
+//        }
+//    //}
+//    return view;
+//}
+
 @end
 
 /*

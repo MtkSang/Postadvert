@@ -33,17 +33,17 @@
 {
     //Get userInfo form previuos session
     [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleBlackOpaque];
-     NSUserDefaults *database = [[NSUserDefaults alloc]init];
-     
-     NSString *userName = [database objectForKey:@"userNamePA"];
-     NSString *email = [database objectForKey:@"email"];
-     NSString *passwordPA = [database objectForKey:@"passwordPA"];
-    
-     if ([userName isEqualToString:@""]) {
-         [[PostadvertControllerV2 sharedPostadvertController]registrationLogin:email :passwordPA];
-     }else {
-         [[PostadvertControllerV2 sharedPostadvertController]registrationLogin:userName :passwordPA];
-     }
+//     NSUserDefaults *database = [[NSUserDefaults alloc]init];
+//     
+//     NSString *userName = [database objectForKey:@"userNamePA"];
+//     NSString *email = [database objectForKey:@"email"];
+//     NSString *passwordPA = [database objectForKey:@"passwordPA"];
+//    
+//     if ([userName isEqualToString:@""]) {
+//         [[PostadvertControllerV2 sharedPostadvertController]registrationLogin:email :passwordPA];
+//     }else {
+//         [[PostadvertControllerV2 sharedPostadvertController]registrationLogin:userName :passwordPA];
+//     }
     //[UserPAInfo sharedUserPAInfo].registrationID = 97;
     self.window = [[MyUIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.

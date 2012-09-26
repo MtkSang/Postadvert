@@ -45,11 +45,20 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        
     }
     return self;
 }
 
+- (id)initWithAultoLogin:(BOOL)autoLogin
+{
+    _autoLogin = autoLogin;
+    self = [super init];
+    if (!self) {
+        self = [super initWithNibName:nil bundle:nil];
+    }
+    return self;
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -111,6 +120,19 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+   
+//    self.view.userInteractionEnabled = YES;
+//    [activityIndicator stopAnimating];
+//    if (success)
+//    {
+//        [self.navigationController popViewControllerAnimated:YES];
+//        
+//    }
+//    else
+//    {
+//        
+//    }
+
 }
 
 - (void)viewDidLoad
@@ -141,7 +163,35 @@
 
 }
 
-
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Custom initialization
+    NSUserDefaults *database = [[NSUserDefaults alloc]init];
+    if (_autoLogin)
+    {
+        NSString *userName = [database objectForKey:@"userNamePA"];
+        NSString *email = [database objectForKey:@"email"];
+        NSString *passwordPA = [database objectForKey:@"passwordPA"];
+        passwordTxt.text = passwordPA;
+        if (![email isEqualToString:@""]) {
+            //success = [[PostadvertControllerV2 sharedPostadvertController]registrationLogin:email :passwordPA];
+            emailAddressTxt.text = email;
+            self.view.userInteractionEnabled = NO;
+            activityIndicator.hidden = NO;
+            [activityIndicator startAnimating];
+            [self performSelector:@selector(processSignIn) withObject:nil afterDelay:0.000001];
+        }else if(![userName isEqualToString:@""]) {
+            //success = [[PostadvertControllerV2 sharedPostadvertController]registrationLogin:userName :passwordPA];
+            emailAddressTxt.text = userName;
+            self.view.userInteractionEnabled = NO;
+            activityIndicator.hidden = NO;
+            [activityIndicator startAnimating];
+            [self performSelector:@selector(processSignIn) withObject:nil afterDelay:0.000001];
+        }
+    }
+}
 ///////////////////
 -(IBAction) touchForgetPasswordBtn: (id) sender
 {
@@ -206,13 +256,22 @@
         [self.navigationController popViewControllerAnimated:YES];
         [activityIndicator stopAnimating];
     } else {
-        
+        [activityIndicator stopAnimating];
+        if(_autoLogin)
+        {
+            _autoLogin = NO;
+            return;
+        }
         UIView *vw = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 460.0)];
         self.overlay = vw;
         [self showDialog:self.loginErrorVw];
-        [activityIndicator stopAnimating];
+        
     };
-    
+    if(_autoLogin)
+    {
+        _autoLogin = NO;
+        return;
+    }
 
 }
 

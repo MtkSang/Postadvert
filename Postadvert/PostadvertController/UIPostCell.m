@@ -192,7 +192,7 @@
     }
     //add link here
     if (_content.listLinks.count) {
-        //[linkView reDrawWithFrame:videoFrame];
+        [linkView reDrawWithFrame:videoFrame];
         frame = videoFrame;
         frame.origin.y = cellHeight;
         linkView.frame = frame;
@@ -427,7 +427,7 @@
         }
         //add link here
         if (_content.listLinks.count) {
-            //[linkView reDrawWithFrame:videoFrame];
+            [linkView reDrawWithFrame:videoFrame];
             frame = videoFrame;
             frame.origin.y = cellHeight;
             linkView.frame = frame;
