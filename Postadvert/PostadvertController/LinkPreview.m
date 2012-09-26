@@ -13,7 +13,6 @@
 #import "BrowserViewController.h"
 #import "ThumbnailViewController.h"
 #import "NSData+Base64.h"
-#import <MediaPlayer/MediaPlayer.h>
 @implementation LinkPreview
  
 @synthesize webView;

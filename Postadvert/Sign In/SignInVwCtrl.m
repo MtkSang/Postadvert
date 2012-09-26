@@ -175,14 +175,14 @@
         NSString *email = [database objectForKey:@"email"];
         NSString *passwordPA = [database objectForKey:@"passwordPA"];
         passwordTxt.text = passwordPA;
-        if (![email isEqualToString:@""]) {
+        if ((![email isEqualToString:@""]) && email != nil) {
             //success = [[PostadvertControllerV2 sharedPostadvertController]registrationLogin:email :passwordPA];
             emailAddressTxt.text = email;
             self.view.userInteractionEnabled = NO;
             activityIndicator.hidden = NO;
             [activityIndicator startAnimating];
             [self performSelector:@selector(processSignIn) withObject:nil afterDelay:0.000001];
-        }else if(![userName isEqualToString:@""]) {
+        }else if(![userName isEqualToString:@""] && userName !=nil) {
             //success = [[PostadvertControllerV2 sharedPostadvertController]registrationLogin:userName :passwordPA];
             emailAddressTxt.text = userName;
             self.view.userInteractionEnabled = NO;
