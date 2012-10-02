@@ -566,6 +566,7 @@
     }
     [self addCommentsListenner];
     CommentsViewController *commentViewCtr = [[CommentsViewController alloc]init];
+    NSLog(@"Content %@", _content);
     commentViewCtr.content = _content;
     //[self addCommentsListenner];
     [navigationController pushViewController: commentViewCtr animated:YES];

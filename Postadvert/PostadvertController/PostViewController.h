@@ -13,7 +13,8 @@
 @interface PostViewController : UIViewController<UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 {
     UIImagePickerController *imagePicker;
-    NSInteger totalImage;
+    NSInteger nextID;
+    NSMutableArray *listImageNeedToPost;
 }
 
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activity;
@@ -23,7 +24,7 @@
 @property (nonatomic, weak)IBOutlet UIBarButtonItem *btnPost;
 @property (nonatomic, weak)IBOutlet UIButton *photoButton;
 @property (nonatomic, weak)IBOutlet UIView *botView;
-@property (nonatomic, weak)IBOutlet UIView *thumbnailView;
+@property (nonatomic, weak)IBOutlet UIScrollView *thumbnailView;
 @property (nonatomic, strong) UIPopoverController *popoverCtr;
 - (IBAction)makeKeyboardGoAway:(id)sender;
 @end

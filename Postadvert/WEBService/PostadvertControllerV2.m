@@ -221,7 +221,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     NSString *soapFormat = [NSString stringWithFormat: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"
                             @"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
                             @"<soap:Body>"
-                            @"<%@ xmlns=\"http://postadvert.com/ws/server_side/\">"
+                            @"<%@ xmlns=\"http://stroff.com/ws/server_side/\">"
                             @"%@"
                             @"</%@>"
                             @"</soap:Body>"
@@ -233,7 +233,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     
     NSLog(@"The request format is: \n%@",soapFormat); 
     
-    NSURL *locationOfWebService = [NSURL URLWithString:@"http://postadvert.com/ws/server_side/api.php?wsdl"];//http://jmobile.futureworkz.com.sg/fwz_service/fwz_server_wsdl.php?wsdl
+    NSURL *locationOfWebService = [NSURL URLWithString:@"http://stroff.com/ws/server_side/api.php?wsdl"];//http://jmobile.futureworkz.com.sg/fwz_service/fwz_server_wsdl.php?wsdl
     
     NSLog(@"web url = %@",locationOfWebService);
     
@@ -556,19 +556,19 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     
     return infoArray;
 }
-
--(id) getStatusUpdateWithUserID:(NSString*)userId start:(NSString*)start limit:(NSString*)limit index:(NSString*)index row_id:(NSString*)row
+//getStatusUpdate($user_id, $limit, $index, $status_id)
+-(id) getStatusUpdateWithUserID:(NSString*)userId limit:(NSString*)limit index:(NSString*)index status_id:(NSString*)status_id
 {
     if (! userId.integerValue) {
         userId = [NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID];
     }
     
     NSString *functionName = @"getStatusUpdate";
-    NSString *parametterStr = [NSString stringWithFormat:@"<user_id>%@</user_id>"
-                               @"<start>%@</start>"
+    NSString *parametterStr = [NSString stringWithFormat:
+                               @"<user_id>%@</user_id>"
                                @"<limit>%@</limit>"
                                @"<index>%@</index>"
-                               @"<total>%@</total>",userId, start, limit, index,row];
+                               @"<status_id>%@</status_id>",userId, limit, index,status_id];
     //Have been changed roa_id - > total
     id jsonObject = [self jsonObjectFromWebserviceWithFunctionName:functionName andParametter:parametterStr];
     
@@ -616,7 +616,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
                 content.target_id = 0;
             }else
                 content.target_id = [[dict objectForKey:@"target_id"] integerValue];
-            content.target_name = [dict objectForKey:@"target_name"];
+            content.target_name = [NSData stringDecodeFromBase64String:[dict objectForKey:@"target_name"]];
             content.title =  [NSData stringDecodeFromBase64String:[dict objectForKey:@"action"]];
             //photo_info
             NSDictionary *photo_info = [dict objectForKey:@"photo_info"];
@@ -641,7 +641,6 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
             content.totalComment = [[dict objectForKey:@"total_comments"] integerValue];
             
             [listContent addObject:content];
-            [[NSUserDefaults standardUserDefaults] setInteger:[[dict objectForKey:@"total"] integerValue] forKey:@"StatusUpdate.total"];
         }
     }
     return listContent;

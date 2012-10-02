@@ -79,6 +79,7 @@
     CGSize constraint;
     CGSize size;
     cellHeight = 0.0;
+    NSLog(@"Content Comments %@", _content);
     if (!_contentCellView) {
         _contentCellView = [[UIView alloc]init];
     }

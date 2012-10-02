@@ -17,8 +17,11 @@
 #import "AppDelegate.h"
 #import "ListImages.h"
 #import "UIImage+Resize.h"
+#import "NSData+Base64.h"
+#import <QuartzCore/QuartzCore.h>
 
-#define MaxImageCanSave  2
+#define MaxImageCanSave  20
+#define marginImage 15.0
 
 @interface PostViewController ()
 - (void) updatePostBtnState;
@@ -57,14 +60,9 @@
     [self.thumbnailView addGestureRecognizer:tapGesture];
     tapGesture = nil;
     
-    //delete old file
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *pathToDocuments=[paths objectAtIndex:0];
-    for (int i =1; i <= 50; i++) {
-        [[NSFileManager defaultManager]removeItemAtPath:[NSString stringWithFormat:@"%@/newPost%d.jpg", pathToDocuments, i] error:nil];
-    }
-    paths = nil;
-    pathToDocuments = nil;
+    //
+    listImageNeedToPost = [[NSMutableArray alloc]init];
+    nextID = 0;
 }
 
 - (void)viewDidUnload
@@ -79,6 +77,18 @@
     [super viewDidAppear:animated];
     
     [self setModalInPopover:YES];
+}
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    //delete old file
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *pathToDocuments=[paths objectAtIndex:0];
+    for (int i =1; i <= nextID; i++) {
+        [[NSFileManager defaultManager]removeItemAtPath:[NSString stringWithFormat:@"%@/newPost%d.jpg", pathToDocuments, i] error:nil];
+    }
+    paths = nil;
+    pathToDocuments = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -113,7 +123,7 @@
 -(IBAction)postButtinClicked{
     
     [[NSUserDefaults standardUserDefaults] setObject:self.phTextView.text forKey:@"_text_NewPost"];
-    [[NSUserDefaults standardUserDefaults] setInteger:totalImage forKey:@"_totalImage_NewPost"];
+    [[NSUserDefaults standardUserDefaults] setInteger:nextID forKey:@"_nextID_NewPost"];
     self.navigationController.navigationBarHidden = NO;
     [self dismissModalViewControllerAnimated:YES];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"plusSuccessWithPost" object:nil];
@@ -132,7 +142,6 @@
     [self setActivityLocation];
     self.activity.hidden = NO;
     [self.activity startAnimating ];
-    totalImage += 1;
     self.btnPost.enabled = NO;
     self.botView.userInteractionEnabled = NO;
     //UIImage *image = [self normalizedImage:[info objectForKey:@"UIImagePickerControllerOriginalImage"]];
@@ -169,7 +178,7 @@
 - (void) updatePostBtnState
 {
     BOOL canEnable = NO;
-    if (totalImage) {
+    if (listImageNeedToPost.count) {
         canEnable = YES;
     }
     NSString *text = [_phTextView.text stringByReplacingOccurrencesOfString:@"\n" withString:@""];
@@ -208,7 +217,7 @@
 //    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 //    NSString *pathToDocuments=[paths objectAtIndex:0];
 //    NSError *error;
-//    [[NSFileManager defaultManager]removeItemAtPath:[NSString stringWithFormat:@"%@/newPost%d.jpg", pathToDocuments, totalImage + 1] error:&error];
+//    [[NSFileManager defaultManager]removeItemAtPath:[NSString stringWithFormat:@"%@/newPost%d.jpg", pathToDocuments, nextID + 1] error:&error];
 //    if (error) {
 //        NSLog(@"Error %@", error);
 //    }
@@ -336,48 +345,56 @@
     return image;
 }
 
-- (void) showThumbnail:(UIImage*)image
+- (void) showThumbnailWithPath:(NSString*) path
 {
-    CGRect frame = self.thumbnailView.frame;
-    frame.size.width = (totalImage) * (cImageWidth + CELL_MARGIN_BETWEEN_IMAGE) - CELL_MARGIN_BETWEEN_IMAGE;
-    frame.size.height = cImageHeight;
-
+    UIImage *image = [[UIImage imageWithContentsOfFile:path]resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(cImageWidth, cImageHeight) interpolationQuality:0];
+    NSInteger total = listImageNeedToPost.count;
+    image = [image croppedImage:CGRectMake(0, 0, cImageWidth, cImageHeight)];
     UIImageView *imgView = [[UIImageView alloc] initWithImage:image];
-    imgView.contentMode = UIViewContentModeScaleAspectFit;
-    imgView.frame = CGRectMake( ( (cImageWidth + CELL_MARGIN_BETWEEN_IMAGE)* (totalImage - 1)), 0.0, cImageWidth, cImageHeight);
-    imgView.backgroundColor =[UIColor clearColor];
-    [self.thumbnailView addSubview:imgView];
-    self.thumbnailView.backgroundColor = [UIColor clearColor];
+    imgView.contentMode = UIViewContentModeScaleAspectFill;
+    imgView.frame = CGRectMake( 10,10, cImageWidth, cImageHeight);
+    
+    //Bound
+    UIView *boundView = [[UIView alloc]initWithFrame:CGRectMake( ( (cImageWidth + marginImage)* (total - 1)) + CELL_CONTENT_MARGIN_LEFT, 0, cImageWidth + marginImage, cImageHeight + marginImage)];
+    UIButton *delete_btn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 22, 22)];
+    //delete_btn.layer.cornerRadius = 3.0;
+    [delete_btn setImage:[UIImage imageNamed:@"remove.png"] forState:UIControlStateNormal];
+    [delete_btn setTitle:path forState:UIControlStateNormal];
+    [delete_btn addTarget:self action:@selector(deleteImage:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [boundView addSubview:imgView];
+    [boundView addSubview:delete_btn];
+    boundView.tag = total;
+    
+    [self.thumbnailView addSubview:boundView];
+    [self setThumbnailContentSize];
     imgView = nil;
-    frame.origin.x = (self.view.frame.size.width / 2) - frame.size.width/2 ;
-    if (frame.origin.x < 0) {
-        frame.origin.x = 0;
-    }
-    self.thumbnailView.frame = frame;
     
 }
 - (void) SaveAndShowImage:(NSDictionary *)info
 {
-    UIImage *image = [self normalizedImage: [info objectForKey:@"UIImagePickerControllerOriginalImage"]];
-    //image = [UIImage imageWithCGImage:image.CGImage scale:image.scale orientation:UIImageOrientationUp];
+    NSLog(@"Start My Function");
+    //UIImage *image = [self normalizedImage: [info objectForKey:@"UIImagePickerControllerOriginalImage"]];
+    UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    NSLog(@"Getting paths");
+    //save
+    nextID += 1;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *pathToDocuments=[paths objectAtIndex:0];
-    [self showThumbnail:[image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(cImageWidth, cImageHeight) interpolationQuality:0]];
-    
+    NSString *filePath = [NSString stringWithFormat:@"%@/newPost%d.jpg", pathToDocuments, nextID];
+    NSLog(@"Before using UIImageJPEGRepresentation ");
     NSData *imageData = UIImageJPEGRepresentation(image, 01.0f);
-     NSLog(@"Path %@ %d", pathToDocuments, totalImage);
-    [imageData writeToFile:[NSString stringWithFormat:@"%@/newPost%d.jpg", pathToDocuments, totalImage] atomically:YES];
-//    NSFileManager *fileManager = [[NSFileManager alloc]init];
-//    NSMutableData *data = [NSMutableData dataWithData:UIImageJPEGRepresentation(image, 1)];
-//    if (![fileManager createFileAtPath:path contents:data attributes:nil]) {
-//        Log(@"error: create file at path");
-//    }
-    NSLog(@"Path %@ %d", pathToDocuments, totalImage);
-    pathToDocuments= nil;
+    NSLog(@"After using UIImageJPEGRepresentation ");
+    NSLog(@"Path %@ ", filePath);
+    [imageData writeToFile: filePath atomically:YES];
+    NSLog(@"After Write File");
     paths = nil;
     imageData = nil;
     image = nil;
-    
+    pathToDocuments= nil;
+    NSLog(@"Before show Image");
+    [listImageNeedToPost addObject:filePath];
+    [self showThumbnailWithPath:filePath];
     
     self.btnPost.enabled = YES;
     self.botView.userInteractionEnabled = YES;
@@ -390,5 +407,52 @@
     CGRect frame = self.activity.frame;
     frame.origin.x = self.botView.center.x - frame.size.width/2.0;
     self.activity.frame = frame;
+}
+
+- (void) deleteImage:(id) sender
+{
+    UIButton *delete_btn = (UIButton*)sender;
+    NSString *path = delete_btn.titleLabel.text;
+    NSInteger index = -1;
+    //Find out the which is tapped
+    for (NSString *str in listImageNeedToPost) {
+        if ([str isEqualToString:path]) {
+            index = [listImageNeedToPost indexOfObject:str];
+            [listImageNeedToPost removeObject:str];
+            break;
+        }
+    }
+    if (index >= 0) {
+        UIView *view = [self.thumbnailView viewWithTag:index + 1];
+        [view removeFromSuperview];
+        view = nil;
+    }
+    
+    //Re-locate view
+    
+    index = 0;
+    for (UIView *view in self.thumbnailView.subviews) {
+        if (view.tag > 0) {
+            CGRect frame = view.frame;
+            frame.origin.x = (cImageWidth + marginImage)* index + CELL_CONTENT_MARGIN_LEFT ;
+            //
+            [UIView setAnimationDuration:0.0];
+            [UIView setAnimationDelegate:self];
+            [UIView setAnimationDidStopSelector:@selector( animationDidStop:finished:context: )];
+            [UIView beginAnimations:@"PostAdvert11" context:(__bridge void *)view];
+            view.frame = frame;
+            [UIView commitAnimations];
+            index ++;
+            view.tag = index;
+        }
+    }
+    [self updatePostBtnState];
+    [self setThumbnailContentSize];
+}
+- (void) setThumbnailContentSize
+{
+    int total = listImageNeedToPost.count;
+    CGSize size = CGSizeMake((total)* (cImageWidth + marginImage) + CELL_CONTENT_MARGIN_LEFT + CELL_CONTENT_MARGIN_RIGHT ,75);
+    self.thumbnailView.contentSize = size;
 }
 @end

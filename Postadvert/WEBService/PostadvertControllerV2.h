@@ -27,5 +27,5 @@
 -(id) getFriendsOfUserID:(NSString*)userID from:(NSString*)start count:(NSString*)count;
 -(NSInteger) countFriendOfUser:(NSString*)userID;
 - (id) getContinuePostsWithWall:(NSString*) wallId PostId:(NSString*)postId WithUserID:(NSString*)userID Type:(NSString*) type andCount:(NSString*) count;
--(id) getStatusUpdateWithUserID:(NSString*)userId start:(NSString*)start limit:(NSString*)limit index:(NSString*)index row_id:(NSString*)row;
+-(id) getStatusUpdateWithUserID:(NSString*)userId limit:(NSString*)limit index:(NSString*)index status_id:(NSString*)status_id;
 @end

@@ -276,24 +276,18 @@
     if (myTableView.superview) {
         [myTableView reloadData];
     }
+    if (popoverController) {
+        popoverController.view.hidden = YES;
+    }
 }
 //
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     
     NSLog(@"%@ Frame: %f %f %f %f", self , self.overlay.frame.size.width, self.overlay.frame.size.height, customViewCtr.view.frame.size.width, customViewCtr.view.frame.size.height);
     if (popoverController) {
-        CGRect frame = viewUseToGetRectPopover.frame;
-        CGRect bounds = viewUseToGetRectPopover.bounds;
+                popoverController.view.hidden = NO;
         CGRect rect = [viewUseToGetRectPopover convertRect:viewUseToGetRectPopover.frame toView:nil];
-        CGRect supperBounds = [viewUseToGetRectPopover.superview bounds];
-         CGRect rect1 = [viewUseToGetRectPopover convertRect:viewUseToGetRectPopover.frame toView:self.navigationController.navigationBar];
-        CGPoint center ;
-        
-        center.x = frame.origin.x + bounds.size.width / 2.0 + supperBounds.size.width / 2.0;
-        center.y = frame.origin.y + bounds.size.height / 2.0 + supperBounds.size.height / 2.0;
-        rect1.size.width = 1;
-        rect.size = (CGSize){1,1};
-        rect.origin = center;
+        rect = [viewUseToGetRectPopover convertRect:viewUseToGetRectPopover.frame toView:self.navigationController.view];
         [popoverController repositionPopoverFromRect:rect inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionUp];
         
         
@@ -363,6 +357,8 @@
         viewUseToGetRectPopover = nil;
         //[self removeDetailMessageListenner];
 	} else {
+        
+        
         //Add listenner to get data when user choice from Global Message
         //[self addDetailMessageListenner];
         viewUseToGetRectPopover = (UIView*)sender;
@@ -370,19 +366,19 @@
         contentViewController.delegate = self;
 		//CGRect rect = CGRectMake((self.view.frame.size.width / 2.0) , -014.0,((UIView*)sender).frame.size.width + 11,1);
         CGRect rect = CGRectMake((self.view.frame.size.width / 2.0) , -01.0,01,40);
+        rect = [((UIView*)sender) convertRect:((UIView*)sender).frame fromView:nil];
         contentViewController.view.layer.cornerRadius = 3.0;
         //contentViewController.contentSizeForViewInPopover = CGSizeMake(280, 460);
         contentViewController.tableView.layer.cornerRadius = 3.0;
         //contentViewController.contentSizeForViewInPopover = CGSizeMake(260, 390);
 		popoverController = [[WEPopoverController alloc] initWithContentViewController:(UIViewController*)contentViewController];
-		
 		if ([popoverController respondsToSelector:@selector(setContainerViewProperties:)]) {
 			[popoverController setContainerViewProperties:[self defaultContainerViewProperties]];
 		}
 		
 		popoverController.delegate = self;
 		popoverController.passthroughViews = [NSArray arrayWithObject:self.view];
-		[popoverController presentPopoverFromRect:rect  
+		[popoverController presentPopoverFromRect:rect
 												inView:self.navigationController.view
 							  permittedArrowDirections:(UIPopoverArrowDirectionUp)
 											  animated:YES];
@@ -403,7 +399,7 @@
         viewUseToGetRectPopover = (UIView*)sender;
         GlobalAlertViewController *contentViewController = [[GlobalAlertViewController alloc] init];
         contentViewController.delegate = self;
-        CGRect rect = CGRectMake((self.view.frame.size.width / 2.0) - (2*((UIView*)sender).frame.size.width), -01.0,((UIView*)sender).frame.size.width,40);
+        CGRect rect = [((UIView*)sender) convertRect:((UIView*)sender).frame toView:self.navigationController.view];
         contentViewController.view.layer.cornerRadius = 3.0;
         contentViewController.tableView.layer.cornerRadius = 3.0;
 		popoverController = [[WEPopoverController alloc] initWithContentViewController:(UIViewController*)contentViewController];
@@ -411,9 +407,8 @@
 		if ([popoverController respondsToSelector:@selector(setContainerViewProperties:)]) {
 			[popoverController setContainerViewProperties:[self defaultContainerViewProperties]];
 		}
-		
 		popoverController.delegate = self;
-		popoverController.passthroughViews = [NSArray arrayWithObject:self.view];
+		popoverController.passthroughViews = [NSArray arrayWithObject:self.navigationController.view];
 		[popoverController presentPopoverFromRect:rect  
                                            inView:self.navigationController.view
                          permittedArrowDirections:(UIPopoverArrowDirectionUp)
@@ -697,6 +692,31 @@
     
     return menu;
 }
+
+//- (void) viewTopGobal
+//{
+//    UIBarButtonItem *sepBarItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+//    //Left Button Bar Item to sidebar
+//    UIButton *abutton = [[UIButton alloc]initWithFrame:CGRectMake(0.0, 0.0, 30, 30)];
+//    [abutton setImage:[UIImage imageNamed:@"notification_1.png"] forState:UIControlStateNormal];
+//    [abutton addTarget:self action:@selector(onTouchGlobalAlert:) forControlEvents:UIControlEventTouchUpInside];
+//    UIBarButtonItem *testBarItem = [[UIBarButtonItem alloc]initWithCustomView:abutton];
+//    
+//    UIButton *bbutton = [[UIButton alloc]initWithFrame:CGRectMake(0.0, 0.0, 30, 30)];
+//    [bbutton setImage:[UIImage imageNamed:@"notification_2.png"] forState:UIControlStateNormal];
+//    [bbutton addTarget:self action:@selector(onTouchGlobalNotifications:) forControlEvents:UIControlEventTouchUpInside];
+//    UIBarButtonItem *btestBarItem = [[UIBarButtonItem alloc]initWithCustomView:bbutton];
+//    
+//    UIButton *cbutton = [[UIButton alloc]initWithFrame:CGRectMake(0.0, 0.0, 30, 30)];
+//    [cbutton setImage:[UIImage imageNamed:@"notification_3.png"] forState:UIControlStateNormal];
+//    [cbutton addTarget:self action:@selector(onTouchGolbalMessage:) forControlEvents:UIControlEventTouchUpInside];
+//    UIBarButtonItem *ctestBarItem = [[UIBarButtonItem alloc]initWithCustomView:cbutton];
+//
+//
+//    
+//    self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:sepBarItem, ctestBarItem, btestBarItem, testBarItem, sepBarItem, nil];
+//    
+//}
 - (void) loadCells
 {
 //    NSString* wallId = @"1";

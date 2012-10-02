@@ -29,7 +29,7 @@
 #define CELL_MARGIN_BETWEEN_CONTROLL        3.0f
 #define cYoutubeWidth                       65.0
 #define cYoutubeHeight                      65.0
-#define cImageWidth                         95.0
+#define cImageWidth                         65.0
 #define cImageHeight                        65.0
 #define cMinImageMove                       40.0
 

@@ -68,6 +68,7 @@
         created_time    = (OHAttributedLabel*)[self viewWithTag:3];
         textContent       = (OHAttributedLabel*)[self viewWithTag:4];
         textContent.linkColor = [UIColor blueColor];
+        textContent.underlineLinks = NO;
         //textContent.delegate = self;
         textContent.extendBottomToFit = YES;
         linkView   = (LinkPreview*)[self viewWithTag:5];
@@ -146,14 +147,11 @@
             
         //Fixsize
         
-        NSMutableAttributedString *mStr = [UIActivityCell makeActionStringWithContent:content];
-        if (![[mStr string] isEqualToString:@""]) {
-            textContent.attributedText = mStr;
-            textContent.text = [mStr string];
-            NSLog(@"%@ %@",    textContent.text, textContent);
+        textContent.text = [UIActivityCell makeTextStringWithContent:content];
+        if (![textContent.text isEqualToString:@""]) {
             [textContent setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
             constraint = CGSizeMake(cellFrame.size.width - 20 - leftMarginContent - CELL_CONTENT_MARGIN_RIGHT, 20000.0f);
-            size = [[mStr string] sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+            size = [textContent.text sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
             frame = CGRectMake(leftMarginContent, cellHeight, size.width, size.height);
             textContent.frame = frame;
             //Set Link here
@@ -163,7 +161,7 @@
             textContent.hidden = YES;
         }
         //Add Image
-        if ([_content.app_type isEqualToString:@"photos"] && [_content.commnent_type isEqualToString:@"photos"]) {
+        if ([_content.app_type isEqualToString:@"photos"] && ([_content.commnent_type isEqualToString:@"photos"] || [_content.commnent_type isEqualToString:@"photos.album"])) {
             NSLog(@"Images %@", _content.listImages);
             frame = videoFrame;
             frame.origin.x = 0;
@@ -307,6 +305,9 @@
     //[self performSelector:@selector(setNeedsDisplay)];
     //[self setNeedsLayout];
     //[self setNeedsDisplay];
+    //Update color
+    [self updateColor];
+    
 }
 
 + (Float32) getCellHeightWithContent:(ActivityContent*)content
@@ -355,10 +356,10 @@
 //    
 //    cellHeight = cellHeight > tempHeight ? cellHeight : tempHeight;
     //text
-    NSMutableAttributedString *mStr = [UIActivityCell makeActionStringWithContent:content];
-    if (![[mStr string] isEqualToString:@""] ) {
+    NSString *str = [UIActivityCell makeTextStringWithContent:content];
+    if (![str isEqualToString:@""] ) {
         constraint = CGSizeMake(cellFrame.size.width - 20 - leftMarginContent - CELL_CONTENT_MARGIN_RIGHT, 20000.0f);
-        size = [[mStr string] sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+        size = [str sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
         frame = CGRectMake(leftMarginContent, cellHeight, size.width, size.height);
         cellHeight += size.height + CELL_MARGIN_BETWEEN_CONTROLL;
     }
@@ -423,12 +424,10 @@
     
     //User name; do not resize now
     //text
-    NSLog(@"User Name %@", userName.text);
     if (![textContent.text isEqualToString:@""]) {
         if (self.isShowFullText) {
-            textContent.attributedText = [UIActivityCell makeActionStringWithContent:_content];
+            textContent.text = [UIActivityCell makeTextStringWithContent:_content];
         }
-        NSLog(@"Text : %@", textContent.text);
         constraint = CGSizeMake(cellFrame.size.width - 20 - leftMarginContent - CELL_CONTENT_MARGIN_RIGHT, 20000.0f);
         size = [textContent.text sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
         frame = CGRectMake(leftMarginContent, cellHeight, size.width, size.height);
@@ -539,21 +538,59 @@
     return [_userName stringByAppendingString:actionDescription];
 }
 
-+ (NSMutableAttributedString*) makeActionStringWithContent:(ActivityContent*)content
+-(void) updateColor
+{
+    //add new status
+    NSURL *url = [[NSURL alloc]initWithString:@"activity:url"];
+    if ([_content.app_type isEqualToString:@"profile"] && [_content.commnent_type isEqualToString:@"profile.status"]) {
+        //nothing to set color
+        return;
+    }
+    //add photo
+    if ([_content.app_type isEqualToString:@"photos"] && [_content.commnent_type isEqualToString:@"photos"]) {
+        [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+    }
+    
+    //add photo into album
+    if ([_content.app_type isEqualToString:@"photos"] && [_content.commnent_type isEqualToString:@"photos.album"]) {
+        [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+        [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.target_name options:NSBackwardsSearch]];
+    }
+    // Add Event
+    if ([_content.app_type isEqualToString:@"events"] && [_content.commnent_type isEqualToString:@"groups.event"])  {
+        [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+        [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.target_name options:NSBackwardsSearch]];
+    }
+    
+    if ([_content.app_type isEqualToString:@"videos"] && [_content.commnent_type isEqualToString:@"videos"])  {
+        if ([_content.commentContent isEqualToString:@""]) {
+            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+        }
+    }
+
+}
+
+
+
++ (NSString*) makeTextStringWithContent:(ActivityContent*)content
 {
     NSString *actionStr =@"";
-    NSMutableAttributedString* attrStr = [[NSMutableAttributedString alloc]init];
-    if ([content.app_type isEqualToString:@"photos"] && [content.commnent_type isEqualToString:@"photos"]) {
+    //add new status
+    if ([content.app_type isEqualToString:@"profile"] && [content.commnent_type isEqualToString:@"profile.status"]) {
+        
+        actionStr = [NSString stringWithFormat:@"%@", content.commentContent];
+        return actionStr;
+    }
+    //add photo
+    if ([content.app_type isEqualToString:@"photos"] && [content.commnent_type isEqualToString:@"photos"] ) {
         actionStr = [NSString stringWithFormat:@"%@ add new photo", content.actor_name];
-        
-        attrStr = [NSMutableAttributedString attributedStringWithString:actionStr];
-        [attrStr setFont:[UIFont fontWithName:@"Helvetica" size:14]];
-        [attrStr setTextColor:[UIColor grayColor]];
-        [attrStr setTextAlignment:kCTJustifiedTextAlignment lineBreakMode:kCTLineBreakByWordWrapping];
-        [attrStr setTextColor:[UIColor colorWithRed:79.0/255 green:178.0/255 blue:187.0/255 alpha:1] range:[actionStr rangeOfString:content.actor_name]];
-        [attrStr setTextBold:YES range:[actionStr rangeOfString:content.actor_name]];
-        
-        return attrStr;
+        return actionStr;
+    }
+    
+    //add photo into album
+    if ([content.app_type isEqualToString:@"photos"] &&  [content.commnent_type isEqualToString:@"photos.album"]) {
+        actionStr = [NSString stringWithFormat:@"%@ added a new photo into %@ album", content.actor_name, content.target_name];
+        return actionStr;
     }
     
     // Add Event
@@ -565,22 +602,23 @@
                 content.target_name = @" ";
         }else
             content.target_name = @" ";
-        actionStr = [NSString stringWithFormat:@"%@ add new event: %@", content.actor_name, content.target_name];
+        actionStr = [NSString stringWithFormat:@"%@ added a new event: %@", content.actor_name, content.target_name];
         
-        attrStr = [NSMutableAttributedString attributedStringWithString:actionStr];
-        [attrStr setFont:[UIFont fontWithName:@"Helvetica" size:14]];
-        [attrStr setTextColor:[UIColor grayColor]];
-        [attrStr setTextAlignment:kCTJustifiedTextAlignment lineBreakMode:kCTLineBreakByWordWrapping];
-        [attrStr setTextColor:[UIColor colorWithRed:79.0/255 green:178.0/255 blue:187.0/255 alpha:1] range:[actionStr rangeOfString:content.actor_name]];
-        [attrStr setTextBold:YES range:[actionStr rangeOfString:content.actor_name]];
-        [attrStr setTextColor:[UIColor colorWithRed:79.0/255 green:178.0/255 blue:187.0/255 alpha:1] range:[actionStr rangeOfString:content.target_name]];
-        [attrStr setTextBold:YES range:[actionStr rangeOfString:content.target_name]];
-        
-        return attrStr;
-
+        return actionStr;
     }
-    return attrStr;
+    // Add Video
+    if ([content.app_type isEqualToString:@"videos"] && [content.commnent_type isEqualToString:@"videos"])  {
+        if ([content.commentContent isEqualToString:@""]) {
+            actionStr = [NSString stringWithFormat:@"%@ added a video", content.actor_name];
+        }else
+            actionStr = content.commentContent;
+        
+        return actionStr;
+    }
+
+    return actionStr;
 }
+
 #pragma mark - UIActionSheet Delegate
 
 - (void)actionSheet:(UIActionSheet *)uias clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -599,6 +637,8 @@
     }
     [self refreshClapCommentsView];
 }
+
+
 
 
 #pragma mark - Notification

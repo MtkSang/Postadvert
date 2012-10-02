@@ -36,7 +36,6 @@
 				<string key="NSFrameSize">{320, 460}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
 					<bytes key="NSRGB">MC40IDAuOCAwLjgAA</bytes>
@@ -49,7 +48,6 @@
 				<string key="NSFrameSize">{320, 416}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
@@ -132,6 +130,9 @@
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="buttonClinked:">id</string>
 						<string key="buttonPostClicked:">id</string>
+						<string key="onTouchCountry:">id</string>
+						<string key="onTouchCreateAccountBtn:">id</string>
+						<string key="onTouchSignInBtn:">id</string>
 						<string key="showHideSidebar:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
@@ -141,6 +142,18 @@
 						</object>
 						<object class="IBActionInfo" key="buttonPostClicked:">
 							<string key="name">buttonPostClicked:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="onTouchCountry:">
+							<string key="name">onTouchCountry:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="onTouchCreateAccountBtn:">
+							<string key="name">onTouchCreateAccountBtn:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="onTouchSignInBtn:">
+							<string key="name">onTouchSignInBtn:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="showHideSidebar:">

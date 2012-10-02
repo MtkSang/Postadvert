@@ -11,6 +11,7 @@
 #import "UIActivityCell.h"
 #import "UserPAInfo.h"
 #import "Constants.h"
+#import "ActivityContent.h"
 @interface ActivityViewController ()
 - (void) loadCellsInBackground;
 - (void) initActivityCell;
@@ -250,7 +251,7 @@
 - (void) loadCellsInBackground
 {
     isLoadData = YES;
-    id data = [[PostadvertControllerV2 sharedPostadvertController] getStatusUpdateWithUserID:[NSString stringWithFormat:@"%ld",lastUserId] start:@"0" limit:@"5" index:@"1" row_id:@"0"];
+    id data = [[PostadvertControllerV2 sharedPostadvertController] getStatusUpdateWithUserID:[NSString stringWithFormat:@"%ld",lastUserId] limit:@"5" index:@"1" status_id:@"0"];
     if (data) {
         listContent = data;
         listActivityCell = nil;
@@ -327,8 +328,9 @@
     
     int beforeLoad = listActivityCell.count;
     isLoadData = YES;
-    NSString *total = [NSString stringWithFormat:@"%d", [[NSUserDefaults standardUserDefaults] integerForKey:@"StatusUpdate.total"]];
-    NSMutableArray *bottomCells = [[PostadvertControllerV2 sharedPostadvertController] getStatusUpdateWithUserID:[NSString stringWithFormat:@"%ld",lastUserId] start:[NSString stringWithFormat:@"%d", listActivityCell.count] limit:@"5" index:@"1" row_id:total];
+    ActivityContent *firstContent = [listContent lastObject];
+    NSString *status_id = [NSString stringWithFormat:@"%d", firstContent.activity_id];
+    NSMutableArray *bottomCells = [[PostadvertControllerV2 sharedPostadvertController] getStatusUpdateWithUserID:[NSString stringWithFormat:@"%ld",lastUserId] limit:@"5" index:@"1" status_id:status_id];
     for (ActivityContent *cellContent in bottomCells) {
         [listContent addObject:cellContent];
         [listActivityCell addObject:[NSNull null]];
@@ -344,8 +346,10 @@
 - (void) addTopCells
 {
     int beforeLoad = listActivityCell.count;
-     NSString *total = [NSString stringWithFormat:@"%d", [[NSUserDefaults standardUserDefaults] integerForKey:@"StatusUpdate.total"]];
-    NSMutableArray *incommingData = [[PostadvertControllerV2 sharedPostadvertController] getStatusUpdateWithUserID:[NSString stringWithFormat:@"%ld",lastUserId] start:@"0" limit:@"5" index:@"0" row_id:total];
+    ActivityContent *firstContent = [listContent objectAtIndex:0];
+     NSString *status_id = [NSString stringWithFormat:@"%d", firstContent.activity_id];
+    //-(id) getStatusUpdateWithUserID:(NSString*)userId limit:(NSString*)limit index:(NSString*)index status_id:(NSString*)status_id
+    NSMutableArray *incommingData = [[PostadvertControllerV2 sharedPostadvertController] getStatusUpdateWithUserID:[NSString stringWithFormat:@"%ld",lastUserId] limit:@"5" index:@"0" status_id:status_id];
     while (incommingData.count) {
         ActivityContent *cellContent = [incommingData lastObject];
         [listContent insertObject:cellContent atIndex:0];
