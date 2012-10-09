@@ -126,7 +126,7 @@
             }
         }
     }
-    
+    [(ActivityViewController*)customViewCtr setNavigationController: self.navigationController];
     //[self.overlay addSubview: customViewCtr.view];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"showDetailFromSubView_SideBar" object:nil];
@@ -997,7 +997,7 @@
     [self addChildViewController:postViewController];
     [(UITablePostViewController*)postViewController setNavigationController:self.navigationController];
     [[(UITablePostViewController*)postViewController tableView] setScrollEnabled:NO];
-    
+    postViewController.optionView = 0;
     CGRect frame = self.overlay.frame;
     frame.origin.y = cCellHeight;
     frame.size.height = frame.size.height - cCellHeight;
@@ -1073,7 +1073,7 @@
                     }
                 }
             }
-            
+            [(ActivityViewController*)customViewCtr setNavigationController:self.navigationController];
             CGRect frame = self.overlay.frame;
             frame.origin.y = cCellHeight;
             frame.size.height = frame.size.height - cCellHeight;
@@ -1263,7 +1263,7 @@
         return tableView.frame.size.height;
     }
 
-    Float32 height = [UIPostCell getCellHeightWithContent:[listContent objectAtIndex:indexPath.section]];
+    Float32 height = [UIPostCell getCellHeightWithContent:[listContent objectAtIndex:indexPath.section] andOption:1];
     return height;
 }
 //- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1307,7 +1307,7 @@
     }
     dispatch_async(dispatch_get_main_queue(), ^{
         cell.navigationController = self.navigationController;
-        [cell updateCellWithContent:[listContent objectAtIndex:indexPath.section]];
+        [cell updateCellWithContent:[listContent objectAtIndex:indexPath.section] andOption:0];
     });
     
 //    NSLog(@"%@", cell.description);

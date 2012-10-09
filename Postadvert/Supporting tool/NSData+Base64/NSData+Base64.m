@@ -289,6 +289,9 @@ char *NewBase64Encode(
 //Mtk Custom decode
 + (NSString*) stringDecodeFromBase64String:(NSString *)aString
 {
+    if (![aString isKindOfClass:[NSString class]]) {
+        return @"";
+    }
     NSData *data = [aString dataUsingEncoding:NSASCIIStringEncoding];
 	size_t outputLength;
 	void *outputBuffer = NewBase64Decode([data bytes], [data length], &outputLength);

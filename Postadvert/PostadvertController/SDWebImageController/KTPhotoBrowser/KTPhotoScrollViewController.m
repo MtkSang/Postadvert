@@ -391,7 +391,6 @@ const CGFloat ktkDefaultToolbarHeight = 44;
             [dataSource_ imageAtIndex:index photoView:photoView];
          }
       }
-       CGPoint centerPoint = CGPointMake(frame.size.width/2.0, frame.size.height/2.0);
        [photoView centerActivityWithPoint:CGPointMake(frame.size.width/2.0, frame.size.height/2.0)];
       [scrollView_ addSubview:photoView];
       [photoViews_ replaceObjectAtIndex:index withObject:photoView];

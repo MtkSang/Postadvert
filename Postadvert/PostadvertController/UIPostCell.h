@@ -27,6 +27,7 @@
     ImageViewController *imageViewCtr;
     IBOutlet UIImageView *imgAvatar;
     IBOutlet UILabel *userName;
+    IBOutlet UILabel *timeCreated;
     IBOutlet UILabel *numClap;
     IBOutlet UIButton *clapBtn;
     IBOutlet UIButton *commentBtn;
@@ -36,6 +37,7 @@
     //internal var
     BOOL isDidDraw;
     BOOL isLoadContent;
+    int  optionView;
 }
 @property (nonatomic, strong) IBOutlet OHAttributedLabel *titlePost;
 @property (nonatomic, strong) IBOutlet OHAttributedLabel *textContent;
@@ -45,6 +47,7 @@
 @property (nonatomic, strong) IBOutlet UIView *clapComment;
 @property (nonatomic, strong) IBOutlet UIImageView *imgAvatar;
 @property (nonatomic, strong) IBOutlet UILabel *userName;
+@property (nonatomic, strong) IBOutlet UILabel *timeCreated;
 @property (nonatomic, strong) IBOutlet UIButton *clapBtn;
 @property (nonatomic, strong) IBOutlet UILabel *numClap;
 @property (nonatomic, strong) IBOutlet UIButton *commentBtn;
@@ -58,7 +61,7 @@
 @property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic)         BOOL isDidDraw;
 @property (nonatomic, strong) NSIndexPath *indexPath;
-- (void) updateCellWithContent:(PostCellContent *)content;
+- (void) updateCellWithContent:(PostCellContent *)content andOption:(int)opt;
 //- (UIView*) drawContent;
 - (CGRect) nextFrameWithSize:(CGSize) size fromFrame:(CGRect) frame withMaxY:(Float32) y;
 //- (UIView*) createClapCommentFromPoint:(CGPoint) point;
@@ -68,5 +71,5 @@
 - (void) commentButtonClick:(id) sender;
 - (void) loadNibFile;
 - (void) updateView;
-+ (Float32) getCellHeightWithContent:(PostCellContent*)content;
++ (Float32) getCellHeightWithContent:(PostCellContent*)content andOption:(int)opt;
 @end

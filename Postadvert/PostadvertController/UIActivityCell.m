@@ -14,6 +14,7 @@
 #import "NSAttributedString+Attributes.h"
 #import "SDWebImageController/SDWebImageRootViewController.h"
 #import "LinkPreview.h"
+#import "UserPAInfo.h"
 
 @interface UIActivityCell()
 
@@ -161,7 +162,7 @@
             textContent.hidden = YES;
         }
         //Add Image
-        if ([_content.app_type isEqualToString:@"photos"] && ([_content.commnent_type isEqualToString:@"photos"] || [_content.commnent_type isEqualToString:@"photos.album"])) {
+        if (_content.listImages.count) {
             NSLog(@"Images %@", _content.listImages);
             frame = videoFrame;
             frame.origin.x = 0;
@@ -542,28 +543,69 @@
 {
     //add new status
     NSURL *url = [[NSURL alloc]initWithString:@"activity:url"];
-    if ([_content.app_type isEqualToString:@"profile"] && [_content.commnent_type isEqualToString:@"profile.status"]) {
-        //nothing to set color
-        return;
+    if ([_content.activity_type isEqualToString:@"activity"]) {
+        
+        if ([_content.app_type isEqualToString:@"profile"] && [_content.commnent_type isEqualToString:@"profile.status"]) {
+            //nothing to set color
+            return;
+        }
+        //add friend
+        if ([_content.app_type isEqualToString:@"friends"] && [_content.commnent_type isEqualToString:@""]) {
+            NSString *actor2_name =@"";
+            if (_content.actor_2.count) {
+                NSDictionary *actor_2 = [_content.actor_2 objectAtIndex:0];
+                actor2_name = [actor_2 objectForKey:@"name"];
+            }
+            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:actor2_name]];
+        }
+
+        //add photo
+        if ([_content.app_type isEqualToString:@"photos"] && [_content.commnent_type isEqualToString:@"photos"]) {
+            if ([_content.commentContent isEqualToString:@""]) {
+                [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+            }
+        }
+        
+        //add photo into album
+        if ([_content.app_type isEqualToString:@"photos"] && [_content.commnent_type isEqualToString:@"photos.album"]) {
+            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.target_name options:NSBackwardsSearch]];
+        }
+        // Add Event
+        if ([_content.app_type isEqualToString:@"events"] && [_content.commnent_type isEqualToString:@"groups.event"])  {
+            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.target_name options:NSBackwardsSearch]];
+        }
+        // add video
+        if ([_content.app_type isEqualToString:@"videos"] && [_content.commnent_type isEqualToString:@"videos"])  {
+            if ([_content.commentContent isEqualToString:@""]) {
+                [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+            }
+        }
     }
-    //add photo
-    if ([_content.app_type isEqualToString:@"photos"] && [_content.commnent_type isEqualToString:@"photos"]) {
-        [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
-    }
-    
-    //add photo into album
-    if ([_content.app_type isEqualToString:@"photos"] && [_content.commnent_type isEqualToString:@"photos.album"]) {
-        [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
-        [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.target_name options:NSBackwardsSearch]];
-    }
-    // Add Event
-    if ([_content.app_type isEqualToString:@"events"] && [_content.commnent_type isEqualToString:@"groups.event"])  {
-        [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
-        [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.target_name options:NSBackwardsSearch]];
-    }
-    
-    if ([_content.app_type isEqualToString:@"videos"] && [_content.commnent_type isEqualToString:@"videos"])  {
-        if ([_content.commentContent isEqualToString:@""]) {
+    //Wall
+    if ([_content.activity_type isEqualToString:@"wall"]) {
+        //comment on status
+        if ([_content.commnent_type isEqualToString:@"profile.status"] || YES) {
+            if ([_content.target_author_name isKindOfClass:[NSString class]]) {
+                if (_content.target_author_name != @"") {
+                    if (_content.actor_id == _content.target_author_id) {
+                        if ([_content.actor_gender isKindOfClass:[NSString class]]) {
+                        }
+                        else
+                        {
+                            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.target_author_name options:NSBackwardsSearch]];
+                        }
+                    }
+                    else
+                        //khac user, kiem tra voi regited user - current user
+                        if (_content.target_author_id != [[UserPAInfo sharedUserPAInfo] registrationID]) {
+                            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.target_author_name options:NSBackwardsSearch]];
+                        }
+                        
+                }
+            }
             [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
         }
     }
@@ -575,47 +617,104 @@
 + (NSString*) makeTextStringWithContent:(ActivityContent*)content
 {
     NSString *actionStr =@"";
-    //add new status
-    if ([content.app_type isEqualToString:@"profile"] && [content.commnent_type isEqualToString:@"profile.status"]) {
+    if ([content.activity_type isEqualToString:@"activity"]) {
+        //add new status
+        if ([content.app_type isEqualToString:@"profile"] && [content.commnent_type isEqualToString:@"profile.status"]) {
+            
+            actionStr = [NSString stringWithFormat:@"%@", content.commentContent];
+            return actionStr;
+        }
+        //add friend
+        if ([content.app_type isEqualToString:@"friends"] && [content.commnent_type isEqualToString:@""]) {
+            NSString *actor2_name =@"";
+            if (content.actor_2.count) {
+                NSDictionary *actor_2 = [content.actor_2 objectAtIndex:0];
+                actor2_name = [actor_2 objectForKey:@"name"];
+            }
+            actionStr = [NSString stringWithFormat:@"%@ and %@ are now friends", content.actor_name, actor2_name ];
+            return actionStr;
+        }
+        //add photo
+        if ([content.app_type isEqualToString:@"photos"] && [content.commnent_type isEqualToString:@"photos"] ) {
+            if ([content.commentContent isEqualToString:@""]) {
+                actionStr = [NSString stringWithFormat:@"%@ added a new photo", content.actor_name];
+            }else
+                actionStr = content.commentContent;
+            return actionStr;
+        }
         
-        actionStr = [NSString stringWithFormat:@"%@", content.commentContent];
-        return actionStr;
-    }
-    //add photo
-    if ([content.app_type isEqualToString:@"photos"] && [content.commnent_type isEqualToString:@"photos"] ) {
-        actionStr = [NSString stringWithFormat:@"%@ add new photo", content.actor_name];
-        return actionStr;
-    }
-    
-    //add photo into album
-    if ([content.app_type isEqualToString:@"photos"] &&  [content.commnent_type isEqualToString:@"photos.album"]) {
-        actionStr = [NSString stringWithFormat:@"%@ added a new photo into %@ album", content.actor_name, content.target_name];
-        return actionStr;
-    }
-    
-    // Add Event
-    if ([content.app_type isEqualToString:@"events"] && [content.commnent_type isEqualToString:@"groups.event"])  {
-        if ([content.target_name isKindOfClass:[NSString class]]) {
-            if (content.target_name != @"") {
-                
+        //add photo into album
+        if ([content.app_type isEqualToString:@"photos"] &&  [content.commnent_type isEqualToString:@"photos.album"]) {
+            actionStr = [NSString stringWithFormat:@"%@ added a new photo into %@ album", content.actor_name, content.target_name];
+            return actionStr;
+        }
+        
+        // Add Event
+        if ([content.app_type isEqualToString:@"events"] && [content.commnent_type isEqualToString:@"groups.event"])  {
+            if ([content.target_name isKindOfClass:[NSString class]]) {
+                if (content.target_name != @"") {
+                    
+                }else
+                    content.target_name = @" ";
             }else
                 content.target_name = @" ";
-        }else
-            content.target_name = @" ";
-        actionStr = [NSString stringWithFormat:@"%@ added a new event: %@", content.actor_name, content.target_name];
-        
-        return actionStr;
+            actionStr = [NSString stringWithFormat:@"%@ added a new event: %@", content.actor_name, content.target_name];
+            
+            return actionStr;
+        }
+        // Add Video
+        if ([content.app_type isEqualToString:@"videos"] && [content.commnent_type isEqualToString:@"videos"])  {
+            if ([content.commentContent isEqualToString:@""]) {
+                actionStr = [NSString stringWithFormat:@"%@ added a video", content.actor_name];
+            }else
+                actionStr = content.commentContent;
+            
+            return actionStr;
+        }
+        // comment on a photo
+        if ([content.app_type isEqualToString:@"photos"] && [content.commnent_type isEqualToString:@"photos.wall.create"])
+        {
+            actionStr = [NSString stringWithFormat:@"%@ commented on a photo: %@", content.actor_name, content.commentContent];
+        }
     }
-    // Add Video
-    if ([content.app_type isEqualToString:@"videos"] && [content.commnent_type isEqualToString:@"videos"])  {
-        if ([content.commentContent isEqualToString:@""]) {
-            actionStr = [NSString stringWithFormat:@"%@ added a video", content.actor_name];
-        }else
-            actionStr = content.commentContent;
-        
-        return actionStr;
-    }
+    //Wall
+    if ([content.activity_type isEqualToString:@"wall"]) {
+        //comment on status
+        if ([content.commnent_type isEqualToString:@"profile.status"] || YES) {
+                NSString *target = @"";
+                if ([content.target_author_name isKindOfClass:[NSString class]]) {
+                    if (content.target_author_name != @"") {
+                        if (content.actor_id == content.target_author_id) {
+                            if ([content.actor_gender isKindOfClass:[NSString class]]) {
+                                target = [NSString stringWithFormat:@"%@'s", content.target_author_name];
+                                if ([content.actor_gender isEqualToString:@"male"]) {
+                                    target = @"his ";
+                                }
+                                if ([content.actor_gender isEqualToString:@"female"]) {
+                                    target = @"her ";
+                                }
+                            }
+                            else
+                            {
+                                target = [NSString stringWithFormat:@"%@'s", content.actor_name];
+                            }
+                        }
+                        else
+                            //khac user, kiem tra voi regited user - current user
+                            if (content.target_author_id != [[UserPAInfo sharedUserPAInfo] registrationID]) {
+                                target = [NSString stringWithFormat:@"%@'s",content.target_author_name];
+                            }else
+                                target = @"your ";
 
+                            
+                    }
+                }else
+                    target = @"a ";
+                actionStr = [NSString stringWithFormat:@"%@ commented on %@ %@: %@" ,content.actor_name, target, content.target_name, content.commentContent];
+                return actionStr;
+            }
+    }
+    
     return actionStr;
 }
 

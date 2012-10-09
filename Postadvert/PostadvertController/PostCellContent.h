@@ -33,5 +33,6 @@ typedef enum
 @property (nonatomic)           NSInteger totalImages;
 @property (nonatomic)           NSInteger ID_Post;
 @property (nonatomic)           ImageType imageType;
+@property (nonatomic, strong)   NSString *created_on_lapseTime;
 @property (nonatomic) BOOL isShowFullText;
 @end

@@ -10,11 +10,12 @@
 
 @implementation ActivityContent
 
-@synthesize activity_id;
+@synthesize status_ID;
 @synthesize actor_id;
 @synthesize actor_gender;
 @synthesize actor_name;
 @synthesize actor_thumbl;
+@synthesize actor_2;
 @synthesize app_type;
 @synthesize commnent_type;
 @synthesize cid;
@@ -33,6 +34,10 @@
 //@synthesize photo_info_thumb;
 @synthesize listImages;
 @synthesize commentContent;
+@synthesize actionStringFromServer;
 @synthesize video;
+@synthesize activity_type;
+@synthesize target_author_id;
+@synthesize target_author_name;
 
 @end

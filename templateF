@@ -54,3 +54,20 @@
         return years <= 1 ? @"one year ago" : [NSString stringWithFormat:@"%d years ago", years];
     }
 }
+
+
+ NSString *fileName = @"database.sqlite";
+        NSString *dbDocPath = [NSString stringWithFormat:@"%@/Documents/%@", NSHomeDirectory(), fileName];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        if (![fileManager fileExistsAtPath:dbDocPath]) {
+            NSString *dbBundlePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:fileName];
+            NSError *error = nil;
+            [fileManager copyItemAtPath:dbBundlePath toPath:dbDocPath error:&error];
+            if (error) {
+                NSLog(@"Check Database Error: %@", error.description);
+            }
+        }
+        if(sqlite3_open([dbDocPath UTF8String], &_database) != SQLITE_OK){
+            NSLog(@"Failed to open database!");
+        }
+    

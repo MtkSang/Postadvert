@@ -196,6 +196,8 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
         NSDictionary *userInfo = [info objectForKey:@"info"];
         logInId = [[userInfo objectForKey:@"id"]integerValue ];
         [UserPAInfo sharedUserPAInfo].registrationID = logInId;
+        //for Kelvin
+        //[UserPAInfo sharedUserPAInfo].registrationID = 101;
         NSLog(@"registrationID %ld %ld", logInId, [UserPAInfo sharedUserPAInfo].registrationID);
         [UserPAInfo sharedUserPAInfo].email = [userInfo objectForKey:@"email"];
         [UserPAInfo sharedUserPAInfo].fullName = [userInfo objectForKey:@"name"];
@@ -335,6 +337,12 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
             cellContent.text = [NSData stringDecodeFromBase64String:[post objectForKey:@"post"]];
             cellContent.titlePost = [post objectForKey:@"title"];
             NSLog(@"Detail a post : %@ Title is:%@", post, cellContent.titlePost);
+            //time
+            NSString *timePost = [post objectForKey:@"created_on_lapseTime"];
+            if ([timePost isKindOfClass:[NSString class]]) {
+                cellContent.created_on_lapseTime = [NSData stringDecodeFromBase64String:timePost];
+            }else
+                cellContent.created_on_lapseTime = @"";
             // - > website
             NSDictionary *website = [dict objectForKey:@"website"];
             if ([website isKindOfClass:[NSDictionary class]]) {
@@ -579,7 +587,6 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     {
         infoDict = [NSDictionary dictionaryWithDictionary: jsonObject];
         NSLog(@"Dictionary %@", infoDict);
-        
     }
     else if ([jsonObject isKindOfClass:[NSArray class]])
     {
@@ -588,6 +595,8 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
         for (NSDictionary *dict in infoArray) {
             NSLog(@"dict %@", dict);
             ActivityContent *content = [[ActivityContent alloc]init];
+            content.activity_type = [dict objectForKey:@"act_type"];
+            content.activity_ID = [dict objectForKey:@"act_id"];
             content.actor_id = [[dict objectForKey:@"actor_id"] integerValue];
             content.actor_name = [dict objectForKey:@"actor_name"];
             content.actor_gender = [dict objectForKey:@"actor_gender"];
@@ -598,12 +607,16 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
                 image = [UIImage imageNamed:@"user_default_thumb.png"];
             }
             content.actor_thumbl = image;
+            if ([[dict objectForKey:@"actor_2"] isKindOfClass:[NSArray class]]) {
+                content.actor_2 = [dict objectForKey:@"actor_2"];
+            }
             content.app_type = [dict objectForKey:@"app"];
             content.cid = [[dict objectForKey: @"cid"] integerValue];
             content.commnent_type = [dict objectForKey:@"comment_type"];
             content.commentContent = [NSData stringDecodeFromBase64String: [dict objectForKey:@"content"]];
+            content.actionStringFromServer = [NSData stringDecodeFromBase64String:[dict objectForKey:@"action"]];
             content.created_time = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
-            content.activity_id = [[dict objectForKey:@"id"] integerValue];
+            content.status_ID = [[dict objectForKey:@"id"] integerValue];
             content.like_id = [[dict objectForKey:@"like_id"] integerValue];
             //Like info
             NSDictionary *likeInfo = [dict objectForKey:@"like_info"];
@@ -617,14 +630,21 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
             }else
                 content.target_id = [[dict objectForKey:@"target_id"] integerValue];
             content.target_name = [NSData stringDecodeFromBase64String:[dict objectForKey:@"target_name"]];
+            content.target_author_id = [[dict objectForKey:@"target_author_id"] integerValue] ;
+            content.target_author_name = [dict objectForKey:@"target_author_name"];
+            
             content.title =  [NSData stringDecodeFromBase64String:[dict objectForKey:@"action"]];
             //photo_info
             NSDictionary *photo_info = [dict objectForKey:@"photo_info"];
-            content.photo_info_id = [[photo_info objectForKey:@"id"] integerValue];;
+            content.photo_info_id = [[photo_info objectForKey:@"id"] integerValue];
 //            content.photo_info_image = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"image"]];
 //            content.photo_info_thumb = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"photo_thumb_url"]];
             content.listImages = [[NSMutableArray alloc]init];
-            [content.listImages addObject:[NSArray arrayWithObjects:[NSData stringDecodeFromBase64String:[photo_info objectForKey:@"image"]],[NSData stringDecodeFromBase64String:[photo_info objectForKey:@"photo_thumb_url"]], nil]];
+            NSString *fullImage = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"image"] ];
+            NSString *thumbnail = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"photo_thumb_url"]];
+            if (fullImage.length || thumbnail.length) {
+                [content.listImages addObject:[NSArray arrayWithObjects:fullImage, thumbnail, nil]];
+            }
             //video_info
             content.video = [dict objectForKey:@"video_info"];
             if ([content.video isKindOfClass:[NSDictionary class]]) {

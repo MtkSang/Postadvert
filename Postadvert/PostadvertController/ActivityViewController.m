@@ -23,6 +23,7 @@
 @end
 
 @implementation ActivityViewController
+@synthesize navigationController;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -329,7 +330,7 @@
     int beforeLoad = listActivityCell.count;
     isLoadData = YES;
     ActivityContent *firstContent = [listContent lastObject];
-    NSString *status_id = [NSString stringWithFormat:@"%d", firstContent.activity_id];
+    NSString *status_id = [NSString stringWithFormat:@"%d", firstContent.status_ID];
     NSMutableArray *bottomCells = [[PostadvertControllerV2 sharedPostadvertController] getStatusUpdateWithUserID:[NSString stringWithFormat:@"%ld",lastUserId] limit:@"5" index:@"1" status_id:status_id];
     for (ActivityContent *cellContent in bottomCells) {
         [listContent addObject:cellContent];
@@ -347,7 +348,7 @@
 {
     int beforeLoad = listActivityCell.count;
     ActivityContent *firstContent = [listContent objectAtIndex:0];
-     NSString *status_id = [NSString stringWithFormat:@"%d", firstContent.activity_id];
+     NSString *status_id = [NSString stringWithFormat:@"%d", firstContent.status_ID];
     //-(id) getStatusUpdateWithUserID:(NSString*)userId limit:(NSString*)limit index:(NSString*)index status_id:(NSString*)status_id
     NSMutableArray *incommingData = [[PostadvertControllerV2 sharedPostadvertController] getStatusUpdateWithUserID:[NSString stringWithFormat:@"%ld",lastUserId] limit:@"5" index:@"0" status_id:status_id];
     while (incommingData.count) {

@@ -31,6 +31,7 @@
 
 //@synthesize myTableView = myTableView;
 @synthesize navigationController = _navigationCtr;
+@synthesize optionView;
 //
 //- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 //{
@@ -87,6 +88,15 @@
     // e.g. self.myOutlet = nil;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if (optionView) {
+        if (refreshHeaderView.superview) {
+            [refreshHeaderView removeFromSuperview];
+        }
+    }
+}
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     //return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -111,7 +121,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (isLoading || isLoadData) {
+    if (isLoading || isLoadData || optionView) {
         return;
     }
 
@@ -157,7 +167,7 @@
         return tableView.frame.size.height;
     }
     
-    Float32 height = [UIPostCell getCellHeightWithContent:[listContent objectAtIndex:indexPath.section]];
+    Float32 height = [UIPostCell getCellHeightWithContent:[listContent objectAtIndex:indexPath.section] andOption:self.optionView];
     return height;
 }
 
@@ -182,10 +192,9 @@
         [self performSelectorOnMainThread:@selector(loadCellAtIndex:) withObject:[NSNumber numberWithInteger:indexPath.section] waitUntilDone:YES];
         cell = [listPostCell objectAtIndex:indexPath.section];
     }
-    [cell updateCellWithContent:[listContent objectAtIndex:indexPath.section]];
+    [cell updateCellWithContent:[listContent objectAtIndex:indexPath.section] andOption:self.optionView];
     [cell performSelectorOnMainThread:@selector(updateView) withObject:nil waitUntilDone:YES];
     [listPostCell replaceObjectAtIndex:indexPath.section withObject:cell];
-    NSLog(@"UIPostCell_Landscape %@", cell);
     return cell;
 }
 
@@ -233,6 +242,21 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
+    if (optionView) {
+        return;
+    }
+    UITablePostViewController *detailOnePost;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
+        detailOnePost = [[UITablePostViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    }else
+    {
+        detailOnePost = [[UITablePostViewController alloc] initWithNibName:@"UITablePostViewController_IPad" bundle:nil];
+    }
+    detailOnePost.optionView = 1;
+    [detailOnePost setPostCellContent:[listContent objectAtIndex:indexPath.section]];
+    
+    [self.navigationController pushViewController:detailOnePost animated:YES];
+    
 }
 #pragma mark MBProgressHUDDelegate methods
 
@@ -246,6 +270,12 @@
 
 - (void) refresh
 {
+    if (optionView) {
+        
+        [self performSelectorOnMainThread:@selector(stopLoading) withObject:nil waitUntilDone:NO];
+        return;
+    }
+    
     if (!loadingHideView) {
         loadingHideView = [[MBProgressHUD alloc]init];
         loadingHideView.hasBackground = NO;
@@ -279,7 +309,11 @@
     UIPostCell *cell = [listPostCell objectAtIndex:index];
     NSArray *nib = nil;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
-        nib = [[NSBundle mainBundle] loadNibNamed:@"UIPostCell_Landscape" owner:self options:nil];
+        if (self.optionView) {
+            nib = [[NSBundle mainBundle] loadNibNamed:@"UIPostCell_Landscape" owner:self options:nil];
+        }else
+            nib = [[NSBundle mainBundle] loadNibNamed:@"UIShortPostCell" owner:self options:nil];
+        
     }
     else{
         nib = [[NSBundle mainBundle] loadNibNamed:@"UIPostCell_IPad" owner:self options:nil];
@@ -289,7 +323,7 @@
     NSIndexPath *indexPath = [[NSIndexPath alloc]initWithIndex:index];
     cell.indexPath = indexPath;
     cell.navigationController = self.navigationController;
-    [cell updateCellWithContent:[listContent objectAtIndex:index]];
+    [cell updateCellWithContent:[listContent objectAtIndex:index] andOption:self.optionView];
     [cell setSelectionStyle:UITableViewCellEditingStyleNone];
     [cell setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [listPostCell replaceObjectAtIndex:index withObject:cell];
@@ -339,6 +373,33 @@
     [HUD showWhileExecuting:@selector(loadCellsInBackground) onTarget:self withObject:nil animated:YES];
     
 }
+
+- (void) setPostCellContent:(PostCellContent*)content
+{
+    if (self.view.superview) {
+        HUD = [[MBProgressHUD alloc]initWithView:self.view.superview];
+        [self.view.superview addSubview:HUD];
+    }else {
+        HUD = [[MBProgressHUD alloc]initWithView:self.view];
+        [self.view addSubview:HUD];
+    }
+    
+    HUD.userInteractionEnabled = NO;
+    [HUD setLabelText:@"Loading..."];
+    listContent = [[NSMutableArray alloc] initWithObjects:content, nil];
+    if (!listPostCell) {
+        listPostCell = [[NSMutableArray alloc]initWithCapacity:listContent.count];
+    }
+    for (int i=0; i<listContent.count; i++) {
+        [listPostCell insertObject:[NSNull null] atIndex:0 ];
+    }
+    isLoadData = NO;
+    self.tableView.scrollEnabled = YES;
+    [self stopLoading];
+
+    
+}
+
 - (void) initPostCell
 {
     if (!listPostCell) {

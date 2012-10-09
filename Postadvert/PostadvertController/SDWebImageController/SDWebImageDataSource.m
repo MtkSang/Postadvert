@@ -109,6 +109,7 @@
    NSString *urlF = [imageUrls objectAtIndex:FULL_SIZE_INDEX];
    NSString *urlThumb = [imageUrls objectAtIndex:THUMBNAIL_INDEX];
    [photoView setImageWithURL:[NSURL URLWithString:urlF] placeholderURL:[NSURL URLWithString:urlThumb] placeholderImage:[UIImage imageNamed:@"photoDefault.png"]];
+    //[photoView setImageWithURL:[NSURL URLWithString:urlF] placeholderImage:[UIImage imageNamed:@"photoDefault.png"]];
     NSLog(@"Load Full Image %@", urlF);
 }
 

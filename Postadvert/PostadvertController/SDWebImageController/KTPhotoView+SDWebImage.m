@@ -27,7 +27,7 @@
    }
    
    if (cachedImage) {
-       [self setImage:cachedImage];
+       [activityView_ stopAnimating];
       [self setImage:cachedImage];
    }
    else {
@@ -41,9 +41,13 @@
    }
 }
 - (void)setImageWithURL:(NSURL *)url placeholderURL:(NSURL *)placeholderURL placeholderImage:(UIImage *)placeholderImage {
-    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+    
+    //[self setImageWithURL:url placeholderImage:placeholderImage];
+    //return;
     [activityView_ setHidden:NO];
     [activityView_ startAnimating];
+    
+    SDWebImageManager *manager = [SDWebImageManager sharedManager];
     // Remove in progress downloader from queue
     [manager cancelForDelegate:self];
     
@@ -81,5 +85,6 @@
    [activityView_ stopAnimating];
    [self setImage:image];
 }
+
 
 @end

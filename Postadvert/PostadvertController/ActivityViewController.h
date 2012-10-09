@@ -20,4 +20,5 @@
     long lastUserId;
 }
 @property (nonatomic) long lastUserID;
+@property (nonatomic, weak) UINavigationController *navigationController;
 @end

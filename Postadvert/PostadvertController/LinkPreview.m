@@ -108,6 +108,7 @@
             NSLog(@"media feed%@", [returnObject valueForKey:@"$t"]);
             title.text = [returnObject valueForKey:@"$t"];
             [title sizeToFit];
+            buttonOnWebView.hidden = YES;
         }else {
             [buttonOnTitle addTarget:self action:@selector(openURLWhenTitleClicked:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:buttonOnWebView];
@@ -261,8 +262,19 @@
         NSLog(@"Ember %@", embed);
         w = 250;
         h = 250;
-        embed = [NSString stringWithFormat:@"<iframe height=\"%00.0fpx\" width=\"%00.0fpx\" src=\"http://www.youtube.com/embed/%@\"></iframe> ", h, w, videoID];
+        embed = [NSString stringWithFormat:@"<html><iframe height=\"%00.0fpx\" width=\"%00.0fpx\" src=\"http://www.youtube.com/embed/%@\"?autoplay=1?enablejsapi=1></iframe></html> ", h, w, videoID];
         //embed = [NSString stringWithFormat:@" <embed src=\"http://www.youtube.com/watch?v=%@\" type=\"application/x-shockwave-flash\"     widht=\"64\" height=\"64\"></embed>", videoID];
+        
+        //embed = [NSString stringWithFormat:@"<html>\
+                 <object width=\"640\" height=\"390\">\
+                 <param name=\"movie\"\
+                 value=\"https://www.youtube.com/v/u1zgFlCw8Aw?version=3&autoplay=1\"></param>\
+                 <param name=\"allowScriptAccess\" value=\"always\"></param>\
+                 <embed src=\"https://www.youtube.com/v/%@?version=3&autoplay=1\"\
+                 type=\"application/x-shockwave-flash\"\
+                 allowscriptaccess=\"always\"\
+                 width=\"640\" height=\"390\"></embed>\
+                 </object></htm>", videoID];
         webView.userInteractionEnabled = YES;
         [webView setScalesPageToFit:YES];
         [webView setContentMode:UIViewContentModeScaleAspectFit];
@@ -411,7 +423,8 @@
     if (b == nil) {
         [self openURLWhenTitleClicked:title];
     }else {
-        [b sendActionsForControlEvents:UIControlEventTouchUpInside];
+        [self openURLWhenTitleClicked:title];
+        //[b sendActionsForControlEvents:UIControlEventTouchUpInside];
         //b = nil;
     }
 	

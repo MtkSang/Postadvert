@@ -16,6 +16,7 @@
 @synthesize linkWebsite;
 @synthesize linkYoutube;
 @synthesize isShowFullText;
+@synthesize created_on_lapseTime;
 
 - (id) init
 {

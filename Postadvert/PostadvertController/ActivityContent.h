@@ -10,11 +10,12 @@
 
 @interface ActivityContent : NSObject
 
-@property(nonatomic)                NSInteger activity_id;
+@property(nonatomic)                NSInteger status_ID;
 @property(nonatomic, strong)        NSString *actor_gender;
 @property(nonatomic)                NSInteger actor_id;
 @property(nonatomic, strong)        NSString *actor_name;
 @property(nonatomic, strong)        UIImage *actor_thumbl;
+@property(nonatomic, strong)        NSArray *actor_2;
 @property(nonatomic, strong)        NSString *app_type;
 @property(nonatomic, strong)        NSString *commnent_type;
 @property(nonatomic)                NSInteger cid;
@@ -33,5 +34,11 @@
 //@property(nonatomic, strong)        NSString *photo_info_thumb;//Image via base64
 @property(nonatomic, strong)        NSMutableArray *listImages;
 @property(nonatomic, strong)        NSString *commentContent;
+@property(nonatomic, strong)        NSString *actionStringFromServer;
 @property(nonatomic, strong)        NSDictionary *video;
+@property(nonatomic, strong)        NSString *activity_type;
+@property(nonatomic, strong)        NSString *activity_ID;
+@property(nonatomic)                NSInteger target_author_id;
+@property(nonatomic, strong)        NSString *target_author_name;
+
 @end

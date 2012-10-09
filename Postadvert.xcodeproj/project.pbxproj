@@ -405,6 +405,7 @@
 		FA58D40015999584005DFCBD /* NotificationsCellContent.m in Sources */ = {isa = PBXBuildFile; fileRef = FA58D3FF15999584005DFCBD /* NotificationsCellContent.m */; };
 		FA58D403159995C3005DFCBD /* UINotificationsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA58D402159995C3005DFCBD /* UINotificationsCell.m */; };
 		FA58D405159995F8005DFCBD /* UINotificationsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA58D404159995F8005DFCBD /* UINotificationsCell.xib */; };
+		FA59DB031622DCDB00CFBF7C /* UIShortPostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA59DB021622DCDB00CFBF7C /* UIShortPostCell.xib */; };
 		FA5C5B9215EDF2FA0073DBE9 /* ActivityContent.m in Sources */ = {isa = PBXBuildFile; fileRef = FA5C5B9115EDF2FA0073DBE9 /* ActivityContent.m */; };
 		FA5C5B9615EE0AA00073DBE9 /* UIActivityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA5C5B9515EE0AA00073DBE9 /* UIActivityCell.m */; };
 		FA5C5B9815EE235B0073DBE9 /* UIActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA5C5B9715EE235B0073DBE9 /* UIActivityCell.xib */; };
@@ -1001,6 +1002,7 @@
 		FA58D401159995C3005DFCBD /* UINotificationsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UINotificationsCell.h; sourceTree = "<group>"; };
 		FA58D402159995C3005DFCBD /* UINotificationsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINotificationsCell.m; sourceTree = "<group>"; };
 		FA58D404159995F8005DFCBD /* UINotificationsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UINotificationsCell.xib; sourceTree = "<group>"; };
+		FA59DB021622DCDB00CFBF7C /* UIShortPostCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = UIShortPostCell.xib; path = Postadvert/PostadvertController/UIShortPostCell.xib; sourceTree = SOURCE_ROOT; };
 		FA5C5B9015EDF2FA0073DBE9 /* ActivityContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityContent.h; sourceTree = "<group>"; };
 		FA5C5B9115EDF2FA0073DBE9 /* ActivityContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityContent.m; sourceTree = "<group>"; };
 		FA5C5B9415EE0AA00073DBE9 /* UIActivityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIActivityCell.h; sourceTree = "<group>"; };
@@ -2071,6 +2073,7 @@
 				FAF3F6AF1578C1F4003A7793 /* EnlargeImageViewControllerV2.h */,
 				FAF3F6B01578C1F4003A7793 /* EnlargeImageViewControllerV2.m */,
 				FAA3347215AACAAC0010E554 /* EnlargeImageViewControllerV2.xib */,
+				FA59DB021622DCDB00CFBF7C /* UIShortPostCell.xib */,
 				FA03231215774CE0002EB93D /* UIPostCell.h */,
 				FA03231315774CE1002EB93D /* UIPostCell.m */,
 				FAC815E015B3E86100E3D8CE /* UIPostCell_Landscape.xib */,
@@ -2641,6 +2644,7 @@
 				FA328A5716157BBE00A2DC0F /* delete-2.png in Resources */,
 				FA328A5816157BBE00A2DC0F /* Remove_Icon.png in Resources */,
 				FA328A5916157BBE00A2DC0F /* remove.png in Resources */,
+				FA59DB031622DCDB00CFBF7C /* UIShortPostCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
