@@ -32,6 +32,7 @@
 #define cImageWidth                         65.0
 #define cImageHeight                        65.0
 #define cMinImageMove                       40.0
+#define cTimeCreatedLabelWidth              130.0
 
 #pragma mark - enum
 

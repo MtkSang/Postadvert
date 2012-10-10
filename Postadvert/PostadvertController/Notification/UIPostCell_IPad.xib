@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1536</int>
-		<string key="IBDocument.SystemVersion">11G56</string>
+		<string key="IBDocument.SystemVersion">11G63</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2840</string>
 		<string key="IBDocument.AppKitVersion">1138.51</string>
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
@@ -94,8 +94,8 @@
 							</object>
 							<object class="IBUILabel" id="369615059">
 								<reference key="NSNextResponder" ref="599117699"/>
-								<int key="NSvFlags">288</int>
-								<string key="NSFrame">{{29, 144}, {966, 22}}</string>
+								<int key="NSvFlags">289</int>
+								<string key="NSFrame">{{894, 0}, {130, 22}}</string>
 								<reference key="NSSuperview" ref="599117699"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="102535466"/>
@@ -103,14 +103,15 @@
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
-								<int key="IBUITag">2</int>
+								<int key="IBUITag">14</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<string key="IBUIText"/>
 								<reference key="IBUITextColor" ref="974231315"/>
 								<reference key="IBUIHighlightedColor" ref="156458523"/>
 								<int key="IBUIBaselineAdjustment">0</int>
-								<float key="IBUIMinimumFontSize">14</float>
+								<float key="IBUIMinimumFontSize">12</float>
+								<int key="IBUITextAlignment">2</int>
 								<reference key="IBUIFontDescription" ref="325986775"/>
 								<reference key="IBUIFont" ref="125712196"/>
 							</object>
@@ -331,7 +332,6 @@
 										<string key="NSFrame">{{981, 1}, {38, 38}}</string>
 										<reference key="NSSuperview" ref="394681100"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<int key="IBUITag">12</int>

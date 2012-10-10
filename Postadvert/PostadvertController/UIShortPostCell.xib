@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1536</int>
-		<string key="IBDocument.SystemVersion">11G56</string>
+		<string key="IBDocument.SystemVersion">11G63</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2840</string>
 		<string key="IBDocument.AppKitVersion">1138.51</string>
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
@@ -94,8 +94,8 @@
 							</object>
 							<object class="IBUILabel" id="1033673795">
 								<reference key="NSNextResponder" ref="49515386"/>
-								<int key="NSvFlags">291</int>
-								<string key="NSFrame">{{203, 55}, {117, 22}}</string>
+								<int key="NSvFlags">289</int>
+								<string key="NSFrame">{{190, 55}, {130, 22}}</string>
 								<reference key="NSSuperview" ref="49515386"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="76740887"/>
@@ -259,7 +259,6 @@
 										<string key="NSFrame">{{277, 1}, {38, 38}}</string>
 										<reference key="NSSuperview" ref="76740887"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<int key="IBUITag">12</int>

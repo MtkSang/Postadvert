@@ -441,6 +441,12 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
             cellContent.text = [NSData stringDecodeFromBase64String:[post objectForKey:@"post"]];
             cellContent.titlePost = [post objectForKey:@"title"];
             NSLog(@"Detail a post : %@ Title is:%@", post, cellContent.titlePost);
+            //time
+            NSString *timePost = [post objectForKey:@"created_on_lapseTime"];
+            if ([timePost isKindOfClass:[NSString class]]) {
+                cellContent.created_on_lapseTime = [NSData stringDecodeFromBase64String:timePost];
+            }else
+                cellContent.created_on_lapseTime = @"";
             // - > website
             NSDictionary *website = [dict objectForKey:@"website"];
             if ([website isKindOfClass:[NSDictionary class]]) {

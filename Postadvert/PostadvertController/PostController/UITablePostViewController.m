@@ -92,9 +92,7 @@
 {
     [super viewDidAppear:animated];
     if (optionView) {
-        if (refreshHeaderView.superview) {
-            [refreshHeaderView removeFromSuperview];
-        }
+        refreshHeaderView.hidden = YES;
     }
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -118,6 +116,12 @@
 }
 #pragma mark -
 #pragma mark UIScrollView delegate
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (self.optionView) {
+        return;
+    }
+    [super scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+}
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -254,7 +258,7 @@
     }
     detailOnePost.optionView = 1;
     [detailOnePost setPostCellContent:[listContent objectAtIndex:indexPath.section]];
-    
+    detailOnePost.navigationController =  self.navigationController;
     [self.navigationController pushViewController:detailOnePost animated:YES];
     
 }

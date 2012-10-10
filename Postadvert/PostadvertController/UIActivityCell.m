@@ -541,10 +541,16 @@
 
 -(void) updateColor
 {
-    //add new status
+    
     NSURL *url = [[NSURL alloc]initWithString:@"activity:url"];
     if ([_content.activity_type isEqualToString:@"activity"]) {
-        
+        if ([_content.app_type isEqualToString:@"profile"] && [_content.commnent_type isEqualToString:@"profile.avatar.upload"]) {
+            
+            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+            return;
+        }
+
+        //add new status
         if ([_content.app_type isEqualToString:@"profile"] && [_content.commnent_type isEqualToString:@"profile.status"]) {
             //nothing to set color
             return;
@@ -577,12 +583,26 @@
             [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
             [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.target_name options:NSBackwardsSearch]];
         }
+        //Commented on an event
+        if ([_content.app_type isEqualToString:@"events.wall"] && [_content.commnent_type isEqualToString:@"events.wall"])  {
+            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.target_name options: NSBackwardsSearch]];
+            return;
+        }
+
         // add video
         if ([_content.app_type isEqualToString:@"videos"] && [_content.commnent_type isEqualToString:@"videos"])  {
             if ([_content.commentContent isEqualToString:@""]) {
                 [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
             }
         }
+        // comment on a photo
+        if ([_content.app_type isEqualToString:@"photos"] && [_content.commnent_type isEqualToString:@"photos.wall.create"])
+        {
+            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+            return;
+        }
+
     }
     //Wall
     if ([_content.activity_type isEqualToString:@"wall"]) {
@@ -610,6 +630,10 @@
         }
     }
 
+#warning incomplete function
+    [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+    [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.target_name options: NSBackwardsSearch]];
+
 }
 
 
@@ -618,6 +642,23 @@
 {
     NSString *actionStr =@"";
     if ([content.activity_type isEqualToString:@"activity"]) {
+        
+        //upload new avatar profile.avatar.upload
+        if ([content.app_type isEqualToString:@"profile"] && [content.commnent_type isEqualToString:@"profile.avatar.upload"]) {
+#warning not complete Mtk
+            NSString *gender = @"his ";
+            if ([content.actor_gender isKindOfClass:[NSString class]]) {
+                
+                if ([content.actor_gender isEqualToString:@"male"]) {
+                    gender = @"his ";
+                }
+                if ([content.actor_gender isEqualToString:@"female"]) {
+                    gender = @"her ";
+                }
+            }
+            actionStr = [NSString stringWithFormat:@"%@ updated %@ avatar", content.actor_name, gender];
+            return actionStr;
+        }
         //add new status
         if ([content.app_type isEqualToString:@"profile"] && [content.commnent_type isEqualToString:@"profile.status"]) {
             
@@ -662,6 +703,20 @@
             
             return actionStr;
         }
+        //Commented on an event
+        if ([content.app_type isEqualToString:@"events.wall"] && [content.commnent_type isEqualToString:@"events.wall"])  {
+            if ([content.target_name isKindOfClass:[NSString class]]) {
+                if (content.target_name != @"") {
+                    
+                }else
+                    content.target_name = @" ";
+            }else
+                content.target_name = @" ";
+            actionStr = [NSString stringWithFormat:@"%@ commented on %@ event", content.actor_name, content.target_name];
+            
+            return actionStr;
+        }
+
         // Add Video
         if ([content.app_type isEqualToString:@"videos"] && [content.commnent_type isEqualToString:@"videos"])  {
             if ([content.commentContent isEqualToString:@""]) {
@@ -714,6 +769,18 @@
                 return actionStr;
             }
     }
+#warning incomplete function
+    if ([content.target_name isKindOfClass:[NSString class]]) {
+        if (content.target_name != @"") {
+            
+        }else
+            content.target_name = @" ";
+    }else
+        content.target_name = @" ";
+    if ([content.commentContent isEqualToString:@""] || ![content.commentContent isKindOfClass:[NSString class]]) {
+        actionStr = [NSString stringWithFormat:@"%@ %@ %@", content.actor_name, content.actionStringFromServer, content.target_name];
+    }else
+        actionStr = [NSString stringWithFormat:@"%@ %@ %@: %@", content.actor_name, content.actionStringFromServer, content.target_name, content.commentContent];
     
     return actionStr;
 }
