@@ -93,6 +93,7 @@
     [super viewDidAppear:animated];
     if (optionView) {
         refreshHeaderView.hidden = YES;
+        self.tableView.tableFooterView = nil;
     }
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -177,7 +178,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == listContent.count) {
+    if (section == listContent.count - 1) {
         return 10.0;
     }
     return 1.0;
@@ -201,8 +202,6 @@
     [listPostCell replaceObjectAtIndex:indexPath.section withObject:cell];
     return cell;
 }
-
-
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {

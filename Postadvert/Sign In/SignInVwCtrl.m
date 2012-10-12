@@ -70,15 +70,49 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+
+    if (interfaceOrientation==UIInterfaceOrientationPortrait ) {
+        return YES;
+    } else {
+        return NO;
+    }
+    //return (interfaceOrientation == UIInterfaceOrientationPortrait);
     //return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight);
+}
+
+- (BOOL)shouldAutomaticallyForwardRotationMethods
+{
+    return NO;
+}
+- (UIInterfaceOrientation) preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+//    CGAffineTransform transform = CGAffineTransformIdentity;
+//    switch (toInterfaceOrientation) {
+//        case UIInterfaceOrientationLandscapeLeft:
+//            transform = CGAffineTransformTranslate(transform, self.view.frame.size.width, self.view.frame.size.height);
+//            transform = CGAffineTransformRotate(transform, M_PI_2);
+//            break;
+//        case UIInterfaceOrientationLandscapeRight:
+//            transform = CGAffineTransformTranslate(transform, self.view.frame.size.width, self.view.frame.size.height);
+//            transform = CGAffineTransformRotate(transform, -M_PI_2);
+//            break;
+//            
+//            break;
+//        default:
+//            break;
+//    }
+//    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+//    self.view.transform = transform;
+
 }
 -(void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    
 //    if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
 //        CGRect frame = signupBtn.frame;
 //        frame.origin.y = 406;
@@ -92,15 +126,17 @@
 }
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
+   
+    
     NSLog(@"orient %d", fromInterfaceOrientation);
     if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortrait) {
         CGRect frame = signupBtn.frame;
         frame.origin.y = 406;
-        signupBtn.frame = frame;
+        //signupBtn.frame = frame;
     }else {
         CGRect frame = signupBtn.frame;
         frame.origin.y = 255;
-        signupBtn.frame = frame;
+        //signupBtn.frame = frame;
     }
 }
 #pragma mark - View lifecycle
@@ -120,7 +156,7 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-   
+
 //    self.view.userInteractionEnabled = YES;
 //    [activityIndicator stopAnimating];
 //    if (success)
@@ -174,7 +210,14 @@
         NSString *userName = [database objectForKey:@"userNamePA"];
         NSString *email = [database objectForKey:@"email"];
         NSString *passwordPA = [database objectForKey:@"passwordPA"];
-        passwordTxt.text = passwordPA;
+        if (passwordPA != nil) {
+             passwordTxt.text = passwordPA;
+            if ([passwordPA isEqualToString: @""]) {
+                return;
+            }
+        }else
+            passwordTxt.text = @"";
+        
         if ((![email isEqualToString:@""]) && email != nil) {
             //success = [[PostadvertControllerV2 sharedPostadvertController]registrationLogin:email :passwordPA];
             emailAddressTxt.text = email;
@@ -195,9 +238,11 @@
 ///////////////////
 -(IBAction) touchForgetPasswordBtn: (id) sender
 {
+    if (!self.overlay) {
+        UIView *vw1 = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 460.0)];
+        self.overlay = vw1;
+    }
     
-    UIView *vw1 = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 460.0)];
-    self.overlay = vw1;
     [self makeKeyboardGoAway:nil];
     txtFldRegisteredEmail.text = @"";
     [self showDialog:resetPasswordVw];
@@ -253,6 +298,7 @@
     self.view.userInteractionEnabled = YES;
     if (success) 
     {
+         _autoLogin = NO;
         [self.navigationController popViewControllerAnimated:YES];
         [activityIndicator stopAnimating];
     } else {

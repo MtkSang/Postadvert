@@ -17,6 +17,7 @@
 #define cAvartaMargin                       10.0
 #define cAvartaComments                     40.0
 #define FONT_NAME                           @"Helvetica"
+#define FONT_NAME_BOLD                      @"Helvetica-Bold"
 #define FONT_SIZE                           14.0f
 #define FONT_TITLE_SIZE                     16.0f
 #define CELL_CONTENT_MARGIN_LEFT            05.0
@@ -32,7 +33,7 @@
 #define cImageWidth                         65.0
 #define cImageHeight                        65.0
 #define cMinImageMove                       40.0
-#define cTimeCreatedLabelWidth              130.0
+#define cTimeCreatedLabelWidth              250.0
 
 #pragma mark - enum
 

@@ -159,6 +159,7 @@ static void singleton_remover() {
     //return (interfaceOrientation == UIInterfaceOrientationPortrait);
     return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight);
 }
+
 //- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 //    [self performSelector:@selector(resizeViewsForNavigationBar) withObject:nil afterDelay:(0.5f * duration)];
 //}
@@ -201,6 +202,8 @@ static void singleton_remover() {
                 [self hidePopUpDialog:overlay];
                 self.overlay = nil;
                 SignInVwCtrl *signInVwCtrl = [[SignInVwCtrl alloc] initWithAultoLogin:YES];
+                //[self presentModalViewController:signInVwCtrl animated:YES];
+                //[self.navigationController presentModalViewController:signInVwCtrl animated:YES];
                 [self.navigationController pushViewController:signInVwCtrl animated:YES];
                 self.navigationController.navigationBarHidden = YES;
             }

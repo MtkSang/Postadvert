@@ -636,7 +636,11 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
             }else
                 content.target_id = [[dict objectForKey:@"target_id"] integerValue];
             content.target_name = [NSData stringDecodeFromBase64String:[dict objectForKey:@"target_name"]];
-            content.target_author_id = [[dict objectForKey:@"target_author_id"] integerValue] ;
+            if (![[dict objectForKey:@"target_author_id"] isKindOfClass:[NSNull class]]) {
+                content.target_author_id = [[dict objectForKey:@"target_author_id"] integerValue] ;
+            }else
+                content.target_author_id = 0 ;
+            
             content.target_author_name = [dict objectForKey:@"target_author_name"];
             
             content.title =  [NSData stringDecodeFromBase64String:[dict objectForKey:@"action"]];

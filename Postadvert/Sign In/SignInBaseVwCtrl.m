@@ -70,7 +70,12 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    if (interfaceOrientation==UIInterfaceOrientationPortrait ) {
+        return YES;
+    } else {
+        return NO;
+    }
+    //return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 
@@ -148,8 +153,10 @@
 	view.frame = rc;
     
 	// Show the overlay
-	if (!overlay.superview) 
-        [self.view.window addSubview:overlay];
+	if (!overlay.superview)
+    {
+        [self.view addSubview:overlay];
+    }
     
     //    UIViewController *modalViewController = [[UIViewController alloc] init];
     //    modalViewController.view = overlay;
@@ -183,6 +190,7 @@
     
 	// Hide the overlay
 	[overlay performSelector:@selector(setAlpha:) withObject:nil afterDelay:0.3f];
+    [overlay removeFromSuperview];
     [[self modalViewController] dismissModalViewControllerAnimated:NO];
 }
 

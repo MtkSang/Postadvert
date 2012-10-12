@@ -153,33 +153,38 @@
     }
     videoFrame = CGRectMake(leftMarginContent, 0.0, cellFrame.size.width - 20 - leftMarginContent - CELL_CONTENT_MARGIN_RIGHT, cYoutubeHeight + (2 * CELL_MARGIN_BETWEEN_IMAGE));//Include left+right magrin
     
-    //User name;
-    frame = userName.frame;
-    constraint = CGSizeMake(cellFrame.size.width - 20 - cTimeCreatedLabelWidth - CELL_CONTENT_MARGIN_LEFT - CELL_CONTENT_MARGIN_RIGHT - CELL_MARGIN_BETWEEN_CONTROLL, 20000.0f);
-    size = [userName.text sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-    frame.origin.y = cellHeight;
-    frame.origin.x = CELL_CONTENT_MARGIN_LEFT;
-    frame.size = size;
-    userName.frame = frame;
+    //avatar
+    frame = CGRectMake(CELL_CONTENT_MARGIN_LEFT, 5, cAvartaContentHeight, cAvartaContentHeight);
+    imgAvatar.frame = frame;
+    
     //CreatedTime
     frame = timeCreated.frame;
     frame.size.width = cTimeCreatedLabelWidth;
     //frame.origin.x = cellFrame.size.width - cTimeCreatedLabelWidth - CELL_CONTENT_MARGIN_RIGHT - 10;
     frame.origin.y = cellHeight;
     timeCreated.frame = frame;
+    
+    cellHeight += 12;
+    //User name;
+    frame = userName.frame;
+    constraint = CGSizeMake(cellFrame.size.width - 20 - cAvartaContentHeight - CELL_CONTENT_MARGIN_LEFT - CELL_CONTENT_MARGIN_RIGHT - CELL_MARGIN_BETWEEN_CONTROLL, 20000.0f);
+    size = [userName.text sizeWithFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    [userName setTextColor:[UIColor colorWithRed:79.0/255 green:178.0/255 blue:187.0/255 alpha:1]];
+    frame.origin.y = cellHeight;
+    frame.origin.x = CELL_CONTENT_MARGIN_LEFT + cAvartaContentHeight + CELL_MARGIN_BETWEEN_CONTROLL;
+    frame.size = size;
+    userName.frame = frame;
     cellHeight += userName.frame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
     
-    //avatar
-    frame = CGRectMake(CELL_CONTENT_MARGIN_LEFT, cellHeight, cAvartaContentHeight, cAvartaContentHeight);
-    imgAvatar.frame = frame;
     //Title
     constraint = CGSizeMake(cellFrame.size.width - 20 - imgAvatar.frame.size.width - imgAvatar.frame.origin.x - CELL_CONTENT_MARGIN_LEFT - CELL_CONTENT_MARGIN_RIGHT - CELL_MARGIN_BETWEEN_CONTROLL, 20000.0f);
     size = [titlePost.text sizeWithFont:titlePost.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
     titlePost.frame = CGRectMake(imgAvatar.frame.origin.x + imgAvatar.frame.size.width + CELL_MARGIN_BETWEEN_CONTROLL, cellHeight, size.width, size.height);
-    if (titlePost.frame.size.height > imgAvatar.frame.size.height) {
-        cellHeight += titlePost.frame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+    cellHeight +=size.height;
+    if (cellHeight > imgAvatar.frame.size.height + imgAvatar.frame.origin.y) {
+        cellHeight += CELL_MARGIN_BETWEEN_CONTROLL;
     }else
-        cellHeight += imgAvatar.frame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+        cellHeight = imgAvatar.frame.size.height + imgAvatar.frame.origin.y + CELL_MARGIN_BETWEEN_CONTROLL;
     //text detail
     if (![textContent.text isEqualToString:@""] && optionView) {
         if (self.isShowFullText) {
@@ -279,35 +284,39 @@
         titlePost.text = content.titlePost;
         timeCreated.text = content.created_on_lapseTime;
 
-        //User name;
-        frame = userName.frame;
-        constraint = CGSizeMake(cellFrame.size.width - 20 - cTimeCreatedLabelWidth - CELL_CONTENT_MARGIN_LEFT - CELL_CONTENT_MARGIN_RIGHT - CELL_MARGIN_BETWEEN_CONTROLL, 20000.0f);
-        size = [userName.text sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-        [userName setTextColor:[UIColor colorWithRed:79.0/255 green:178.0/255 blue:187.0/255 alpha:1]];
-        frame.origin.y = cellHeight;
-        frame.origin.x = CELL_CONTENT_MARGIN_LEFT;
-        frame.size = size;
-        userName.frame = frame;
+        //avatar
+        frame = CGRectMake(CELL_CONTENT_MARGIN_LEFT, 5, cAvartaContentHeight, cAvartaContentHeight);
+        imgAvatar.frame = frame;
+        
         //CreatedTime
-        timeCreated.text = content.created_on_lapseTime;
         frame = timeCreated.frame;
         frame.size.width = cTimeCreatedLabelWidth;
         //frame.origin.x = cellFrame.size.width - cTimeCreatedLabelWidth - CELL_CONTENT_MARGIN_RIGHT - 10;
         frame.origin.y = cellHeight;
         timeCreated.frame = frame;
+        
+        cellHeight += 12;
+        ///User name;
+        frame = userName.frame;
+        constraint = CGSizeMake(cellFrame.size.width - 20 - cAvartaContentHeight - CELL_CONTENT_MARGIN_LEFT - CELL_CONTENT_MARGIN_RIGHT - CELL_MARGIN_BETWEEN_CONTROLL, 20000.0f);
+        size = [userName.text sizeWithFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+        [userName setTextColor:[UIColor colorWithRed:79.0/255 green:178.0/255 blue:187.0/255 alpha:1]];
+        [userName setNumberOfLines:0];
+        frame.origin.y = cellHeight;
+        frame.origin.x = CELL_CONTENT_MARGIN_LEFT + cAvartaContentHeight + CELL_MARGIN_BETWEEN_CONTROLL;
+        frame.size = size;
+        userName.frame = frame;
         cellHeight += userName.frame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
-        //avatar
-        frame = CGRectMake(CELL_CONTENT_MARGIN_LEFT, cellHeight, cAvartaContentHeight, cAvartaContentHeight);
-        imgAvatar.frame = frame;
         
         //Title
         constraint = CGSizeMake(cellFrame.size.width - 20 - imgAvatar.frame.size.width - imgAvatar.frame.origin.x - CELL_CONTENT_MARGIN_LEFT - CELL_CONTENT_MARGIN_RIGHT - CELL_MARGIN_BETWEEN_CONTROLL, 20000.0f);
         size = [titlePost.text sizeWithFont:titlePost.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
         titlePost.frame = CGRectMake(imgAvatar.frame.origin.x + imgAvatar.frame.size.width + CELL_MARGIN_BETWEEN_CONTROLL, cellHeight, size.width, size.height);
-        if (titlePost.frame.size.height > imgAvatar.frame.size.height) {
-            cellHeight += titlePost.frame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+        cellHeight +=size.height;
+        if (cellHeight > imgAvatar.frame.size.height + imgAvatar.frame.origin.y) {
+            cellHeight += CELL_MARGIN_BETWEEN_CONTROLL;
         }else
-            cellHeight += imgAvatar.frame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+            cellHeight = imgAvatar.frame.size.height + imgAvatar.frame.origin.y + CELL_MARGIN_BETWEEN_CONTROLL;
         
         //text deatail
         if (![content.text isEqualToString:@""] && optionView) {
@@ -400,34 +409,39 @@
     }
     else {
         cellHeight = 0.0;
-        //User name;
-        constraint = CGSizeMake(cellFrame.size.width - 20 - cTimeCreatedLabelWidth - CELL_CONTENT_MARGIN_LEFT - CELL_CONTENT_MARGIN_RIGHT - CELL_MARGIN_BETWEEN_CONTROLL, 20000.0f);
-        size = [userName.text sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-        [userName setTextColor:[UIColor colorWithRed:79.0/255 green:178.0/255 blue:187.0/255 alpha:1]];
-        frame.origin.y = cellHeight;
-        frame.origin.x = CELL_CONTENT_MARGIN_LEFT;
-        frame.size = size;
-        userName.frame = frame;
-        //CreatedTime
-        timeCreated.text = content.created_on_lapseTime;
-        frame = timeCreated.frame;
-        frame.origin.y = cellHeight;
-        frame.size.width = cTimeCreatedLabelWidth;
-        //frame.origin.x = cellFrame.size.width - cTimeCreatedLabelWidth - CELL_CONTENT_MARGIN_RIGHT - 10;
-        timeCreated.frame = frame;
-        cellHeight += userName.frame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
         //avatar
-        frame = CGRectMake(CELL_CONTENT_MARGIN_LEFT, cellHeight, cAvartaContentHeight, cAvartaContentHeight);
+        frame = CGRectMake(CELL_CONTENT_MARGIN_LEFT, 5, cAvartaContentHeight, cAvartaContentHeight);
         imgAvatar.frame = frame;
         
-        // title
+        //CreatedTime
+        frame = timeCreated.frame;
+        frame.size.width = cTimeCreatedLabelWidth;
+        //frame.origin.x = cellFrame.size.width - cTimeCreatedLabelWidth - CELL_CONTENT_MARGIN_RIGHT - 10;
+        frame.origin.y = cellHeight;
+        timeCreated.frame = frame;
+        
+        cellHeight += 12;
+        
+        //User name;
+        frame = userName.frame;
+        constraint = CGSizeMake(cellFrame.size.width - 20 - cAvartaContentHeight - CELL_CONTENT_MARGIN_LEFT - CELL_CONTENT_MARGIN_RIGHT - CELL_MARGIN_BETWEEN_CONTROLL, 20000.0f);
+        size = [userName.text sizeWithFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+        [userName setTextColor:[UIColor colorWithRed:79.0/255 green:178.0/255 blue:187.0/255 alpha:1]];
+        frame.origin.y = cellHeight;
+        frame.origin.x = CELL_CONTENT_MARGIN_LEFT + cAvartaContentHeight + CELL_MARGIN_BETWEEN_CONTROLL;
+        frame.size = size;
+        userName.frame = frame;
+        cellHeight += userName.frame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+
+        //Title
         constraint = CGSizeMake(cellFrame.size.width - 20 - imgAvatar.frame.size.width - imgAvatar.frame.origin.x - CELL_CONTENT_MARGIN_LEFT - CELL_CONTENT_MARGIN_RIGHT - CELL_MARGIN_BETWEEN_CONTROLL, 20000.0f);
         size = [titlePost.text sizeWithFont:titlePost.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
         titlePost.frame = CGRectMake(imgAvatar.frame.origin.x + imgAvatar.frame.size.width + CELL_MARGIN_BETWEEN_CONTROLL, cellHeight, size.width, size.height);
-        if (titlePost.frame.size.height > imgAvatar.frame.size.height) {
-            cellHeight += titlePost.frame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+        cellHeight +=size.height;
+        if (cellHeight > imgAvatar.frame.size.height + imgAvatar.frame.origin.y) {
+            cellHeight += CELL_MARGIN_BETWEEN_CONTROLL;
         }else
-            cellHeight += imgAvatar.frame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+            cellHeight = imgAvatar.frame.size.height + imgAvatar.frame.origin.y + CELL_MARGIN_BETWEEN_CONTROLL;
 
         if (![textContent.text isEqualToString:@""] && optionView) {
             if (self.isShowFullText) {
@@ -526,20 +540,23 @@
     videoFrame = CGRectMake(leftMarginContent, 0.0, cellFrame.size.width - 20 - leftMarginContent - CELL_CONTENT_MARGIN_RIGHT, cYoutubeHeight + (2 * CELL_MARGIN_BETWEEN_IMAGE));//Include left+right magrin
     
     
-    //username
-    constraint = CGSizeMake(cellFrame.size.width - 20 - cTimeCreatedLabelWidth - CELL_CONTENT_MARGIN_LEFT - CELL_CONTENT_MARGIN_RIGHT - CELL_MARGIN_BETWEEN_CONTROLL, 20000.0f);
-    size = [content.userPostName sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_TITLE_SIZE -1] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-    cellHeight += size.height + CELL_MARGIN_BETWEEN_CONTROLL; //22 == username height
+    //timeCreated
+    cellHeight = 12;
     
-    //avatar
+    //username
+    constraint = CGSizeMake(cellFrame.size.width - 20 - cAvartaContentHeight - CELL_CONTENT_MARGIN_LEFT - CELL_CONTENT_MARGIN_RIGHT - CELL_MARGIN_BETWEEN_CONTROLL, 20000.0f);
+    size = [content.userPostName sizeWithFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    cellHeight += size.height ;
+
     //title
     constraint = CGSizeMake(cellFrame.size.width - 20 - cAvartaContentHeight - CELL_CONTENT_MARGIN_LEFT - CELL_CONTENT_MARGIN_LEFT - CELL_CONTENT_MARGIN_RIGHT - CELL_MARGIN_BETWEEN_CONTROLL, 20000.0f);
     size = [content.titlePost sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_TITLE_SIZE -1] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    cellHeight += size.height;
     
-    if (size.height > cAvartaContentHeight) {
-        cellHeight += size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+    if (cellHeight > cAvartaContentHeight + 5) {
+        cellHeight += CELL_MARGIN_BETWEEN_CONTROLL;
     }else
-        cellHeight += cAvartaContentHeight + CELL_MARGIN_BETWEEN_CONTROLL;
+        cellHeight = cAvartaContentHeight + 5 + CELL_MARGIN_BETWEEN_CONTROLL;
     
     //text
     if (![content.text isEqualToString:@""] && opt) {
@@ -570,8 +587,6 @@
     cellHeight += 38 + CELL_MARGIN_BETWEEN_CONTROLL;//botView.frame.size.height = 38
     
     cellHeight += CELL_MARGIN_BETWEEN_CONTROLL;
-
-    NSLog(@"Cell Height2 %d %f",content.ID_Post, cellHeight);
     return cellHeight;
 }
 
