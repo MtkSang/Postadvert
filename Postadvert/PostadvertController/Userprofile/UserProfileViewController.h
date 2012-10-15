@@ -7,15 +7,24 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MBProgressHUD.h"
 #import "PullRefreshTableViewController.h"
-@interface UserProfileViewController :PullRefreshTableViewController
+@interface UserProfileViewController :PullRefreshTableViewController<MBProgressHUDDelegate>
 {
+    NSMutableArray *listContent;
+    NSMutableArray *listActivityCell;
     IBOutlet UIView *headerViewSection;
     IBOutlet UIScrollView   *scrollingBar;
     IBOutlet UIImageView    *userAvatar;
     IBOutlet UILabel        *userFullName;
     IBOutlet UILabel        *userName;
+    MBProgressHUD *footerLoading;
+    MBProgressHUD *loadingHideView;
+    MBProgressHUD *HUD;
+    BOOL isLoadData;
+    long lastUserId;
     
 }
 @property (nonatomic, strong) IBOutlet UIView *headerViewSection;
+@property (nonatomic, weak) UINavigationController *navigationController;
 @end

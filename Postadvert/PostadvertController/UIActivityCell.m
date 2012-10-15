@@ -66,7 +66,7 @@
     if (! isDidDraw) {
         imgAvatar  = (UIImageView*)[self viewWithTag:1];
         userName   = (OHAttributedLabel*)[self viewWithTag:2];
-        created_time    = (OHAttributedLabel*)[self viewWithTag:3];
+        created_time    = (UILabel*)[self viewWithTag:3];
         textContent       = (OHAttributedLabel*)[self viewWithTag:4];
         textContent.linkColor = [UIColor blueColor];
         textContent.underlineLinks = NO;
@@ -247,8 +247,7 @@
         // title
         constraint = CGSizeMake(cellFrame.size.width - 20 - imgAvatar.frame.size.width - imgAvatar.frame.origin.x - CELL_CONTENT_MARGIN_LEFT - CELL_CONTENT_MARGIN_RIGHT - CELL_MARGIN_BETWEEN_CONTROLL, 20000.0f);
         size = [created_time.text sizeWithFont:created_time.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-        created_time.frame = CGRectMake(imgAvatar.frame.origin.x + imgAvatar.frame.size.width + CELL_MARGIN_BETWEEN_CONTROLL, 22, size.width, size.height);
-        //[titlePost setTextColor:[UIColor colorWithRed:105.0/255.0 green:92.0/255.0 blue:75.0/225.0 alpha:1.0]];
+        //created_time.frame = CGRectMake(imgAvatar.frame.origin.x + imgAvatar.frame.size.width + CELL_MARGIN_BETWEEN_CONTROLL, 22, size.width, size.height);
         
         if (![textContent.text isEqualToString:@""]) {
 
@@ -420,7 +419,7 @@
     cellHeight = CELL_CONTENT_MARGIN_TOP + imgAvatar.frame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
     constraint = CGSizeMake(cellFrame.size.width - 20 - imgAvatar.frame.size.width - imgAvatar.frame.origin.x - CELL_CONTENT_MARGIN_LEFT - CELL_CONTENT_MARGIN_RIGHT - CELL_MARGIN_BETWEEN_CONTROLL, 20000.0f);
     size = [created_time.text sizeWithFont:created_time.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-    created_time.frame = CGRectMake(imgAvatar.frame.origin.x + imgAvatar.frame.size.width + CELL_MARGIN_BETWEEN_CONTROLL, 22, size.width, size.height);
+    created_time.frame = CGRectMake(3 + cAvartaContentHeight + CELL_MARGIN_BETWEEN_CONTROLL, 22, size.width, size.height);
     //[titlePost setTextColor:[UIColor colorWithRed:105.0/255.0 green:92.0/255.0 blue:75.0/225.0 alpha:1.0]];
     
     //User name; do not resize now

@@ -1032,6 +1032,7 @@
     
     CGRect frame = self.overlay.frame;
     customViewCtr.view.frame = frame;
+    [(UserProfileViewController*) customViewCtr setNavigationController: self.navigationController];
     [self.overlay addSubview:customViewCtr.view];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"showDetailFromSubView_SideBar" object:nil];
 

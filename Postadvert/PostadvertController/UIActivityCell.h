@@ -16,7 +16,7 @@
 @interface UIActivityCell : UITableViewCell <UIActionSheetDelegate, OHAttributedLabelDelegate>//< UITextViewDelegate>
 {
     ActivityContent *_content;
-    IBOutlet OHAttributedLabel *created_time;
+    IBOutlet UILabel *created_time;
     IBOutlet OHAttributedLabel *textContent;
     IBOutlet UIView *clapComment;
     IBOutlet LinkPreview *linkView;
@@ -34,7 +34,7 @@
     BOOL isDidDraw;
     BOOL isLoadContent;
 }
-@property (nonatomic, strong) IBOutlet OHAttributedLabel *created_time;
+@property (nonatomic, strong) IBOutlet UILabel *created_time;
 @property (nonatomic, strong) IBOutlet OHAttributedLabel *textContent;
 @property (nonatomic, strong) IBOutlet LinkPreview *linkView;
 @property (nonatomic, strong) IBOutlet UIView *thumbnailView;

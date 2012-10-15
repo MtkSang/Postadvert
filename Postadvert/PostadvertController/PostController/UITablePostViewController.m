@@ -422,7 +422,6 @@
     if (data) {
         listContent = data;
         listPostCell = nil;
-        [self.tableView setContentOffset:CGPointZero];
     }
     
     [self initPostCell];

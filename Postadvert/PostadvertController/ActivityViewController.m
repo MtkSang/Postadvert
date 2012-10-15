@@ -256,7 +256,6 @@
     if (data) {
         listContent = data;
         listActivityCell = nil;
-        [self.tableView setContentOffset:CGPointZero];
     }
     
     [self initActivityCell];
