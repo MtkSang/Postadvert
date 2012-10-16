@@ -12,6 +12,7 @@
 #import "UIActivityCell.h"
 #import "Constants.h"
 #import "PostadvertControllerV2.h"
+#import "Profile_VideoViewController.h"
 
 @interface UserProfileViewController ()
 
@@ -188,8 +189,17 @@
 
 - (void)hudWasHidden:(MBProgressHUD *)hud {
 	// Remove HUD from screen when the HUD was hidded
-	[HUD removeFromSuperview];
-    HUD = nil;
+	[hud removeFromSuperview];
+    hud = nil;
+}
+
+#pragma mark Supper method
+
+- (void) refresh
+{
+    isLoadData = YES;
+    //[loadingHideView showWhileExecuting:@selector(loadActivity) onTarget:self withObject:nil animated:NO];
+    [self loadActivity];
 }
 
 #pragma mark -
@@ -373,18 +383,10 @@
     
 }
 
-
-#pragma mark Supper method
-
-- (void) refresh
+- (IBAction)userVideo:(id)sender
 {
-    if (!loadingHideView) {
-        loadingHideView = [[MBProgressHUD alloc]init];
-        loadingHideView.hasBackground = NO;
-        loadingHideView.mode = MBProgressHUDModeIndeterminate;
-    }
-    isLoadData = YES;
-    [loadingHideView showWhileExecuting:@selector(loadActivity) onTarget:self withObject:nil animated:NO];
+    Profile_VideoViewController *viewCtr = [[Profile_VideoViewController alloc]initWithStyle:UITableViewStyleGrouped];
+    [self.navigationController pushViewController:viewCtr animated:YES];
 }
 
 @end

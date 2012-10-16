@@ -16,21 +16,21 @@
 @interface UIActivityCell : UITableViewCell <UIActionSheetDelegate, OHAttributedLabelDelegate>//< UITextViewDelegate>
 {
     ActivityContent *_content;
-    IBOutlet UILabel *created_time;
-    IBOutlet OHAttributedLabel *textContent;
-    IBOutlet UIView *clapComment;
-    IBOutlet LinkPreview *linkView;
-    IBOutlet UIView *thumbnailView;
-             SDWebImageRootViewController *imageViewCtr;
-    IBOutlet UIImageView *imgAvatar;
-    IBOutlet OHAttributedLabel *userName;
-    IBOutlet UILabel *numClap;
-    IBOutlet UIButton *clapBtn;
-    IBOutlet UIButton *commentBtn;
-    IBOutlet UIButton *quickCommentBtn;
-    IBOutlet UIView *botView;
-    
+//    IBOutlet UILabel *created_time;
+//    IBOutlet OHAttributedLabel *textContent;
+//    IBOutlet UIView *clapComment;
+//    IBOutlet LinkPreview *linkView;
+//    IBOutlet UIView *thumbnailView;
+//    IBOutlet UIImageView *imgAvatar;
+//    IBOutlet OHAttributedLabel *userName;
+//    IBOutlet UILabel *numClap;
+//    IBOutlet UIButton *clapBtn;
+//    IBOutlet UIButton *commentBtn;
+//    IBOutlet UIButton *quickCommentBtn;
+//    IBOutlet UIView *botView;
+
     //internal var
+    SDWebImageRootViewController *imageViewCtr;
     BOOL isDidDraw;
     BOOL isLoadContent;
 }
@@ -62,5 +62,5 @@
 - (void) loadNibFile;
 - (void) updateView;
 + (Float32) getCellHeightWithContent:(ActivityContent*)content;
-+ (NSMutableAttributedString*) makeActionStringWithContent:(ActivityContent*)content;
 @end
+

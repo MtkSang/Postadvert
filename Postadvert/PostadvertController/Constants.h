@@ -35,6 +35,13 @@
 #define cMinImageMove                       40.0
 #define cTimeCreatedLabelWidth              250.0
 
+
+
+#pragma myFunton
+
+#define ShowNetworkActivityIndicator() [UIApplication sharedApplication].networkActivityIndicatorVisible = YES
+#define HideNetworkActivityIndicator() [UIApplication sharedApplication].networkActivityIndicatorVisible = NO
+
 #pragma mark - enum
 
 typedef enum

@@ -433,6 +433,9 @@
 		FA5EFEB915D21D6700EBDCFB /* SideBarViewController_IPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA5EFEB815D21D6700EBDCFB /* SideBarViewController_IPad.xib */; };
 		FA5EFEC215D2568200EBDCFB /* UIImageView+URL.m in Sources */ = {isa = PBXBuildFile; fileRef = FA5EFEC115D2568200EBDCFB /* UIImageView+URL.m */; };
 		FA5EFEC715D25A0000EBDCFB /* user_default_thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = FA5EFEC615D25A0000EBDCFB /* user_default_thumb.png */; };
+		FA6BF99E162D392A007BA656 /* Profile_VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6BF99C162D392A007BA656 /* Profile_VideoViewController.m */; };
+		FA6BF99F162D392A007BA656 /* Profile_VideoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA6BF99D162D392A007BA656 /* Profile_VideoViewController.xib */; };
+		FA6BF9A1162D45E1007BA656 /* video_icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FA6BF9A0162D45E1007BA656 /* video_icon.jpg */; };
 		FA6DD3FA1591767A00A08600 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6DD3F81591767A00A08600 /* ChatViewController.m */; };
 		FA6DD3FB1591767A00A08600 /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA6DD3F91591767A00A08600 /* ChatViewController.xib */; };
 		FA6DDB0515E3299B0016C755 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6DDB0415E3299B0016C755 /* CoreText.framework */; };
@@ -1051,6 +1054,10 @@
 		FA5EFEC015D2568200EBDCFB /* UIImageView+URL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+URL.h"; sourceTree = "<group>"; };
 		FA5EFEC115D2568200EBDCFB /* UIImageView+URL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+URL.m"; sourceTree = "<group>"; };
 		FA5EFEC615D25A0000EBDCFB /* user_default_thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_default_thumb.png; sourceTree = "<group>"; };
+		FA6BF99B162D392A007BA656 /* Profile_VideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile_VideoViewController.h; sourceTree = "<group>"; };
+		FA6BF99C162D392A007BA656 /* Profile_VideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile_VideoViewController.m; sourceTree = "<group>"; };
+		FA6BF99D162D392A007BA656 /* Profile_VideoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Profile_VideoViewController.xib; sourceTree = "<group>"; };
+		FA6BF9A0162D45E1007BA656 /* video_icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = video_icon.jpg; sourceTree = "<group>"; };
 		FA6DD3F71591767A00A08600 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		FA6DD3F81591767A00A08600 /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 		FA6DD3F91591767A00A08600 /* ChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatViewController.xib; sourceTree = "<group>"; };
@@ -2051,6 +2058,7 @@
 		FA58AD9A16008A8000977F99 /* Userprofile */ = {
 			isa = PBXGroup;
 			children = (
+				FA6BF999162D38A6007BA656 /* Video */,
 				FA4EF7C31601EA37008FD7E6 /* btnUserProfile_(inactive).png */,
 				FA4EF7C41601EA37008FD7E6 /* btnUserProfile_(active).png */,
 				FA4EF7BF1601E456008FD7E6 /* btn_UserProfile(selected).png */,
@@ -2113,6 +2121,17 @@
 				FA5EFEC615D25A0000EBDCFB /* user_default_thumb.png */,
 			);
 			path = "Other Icon";
+			sourceTree = "<group>";
+		};
+		FA6BF999162D38A6007BA656 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				FA6BF9A0162D45E1007BA656 /* video_icon.jpg */,
+				FA6BF99B162D392A007BA656 /* Profile_VideoViewController.h */,
+				FA6BF99C162D392A007BA656 /* Profile_VideoViewController.m */,
+				FA6BF99D162D392A007BA656 /* Profile_VideoViewController.xib */,
+			);
+			path = Video;
 			sourceTree = "<group>";
 		};
 		FA721E6C15A3E26200212073 /* Status Updates */ = {
@@ -2723,6 +2742,8 @@
 				FA388BC3162698970000E9BB /* Default@2x.png in Resources */,
 				FA388BC6162698FA0000E9BB /* iPhone@2x.png in Resources */,
 				FA388BC8162699070000E9BB /* iPhone@2x.png in Resources */,
+				FA6BF99F162D392A007BA656 /* Profile_VideoViewController.xib in Resources */,
+				FA6BF9A1162D45E1007BA656 /* video_icon.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2893,6 +2914,7 @@
 				FA5C5B9615EE0AA00073DBE9 /* UIActivityCell.m in Sources */,
 				FA8D6BCA15EF7366005FD412 /* ActivityViewController.m in Sources */,
 				FA58AD9F16008A9F00977F99 /* UserProfileViewController.m in Sources */,
+				FA6BF99E162D392A007BA656 /* Profile_VideoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

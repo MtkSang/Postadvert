@@ -100,7 +100,7 @@
 								<string key="NSFrame">{{58, 30}, {262, 20}}</string>
 								<reference key="NSSuperview" ref="529072215"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="799482759"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -290,6 +290,7 @@
 										<string key="NSFrame">{{277, 1}, {38, 38}}</string>
 										<reference key="NSSuperview" ref="367619385"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<int key="IBUITag">12</int>
@@ -582,7 +583,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">43</int>
+			<int key="maxID">45</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -624,6 +625,7 @@
 						<string key="created_time">UILabel</string>
 						<string key="imgAvatar">UIImageView</string>
 						<string key="linkView">LinkPreview</string>
+						<string key="myTest">UISegmentedControl</string>
 						<string key="numClap">UILabel</string>
 						<string key="quickCommentBtn">UIButton</string>
 						<string key="textContent">OHAttributedLabel</string>
@@ -658,6 +660,10 @@
 						<object class="IBToOneOutletInfo" key="linkView">
 							<string key="name">linkView</string>
 							<string key="candidateClassName">LinkPreview</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="myTest">
+							<string key="name">myTest</string>
+							<string key="candidateClassName">UISegmentedControl</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="numClap">
 							<string key="name">numClap</string>
