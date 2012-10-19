@@ -12,6 +12,7 @@
 
 @implementation CredentialInfo
 
+@synthesize friendStatus;
 @synthesize registrationID; 
 @synthesize avatarUrl;
 @synthesize imgAvatar;

@@ -116,7 +116,7 @@ static void singleton_remover() {
     [copyRightButton setBackgroundColor:[UIColor clearColor]];
     [copyRightButton.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:14]];
     [copyRightButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [copyRightButton setTitle:@"Postadvert © 2012" forState:UIControlStateNormal];
+    [copyRightButton setTitle:@"Stroff © 2012" forState:UIControlStateNormal];
     [copyRightButton sizeToFit];
     NSLog(@"Bot %@", botView);
     copyRightButton.frame = CGRectMake(self.view.frame.size.width - cRemainView - copyRightButton.frame.size.width - 5.0, 0.0, copyRightButton.frame.size.width, cCellHeight - 5);

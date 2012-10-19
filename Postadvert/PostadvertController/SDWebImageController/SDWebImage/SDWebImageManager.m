@@ -163,5 +163,7 @@ static SDWebImageManager *instance;
     [downloader release];
 }
 
+#warning need download fail here
+//[delegate performSelector:@selector(imageDownloader:didFailWithError:) withObject:self withObject:error];
 
 @end

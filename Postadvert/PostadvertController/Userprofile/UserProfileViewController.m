@@ -8,15 +8,25 @@
 
 #import "UserProfileViewController.h"
 #import "UserPAInfo.h"
+#import "CredentialInfo.h"
 #import "ActivityContent.h"
 #import "UIActivityCell.h"
 #import "Constants.h"
 #import "PostadvertControllerV2.h"
 #import "Profile_VideoViewController.h"
+#import "Profile_PhotosViewController.h"
+#import "UIImageView+URL.h"
+#import "FriendsViewController.h"
 
 @interface UserProfileViewController ()
 
 - (IBAction)btn_scrolling_bar_clicked:(id)sender;
+- (IBAction)userPhotos:(id)sender;
+- (IBAction)friendBtnClicked:(id)sender;
+- (IBAction)messageBtnClicked:(id)sender;
+- (void) setFriendBtnTitle;
+- (void)updateView;
+- (void)updateUserInfo;
 @end
 
 @implementation UserProfileViewController
@@ -32,57 +42,42 @@
     return self;
 }
 
+- (id)initWithUserID:(long)userID
+{
+    self = [super initWithNibName:@"UserProfileViewController" bundle:nil];
+    if (self) {
+        // Custom initialization
+        lastUserId = userID;
+    }
+    return self;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     self.clearsSelectionOnViewWillAppear = YES;
-    UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44)];
-    [footerView setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth];
-    footerView.autoresizesSubviews = YES;
-    self.view.frame =[[UIScreen mainScreen] bounds];
-    self.tableView.frame = [[UIScreen mainScreen] bounds];
-    [self.tableView setTableFooterView: footerView];
-    footerLoading = [[MBProgressHUD alloc]initWithView:self.tableView.tableFooterView];
-    footerLoading.hasBackground = NO;
-    footerLoading.mode = MBProgressHUDModeIndeterminate;
-    footerLoading.autoresizingMask = footerView.autoresizingMask;
-    footerLoading.autoresizesSubviews = YES;
-    footerView = nil;
     listActivityCell = [[NSMutableArray alloc]init];
     listContent = [[NSMutableArray alloc]init];
+    [self initView];
+    [self performSelectorInBackground:@selector(updateUserInfo) withObject:nil];
     [self loadActivity];
+    
 }
 
 - (void)viewDidUnload
 {
+    [self setAddFriendBtn:nil];
+    [self setMessageBtn:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
-- (void)viewDidAppear:(BOOL)animated
-{
-//    if (self.headerViewSection.superview) {
-//        [self.headerViewSection removeFromSuperview];
-//    }
-//    if (self.view.superview) {
-//        [self.view.superview addSubview:self.headerViewSection];
-//        CGRect supperFrame = self.view.superview.frame;
-//        CGRect headerFrame = self.headerViewSection.frame;
-//        CGRect viewFrame   = CGRectMake(0.0, headerFrame.origin.y + headerFrame.size.height, supperFrame.size.width, supperFrame.size.height - (headerFrame.origin.y + headerFrame.size.height));
-//        
-//        headerFrame.origin.x = 0;
-//        headerFrame.origin.y = 0;
-//        headerFrame.size.width = supperFrame.size.width;
-//        self.headerViewSection.frame = headerFrame;
-//        self.view.frame = viewFrame;
-//    }
-    userAvatar.image = [[UserPAInfo sharedUserPAInfo] imgAvatar];
-    userFullName.text = [[UserPAInfo sharedUserPAInfo] fullName];
-    userName.text = [[UserPAInfo sharedUserPAInfo] usernamePU];
-    scrollingBar.contentSize = CGSizeMake(478, scrollingBar.frame.size.height);
-}
 
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+}
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -135,43 +130,43 @@
     [listActivityCell replaceObjectAtIndex:indexPath.section withObject:cell];
     return cell;
 }/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+  // Override to support conditional editing of the table view.
+  - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+  {
+  // Return NO if you do not want the specified item to be editable.
+  return YES;
+  }
+  */
 
 /*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ }
+ else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }
+ }
+ */
 
 /*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+ {
+ }
+ */
 
 /*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
 
 #pragma mark - Table view delegate
 
@@ -229,8 +224,121 @@
     
     
 }
-#pragma -
+#pragma mark -
 #pragma customAction
+- (void) setLastUserId:(long) userID
+{
+    lastUserId = userID;
+    //Get user info
+    [self performSelectorInBackground:@selector(updateUserInfo) withObject:nil];
+    
+    //get activity
+    [self loadActivity];
+}
+- (void)initView
+{
+    scrollingBar.contentSize = CGSizeMake(478, scrollingBar.frame.size.height);
+    if (lastUserId == [[UserPAInfo sharedUserPAInfo] registrationID]) {
+        CGRect frame = headerViewSection.frame;
+        frame.size.height = 155 - 30 - 10;
+        headerViewSection.frame = frame;
+        self.addFriendBtn.hidden = YES;
+        self.messageBtn.hidden = YES;
+    }
+    else
+    {
+        CGRect frame = headerViewSection.frame;
+        self.addFriendBtn.titleLabel.text = @"Add Friend";
+        frame.size.height = 155;
+        headerViewSection.frame = frame;
+        self.addFriendBtn.hidden = NO;
+        self.messageBtn.hidden = NO;
+    }
+}
+- (void)updateView
+{
+    
+    //Check User profile OR Friend profile
+    CGRect frame = headerViewSection.frame;
+    switch (userInfo.friendStatus) {
+        case -1:
+            frame.size.height = 155 - 30 - 10;
+            headerViewSection.frame = frame;
+            self.addFriendBtn.hidden = YES;
+            self.messageBtn.hidden = YES;
+            break;
+        case 1:
+            // did friend
+            [self.addFriendBtn setTitle:@"Friend" forState:UIControlStateNormal];
+            frame.size.height = 155;
+            headerViewSection.frame = frame;
+            self.addFriendBtn.hidden = NO;
+            self.messageBtn.hidden = NO;
+            break;
+        case 2:
+            // did friend
+            [self.addFriendBtn setTitle:@"Friend Request Sent" forState:UIControlStateNormal];
+            frame.size.height = 155;
+            headerViewSection.frame = frame;
+            self.addFriendBtn.hidden = NO;
+            self.messageBtn.hidden = NO;
+            break;
+        case 3:
+            // did friend
+            [self.addFriendBtn setTitle:@"Respond to Request" forState:UIControlStateNormal];
+            frame.size.height = 155;
+            headerViewSection.frame = frame;
+            self.addFriendBtn.hidden = NO;
+            self.messageBtn.hidden = NO;
+            break;
+        default:
+            // no friend
+            [self.addFriendBtn setTitle:@"Add Friend" forState:UIControlStateNormal];
+            frame.size.height = 155;
+            headerViewSection.frame = frame;
+            self.addFriendBtn.hidden = NO;
+            self.messageBtn.hidden = NO;
+            break;
+    }
+    UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44)];
+    [footerView setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth];
+    footerView.autoresizesSubviews = YES;
+    [self.tableView setTableFooterView: footerView];
+    footerLoading = [[MBProgressHUD alloc]initWithView:self.tableView.tableFooterView];
+    footerLoading.hasBackground = NO;
+    footerLoading.mode = MBProgressHUDModeIndeterminate;
+    footerLoading.autoresizingMask = footerView.autoresizingMask;
+    footerLoading.autoresizesSubviews = YES;
+
+}
+- (void)updateUserInfo
+{
+    //-(id) getFriendStatusWithUserID:(NSString*)userID andOtherID:(NSString*)otherID
+    [self getUserInfo];
+    [userAvatar setImageWithURL:[NSURL URLWithString:userInfo.avatarUrl] placeholderImage:[UIImage imageNamed:@"user_default_thumb.png"]];
+    userFullName.text = [userInfo fullName];
+    userName.text = [userInfo usernamePU];
+    
+    [self performSelectorOnMainThread:@selector(updateView) withObject:nil waitUntilDone:NO];
+}
+
+- (void)getUserInfo
+{
+    id data = [[PostadvertControllerV2 sharedPostadvertController] getFriendStatusWithUserID:[NSString stringWithFormat:@"%ld",[[UserPAInfo sharedUserPAInfo] registrationID]] andOtherID:[NSString stringWithFormat:@"%ld", lastUserId]];
+    if (data) {
+        if ([data isKindOfClass:[NSDictionary class]]) {
+            userInfo = nil;
+            userInfo = [[CredentialInfo alloc]init];
+            userInfo.fullName = [data objectForKey:@"name"];
+            userInfo.usernamePU = [data objectForKey:@"username"];
+            userInfo.friendStatus = [[data objectForKey:@"friend_status"] integerValue];
+            userInfo.avatarUrl = [data objectForKey:@"thumb"];
+            userInfo.registrationID = [[data objectForKey:@"id"] integerValue];
+        }
+        
+    }
+}
+
 - (IBAction)btn_scrolling_bar_clicked:(id)sender
 {
     //Just using for this UI
@@ -245,10 +353,18 @@
     
 }
 
+- (IBAction) friendBtnClicked:(id)sender
+{
+    
+}
+
+- (IBAction) messageBtnClicked:(id)sender
+{
+    
+}
+
 - (void)loadActivity
 {
-    lastUserId = [[UserPAInfo sharedUserPAInfo]registrationID];
-    
     //LOAD DATA
     
     if (self.view.superview) {
@@ -385,8 +501,25 @@
 
 - (IBAction)userVideo:(id)sender
 {
-    Profile_VideoViewController *viewCtr = [[Profile_VideoViewController alloc]initWithStyle:UITableViewStyleGrouped];
+    Profile_VideoViewController *viewCtr = [[Profile_VideoViewController alloc]initWithFullName:userInfo.fullName userID:userInfo.registrationID];
     [self.navigationController pushViewController:viewCtr animated:YES];
 }
 
+- (IBAction)userPhotos:(id)sender
+{
+    Profile_PhotosViewController *viewCtr = [[Profile_PhotosViewController alloc]initWithFullName:userInfo.fullName userID:userInfo.registrationID];
+    viewCtr.navigationController = self.navigationController;
+    [self.navigationController pushViewController:viewCtr animated:YES];
+}
+
+- (IBAction)userFriends:(id)sender
+{
+    //FriendsViewController
+    FriendsViewController *viewCtr = [[FriendsViewController alloc]initWithUserID:userInfo.registrationID];
+    viewCtr.navigationController = self.navigationController;
+    [self.navigationController pushViewController:viewCtr animated:YES];
+}
 @end
+
+
+

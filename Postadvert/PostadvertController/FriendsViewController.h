@@ -12,18 +12,14 @@
 
 @interface FriendsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchDisplayDelegate>
 {
-    id <FriendsViewControllerDelegate> delegate;
     NSMutableArray *listFriendCellContent;
     NSMutableArray *filteredListContent;
     NSMutableArray *sectionedListContent;  // The content filtered into alphabetical sections.
-    IBOutlet UITableView *tableView;
-    UINavigationController *navigationController;
     NSInteger totalFriends;
     NSInteger currentIndex_friend;
     BOOL isLoadData;
+    long userID;
 }
-//@property (nonatomic, strong) NSMutableArray *listMessageCellContent;
-//@property (nonatomic, strong) NSMutableArray *filteredListContent;
 @property (nonatomic, weak) id <FriendsViewControllerDelegate> delegate;
 @property (nonatomic, weak) UINavigationController *navigationController;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
@@ -31,6 +27,7 @@
 
 - (NSInteger)getTotalFriends;
 - (id)getFriendsFrom:(NSInteger)start count:(NSInteger)count;
+- (id)initWithUserID:(long) userID;
 @end
 
 @protocol FriendsViewControllerDelegate

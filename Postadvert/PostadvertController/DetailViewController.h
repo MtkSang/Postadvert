@@ -17,7 +17,6 @@
 #import "GlobalNotificationsViewController.h"
 #import "GlobalAlertViewController.h"
 #import "MessageViewController.h"
-#import "FriendsViewController.h"
 
 @class DetailViewController;
 @class ChatViewController;
@@ -25,7 +24,7 @@
 - (void) pushViewControllerWithView:(UIView*) view;
 @end
 
-@interface DetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MBProgressHUDDelegate, WEPopoverControllerDelegate,GlobalNotificationsViewControllerDelegate, GlobalAlertViewControllerDelegate, MessageViewControllerDelegate, FriendsViewControllerDelegate >
+@interface DetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MBProgressHUDDelegate, WEPopoverControllerDelegate,GlobalNotificationsViewControllerDelegate, GlobalAlertViewControllerDelegate, MessageViewControllerDelegate >
 {
 #if EXPERIEMENTAL_ORIENTATION_SUPPORT
     CGPoint _containerOrigin;

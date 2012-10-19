@@ -31,6 +31,10 @@
 #import "UITablePostViewController.h"
 #import "SupportFunction.h"
 #import "Userprofile/UserProfileViewController.h"
+
+//
+#import "UserProfileViewController.h"
+#import "FriendsViewController.h"
 @interface DetailViewController ()
 - (void) showDetailFromSubView:(NSNotification*)notifi;
 - (IBAction)showHideSidebar:(id)sender;
@@ -824,13 +828,27 @@
 - (BOOL) openURL
 {
     NSURL *url = [[NSUserDefaults standardUserDefaults] URLForKey:@"openURL"];
-    NSLog(@"URL2 %@", url);
-    BrowserViewController *bvc = [[BrowserViewController alloc] initWithUrls:url];
-    //self.navController.navigationBarHidden = NO;
-    //[_mainViewController.navigationController pushViewController:bvc animated:YES];
-    //[[SideBarViewController instanceSideBar].navLeft.navigationController pushViewController:bvc animated:YES];
-    //[[SideBarViewController instanceSideBar].navDetail.navigationController pushViewController:bvc animated:YES];
+    NSString *schem = [url scheme];
+    NSString *host = [url host];
+    //User profile
+    if ([schem isEqualToString:@"localStroff"]) {
+        NSArray *parametters = [host componentsSeparatedByString:@"__"];
+        if (parametters.count) {
+            if ([[parametters objectAtIndex:0] isEqualToString:@"user"]) {
+                if (parametters.count >1) {
+                    long userID = [[parametters objectAtIndex:1] integerValue];
+                    UserProfileViewController *userProfileCtr = [[UserProfileViewController alloc]initWithUserID:userID];
+                    userProfileCtr.navigationController = self.navigationController;
+                    [self.navigationController pushViewController:userProfileCtr animated:YES];
+                    NSLog(@"VKL");
+                }
+            }
+        }
+        return NO;
+    }
     
+    //other way
+    BrowserViewController *bvc = [[BrowserViewController alloc] initWithUrls:url];
     [self.navigationController pushViewController:bvc animated:YES];
     bvc = nil;
     return YES;
@@ -1021,18 +1039,19 @@
     for (UIView *view in overlay.subviews) {
         [view removeFromSuperview];
     }
-    if (customViewCtr == nil) {
-        customViewCtr = [[UserProfileViewController alloc]initWithNibName:@"UserProfileViewController" bundle:nil];
-    }
-    else {
-        if (![customViewCtr isKindOfClass:[UserProfileViewController class]]) {
-            customViewCtr = [[UserProfileViewController alloc]initWithNibName:@"UserProfileViewController" bundle:nil];
-        }
-    }
-    
+//    if (customViewCtr == nil) {
+//        customViewCtr = [[UserProfileViewController alloc]initWithNibName:@"UserProfileViewController" bundle:nil];
+//    }
+//    else {
+//        if (![customViewCtr isKindOfClass:[UserProfileViewController class]]) {
+//            customViewCtr = [[UserProfileViewController alloc]initWithNibName:@"UserProfileViewController" bundle:nil];
+//        }
+//    }
+    customViewCtr = [[UserProfileViewController alloc]initWithUserID:[[UserPAInfo sharedUserPAInfo] registrationID]];
     CGRect frame = self.overlay.frame;
     customViewCtr.view.frame = frame;
     [(UserProfileViewController*) customViewCtr setNavigationController: self.navigationController];
+    //[(UserProfileViewController*) customViewCtr setLastUserId:[[UserPAInfo sharedUserPAInfo] registrationID]];
     [self.overlay addSubview:customViewCtr.view];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"showDetailFromSubView_SideBar" object:nil];
 
@@ -1147,7 +1166,6 @@
                     customViewCtr = [[FriendsViewController alloc] init];
                 }
             }
-            ((FriendsViewController*)customViewCtr).delegate = self;
             NSLog(@"Custome View %@", customViewCtr.view);
             customViewCtr.view.frame = overlay.frame;
             [self.overlay addSubview: customViewCtr.view];

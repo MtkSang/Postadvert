@@ -11,6 +11,7 @@
 
 @interface CredentialInfo : NSObject 
 {
+    int                      friendStatus;
     long                        registrationID;
     NSString                    *avatarUrl;
     NSString                    *fullName; 
@@ -50,9 +51,10 @@
     UIImage                     *imgAvatar;
 }
 
+@property(nonatomic, assign) int                      friendStatus;
 @property(nonatomic, assign) long                      registrationID; 
 @property(nonatomic, copy) NSString                    *avatarUrl;
-@property(nonatomic, retain) UIImage                     *imgAvatar;
+@property(nonatomic, retain) UIImage                   *imgAvatar;
 @property(nonatomic, copy) NSString                    *fullName;
 @property(nonatomic, copy) NSString                    *build;
 @property(nonatomic, copy) NSString                    *email; 

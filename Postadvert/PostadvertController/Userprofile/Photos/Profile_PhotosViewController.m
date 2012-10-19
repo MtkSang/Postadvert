@@ -1,25 +1,25 @@
 //
-//  Profile_VideoViewController.m
+//  Profile_PhotosViewController.m
 //  Stroff
 //
-//  Created by Ray on 10/16/12.
+//  Created by Ray on 10/17/12.
 //  Copyright (c) 2012 Futureworkz. All rights reserved.
 //
 
-#import "Profile_VideoViewController.h"
+#import "Profile_PhotosViewController.h"
 #import "PostadvertControllerV2.h"
 #import "NSData+Base64.h"
 #import "UIImageView+URL.h"
 #import "UserPAInfo.h"
 #import "Constants.h"
+#import "Profile_PhotoListViewController.h"
 
-@interface Profile_VideoViewController ()
-- (void)loadActivity;
+@interface Profile_PhotosViewController ()
+
 @end
 
-@implementation Profile_VideoViewController
-
-
+@implementation Profile_PhotosViewController
+@synthesize navigationController;
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -31,7 +31,7 @@
 
 - (id) initWithFullName:(NSString*)name userID:(long) userID_
 {
-    self = [super initWithNibName:@"Profile_VideoViewController" bundle:nil];
+    self = [super initWithNibName:@"Profile_PhotosViewController" bundle:nil];
     if (self) {
         // Custom initialization
         fullName = name;
@@ -39,7 +39,6 @@
     }
     return self;
 }
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -54,7 +53,7 @@
     headerTitle.textColor = [UIColor darkGrayColor];
     headerTitle.textAlignment = UITextAlignmentCenter;
     [headerTitle setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
-    headerTitle.text = [NSString stringWithFormat:@"%@'s videos", fullName];
+    headerTitle.text = [NSString stringWithFormat:@"%@'s albums", fullName];
     [view addSubview:headerTitle];
     self.tableView.tableHeaderView = view;
     //view = nil;
@@ -89,67 +88,55 @@
     }
     
     // Configure the cell...
+    [cell setAccessoryType:UITableViewCellAccessoryDetailDisclosureButton];
     NSDictionary *cellData = [listContent objectAtIndex:indexPath.section];
     NSString *imageURL = [NSData stringDecodeFromBase64String: [cellData objectForKey:@"thumbnail"]];
-    [cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"video_icon.jpg"]];
-    cell.textLabel.text = [NSData stringDecodeFromBase64String: [cellData objectForKey:@"title"] ];
+    [cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"photoDefault.png"]];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ (%d)",[cellData objectForKey:@"name"], [[cellData objectForKey:@"total_photos"] integerValue]];
     cell.textLabel.numberOfLines = 2;
-    NSString *detail = [NSString stringWithFormat:@"%d views    %@",[[cellData objectForKey:@"hits"]integerValue ], [NSData stringDecodeFromBase64String:[cellData objectForKey:@"created"]]];
-    cell.detailTextLabel.text = detail;
-    NSString *duration = [NSString stringWithFormat:@" %@ ", [cellData objectForKey:@"duration"]];
-    UILabel *durationLabel = [[UILabel alloc]init];
-    durationLabel.text = duration;
-    durationLabel.textColor = [UIColor whiteColor];
-    durationLabel.backgroundColor = [UIColor darkTextColor];
-    durationLabel.font = [UIFont fontWithName:FONT_NAME size:FONT_SIZE];
-    [durationLabel sizeToFit];
-    CGRect frame = durationLabel.frame;
-    frame.origin.x = 85 - frame.size.width;
-    frame.origin.y = 70 - 20;
-    durationLabel.frame = frame;
-    [cell.imageView addSubview:durationLabel];
-    NSLog(@"%@", cell.imageView);
+    cell.detailTextLabel.text = [NSData stringDecodeFromBase64String:[cellData objectForKey:@"created"]];
+    
     return cell;
 }
 
 /*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
 
 /*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ }
+ else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }
+ }
+ */
 
 /*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+ {
+ }
+ */
 
 /*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
 
 #pragma mark - Table view delegate
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -161,9 +148,11 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSDictionary *cellData = [listContent objectAtIndex:indexPath.section];
-    NSString *urlString = [NSData stringDecodeFromBase64String: [cellData objectForKey:@"video_url"]];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
-    
+    Profile_PhotoListViewController *albumDeatailCtr = [[Profile_PhotoListViewController alloc]init];
+    albumDeatailCtr.albumID = [[cellData objectForKey:@"id"] integerValue];
+    albumDeatailCtr.photoCount = [[cellData objectForKey:@"total_photos"] integerValue];
+    albumDeatailCtr.navigationController = self.navigationController;
+    [self.navigationController pushViewController:albumDeatailCtr animated:YES];
 }
 #pragma mark MBProgressHUDDelegate methods
 
@@ -194,7 +183,7 @@
 
 - (void) loadCellsInBackground
 {
-    id data = [[PostadvertControllerV2 sharedPostadvertController] getUserVideosWithUserID:[NSString stringWithFormat:@"%ld", userID]];
+    id data = [[PostadvertControllerV2 sharedPostadvertController] getUserAlbumsWithUserID:[NSString stringWithFormat:@"%ld", userID]];
     if (data) {
         listContent = data;
     }

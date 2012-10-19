@@ -359,10 +359,7 @@
 		FA032563157752AF002EB93D /* title_sub.png in Resources */ = {isa = PBXBuildFile; fileRef = FA03244E157752AF002EB93D /* title_sub.png */; };
 		FA03256C157752AF002EB93D /* tick.png in Resources */ = {isa = PBXBuildFile; fileRef = FA032457157752AF002EB93D /* tick.png */; };
 		FA03256D157752AF002EB93D /* upload-photo1.png in Resources */ = {isa = PBXBuildFile; fileRef = FA032458157752AF002EB93D /* upload-photo1.png */; };
-		FA03256E157752AF002EB93D /* user01.png in Resources */ = {isa = PBXBuildFile; fileRef = FA032459157752AF002EB93D /* user01.png */; };
-		FA03256F157752AF002EB93D /* user02.png in Resources */ = {isa = PBXBuildFile; fileRef = FA03245A157752AF002EB93D /* user02.png */; };
 		FA032573157764E4002EB93D /* FlagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA032572157764E3002EB93D /* FlagViewController.m */; };
-		FA0440B615888C48001161D5 /* ListImages.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0440B515888C48001161D5 /* ListImages.m */; };
 		FA123974159AC7E90026838C /* DetailNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA123972159AC7E90026838C /* DetailNotificationViewController.m */; };
 		FA123975159AC7E90026838C /* DetailNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA123973159AC7E90026838C /* DetailNotificationViewController.xib */; };
 		FA12397B159B07290026838C /* GlobalAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA123979159B07290026838C /* GlobalAlertViewController.m */; };
@@ -383,10 +380,8 @@
 		FA388B93162674440000E9BB /* iTunesArtwork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388B82162674440000E9BB /* iTunesArtwork@2x.png */; };
 		FA388B9C162674F70000E9BB /* iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388B9B162674F70000E9BB /* iPhone.png */; };
 		FA388B9E162675D70000E9BB /* iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388B9D162675D70000E9BB /* iPad.png */; };
-		FA388BA0162676760000E9BB /* iPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388B9F162676760000E9BB /* iPad@2x.png */; };
 		FA388BA2162676860000E9BB /* iPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388BA1162676860000E9BB /* iPad@2x.png */; };
 		FA388BAB162679760000E9BB /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388BAA162679760000E9BB /* Default@2x.png */; };
-		FA388BB116267BCF0000E9BB /* iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388B7D162674440000E9BB /* iPhone.png */; };
 		FA388BBD162698970000E9BB /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388BB5162698970000E9BB /* Default-568h@2x.png */; };
 		FA388BBE162698970000E9BB /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388BB6162698970000E9BB /* Default-Landscape.png */; };
 		FA388BBF162698970000E9BB /* Default-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388BB7162698970000E9BB /* Default-Landscape@2x.png */; };
@@ -467,6 +462,10 @@
 		FAA902DB15E39222009D9DD6 /* NSAttributedString+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA902D715E39222009D9DD6 /* NSAttributedString+Attributes.m */; };
 		FAA902DC15E39222009D9DD6 /* OHAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA902D915E39222009D9DD6 /* OHAttributedLabel.m */; };
 		FAA902DF15E39285009D9DD6 /* UILabel+RectForLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA902DE15E39285009D9DD6 /* UILabel+RectForLetter.m */; };
+		FAA99F75162E6E870025A50F /* Profile_PhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA99F73162E6E870025A50F /* Profile_PhotosViewController.m */; };
+		FAA99F76162E6E870025A50F /* Profile_PhotosViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAA99F74162E6E870025A50F /* Profile_PhotosViewController.xib */; };
+		FAA99F7A162E982B0025A50F /* Profile_PhotoListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA99F78162E982B0025A50F /* Profile_PhotoListViewController.m */; };
+		FAA99F7B162E982B0025A50F /* Profile_PhotoListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAA99F79162E982B0025A50F /* Profile_PhotoListViewController.xib */; };
 		FAABB49C159C5E13002E9CAC /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAABB49A159C5E13002E9CAC /* MessageViewController.m */; };
 		FAABB49D159C5E13002E9CAC /* MessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAABB49B159C5E13002E9CAC /* MessageViewController.xib */; };
 		FAB4E56215ECA00400C3CF55 /* templateF in Resources */ = {isa = PBXBuildFile; fileRef = FAB4E56115ECA00400C3CF55 /* templateF */; };
@@ -964,12 +963,8 @@
 		FA03244E157752AF002EB93D /* title_sub.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = title_sub.png; sourceTree = "<group>"; };
 		FA032457157752AF002EB93D /* tick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tick.png; sourceTree = "<group>"; };
 		FA032458157752AF002EB93D /* upload-photo1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "upload-photo1.png"; sourceTree = "<group>"; };
-		FA032459157752AF002EB93D /* user01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user01.png; sourceTree = "<group>"; };
-		FA03245A157752AF002EB93D /* user02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user02.png; sourceTree = "<group>"; };
 		FA032571157764E2002EB93D /* FlagViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlagViewController.h; sourceTree = "<group>"; };
 		FA032572157764E3002EB93D /* FlagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlagViewController.m; sourceTree = "<group>"; };
-		FA0440B415888C48001161D5 /* ListImages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ListImages.h; path = "Managed Objects/ListImages.h"; sourceTree = "<group>"; };
-		FA0440B515888C48001161D5 /* ListImages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ListImages.m; path = "Managed Objects/ListImages.m"; sourceTree = "<group>"; };
 		FA123971159AC7E90026838C /* DetailNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailNotificationViewController.h; sourceTree = "<group>"; };
 		FA123972159AC7E90026838C /* DetailNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailNotificationViewController.m; sourceTree = "<group>"; };
 		FA123973159AC7E90026838C /* DetailNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailNotificationViewController.xib; sourceTree = "<group>"; };
@@ -988,14 +983,12 @@
 		FA388B7A162674440000E9BB /* iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPad.png; sourceTree = "<group>"; };
 		FA388B7B162674440000E9BB /* iPad_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPad_small.png; sourceTree = "<group>"; };
 		FA388B7C162674440000E9BB /* iPad_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPad_small@2x.png"; sourceTree = "<group>"; };
-		FA388B7D162674440000E9BB /* iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPhone.png; sourceTree = "<group>"; };
 		FA388B7F162674440000E9BB /* iPhone_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPhone_small.png; sourceTree = "<group>"; };
 		FA388B80162674440000E9BB /* iPhone_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPhone_small@2x.png"; sourceTree = "<group>"; };
 		FA388B81162674440000E9BB /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTunesArtwork.png; sourceTree = "<group>"; };
 		FA388B82162674440000E9BB /* iTunesArtwork@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iTunesArtwork@2x.png"; sourceTree = "<group>"; };
 		FA388B9B162674F70000E9BB /* iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPhone.png; sourceTree = "<group>"; };
 		FA388B9D162675D70000E9BB /* iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPad.png; sourceTree = "<group>"; };
-		FA388B9F162676760000E9BB /* iPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPad@2x.png"; sourceTree = "<group>"; };
 		FA388BA1162676860000E9BB /* iPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPad@2x.png"; sourceTree = "<group>"; };
 		FA388BAA162679760000E9BB /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		FA388BB5162698970000E9BB /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -1103,6 +1096,12 @@
 		FAA902D915E39222009D9DD6 /* OHAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OHAttributedLabel.m; sourceTree = "<group>"; };
 		FAA902DD15E39285009D9DD6 /* UILabel+RectForLetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+RectForLetter.h"; sourceTree = "<group>"; };
 		FAA902DE15E39285009D9DD6 /* UILabel+RectForLetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+RectForLetter.m"; sourceTree = "<group>"; };
+		FAA99F72162E6E870025A50F /* Profile_PhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile_PhotosViewController.h; sourceTree = "<group>"; };
+		FAA99F73162E6E870025A50F /* Profile_PhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile_PhotosViewController.m; sourceTree = "<group>"; };
+		FAA99F74162E6E870025A50F /* Profile_PhotosViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Profile_PhotosViewController.xib; sourceTree = "<group>"; };
+		FAA99F77162E982B0025A50F /* Profile_PhotoListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile_PhotoListViewController.h; sourceTree = "<group>"; };
+		FAA99F78162E982B0025A50F /* Profile_PhotoListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile_PhotoListViewController.m; sourceTree = "<group>"; };
+		FAA99F79162E982B0025A50F /* Profile_PhotoListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Profile_PhotoListViewController.xib; sourceTree = "<group>"; };
 		FAABB499159C5E13002E9CAC /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageViewController.h; path = ../MessageViewController.h; sourceTree = "<group>"; };
 		FAABB49A159C5E13002E9CAC /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessageViewController.m; path = ../MessageViewController.m; sourceTree = "<group>"; };
 		FAABB49B159C5E13002E9CAC /* MessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MessageViewController.xib; path = ../MessageViewController.xib; sourceTree = "<group>"; };
@@ -1282,8 +1281,6 @@
 		FA03216D15772BEB002EB93D /* Postadvert */ = {
 			isa = PBXGroup;
 			children = (
-				FA0440B415888C48001161D5 /* ListImages.h */,
-				FA0440B515888C48001161D5 /* ListImages.m */,
 				FA032342157752AE002EB93D /* images */,
 				FA032215157735A6002EB93D /* Supporting tool */,
 				FA032203157734E3002EB93D /* Sign In */,
@@ -1865,8 +1862,6 @@
 				FA032447157752AF002EB93D /* send-gift2.png */,
 				FA032457157752AF002EB93D /* tick.png */,
 				FA032458157752AF002EB93D /* upload-photo1.png */,
-				FA032459157752AF002EB93D /* user01.png */,
-				FA03245A157752AF002EB93D /* user02.png */,
 			);
 			path = images;
 			sourceTree = "<group>";
@@ -1986,11 +1981,9 @@
 			isa = PBXGroup;
 			children = (
 				FA388BC5162698FA0000E9BB /* iPhone@2x.png */,
-				FA388B9F162676760000E9BB /* iPad@2x.png */,
 				FA388B7A162674440000E9BB /* iPad.png */,
 				FA388B7B162674440000E9BB /* iPad_small.png */,
 				FA388B7C162674440000E9BB /* iPad_small@2x.png */,
-				FA388B7D162674440000E9BB /* iPhone.png */,
 				FA388B7F162674440000E9BB /* iPhone_small.png */,
 				FA388B80162674440000E9BB /* iPhone_small@2x.png */,
 				FA388B81162674440000E9BB /* iTunesArtwork.png */,
@@ -2058,6 +2051,7 @@
 		FA58AD9A16008A8000977F99 /* Userprofile */ = {
 			isa = PBXGroup;
 			children = (
+				FAA99F70162E6E580025A50F /* Photos */,
 				FA6BF999162D38A6007BA656 /* Video */,
 				FA4EF7C31601EA37008FD7E6 /* btnUserProfile_(inactive).png */,
 				FA4EF7C41601EA37008FD7E6 /* btnUserProfile_(active).png */,
@@ -2238,6 +2232,19 @@
 				FAA902DE15E39285009D9DD6 /* UILabel+RectForLetter.m */,
 			);
 			path = "Label tool";
+			sourceTree = "<group>";
+		};
+		FAA99F70162E6E580025A50F /* Photos */ = {
+			isa = PBXGroup;
+			children = (
+				FAA99F72162E6E870025A50F /* Profile_PhotosViewController.h */,
+				FAA99F73162E6E870025A50F /* Profile_PhotosViewController.m */,
+				FAA99F74162E6E870025A50F /* Profile_PhotosViewController.xib */,
+				FAA99F77162E982B0025A50F /* Profile_PhotoListViewController.h */,
+				FAA99F78162E982B0025A50F /* Profile_PhotoListViewController.m */,
+				FAA99F79162E982B0025A50F /* Profile_PhotoListViewController.xib */,
+			);
+			path = Photos;
 			sourceTree = "<group>";
 		};
 		FAB6718715BE404F009459CD /* SDWebImageController */ = {
@@ -2652,8 +2659,6 @@
 				FA032563157752AF002EB93D /* title_sub.png in Resources */,
 				FA03256C157752AF002EB93D /* tick.png in Resources */,
 				FA03256D157752AF002EB93D /* upload-photo1.png in Resources */,
-				FA03256E157752AF002EB93D /* user01.png in Resources */,
-				FA03256F157752AF002EB93D /* user02.png in Resources */,
 				FAF3F6BB1578CC3E003A7793 /* MyImageViewController.xib in Resources */,
 				FAFA7768157DC6D900A55669 /* CommentsViewController.xib in Resources */,
 				FAFEC9581581DE47005DCF27 /* PostViewController.xib in Resources */,
@@ -2729,10 +2734,8 @@
 				FA388B93162674440000E9BB /* iTunesArtwork@2x.png in Resources */,
 				FA388B9C162674F70000E9BB /* iPhone.png in Resources */,
 				FA388B9E162675D70000E9BB /* iPad.png in Resources */,
-				FA388BA0162676760000E9BB /* iPad@2x.png in Resources */,
 				FA388BA2162676860000E9BB /* iPad@2x.png in Resources */,
 				FA388BAB162679760000E9BB /* Default@2x.png in Resources */,
-				FA388BB116267BCF0000E9BB /* iPhone.png in Resources */,
 				FA388BBD162698970000E9BB /* Default-568h@2x.png in Resources */,
 				FA388BBE162698970000E9BB /* Default-Landscape.png in Resources */,
 				FA388BBF162698970000E9BB /* Default-Landscape@2x.png in Resources */,
@@ -2744,6 +2747,8 @@
 				FA388BC8162699070000E9BB /* iPhone@2x.png in Resources */,
 				FA6BF99F162D392A007BA656 /* Profile_VideoViewController.xib in Resources */,
 				FA6BF9A1162D45E1007BA656 /* video_icon.jpg in Resources */,
+				FAA99F76162E6E870025A50F /* Profile_PhotosViewController.xib in Resources */,
+				FAA99F7B162E982B0025A50F /* Profile_PhotoListViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2864,7 +2869,6 @@
 				FAFA7771157E156000A55669 /* UserPAInfo.m in Sources */,
 				FAF94166158091F5008ED7E3 /* UIPlaceHolderTextView.m in Sources */,
 				FAFEC9571581DE47005DCF27 /* PostViewController.m in Sources */,
-				FA0440B615888C48001161D5 /* ListImages.m in Sources */,
 				FA007CB41589809500C21D0E /* UIImage+Alpha.m in Sources */,
 				FA007CB51589809500C21D0E /* UIImage+Resize.m in Sources */,
 				FA007CB61589809500C21D0E /* UIImage+RoundedCorner.m in Sources */,
@@ -2915,6 +2919,8 @@
 				FA8D6BCA15EF7366005FD412 /* ActivityViewController.m in Sources */,
 				FA58AD9F16008A9F00977F99 /* UserProfileViewController.m in Sources */,
 				FA6BF99E162D392A007BA656 /* Profile_VideoViewController.m in Sources */,
+				FAA99F75162E6E870025A50F /* Profile_PhotosViewController.m in Sources */,
+				FAA99F7A162E982B0025A50F /* Profile_PhotoListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

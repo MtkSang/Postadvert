@@ -70,7 +70,7 @@
         textContent       = (OHAttributedLabel*)[self viewWithTag:4];
         textContent.linkColor = [UIColor blueColor];
         textContent.underlineLinks = NO;
-        //textContent.delegate = self;
+        textContent.delegate = self;
         textContent.extendBottomToFit = YES;
         linkView   = (LinkPreview*)[self viewWithTag:5];
         thumbnailView = (UIView*)[self viewWithTag:6];
@@ -420,7 +420,6 @@
     constraint = CGSizeMake(cellFrame.size.width - 20 - imgAvatar.frame.size.width - imgAvatar.frame.origin.x - CELL_CONTENT_MARGIN_LEFT - CELL_CONTENT_MARGIN_RIGHT - CELL_MARGIN_BETWEEN_CONTROLL, 20000.0f);
     size = [created_time.text sizeWithFont:created_time.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
     created_time.frame = CGRectMake(3 + cAvartaContentHeight + CELL_MARGIN_BETWEEN_CONTROLL, 22, size.width, size.height);
-    //[titlePost setTextColor:[UIColor colorWithRed:105.0/255.0 green:92.0/255.0 blue:75.0/225.0 alpha:1.0]];
     
     //User name; do not resize now
     //text
@@ -542,10 +541,11 @@
 {
     
     NSURL *url = [[NSURL alloc]initWithString:@"activity:url"];
+    NSURL *urlUerProfile = [[NSURL alloc]initWithString:[NSString stringWithFormat: @"localStroff://user__%d", _content.actor_id]];
     if ([_content.activity_type isEqualToString:@"activity"]) {
         if ([_content.app_type isEqualToString:@"profile"] && [_content.commnent_type isEqualToString:@"profile.avatar.upload"]) {
             
-            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+            [textContent addCustomLink:urlUerProfile inRange:[textContent.text rangeOfString:_content.actor_name]];
             return;
         }
 
@@ -561,30 +561,30 @@
                 NSDictionary *actor_2 = [_content.actor_2 objectAtIndex:0];
                 actor2_name = [actor_2 objectForKey:@"name"];
             }
-            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+            [textContent addCustomLink:urlUerProfile inRange:[textContent.text rangeOfString:_content.actor_name]];
             [textContent addCustomLink:url inRange:[textContent.text rangeOfString:actor2_name]];
         }
 
         //add photo
         if ([_content.app_type isEqualToString:@"photos"] && [_content.commnent_type isEqualToString:@"photos"]) {
             if ([_content.commentContent isEqualToString:@""]) {
-                [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+                [textContent addCustomLink:urlUerProfile inRange:[textContent.text rangeOfString:_content.actor_name]];
             }
         }
         
         //add photo into album
         if ([_content.app_type isEqualToString:@"photos"] && [_content.commnent_type isEqualToString:@"photos.album"]) {
-            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+            [textContent addCustomLink:urlUerProfile inRange:[textContent.text rangeOfString:_content.actor_name]];
             [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.target_name options:NSBackwardsSearch]];
         }
         // Add Event
         if ([_content.app_type isEqualToString:@"events"] && [_content.commnent_type isEqualToString:@"groups.event"])  {
-            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+            [textContent addCustomLink:urlUerProfile inRange:[textContent.text rangeOfString:_content.actor_name]];
             [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.target_name options:NSBackwardsSearch]];
         }
         //Commented on an event
         if ([_content.app_type isEqualToString:@"events.wall"] && [_content.commnent_type isEqualToString:@"events.wall"])  {
-            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+            [textContent addCustomLink:urlUerProfile inRange:[textContent.text rangeOfString:_content.actor_name]];
             [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.target_name options: NSBackwardsSearch]];
             return;
         }
@@ -592,13 +592,13 @@
         // add video
         if ([_content.app_type isEqualToString:@"videos"] && [_content.commnent_type isEqualToString:@"videos"])  {
             if ([_content.commentContent isEqualToString:@""]) {
-                [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+                [textContent addCustomLink:urlUerProfile inRange:[textContent.text rangeOfString:_content.actor_name]];
             }
         }
         // comment on a photo
         if ([_content.app_type isEqualToString:@"photos"] && [_content.commnent_type isEqualToString:@"photos.wall.create"])
         {
-            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+            [textContent addCustomLink:urlUerProfile inRange:[textContent.text rangeOfString:_content.actor_name]];
             return;
         }
 
@@ -625,12 +625,12 @@
                         
                 }
             }
-            [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+            [textContent addCustomLink:urlUerProfile inRange:[textContent.text rangeOfString:_content.actor_name]];
         }
     }
 
 #warning incomplete function
-    [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.actor_name]];
+    [textContent addCustomLink:urlUerProfile inRange:[textContent.text rangeOfString:_content.actor_name]];
     [textContent addCustomLink:url inRange:[textContent.text rangeOfString:_content.target_name options: NSBackwardsSearch]];
 
 }
@@ -802,9 +802,15 @@
     }
     [self refreshClapCommentsView];
 }
+#pragma mark OHAttributedLabelDelegate
 
-
-
+-(BOOL)attributedLabel:(OHAttributedLabel*)attributedLabel shouldFollowLink:(NSTextCheckingResult*)linkInfo
+{
+    
+    [[NSUserDefaults standardUserDefaults] setURL:linkInfo.URL forKey:@"openURL"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"openURL" object:nil];
+    return NO;
+}
 
 #pragma mark - Notification
 

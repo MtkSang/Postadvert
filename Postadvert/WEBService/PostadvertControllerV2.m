@@ -71,6 +71,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
         
         // now patiently wait for the notification
     }
+    remainCount = 0;
     return self;
 }
 
@@ -221,6 +222,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
 - (id) jsonObjectFromWebserviceWithFunctionName:(NSString*/*FUnction name*/)functionName andParametter: (NSString*/*Parametter String */) parametterString
 {
     ShowNetworkActivityIndicator();
+    remainCount ++;
     NSString *soapFormat = [NSString stringWithFormat: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"
                             @"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
                             @"<soap:Body>"
@@ -268,7 +270,12 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     for (CXMLElement *node in nodes) {
         jsonObject = [jsonParser objectWithString:node.stringValue];
     }
-    HideNetworkActivityIndicator();
+    remainCount --;
+    if (remainCount< 1) {
+        remainCount = 0;
+        HideNetworkActivityIndicator();
+    }
+    
     return jsonObject;
 }
 - (id) getPostsWithWall:(NSString*) wallId from:(NSString*) start andCount:(NSString*) count WithUserID:(NSString*)userID
@@ -542,7 +549,35 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     }
     return num.integerValue;
 }
-
+//getUserFriends($user_id, $row_id, $limit, $base64_image = false)
+-(id) getUserFriendsWithID:(NSString*)userID row:(NSString*)row_id count:(NSString*)limit
+{
+    if ([userID isEqualToString:@"0"]) {
+        userID = [NSString stringWithFormat:@"%ld",[[UserPAInfo sharedUserPAInfo]registrationID]];
+    }
+    NSString *functionName = @"getUserFriends";
+    NSString *parametterStr = [NSString stringWithFormat:@"<user_id>%@</user_id>"
+                               @"<row_id>%@</row_id>"
+                               @"<limit>%@</limit>",userID, row_id, limit];
+    
+    id jsonObject = [self jsonObjectFromWebserviceWithFunctionName:functionName andParametter:parametterStr];
+    
+    NSDictionary *infoDict;
+    NSArray *infoArray;
+    if ([jsonObject isKindOfClass:[NSDictionary class]])
+    {
+        infoDict = [NSDictionary dictionaryWithDictionary: jsonObject];
+        NSLog(@"Dictionary %@", infoDict);
+        
+    }
+    else if ([jsonObject isKindOfClass:[NSArray class]])
+    {
+        infoArray = [NSArray arrayWithArray:jsonObject];
+        NSLog(@"Array %@", infoArray);
+    }
+    
+    return infoArray;
+}
 -(id) getFriendsOfUserID:(NSString*)userID from:(NSString*)start count:(NSString*)count
 {
     if ([userID isEqualToString:@"0"]) {
@@ -784,6 +819,55 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     
 }
 
+-(id) getUserAlbumsWithUserID:(NSString*)userID
+{
+    if ([userID isEqualToString:@"0"]) {
+        userID = [NSString stringWithFormat:@"%ld", [[UserPAInfo sharedUserPAInfo] registrationID]];
+    }
+    
+    NSString *functionName = @"getUserAlbums";
+    NSString *parametterStr = [NSString stringWithFormat:@"<user_id>%@</user_id>",userID];
+    
+    id jsonObject = [self jsonObjectFromWebserviceWithFunctionName:functionName andParametter:parametterStr];
+    
+    NSDictionary *infoDict;
+    NSArray *infoArray;
+    if ([jsonObject isKindOfClass:[NSDictionary class]])
+    {
+        infoDict = [NSDictionary dictionaryWithDictionary: jsonObject];
+        NSLog(@"Dictionary %@", infoDict);
+        
+    }
+    else if ([jsonObject isKindOfClass:[NSArray class]])
+    {
+        infoArray = [NSArray arrayWithArray:jsonObject];
+    }
+    return infoArray;
+}
+//getPhotoAlbum
+-(id) getPhotoOfAlbumWithAlbumID:(NSString*)albumID
+{
+
+    NSString *functionName = @"getPhotoAlbum";
+    NSString *parametterStr = [NSString stringWithFormat:@"<user_id>%@</user_id>",albumID];
+    
+    id jsonObject = [self jsonObjectFromWebserviceWithFunctionName:functionName andParametter:parametterStr];
+    
+    NSDictionary *infoDict;
+    NSArray *infoArray;
+    if ([jsonObject isKindOfClass:[NSDictionary class]])
+    {
+        infoDict = [NSDictionary dictionaryWithDictionary: jsonObject];
+        NSLog(@"Dictionary %@", infoDict);
+        
+    }
+    else if ([jsonObject isKindOfClass:[NSArray class]])
+    {
+        infoArray = [NSArray arrayWithArray:jsonObject];
+    }
+    return infoArray;
+}
+
 -(id) getUserVideosWithUserID:(NSString*)userID
 {
     if ([userID isEqualToString:@"0"]) {
@@ -809,15 +893,41 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     }
     return infoArray;
 }
+//getFriendStatus($my_id, $other_user_id, $base64_image = false)
+-(id) getFriendStatusWithUserID:(NSString*)userID andOtherID:(NSString*)otherID
+{
+    if ([userID isEqualToString:@"0"]) {
+        userID = [NSString stringWithFormat:@"%ld", [[UserPAInfo sharedUserPAInfo] registrationID]];
+    }
+    
+    NSString *functionName = @"getFriendStatus";
+    NSString *parametterStr = [NSString stringWithFormat:@"<my_id>%@</my_id><other_user_id>%@</other_user_id>",userID, otherID];
+    
+    id jsonObject = [self jsonObjectFromWebserviceWithFunctionName:functionName andParametter:parametterStr];
+    
+    NSDictionary *infoDict;
+    NSArray *infoArray;
+    if ([jsonObject isKindOfClass:[NSDictionary class]])
+    {
+        infoDict = [NSDictionary dictionaryWithDictionary: jsonObject];
+        NSLog(@"Dictionary %@", infoDict);
+        return infoDict;
+        
+    }
+    else if ([jsonObject isKindOfClass:[NSArray class]])
+    {
+        infoArray = [NSArray arrayWithArray:jsonObject];
+    }
+    return infoArray;
+}
 
 -(void) testFunction
 {
     return;
     //getStatusUpdate($user_id, $start, $limit, $index)
     
-    NSString *userID = [NSString stringWithFormat:@"%d", 97];
-    NSString *functionName = @"getUserVideos";
-    NSString *parametterStr = [NSString stringWithFormat:@"<user_id>%@</user_id>",userID];
+    NSString *functionName = @"getPhotoAlbum";
+    NSString *parametterStr = [NSString stringWithFormat:@"<user_id>%@</user_id>",@"13"];
     
     id jsonObject = [self jsonObjectFromWebserviceWithFunctionName:functionName andParametter:parametterStr];
     
@@ -832,12 +942,10 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     else if ([jsonObject isKindOfClass:[NSArray class]])
     {
         infoArray = [NSArray arrayWithArray:jsonObject];
-        NSLog(@"Array %@", infoArray);
         for (NSDictionary *dict in infoArray) {
             NSLog(@"dict %@", dict);
         }
     }
-    
 }
 
 

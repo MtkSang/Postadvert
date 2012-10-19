@@ -12,6 +12,8 @@
 #import "CredentialInfo.h"
 #import "UserPAInfo.h"
 #import "UIImageView+URL.h"
+#import "NSData+Base64.h"
+
 @interface NSArray (SSArrayOfArrays)
 - (id)objectAtIndexPath:(NSIndexPath *)indexPath;
 @end
@@ -49,8 +51,8 @@
 @end
 
 @implementation FriendsViewController
-@synthesize delegate = _delegate;
-@synthesize tableView = _tableView;
+
+//@synthesize tableView;
 //@synthesize listMessageCellContent = _listMessageCellContent;
 //@synthesize filteredListContent =filteredListContent;
 @synthesize navigationController = _navigationController;
@@ -64,12 +66,20 @@
     return self;
 }
 
+- (id)initWithUserID:(long) userID_
+{
+    self = [super initWithNibName:@"FriendsViewController" bundle:nil];
+    if (self) {
+        userID = userID_;
+    }
+    return self;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     NSLog(@"%@: %@", NSStringFromClass([self class]), self.view);
-    [self performSelectorInBackground:@selector(getTotalFriends) withObject:nil];
+    //[self performSelectorInBackground:@selector(getTotalFriends) withObject:nil];
     
     [self.activityView startAnimating];
     [self performSelectorInBackground:@selector(loadlistFriendCellContent) withObject:nil];
@@ -200,6 +210,11 @@
     //[[NSNotificationCenter defaultCenter] postNotificationName:@"DetailMessageListenner" object:nil userInfo:dict];
     if (self.delegate) {
         [self.delegate friendsViewControllerDidSelectedRowWithInfo:dict];
+    }else
+    {
+        NSURL *urlUerProfile = [[NSURL alloc]initWithString:[NSString stringWithFormat: @"localStroff://user__%ld", cellCentent.registrationID]];
+        [[NSUserDefaults standardUserDefaults] setURL:urlUerProfile forKey:@"openURL"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"openURL" object:nil];
     }
     [ctableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -259,7 +274,7 @@
     if (!count) {
         count = 1;
     }
-    NSMutableArray *friends = [self getFriendsFrom:0 count:count];
+    NSMutableArray *friends = [self getFriendsFrom:0 count:0];
     for (CredentialInfo *friend in friends) {
         [listFriendCellContent addObject:friend];
     }
@@ -288,13 +303,13 @@
 }
 
 - (NSInteger)getTotalFriends{
-        totalFriends = [[PostadvertControllerV2 sharedPostadvertController]countFriendOfUser:@"0"];
+        totalFriends = [[PostadvertControllerV2 sharedPostadvertController]countFriendOfUser:[NSString stringWithFormat:@"%ld", userID]];
     return totalFriends;
 }
 
--(id)getFriendsFrom:(NSInteger)start count:(NSInteger)count
+-(id)getFriendsFrom:(NSInteger)rowID count:(NSInteger)count
 {
-    NSMutableArray *friends =  [[PostadvertControllerV2 sharedPostadvertController]getFriendsOfUserID:@"0" from:[NSString stringWithFormat:@"%d",start] count:[NSString stringWithFormat:@"%d",count]];
+    NSMutableArray *friends =  [[PostadvertControllerV2 sharedPostadvertController]getUserFriendsWithID:[NSString stringWithFormat:@"%ld", userID] row:[NSString stringWithFormat:@"%d",rowID] count:[NSString stringWithFormat:@"%d",count]];
     
     NSMutableArray *listFriends = [[NSMutableArray alloc]initWithCapacity:friends.count];
     for (NSDictionary *dict in friends) {
@@ -302,7 +317,10 @@
         CredentialInfo *friendInfo = [[CredentialInfo alloc]init];
         friendInfo.email = [dict objectForKey:@"email"];
         friendInfo.fullName = [dict objectForKey:@"name"];
-        friendInfo.avatarUrl = [dict objectForKey:@"thumb"];
+        friendInfo.usernamePU = [dict objectForKey:@"username"];
+        friendInfo.avatarUrl = [NSData stringDecodeFromBase64String:[dict objectForKey:@"thumb"]];
+        friendInfo.registrationID = [[dict objectForKey:@"user_id"] integerValue];
+        
         [listFriends addObject:friendInfo];
     }
     return listFriends;

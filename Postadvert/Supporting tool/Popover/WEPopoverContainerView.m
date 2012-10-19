@@ -358,6 +358,8 @@ permittedArrowDirections:(UIPopoverArrowDirection)permittedArrowDirections
 		case UIPopoverArrowDirectionRight:
 			arrowImage = [rightArrowImage retain];
 			break;
+        default:
+            break;
 	}
 }
 
