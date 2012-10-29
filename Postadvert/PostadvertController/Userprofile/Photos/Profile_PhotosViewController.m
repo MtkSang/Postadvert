@@ -13,9 +13,9 @@
 #import "UserPAInfo.h"
 #import "Constants.h"
 #import "Profile_PhotoListViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface Profile_PhotosViewController ()
-
 @end
 
 @implementation Profile_PhotosViewController
@@ -31,7 +31,7 @@
 
 - (id) initWithFullName:(NSString*)name userID:(long) userID_
 {
-    self = [super initWithNibName:@"Profile_PhotosViewController" bundle:nil];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         // Custom initialization
         fullName = name;
@@ -42,22 +42,37 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    listContent = [[NSMutableArray alloc]init];
-    [self loadActivity];
+    listContent_my = [[NSMutableArray alloc]init];
     self.clearsSelectionOnViewWillAppear = NO;
     //headerView
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 25)];
     view.backgroundColor = [UIColor clearColor];
-    headerTitle = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 25)];
-    headerTitle.backgroundColor = [UIColor clearColor];
-    headerTitle.textColor = [UIColor darkGrayColor];
-    headerTitle.textAlignment = UITextAlignmentCenter;
-    [headerTitle setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
-    headerTitle.text = [NSString stringWithFormat:@"%@'s albums", fullName];
-    [view addSubview:headerTitle];
-    self.tableView.tableHeaderView = view;
-    //view = nil;
     
+    self.shortTitle.text = [NSString stringWithFormat:@"%@'s albums", fullName];
+    //setting ActivityView
+    [activityView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [activityView setColor:[UIColor grayColor]];
+    
+    //Set rightbtutton
+    UIBarButtonItem *barBtnItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPhotoAlbum:)];
+    self.navigationItem.rightBarButtonItem = barBtnItem;
+    //set segmentControl
+    [self.segmentControl removeAllSegments];
+    [self.segmentControl insertSegmentWithTitle:@"All albums" atIndex:0 animated:NO];
+    NSString *tilteS2 = @"";
+    if (userID == [[UserPAInfo sharedUserPAInfo]registrationID]) {
+        tilteS2 = @"My albums";
+    }else
+    {
+        if (fullName.length<4) {
+            tilteS2 = [NSString stringWithFormat:@"%@'s groups", fullName] ;
+        }else
+            tilteS2 = @"User's Groups";
+    }
+    [self.segmentControl insertSegmentWithTitle:tilteS2 atIndex:1 animated:NO];
+    self.segmentControl.selectedSegmentIndex = 1;
+    self.segmentControl.alpha = 0.9;
+    [self loadActivity];
 }
 
 - (void)didReceiveMemoryWarning
@@ -70,8 +85,17 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
-    return listContent.count;
+    switch (self.segmentControl.selectedSegmentIndex) {
+        case 0:
+            return listContent_all.count;
+            break;
+        case 1:
+            return listContent_my.count;
+        default:
+            return listContent_my.count;
+            break;
+    }
+    return listContent_my.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -88,17 +112,39 @@
     }
     
     // Configure the cell...
-    [cell setAccessoryType:UITableViewCellAccessoryDetailDisclosureButton];
-    NSDictionary *cellData = [listContent objectAtIndex:indexPath.section];
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    NSDictionary *cellData;
+    switch (self.segmentControl.selectedSegmentIndex) {
+        case 0:
+            cellData = [listContent_all objectAtIndex:indexPath.section];
+            break;
+        case 1:
+            cellData = [listContent_my objectAtIndex:indexPath.section];
+            break;
+        default:
+            cellData = [listContent_my objectAtIndex:indexPath.section];
+            break;
+    }
+    
+    
+    
     NSString *imageURL = [NSData stringDecodeFromBase64String: [cellData objectForKey:@"thumbnail"]];
     [cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"photoDefault.png"]];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ (%d)",[cellData objectForKey:@"name"], [[cellData objectForKey:@"total_photos"] integerValue]];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ (%d)",[NSData stringDecodeFromBase64String:[cellData objectForKey:@"name"] ], [[cellData objectForKey:@"total_photos"] integerValue]];
     cell.textLabel.numberOfLines = 2;
     cell.detailTextLabel.text = [NSData stringDecodeFromBase64String:[cellData objectForKey:@"created"]];
-    
+
     return cell;
 }
 
+- (float) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 5;
+}
+- (float) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 5;
+}
 /*
  // Override to support conditional editing of the table view.
  - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -147,7 +193,19 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NSDictionary *cellData = [listContent objectAtIndex:indexPath.section];
+    NSDictionary *cellData;
+    switch (self.segmentControl.selectedSegmentIndex) {
+        case 0:
+            cellData = [listContent_all objectAtIndex:indexPath.section];
+            break;
+        case 1:
+            cellData = [listContent_my objectAtIndex:indexPath.section];
+            break;
+        default:
+            cellData = [listContent_my objectAtIndex:indexPath.section];
+            break;
+    }
+
     Profile_PhotoListViewController *albumDeatailCtr = [[Profile_PhotoListViewController alloc]init];
     albumDeatailCtr.albumID = [[cellData objectForKey:@"id"] integerValue];
     albumDeatailCtr.photoCount = [[cellData objectForKey:@"total_photos"] integerValue];
@@ -183,14 +241,60 @@
 
 - (void) loadCellsInBackground
 {
-    id data = [[PostadvertControllerV2 sharedPostadvertController] getUserAlbumsWithUserID:[NSString stringWithFormat:@"%ld", userID]];
+    [NSThread cancelPreviousPerformRequestsWithTarget:self selector:@selector(loadCellsInBackground) object:nil];
+    id data;
+
+    switch (self.segmentControl.selectedSegmentIndex) {
+        case 0:
+            data = [[PostadvertControllerV2 sharedPostadvertController] getAllAlbumsWithUserID:[NSString stringWithFormat:@"%ld", userID] fromID:@"0" limit:@"0"];
+            break;
+        case 1:
+            data = [[PostadvertControllerV2 sharedPostadvertController] getUserAlbumsWithUserID:[NSString stringWithFormat:@"%ld", userID]];
+            break;
+        default:
+            
+            break;
+    }
+    
     if (data) {
-        listContent = data;
+        switch (self.segmentControl.selectedSegmentIndex) {
+            case 0:
+                listContent_all = [NSMutableArray arrayWithArray:data];
+                break;
+            case 1:
+                listContent_my = [NSMutableArray arrayWithArray:data];
+                break;
+            default:
+                listContent_my = [NSMutableArray arrayWithArray:data];
+                break;
+        }
+        
     }
     
     self.tableView.scrollEnabled = YES;
     data = nil;
     [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
     
+}
+
+- (void) addPhotoAlbum:(id) sender
+{
+    
+}
+
+- (void) segmentControl:(id)sender
+{
+    self.shortTitle.text = [self shortTitleString];
+    [self loadActivity];
+}
+
+- (NSString*) shortTitleString
+{
+    if (self.segmentControl.selectedSegmentIndex == 0) {
+        return @"All albums";
+    }else
+    {
+        return [NSString stringWithFormat:@"%@'s groups", fullName] ;
+    }
 }
 @end

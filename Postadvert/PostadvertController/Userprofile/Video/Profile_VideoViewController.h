@@ -8,13 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
+#import "UserProfileComponentViewController.h"
 
-@interface Profile_VideoViewController : UITableViewController<MBProgressHUDDelegate>
+@interface Profile_VideoViewController : UserProfileComponentViewController<MBProgressHUDDelegate>
 {
-    NSMutableArray *listContent;
-    UILabel *headerTitle;
+    NSMutableArray *listContent_my;
+    NSMutableArray *listContent_all;
+    NSMutableArray *filteredListContent;
+    NSThread *searchThread;
     NSString *fullName;
     long userID;
+    NSInteger searchCount;
 }
 - (id) initWithFullName:(NSString*)name userID:(long) userID_;
 @end

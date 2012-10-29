@@ -236,11 +236,11 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     
     
     
-    NSLog(@"The request format is: \n%@",soapFormat); 
+    //NSLog(@"The request format is: \n%@",soapFormat);
     
     NSURL *locationOfWebService = [NSURL URLWithString:@"http://stroff.com/ws/server_side/api.php?wsdl"];//http://jmobile.futureworkz.com.sg/fwz_service/fwz_server_wsdl.php?wsdl
     
-    NSLog(@"web url = %@",locationOfWebService);
+    //NSLog(@"web url = %@",locationOfWebService);
     
     NSMutableURLRequest *theRequest = [[NSMutableURLRequest alloc]initWithURL:locationOfWebService];// cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:4];
     
@@ -257,10 +257,10 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     NSURLResponse *response;
     NSError *error;	
     NSData *data = [NSURLConnection sendSynchronousRequest:theRequest returningResponse:&response error:&error];
-    NSString *results = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]; 
-    NSLog(@"%@",results);
+    //NSString *results = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    //NSLog(@"%@",results);
     CXMLDocument *doc = [[CXMLDocument alloc] initWithData:data options:0 error:nil];
-    NSLog(@"DATA :%@", doc);
+    //NSLog(@"DATA :%@", doc);
     NSArray *nodes = NULL;
     //  searching for return nodes (return from WS)
     nodes = [doc nodesForXPath:@"//return" error:nil];
@@ -819,6 +819,34 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     
 }
 
+//getAllGroups($user_id, $group_id, $limit, $base64_image)
+-(id) getAllGroupsWithUserID:(NSString*)userID fromID:(NSString*)groupID limit:(NSString*)limit
+{
+    if ([userID isEqualToString:@"0"]) {
+        userID = [NSString stringWithFormat:@"%ld", [[UserPAInfo sharedUserPAInfo] registrationID]];
+    }
+    
+    NSString *functionName = @"getAllGroups";
+    NSString *parametterStr = [NSString stringWithFormat:@"<user_id>%@</user_id><group_id>%@</group_id><limit>%@</limit>",userID, groupID, limit];
+    
+    id jsonObject = [self jsonObjectFromWebserviceWithFunctionName:functionName andParametter:parametterStr];
+    
+    NSDictionary *infoDict;
+    NSArray *infoArray;
+    if ([jsonObject isKindOfClass:[NSDictionary class]])
+    {
+        infoDict = [NSDictionary dictionaryWithDictionary: jsonObject];
+        NSLog(@"Dictionary %@", infoDict);
+        
+    }
+    else if ([jsonObject isKindOfClass:[NSArray class]])
+    {
+        infoArray = [NSArray arrayWithArray:jsonObject];
+    }
+    return infoArray;
+}
+
+//getPhotoAlbum
 -(id) getUserAlbumsWithUserID:(NSString*)userID
 {
     if ([userID isEqualToString:@"0"]) {
@@ -844,7 +872,62 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     }
     return infoArray;
 }
-//getPhotoAlbum
+//getAllAlbums($user_id, $album_id, $limit, $base64_image = false)
+
+-(id) getAllAlbumsWithUserID:(NSString*)userID fromID:(NSString*)albumID limit:(NSString*)limit
+{
+    if ([userID isEqualToString:@"0"]) {
+        userID = [NSString stringWithFormat:@"%ld", [[UserPAInfo sharedUserPAInfo] registrationID]];
+    }
+    
+    NSString *functionName = @"getAllAlbums";
+    NSString *parametterStr = [NSString stringWithFormat:@"<user_id>%@</user_id><album_id>%@</album_id><limit>%@</limit>",userID, albumID, limit];
+    
+    id jsonObject = [self jsonObjectFromWebserviceWithFunctionName:functionName andParametter:parametterStr];
+    
+    NSDictionary *infoDict;
+    NSArray *infoArray;
+    if ([jsonObject isKindOfClass:[NSDictionary class]])
+    {
+        infoDict = [NSDictionary dictionaryWithDictionary: jsonObject];
+        NSLog(@"Dictionary %@", infoDict);
+        
+    }
+    else if ([jsonObject isKindOfClass:[NSArray class]])
+    {
+        infoArray = [NSArray arrayWithArray:jsonObject];
+    }
+    return infoArray;
+}
+
+//searchGroups($user_id, $search_id, $key, $type, $group_id, $limit)
+-(id) searchGroupsWithUserID:(NSString*)userID searchID:(NSString*)search_id key:(NSString*)key searchType:(NSString*)type groupID:(NSString*)groupsID limit:(NSString*)limit
+{
+    if ([userID isEqualToString:@"0"]) {
+        userID = [NSString stringWithFormat:@"%ld", [[UserPAInfo sharedUserPAInfo] registrationID]];
+    }
+    
+    NSString *functionName = @"searchGroups";
+    NSString *parametterStr = [NSString stringWithFormat:@"<user_id>%@</user_id><search_id>%@</search_id><key>%@</key><type>%@</type><group_id>%@</group_id><limit>%@</limit>",userID, search_id, key, type, groupsID, limit];
+    
+    id jsonObject = [self jsonObjectFromWebserviceWithFunctionName:functionName andParametter:parametterStr];
+    
+    NSDictionary *infoDict;
+    NSArray *infoArray;
+    if ([jsonObject isKindOfClass:[NSDictionary class]])
+    {
+        infoDict = [NSDictionary dictionaryWithDictionary: jsonObject];
+        //NSLog(@"Dictionary %@", infoDict);
+        
+    }
+    else if ([jsonObject isKindOfClass:[NSArray class]])
+    {
+        infoArray = [NSArray arrayWithArray:jsonObject];
+    }
+    return infoArray;
+}
+
+//
 -(id) getPhotoOfAlbumWithAlbumID:(NSString*)albumID
 {
 
@@ -867,6 +950,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     }
     return infoArray;
 }
+#pragma mark Video
 
 -(id) getUserVideosWithUserID:(NSString*)userID
 {
@@ -893,6 +977,62 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     }
     return infoArray;
 }
+//getAllVideos($user_id, $video_id, $limit, $base64_image = false)
+
+-(id) getAllVideosWithUserID:(NSString*)userID fromID:(NSString*)video_id limit:(NSString*)limit
+{
+    if ([userID isEqualToString:@"0"]) {
+        userID = [NSString stringWithFormat:@"%ld", [[UserPAInfo sharedUserPAInfo] registrationID]];
+    }
+    
+    NSString *functionName = @"getAllVideos";
+    NSString *parametterStr = [NSString stringWithFormat:@"<user_id>%@</user_id><video_id>%@</video_id><limit>%@</limit>",userID, video_id, limit];
+    
+    id jsonObject = [self jsonObjectFromWebserviceWithFunctionName:functionName andParametter:parametterStr];
+    
+    NSDictionary *infoDict;
+    NSArray *infoArray;
+    if ([jsonObject isKindOfClass:[NSDictionary class]])
+    {
+        infoDict = [NSDictionary dictionaryWithDictionary: jsonObject];
+        NSLog(@"Dictionary %@", infoDict);
+        
+    }
+    else if ([jsonObject isKindOfClass:[NSArray class]])
+    {
+        infoArray = [NSArray arrayWithArray:jsonObject];
+    }
+    return infoArray;
+}
+//searchVideos($user_id, $search_id, $key, $type, $video_id, $limit)
+-(id) searchVideosWithUserID:(NSString*)userID searchID:(NSString*)search_id key:(NSString*)key searchType:(NSString*)type video_id:(NSString*)video_id limit:(NSString*)limit
+{
+    if ([userID isEqualToString:@"0"]) {
+        userID = [NSString stringWithFormat:@"%ld", [[UserPAInfo sharedUserPAInfo] registrationID]];
+    }
+    
+    NSString *functionName = @"searchVideos";
+    NSString *parametterStr = [NSString stringWithFormat:@"<user_id>%@</user_id><search_id>%@</search_id><key>%@</key><type>%@</type><video_id>%@</video_id><limit>%@</limit>",userID, search_id, key, type, video_id, limit];
+    
+    id jsonObject = [self jsonObjectFromWebserviceWithFunctionName:functionName andParametter:parametterStr];
+    
+    NSDictionary *infoDict;
+    NSArray *infoArray;
+    if ([jsonObject isKindOfClass:[NSDictionary class]])
+    {
+        infoDict = [NSDictionary dictionaryWithDictionary: jsonObject];
+        //NSLog(@"Dictionary %@", infoDict);
+        
+    }
+    else if ([jsonObject isKindOfClass:[NSArray class]])
+    {
+        infoArray = [NSArray arrayWithArray:jsonObject];
+    }
+    return infoArray;
+}
+
+
+
 //getFriendStatus($my_id, $other_user_id, $base64_image = false)
 -(id) getFriendStatusWithUserID:(NSString*)userID andOtherID:(NSString*)otherID
 {
@@ -920,6 +1060,37 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     }
     return infoArray;
 }
+
+//getUserGroups($user_id, $base64_image)
+
+-(id) getUserGroupsWithUserID:(NSString*)userID
+{
+    if ([userID isEqualToString:@"0"]) {
+        userID = [NSString stringWithFormat:@"%ld", [[UserPAInfo sharedUserPAInfo] registrationID]];
+    }
+    
+    NSString *functionName = @"getUserGroups";
+    NSString *parametterStr = [NSString stringWithFormat:@"<user_id>%@</user_id>",userID];
+    
+    id jsonObject = [self jsonObjectFromWebserviceWithFunctionName:functionName andParametter:parametterStr];
+    
+    NSDictionary *infoDict;
+    NSArray *infoArray;
+    if ([jsonObject isKindOfClass:[NSDictionary class]])
+    {
+        infoDict = [NSDictionary dictionaryWithDictionary: jsonObject];
+        NSLog(@"Dictionary %@", infoDict);
+        return infoDict;
+        
+    }
+    else if ([jsonObject isKindOfClass:[NSArray class]])
+    {
+        infoArray = [NSArray arrayWithArray:jsonObject];
+    }
+    return infoArray;
+}
+
+
 
 -(void) testFunction
 {

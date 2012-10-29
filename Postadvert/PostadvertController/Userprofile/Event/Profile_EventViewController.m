@@ -1,25 +1,25 @@
 //
-//  Profile_VideoViewController.m
+//  Profile_PhotosViewController.m
 //  Stroff
 //
-//  Created by Ray on 10/16/12.
+//  Created by Ray on 10/17/12.
 //  Copyright (c) 2012 Futureworkz. All rights reserved.
 //
 
-#import "Profile_VideoViewController.h"
+#import "Profile_EventViewController.h"
 #import "PostadvertControllerV2.h"
 #import "NSData+Base64.h"
 #import "UIImageView+URL.h"
 #import "UserPAInfo.h"
 #import "Constants.h"
+#import "Profile_PhotoListViewController.h"
+#import <QuartzCore/QuartzCore.h>
+@interface Profile_EventViewController ()
 
-@interface Profile_VideoViewController ()
-- (void)loadActivity;
 @end
 
-@implementation Profile_VideoViewController
-
-
+@implementation Profile_EventViewController
+@synthesize navigationController;
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -31,55 +31,46 @@
 
 - (id) initWithFullName:(NSString*)name userID:(long) userID_
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    //self = [super initWithNibName:@"Profile_GroupsViewController" bundle:nil];
+    self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         // Custom initialization
         fullName = name;
         userID = userID_;
+        
     }
     return self;
 }
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    searchCount = 0;
     listContent_my = [[NSMutableArray alloc]init];
+    listContent_all = [[NSMutableArray alloc]init];
+    listContent_invition = [[NSMutableArray alloc]init];
+    
     self.clearsSelectionOnViewWillAppear = NO;
-    //headerView
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 25)];
-    view.backgroundColor = [UIColor clearColor];
     
-    self.shortTitle.text = [NSString stringWithFormat:@"%@'s videos", fullName];
-    //setting ActivityView
-    [activityView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-    
-    //Set rightbtutton
-    UIBarButtonItem *barBtnItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:nil];
-    self.navigationItem.rightBarButtonItem = barBtnItem;
-    //set segmentControl
-    [self.segmentControl removeAllSegments];
-    [self.segmentControl insertSegmentWithTitle:@"All Videos" atIndex:0 animated:NO];
-    NSString *tilteS2 = @"";
+    //Setting supper's items
+    [self.segmentControl setSegmentedControlStyle:UISegmentedControlStyleBezeled];
+    self.shortTitle.text = [NSString stringWithFormat:@"%@'s groups", fullName];
+    previousIndex = self.segmentControl.selectedSegmentIndex;
     if (userID == [[UserPAInfo sharedUserPAInfo]registrationID]) {
-        tilteS2 = @"My Videos";
+        [self.segmentControl setTitle:@"My Groups" forSegmentAtIndex:1];
     }else
     {
         if (fullName.length<4) {
-            tilteS2 = [NSString stringWithFormat:@"%@'s Videos", fullName] ;
+            [self.segmentControl setTitle:[NSString stringWithFormat:@"%@'s groups", fullName] forSegmentAtIndex:1];
         }else
-            tilteS2 = @"User's Videos";
+            [self.segmentControl setTitle:@"User's Groups" forSegmentAtIndex:1];
     }
-    [self.segmentControl insertSegmentWithTitle:tilteS2 atIndex:1 animated:NO];
-    [self.segmentControl insertSegmentWithTitle:@"Search" atIndex:2 animated:NO];
-    self.segmentControl.selectedSegmentIndex = 1;
-    self.segmentControl.alpha = 0.9;
-    previousIndex = self.segmentControl.selectedSegmentIndex;
     //Set up Scope Bar itmes
-    NSString *optionName1 = @"All Videos";
+    NSString *optionName1 = @"All Groups";
     NSString *optionName2 = [self.segmentControl titleForSegmentAtIndex:1];
     self.searchBar.showsScopeBar = YES;
     [self.searchBar setScopeButtonTitles:[NSArray arrayWithObjects:optionName1, optionName2, nil]];
     
+    //Load data
     [self loadActivity];
 }
 
@@ -93,6 +84,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    // Return the number of sections.
     switch (self.segmentControl.selectedSegmentIndex) {
         case 0:
             return listContent_all.count;
@@ -100,8 +92,9 @@
         case 1:
             return listContent_my.count;
         case 2:
+            return listContent_invition.count;
+        case 3:
             return filteredListContent.count;
-            break;
         default:
             return listContent_my.count;
             break;
@@ -116,13 +109,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Profile_Video_Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    static NSString *reuseIdentifier = @"Profile_GroupsViewCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-        UILabel *durationLabel = [[UILabel alloc]init];
-        durationLabel.tag = 101;
-        [cell.imageView addSubview:durationLabel];
+        //Profile_GroupsViewCell
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:reuseIdentifier owner:self options:nil];
+        cell = [topLevelObjects objectAtIndex:0];
+        topLevelObjects = nil;
+        
     }
     
     // Configure the cell...
@@ -135,109 +129,96 @@
             cellData = [listContent_my objectAtIndex:indexPath.section];
             break;
         case 2:
+            cellData = [listContent_invition objectAtIndex:indexPath.section];
+            break;
+        case 3:
             cellData = [filteredListContent objectAtIndex:indexPath.section];
             break;
         default:
             cellData = [listContent_my objectAtIndex:indexPath.section];
             break;
     }
-
-    NSString *imageURL = [NSData stringDecodeFromBase64String: [cellData objectForKey:@"thumbnail"]];
-    [cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"video_icon.jpg"]];
-    cell.textLabel.text = [NSData stringDecodeFromBase64String: [cellData objectForKey:@"title"] ];
-    cell.textLabel.numberOfLines = 2;
-    NSString *detail = [NSString stringWithFormat:@"%d views    %@",[[cellData objectForKey:@"hits"]integerValue ], [NSData stringDecodeFromBase64String:[cellData objectForKey:@"created"]]];
-    cell.detailTextLabel.text = detail;
-    NSString *duration = [NSString stringWithFormat:@" %@ ", [cellData objectForKey:@"duration"]];
-    UILabel *durationLabel = (UILabel*)[cell viewWithTag:101];
-    durationLabel.text = duration;
-    durationLabel.textColor = [UIColor whiteColor];
-    durationLabel.backgroundColor = [UIColor darkTextColor];
-    durationLabel.font = [UIFont fontWithName:FONT_NAME size:FONT_SIZE];
-    [durationLabel sizeToFit];
-    CGRect frame = durationLabel.frame;
-    frame.origin.x = 85 - frame.size.width;
-    frame.origin.y = 70 - 20;
-    durationLabel.frame = frame;
+    
+    NSString *imageURL = [NSData stringDecodeFromBase64String: [cellData objectForKey:@"thumb"]];
+    UIImageView *imageView = (UIImageView*)[cell viewWithTag:1];
+    [imageView setImageWithURL:[NSURL URLWithString:imageURL]placeholderImage:[UIImage imageNamed:@"group_thumb.png"]];
+    imageView.frame = CGRectMake(0, 0, 75, 75);
+    UILabel *name = (UILabel*)[cell viewWithTag:2];
+    name.text = [NSData stringDecodeFromBase64String:[cellData objectForKey:@"name"]];
+    //description
+    UILabel *description = (UILabel*)[ cell viewWithTag:3];
+    description.text = [NSData stringDecodeFromBase64String: [cellData objectForKey:@"description"]];
+    
+    UILabel *created = (UILabel *)[cell viewWithTag:4];
+    created.text = [cellData objectForKey:@"created"];
+    
+    UIButton *member_count = (UIButton *)[cell viewWithTag:6];
+    int num = [[cellData objectForKey:@"member_count"] integerValue];
+    if (num>1) {
+        [member_count setTitle:[NSString stringWithFormat:@"%d Members", num] forState:UIControlStateNormal ] ;
+    }else
+        [member_count setTitle:[NSString stringWithFormat:@"%d Member", num] forState:UIControlStateNormal ] ;
+    
+    UIButton *discuss_count = (UIButton *)[cell viewWithTag:8];
+    num = [[cellData objectForKey:@"discuss_count"] integerValue];
+    [discuss_count setTitle:[NSString stringWithFormat:@"%d Discussions", num] forState:UIControlStateNormal];
+    
+    UIButton *wall_count = (UIButton *)[cell viewWithTag:10];
+    num = [[cellData objectForKey:@"wall_count"] integerValue];
+    [wall_count setTitle:[NSString stringWithFormat:@"%d Wall Posts", num] forState:UIControlStateNormal];
+    
+    
     return cell;
 }
 
 /*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
 
 /*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ }
+ else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }
+ }
+ */
 
 /*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+ {
+ }
+ */
 
 /*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
 
 #pragma mark - Table view delegate
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 70;
+    return 110;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NSDictionary *cellData = [listContent_my objectAtIndex:indexPath.section];
-    NSString *urlString = [NSData stringDecodeFromBase64String: [cellData objectForKey:@"video_url"]];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
-    
-}
-- (float) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 0;
-}
-- (float) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 5;
-}
-
-- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
-    view.backgroundColor = [UIColor clearColor];
-        return view;
-}
-- (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
-    view.backgroundColor = [UIColor clearColor];
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
-        view.backgroundColor = self.tableView.backgroundColor;
-        view.alpha = 0.7;
-    }
-
-    return view;
 }
 #pragma mark MBProgressHUDDelegate methods
 
@@ -246,36 +227,26 @@
 	[hud removeFromSuperview];
     hud = nil;
 }
-
 #pragma mark UISearchDisplayController Delegate Methods
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
-        [self.searchDisplayController.searchResultsTableView setContentOffset:CGPointZero];
+    [self filterContentForSearchText:searchString];
     return YES;
 }
 
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption
 {
-        [self.searchDisplayController.searchResultsTableView setContentOffset:CGPointZero];
     [filteredListContent removeAllObjects];
     [self filterContentForSearchText:[self.searchDisplayController.searchBar text]];
     return YES;
 }
 
-#pragma mark -
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-        [self.searchDisplayController.searchResultsTableView setContentOffset:CGPointZero];
-    [self filterContentForSearchText:searchText];
+    NSLog(@"Serach %@", searchText);
 }
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    [self.searchDisplayController.searchResultsTableView setContentOffset:CGPointZero];
-}
-
 #pragma mark
 
 - (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller
@@ -287,6 +258,8 @@
     self.segmentControl.selectedSegmentIndex =  previousIndex;
     
 }
+
+#pragma mark
 
 - (void)loadActivity
 {
@@ -312,10 +285,10 @@
     id data = nil;
     switch (self.segmentControl.selectedSegmentIndex) {
         case 0:
-            data = [[PostadvertControllerV2 sharedPostadvertController] getAllVideosWithUserID:[NSString stringWithFormat:@"%ld", userID] fromID:@"0" limit:@"0"];
+            data = [[PostadvertControllerV2 sharedPostadvertController] getAllGroupsWithUserID:[NSString stringWithFormat:@"%ld", userID] fromID:@"0" limit:@"0"];
             break;
         case 1:
-            data = [[PostadvertControllerV2 sharedPostadvertController] getUserVideosWithUserID:[NSString stringWithFormat:@"%ld", userID]];
+            data = [[PostadvertControllerV2 sharedPostadvertController] getUserGroupsWithUserID:[NSString stringWithFormat:@"%ld", userID]];
             break;
         default:
             
@@ -342,11 +315,12 @@
     
 }
 
+
 - (IBAction)segmentControl:(id)sender
 {
     UISegmentedControl *segmentCtr = (UISegmentedControl*)sender;
     NSInteger selectedIndex = segmentCtr.selectedSegmentIndex;
-    if (selectedIndex != 2) {
+    if (selectedIndex != 3) {
         previousIndex = selectedIndex;
         self.searchBar.hidden = YES;
         self.shortTitle.hidden = NO;
@@ -368,16 +342,22 @@
             
             self.searchDisplayController.searchResultsTableView.tableHeaderView = activityView;
         }
-        //self.searchDisplayController.searchResultsTableView.backgroundColor = self.tableView.backgroundColor;
+        
         [self.searchBar becomeFirstResponder];
         
     }
     switch (selectedIndex) {
         case 0:
-            self.shortTitle.text = @"All Videos";
+            self.shortTitle.text = @"All Groups";
             break;
         case 1:
-            self.shortTitle.text = [NSString stringWithFormat:@"%@'s Videos", fullName];
+            self.shortTitle.text = [NSString stringWithFormat:@"%@'s Groups", fullName];
+            break;
+        case 2:
+            self.shortTitle.text = [NSString stringWithFormat:@"%@'s Pending Invitations", fullName];
+            break;
+        case 3:
+            
             break;
         default:
             
@@ -388,7 +368,6 @@
 
 - (void)filterContentForSearchText:(NSString*)searchText
 {
-
     if ([searchText isEqualToString:@""]) {
         return;
     }
@@ -451,12 +430,11 @@
 
 - (void) getSearchDataFromWebService:(NSString*)searchText
 {
-    //searchVideos($user_id, $search_id, $key, $type, $video_id, $limit)
     NSString *key = @"All";
     if (self.searchBar.selectedScopeButtonIndex == 1) {
         key = @"user";
     }
-    id data = [[PostadvertControllerV2 sharedPostadvertController]searchVideosWithUserID:[NSString stringWithFormat:@"%ld", userID] searchID:[NSString stringWithFormat:@"%d", searchCount] key:searchText searchType:key video_id:@"0" limit:@"0"];
+    id data = [[PostadvertControllerV2 sharedPostadvertController]searchGroupsWithUserID:[NSString stringWithFormat:@"%ld", userID] searchID:[NSString stringWithFormat:@"%d", searchCount] key:searchText searchType:key groupID:@"0" limit:@"0"];
     if (data) {
         
         NSDictionary *returnSearchID = [data objectAtIndex:0];
@@ -506,5 +484,4 @@
         }
     }
 }
-
 @end

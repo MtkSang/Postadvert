@@ -52,11 +52,7 @@
 
 - (void) viewDidAppear:(BOOL)animated
 {
-    UIButton *addButton = [[UIButton alloc]init];
-    addButton.titleLabel.text = @"+";
-    addButton.imageView.image = [UIImage imageNamed:@"iPad.png"];
-    UIBarButtonItem *barBtnItem = [[UIBarButtonItem alloc]initWithCustomView:addButton];
-    barBtnItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPicture:)];
+    UIBarButtonItem *barBtnItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPicture:)];
     self.navigationItem.rightBarButtonItem = barBtnItem;
     //addButton = nil;
     //barBtnItem = nil;

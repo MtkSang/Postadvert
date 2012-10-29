@@ -15,16 +15,20 @@
 #import "PostadvertControllerV2.h"
 #import "Profile_VideoViewController.h"
 #import "Profile_PhotosViewController.h"
+#import "Profile_EventViewController.h"
 #import "UIImageView+URL.h"
 #import "FriendsViewController.h"
+#import "Profile_GroupsViewController.h"
 
 @interface UserProfileViewController ()
 
 - (IBAction)btn_scrolling_bar_clicked:(id)sender;
 - (IBAction)userPhotos:(id)sender;
+- (IBAction)userGroups:(id)sender;
+- (IBAction)userEvents:(id)sender;
 - (IBAction)friendBtnClicked:(id)sender;
 - (IBAction)messageBtnClicked:(id)sender;
-- (void) setFriendBtnTitle;
+//- (void) setFriendBtnTitle;
 - (void)updateView;
 - (void)updateUserInfo;
 @end
@@ -337,6 +341,8 @@
         }
         
     }
+    headerViewSection.hidden = NO;
+    headerViewSection.userInteractionEnabled = YES;
 }
 
 - (IBAction)btn_scrolling_bar_clicked:(id)sender
@@ -519,6 +525,24 @@
     viewCtr.navigationController = self.navigationController;
     [self.navigationController pushViewController:viewCtr animated:YES];
 }
+
+- (IBAction)userGroups:(id)sender
+{
+    //FriendsViewController
+    Profile_GroupsViewController *viewCtr = [[Profile_GroupsViewController alloc] initWithFullName:userInfo.fullName userID:userInfo.registrationID ];
+    viewCtr.navigationController = self.navigationController;
+    [self.navigationController pushViewController:viewCtr animated:YES];
+}
+
+- (IBAction)userEvents:(id)sender
+{
+    //FriendsViewController
+    Profile_EventViewController *viewCtr = [[Profile_EventViewController alloc] initWithFullName:userInfo.fullName userID:userInfo.registrationID ];
+    viewCtr.navigationController = self.navigationController;
+    [self.navigationController pushViewController:viewCtr animated:YES];
+}
+
+
 @end
 
 

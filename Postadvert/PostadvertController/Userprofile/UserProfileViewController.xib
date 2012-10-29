@@ -41,7 +41,7 @@
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIView" id="634582874">
 						<reference key="NSNextResponder" ref="873029372"/>
-						<int key="NSvFlags">290</int>
+						<int key="NSvFlags">-2147483358</int>
 						<array class="NSMutableArray" key="NSSubviews">
 							<object class="IBUIView" id="990291757">
 								<reference key="NSNextResponder" ref="634582874"/>
@@ -369,6 +369,7 @@
 							</object>
 						</object>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</array>
@@ -534,6 +535,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">userGroups:</string>
+						<reference key="source" ref="538516639"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">122</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">btn_scrolling_bar_clicked:</string>
 						<reference key="source" ref="891652141"/>
 						<reference key="destination" ref="372490531"/>
@@ -576,6 +586,15 @@
 						<int key="IBEventType">7</int>
 					</object>
 					<int key="connectionID">40</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">userEvents:</string>
+						<reference key="source" ref="572111542"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">123</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -740,7 +759,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">121</int>
+			<int key="maxID">123</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -759,7 +778,11 @@
 						<string key="btn_scrolling_bar_clicked:">id</string>
 						<string key="friendBtnClicked:">id</string>
 						<string key="messageBtnClicked:">id</string>
+						<string key="userEvents:">id</string>
+						<string key="userFriends:">id</string>
+						<string key="userGroups:">id</string>
 						<string key="userPhotos:">id</string>
+						<string key="userVideo:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="btn_scrolling_bar_clicked:">
@@ -774,8 +797,24 @@
 							<string key="name">messageBtnClicked:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="userEvents:">
+							<string key="name">userEvents:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="userFriends:">
+							<string key="name">userFriends:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="userGroups:">
+							<string key="name">userGroups:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="userPhotos:">
 							<string key="name">userPhotos:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="userVideo:">
+							<string key="name">userVideo:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>

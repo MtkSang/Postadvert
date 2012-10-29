@@ -31,8 +31,19 @@
 - (id) getContinuePostsWithWall:(NSString*) wallId PostId:(NSString*)postId WithUserID:(NSString*)userID Type:(NSString*) type andCount:(NSString*) count;
 -(id) getStatusUpdateWithUserID:(NSString*)userId limit:(NSString*)limit index:(NSString*)index status_id:(NSString*)status_id;
 -(id) getUserStatusUpdateWithUserID:(NSString*)userId limit:(NSString*)limit status_id:(NSString*)status_id; // using for profile
+//Viodes
 -(id) getUserVideosWithUserID:(NSString*)userID;
+-(id) getAllVideosWithUserID:(NSString*)userID fromID:(NSString*)video_id limit:(NSString*)limit;
+-(id) searchVideosWithUserID:(NSString*)userID searchID:(NSString*)search_id key:(NSString*)key searchType:(NSString*)type video_id:(NSString*)video_id limit:(NSString*)limit;
+//Album
 -(id) getUserAlbumsWithUserID:(NSString*)userID;
+-(id) getAllAlbumsWithUserID:(NSString*)userID fromID:(NSString*)albumID limit:(NSString*)limit;
 -(id) getPhotoOfAlbumWithAlbumID:(NSString*)albumID;
+
 -(id) getFriendStatusWithUserID:(NSString*)userID andOtherID:(NSString*)otherID;
+
+-(id) getUserGroupsWithUserID:(NSString*)userID;
+-(id) getAllGroupsWithUserID:(NSString*)userID fromID:(NSString*)groupID limit:(NSString*)limit;
+-(id) searchGroupsWithUserID:(NSString*)userID searchID:(NSString*)search_id key:(NSString*)key searchType:(NSString*)type groupID:(NSString*)groupsID limit:(NSString*)limit;
+//getAllAlbums($user_id, $album_id, $limit, $base64_image = false)
 @end

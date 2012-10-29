@@ -390,7 +390,5 @@
         }
 		
 	}
-    NSLog(@"Search Count %d", filteredListContent.count);
-    
 }
 @end
