@@ -15,6 +15,7 @@
 #import "SDWebImageController/SDWebImageRootViewController.h"
 #import "LinkPreview.h"
 #import "UserPAInfo.h"
+#import "CommentsViewController.h"
 
 @interface UIActivityCell()
 
@@ -493,16 +494,14 @@
 
 - (void) commentButtonClick:(id) sender
 {
-//    if (_content.listComments.count == 0) {
-//        return;
-//    }
-//    [self addCommentsListenner];
-//    CommentsViewController *commentViewCtr = [[CommentsViewController alloc]init];
-//    commentViewCtr.content = _content;
-//    //[self addCommentsListenner];
-//    [navigationController pushViewController: commentViewCtr animated:YES];
-//    // = nil;
-//    commentViewCtr = nil;
+    if (_content.totalComment == 0) {
+        return;
+    }
+    CommentsViewController *commentViewCtr = [[CommentsViewController alloc]init];
+    //[self addCommentsListenner];
+    [navigationController pushViewController: commentViewCtr animated:YES];
+    // = nil;
+    commentViewCtr = nil;
 }
 
 - (void) plusButtonClicked

@@ -13,7 +13,8 @@
 #import "UserPAInfo.h"
 #import "Constants.h"
 #import "Profile_PhotoListViewController.h"
-#import <QuartzCore/QuartzCore.h>
+
+
 @interface Profile_EventViewController ()
 
 @end
@@ -44,32 +45,47 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    searchTable = [[UITableView alloc]init];
     searchCount = 0;
     listContent_my = [[NSMutableArray alloc]init];
     listContent_all = [[NSMutableArray alloc]init];
+    listContent_past = [[NSMutableArray alloc]init];
     listContent_invition = [[NSMutableArray alloc]init];
     
     self.clearsSelectionOnViewWillAppear = NO;
-    
+    self.shortTitle.text = [NSString stringWithFormat:@"%@'s Events", fullName];
     //Setting supper's items
-    [self.segmentControl setSegmentedControlStyle:UISegmentedControlStyleBezeled];
-    self.shortTitle.text = [NSString stringWithFormat:@"%@'s groups", fullName];
-    previousIndex = self.segmentControl.selectedSegmentIndex;
+    [self.segmentControl setSegmentedControlStyle:UISegmentedControlStyleBar];
+    
+    [self.segmentControl removeAllSegments];
+    [self.segmentControl insertSegmentWithTitle:@"All Events" atIndex:0 animated:NO];
+    NSString *tilteS2 = @"";
     if (userID == [[UserPAInfo sharedUserPAInfo]registrationID]) {
-        [self.segmentControl setTitle:@"My Groups" forSegmentAtIndex:1];
+        tilteS2 = @"My Events";
     }else
     {
         if (fullName.length<4) {
-            [self.segmentControl setTitle:[NSString stringWithFormat:@"%@'s groups", fullName] forSegmentAtIndex:1];
+            tilteS2 = [NSString stringWithFormat:@"%@'s Events", fullName] ;
         }else
-            [self.segmentControl setTitle:@"User's Groups" forSegmentAtIndex:1];
+            tilteS2 = @"User's Events";
     }
+    [self.segmentControl setWidth:self.view.frame.size.width / 5 + 5 forSegmentAtIndex:0];
+    [self.segmentControl insertSegmentWithTitle:tilteS2 atIndex:1 animated:NO];
+    [self.segmentControl insertSegmentWithTitle:@"Invitations" atIndex:2 animated:NO];
+    [self.segmentControl setWidth:self.view.frame.size.width / 5 + 5 forSegmentAtIndex:2];
+    [self.segmentControl insertSegmentWithTitle:@"Past Events" atIndex:3 animated:NO];
+    
+    [self.segmentControl setWidth:self.view.frame.size.width / 5 + 5 forSegmentAtIndex:3];
+    [self.segmentControl insertSegmentWithTitle:@"Search" atIndex:4 animated:NO];
+    
     //Set up Scope Bar itmes
-    NSString *optionName1 = @"All Groups";
+    NSString *optionName1 = @"All Events";
     NSString *optionName2 = [self.segmentControl titleForSegmentAtIndex:1];
     self.searchBar.showsScopeBar = YES;
     [self.searchBar setScopeButtonTitles:[NSArray arrayWithObjects:optionName1, optionName2, nil]];
     
+    self.segmentControl.selectedSegmentIndex = 1;
+    previousIndex = self.segmentControl.selectedSegmentIndex;
     //Load data
     [self loadActivity];
 }
@@ -80,6 +96,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self.segmentControl setWidth:self.view.frame.size.width / 5 + 5 forSegmentAtIndex:0];
+    [self.segmentControl setWidth:self.view.frame.size.width / 5 + 5 forSegmentAtIndex:2];
+    [self.segmentControl setWidth:self.view.frame.size.width / 5 + 5 forSegmentAtIndex:3];
+}
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -91,10 +113,16 @@
             break;
         case 1:
             return listContent_my.count;
+            break;
         case 2:
             return listContent_invition.count;
+            break;
         case 3:
+            return listContent_past.count;
+            break;
+        case 4:
             return filteredListContent.count;
+            break;
         default:
             return listContent_my.count;
             break;
@@ -109,10 +137,10 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *reuseIdentifier = @"Profile_GroupsViewCell";
+    static NSString *reuseIdentifier = @"Profile_EventCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
     if (cell == nil) {
-        //Profile_GroupsViewCell
+        //Profile_EventCel
         NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:reuseIdentifier owner:self options:nil];
         cell = [topLevelObjects objectAtIndex:0];
         topLevelObjects = nil;
@@ -120,52 +148,67 @@
     }
     
     // Configure the cell...
+
+    NSArray *listData;
     NSDictionary *cellData;
     switch (self.segmentControl.selectedSegmentIndex) {
         case 0:
-            cellData = [listContent_all objectAtIndex:indexPath.section];
+            listData = listContent_all;
+            //cellData = [listContent_all objectAtIndex:indexPath.section];
             break;
         case 1:
-            cellData = [listContent_my objectAtIndex:indexPath.section];
+            listData = listContent_my;
+            //cellData = [listContent_my objectAtIndex:indexPath.section];
             break;
         case 2:
-            cellData = [listContent_invition objectAtIndex:indexPath.section];
+            listData = listContent_invition;
+            //cellData = [listContent_invition objectAtIndex:indexPath.section];
             break;
         case 3:
-            cellData = [filteredListContent objectAtIndex:indexPath.section];
+            listData = listContent_past;
+            //cellData = [listContent_past objectAtIndex:indexPath.section];
+            break;
+        case 4:
+            listData = filteredListContent;
+            //cellData = [filteredListContent objectAtIndex:indexPath.section];
             break;
         default:
-            cellData = [listContent_my objectAtIndex:indexPath.section];
+            listData = listContent_my;
             break;
     }
+    if (listData.count <= indexPath.section) {
+        listData = nil;
+        return cell;
+    }
+    cellData = [listData objectAtIndex:indexPath.section];
+    NSLog(@"%@", cellData);
     
     NSString *imageURL = [NSData stringDecodeFromBase64String: [cellData objectForKey:@"thumb"]];
-    UIImageView *imageView = (UIImageView*)[cell viewWithTag:1];
-    [imageView setImageWithURL:[NSURL URLWithString:imageURL]placeholderImage:[UIImage imageNamed:@"group_thumb.png"]];
-    imageView.frame = CGRectMake(0, 0, 75, 75);
-    UILabel *name = (UILabel*)[cell viewWithTag:2];
-    name.text = [NSData stringDecodeFromBase64String:[cellData objectForKey:@"name"]];
-    //description
-    UILabel *description = (UILabel*)[ cell viewWithTag:3];
-    description.text = [NSData stringDecodeFromBase64String: [cellData objectForKey:@"description"]];
+    UIImageView *imageView = (UIImageView*)[cell viewWithTag:2];
+    [imageView setImageWithURL:[NSURL URLWithString:imageURL]placeholderImage:[UIImage imageNamed:@"event_thumb.png"]];
+    imageView.frame = CGRectMake(0, 0, 64, 64);
+    //title
+    UILabel *title = (UILabel*)[cell viewWithTag:4];
+    title.text = [NSData stringDecodeFromBase64String:[cellData objectForKey:@"title"]];
+    //location
+    UILabel *location = (UILabel*)[ cell viewWithTag:5];
+    location.text =  [cellData objectForKey:@"location"];
+    //time
+    NSString *start_date = [cellData objectForKey:@"start_date"];
+    NSString *end_date = [cellData objectForKey:@"end_date"];
+    UILabel *time = (UILabel *)[cell viewWithTag:6];
+    time.text = [NSString stringWithFormat:@"%@ - %@", start_date, end_date];
     
-    UILabel *created = (UILabel *)[cell viewWithTag:4];
-    created.text = [cellData objectForKey:@"created"];
+    UILabel *short_start_date = (UILabel*)[cell viewWithTag:3];
+    short_start_date.text = [cellData objectForKey:@"short_start_date"];
     
-    UIButton *member_count = (UIButton *)[cell viewWithTag:6];
-    int num = [[cellData objectForKey:@"member_count"] integerValue];
+    UIButton *confirmedcount = (UIButton *)[cell viewWithTag:8];
+    int num = [[cellData objectForKey:@"confirmedcount"] integerValue];
     if (num>1) {
-        [member_count setTitle:[NSString stringWithFormat:@"%d Members", num] forState:UIControlStateNormal ] ;
+        [confirmedcount setTitle:[NSString stringWithFormat:@"%d guest is attending this event", num] forState:UIControlStateNormal ] ;
     }else
-        [member_count setTitle:[NSString stringWithFormat:@"%d Member", num] forState:UIControlStateNormal ] ;
-    
-    UIButton *discuss_count = (UIButton *)[cell viewWithTag:8];
-    num = [[cellData objectForKey:@"discuss_count"] integerValue];
-    [discuss_count setTitle:[NSString stringWithFormat:@"%d Discussions", num] forState:UIControlStateNormal];
-    
-    UIButton *wall_count = (UIButton *)[cell viewWithTag:10];
-    num = [[cellData objectForKey:@"wall_count"] integerValue];
-    [wall_count setTitle:[NSString stringWithFormat:@"%d Wall Posts", num] forState:UIControlStateNormal];
+        [confirmedcount setTitle:[NSString stringWithFormat:@"%d guest are attending this event", num] forState:UIControlStateNormal ] ;
+    listData = nil;
     
     
     return cell;
@@ -213,7 +256,7 @@
 #pragma mark - Table view delegate
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 110;
+    return 130;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -231,7 +274,7 @@
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
-    [self filterContentForSearchText:searchString];
+    
     return YES;
 }
 
@@ -245,17 +288,25 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    NSLog(@"Serach %@", searchText);
+    [self filterContentForSearchText:searchText];
 }
 #pragma mark
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [filteredListContent removeAllObjects];
+}
 
 - (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller
 {
+    
     self.searchBar.hidden = YES;
     self.shortTitle.hidden = NO;
     self.segmentControl.hidden = NO;
-    self.tableView.tableHeaderView = self.headerView;
     self.segmentControl.selectedSegmentIndex =  previousIndex;
+    if (searchThread.isExecuting) {
+        [searchThread cancel];
+    }
+    self.tableView.tableHeaderView = self.headerView;
     
 }
 
@@ -273,7 +324,6 @@
         HUD = [[MBProgressHUD alloc]initWithView:self.view];
         [self.view addSubview:HUD];
     }
-    HUD.delegate = self;
     HUD.userInteractionEnabled = NO;
     [HUD setLabelText:@"Loading..."];
     [HUD showWhileExecuting:@selector(loadCellsInBackground) onTarget:self withObject:nil animated:YES];
@@ -281,15 +331,19 @@
 
 - (void) loadCellsInBackground
 {
-    [NSThread cancelPreviousPerformRequestsWithTarget:self selector:@selector(loadCellsInBackground) object:nil];
     id data = nil;
     switch (self.segmentControl.selectedSegmentIndex) {
         case 0:
-            data = [[PostadvertControllerV2 sharedPostadvertController] getAllGroupsWithUserID:[NSString stringWithFormat:@"%ld", userID] fromID:@"0" limit:@"0"];
+            data = [[PostadvertControllerV2 sharedPostadvertController] getAllCurrentEvents:@"0" limit:@"0"];
             break;
         case 1:
-            data = [[PostadvertControllerV2 sharedPostadvertController] getUserGroupsWithUserID:[NSString stringWithFormat:@"%ld", userID]];
+            data = [[PostadvertControllerV2 sharedPostadvertController] getUserCurrentEvents:[NSString stringWithFormat:@"%ld",userID] limit:@"0"];
             break;
+            
+        case 3:
+            data = [[PostadvertControllerV2 sharedPostadvertController] getAllPastEvents:[NSString stringWithFormat:@"%ld",userID] limit:@"0"];
+            break;
+
         default:
             
             break;
@@ -302,6 +356,10 @@
             case 1:
                 listContent_my = data;
                 break;
+            case 3:
+                listContent_past = data;
+                break;
+
             default:
                 listContent_my = data;
                 break;
@@ -320,15 +378,15 @@
 {
     UISegmentedControl *segmentCtr = (UISegmentedControl*)sender;
     NSInteger selectedIndex = segmentCtr.selectedSegmentIndex;
-    if (selectedIndex != 3) {
+    if (selectedIndex != 4) {
         previousIndex = selectedIndex;
         self.searchBar.hidden = YES;
         self.shortTitle.hidden = NO;
         self.segmentControl.hidden = NO;
+        [NSThread cancelPreviousPerformRequestsWithTarget:self selector:@selector(loadCellsInBackground) object:nil];
         [self loadActivity];
     }else
     {
-        
         self.searchBar.hidden = NO;
         self.shortTitle.hidden = YES;
         self.segmentControl.hidden = YES;
@@ -348,16 +406,16 @@
     }
     switch (selectedIndex) {
         case 0:
-            self.shortTitle.text = @"All Groups";
+            self.shortTitle.text = @"All Events";
             break;
         case 1:
-            self.shortTitle.text = [NSString stringWithFormat:@"%@'s Groups", fullName];
+            self.shortTitle.text = [NSString stringWithFormat:@"%@'s Events", fullName];
             break;
         case 2:
             self.shortTitle.text = [NSString stringWithFormat:@"%@'s Pending Invitations", fullName];
             break;
         case 3:
-            
+            self.shortTitle.text = @"Past Events";
             break;
         default:
             
@@ -430,11 +488,15 @@
 
 - (void) getSearchDataFromWebService:(NSString*)searchText
 {
-    NSString *key = @"All";
+    NSString *type = @"All";
     if (self.searchBar.selectedScopeButtonIndex == 1) {
-        key = @"user";
+        type = @"user";
     }
-    id data = [[PostadvertControllerV2 sharedPostadvertController]searchGroupsWithUserID:[NSString stringWithFormat:@"%ld", userID] searchID:[NSString stringWithFormat:@"%d", searchCount] key:searchText searchType:key groupID:@"0" limit:@"0"];
+    //searchEvents($user_id, $search_id, $key, $type, $event_id, $limit)
+    NSArray *arrNames = [NSArray arrayWithObjects:@"user_id", @"search_id", @"key", @"type", @"event_id", @"limit", nil];
+    NSArray *arrValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", userID], [NSString stringWithFormat:@"%d", searchCount], searchText, type, @"0", @"0", nil];
+    
+    id data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName:@"searchEvents" parametterName:arrNames parametterValue:arrValues];
     if (data) {
         
         NSDictionary *returnSearchID = [data objectAtIndex:0];

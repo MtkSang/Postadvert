@@ -41,6 +41,7 @@
     NSLog(@"Total %d, newindex %d", [self count], idx);
     
     [[self objectAtIndex:idx] addObject:anObject];
+    
 }
 
 @end
@@ -66,11 +67,13 @@
     return self;
 }
 
-- (id)initWithUserID:(long) userID_
+- (id)initWithUserID:(long) userID_ fullName:(NSString*)fullname
 {
     self = [super initWithNibName:@"FriendsViewController" bundle:nil];
     if (self) {
         userID = userID_;
+        
+        userFullName = fullname;
     }
     return self;
 }
@@ -80,9 +83,13 @@
     // Do any additional setup after loading the view from its nib.
     NSLog(@"%@: %@", NSStringFromClass([self class]), self.view);
     //[self performSelectorInBackground:@selector(getTotalFriends) withObject:nil];
-    
     [self.activityView startAnimating];
     [self performSelectorInBackground:@selector(loadlistFriendCellContent) withObject:nil];
+    self.tableView.tableFooterView = [[UIView alloc]init];
+    if ([[UserPAInfo sharedUserPAInfo]registrationID] == userID || userID == 0) {
+        [self.searchDisplayController.searchBar setPlaceholder:@"Search My friends"];
+    }else
+        [self.searchDisplayController.searchBar setPlaceholder:[NSString stringWithFormat:@"Search %@'s friends", userFullName]];
 }
 
 - (void)viewDidUnload
@@ -95,6 +102,12 @@
 {
     [super viewWillAppear:animated];
     self.activityView.center = self.view.center;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.tableView setContentOffset:CGPointMake(0, 44) animated:YES];
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -116,12 +129,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)ctableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *MyIdentifier = @"UITableViewCellFriend";        
+    static NSString *reuseIdentifier = @"Profile_FriendCell";        
     // Try to retrieve from the table view a now-unused cell with the given identifier.
-    UITableViewCell *cell = [ctableView dequeueReusableCellWithIdentifier:MyIdentifier];        
+    UITableViewCell *cell = [ctableView dequeueReusableCellWithIdentifier:reuseIdentifier];        
     // If no cell is available, create a new one using the given identifier.
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
+        //Profile_EventCel
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:reuseIdentifier owner:self options:nil];
+        cell = [topLevelObjects objectAtIndex:0];
+        topLevelObjects = nil;
     }
     CredentialInfo *cellCentent = nil;
     if (ctableView == self.searchDisplayController.searchResultsTableView)
@@ -132,13 +148,24 @@
 	{
         cellCentent = ((CredentialInfo*)[sectionedListContent objectAtIndexPath:indexPath]);
     }
-//    if (!cellCentent.imgAvatar) {
-//        cellCentent.imgAvatar = [UIImage imageNamed:@"user_default_thumb.png"];
-//        
-//    }
-    [cell.imageView setImageWithURL:[NSURL URLWithString: cellCentent.avatarUrl] placeholderImage:[UIImage imageNamed:@"user_default_thumb.png"]];
-    cell.textLabel.text = cellCentent.fullName;
+    UIImageView *imgView = (UIImageView*)[cell viewWithTag:1];
+    [imgView setImageWithURL:[NSURL URLWithString: cellCentent.avatarUrl] placeholderImage:[UIImage imageNamed:@"user_default_thumb.png"]];
+    imgView.frame = CGRectMake(1, 1, 64, 64);
+    UILabel *name = (UILabel*)[cell viewWithTag:2];
+    name.text = cellCentent.fullName;
+    
+    UILabel *status =(UILabel*) [cell viewWithTag:3];
+    status.text = cellCentent.userStatus;
+    
+    UIButton *totalFriend = (UIButton*)[cell viewWithTag:5];
+    if (cellCentent.friendCount>1) {
+        [totalFriend setTitle:[NSString stringWithFormat:@"%d friends", cellCentent.friendCount] forState:UIControlStateNormal];
+    }else
+        [totalFriend setTitle:[NSString stringWithFormat:@"%d friend", cellCentent.friendCount] forState:UIControlStateNormal];
+
+    [totalFriend addTarget:self action:@selector(viewFriends:) forControlEvents:UIControlEventTouchUpInside];
     ctableView.scrollEnabled = YES;
+    cell.contentView.tag = cellCentent.registrationID;
     return cell;   
     
 }
@@ -192,6 +219,11 @@
             return [[UILocalizedIndexedCollation currentCollation] sectionForSectionIndexTitleAtIndex:index-1];
         }
     }
+}
+
+- (float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 66;
 }
 #pragma mark - tableViewDelegate
 - (void)tableView:(UITableView *)ctableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -259,6 +291,33 @@
 }
 
 #pragma mark - implement
+- (IBAction)viewFriends:(id)sender
+{
+    UIButton *friendBtn = (UIButton*)sender;
+    UIView *superView = friendBtn.superview;
+    NSLog(@"%@", superView);
+    long idNeedToShow = friendBtn.superview.tag;
+    NSString *fullName = @"";
+    BOOL findOut = NO;
+    for (NSArray *info in sectionedListContent) {
+        for (CredentialInfo *user in info) {
+            if (idNeedToShow == user.registrationID) {
+                fullName = user.fullName;
+                findOut = YES;
+                break;
+            }
+            
+        }
+        if (findOut) {
+            break;
+        }
+    }
+    if (idNeedToShow > 0) {
+        FriendsViewController *newViewCtr = [[FriendsViewController alloc]initWithUserID:idNeedToShow fullName:fullName];
+        newViewCtr.navigationController = self.navigationController;
+        [self.navigationController pushViewController:newViewCtr animated:YES];
+    }
+}
 
 - (void) loadlistFriendCellContent
 {
@@ -320,7 +379,8 @@
         friendInfo.usernamePU = [dict objectForKey:@"username"];
         friendInfo.avatarUrl = [NSData stringDecodeFromBase64String:[dict objectForKey:@"thumb"]];
         friendInfo.registrationID = [[dict objectForKey:@"user_id"] integerValue];
-        
+        friendInfo.friendCount = [[dict objectForKey:@"friend_count"] integerValue];
+        friendInfo.userStatus = [NSData stringDecodeFromBase64String: [dict objectForKey:@"status"]];
         [listFriends addObject:friendInfo];
     }
     return listFriends;

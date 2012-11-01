@@ -126,22 +126,30 @@
     }
     
     // Configure the cell...
+    NSArray *listData;
     NSDictionary *cellData;
     switch (self.segmentControl.selectedSegmentIndex) {
         case 0:
-            cellData = [listContent_all objectAtIndex:indexPath.section];
+            listData = listContent_all;
+            //cellData = [listContent_all objectAtIndex:indexPath.section];
             break;
         case 1:
-            cellData = [listContent_my objectAtIndex:indexPath.section];
+            listData = listContent_my;
+            //cellData = [listContent_my objectAtIndex:indexPath.section];
             break;
         case 2:
-            cellData = [filteredListContent objectAtIndex:indexPath.section];
+            listData = filteredListContent;
+            //cellData = [listContent_invition objectAtIndex:indexPath.section];
             break;
         default:
             cellData = [listContent_my objectAtIndex:indexPath.section];
             break;
     }
-
+    if (listData.count <= indexPath.section) {
+        listData = nil;
+        return cell;
+    }
+    cellData = [listData objectAtIndex:indexPath.section];
     NSString *imageURL = [NSData stringDecodeFromBase64String: [cellData objectForKey:@"thumbnail"]];
     [cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"video_icon.jpg"]];
     cell.textLabel.text = [NSData stringDecodeFromBase64String: [cellData objectForKey:@"title"] ];
@@ -159,6 +167,7 @@
     frame.origin.x = 85 - frame.size.width;
     frame.origin.y = 70 - 20;
     durationLabel.frame = frame;
+    listData = nil;
     return cell;
 }
 

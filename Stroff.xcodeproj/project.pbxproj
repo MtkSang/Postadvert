@@ -371,7 +371,6 @@
 		FA328A5716157BBE00A2DC0F /* delete-2.png in Resources */ = {isa = PBXBuildFile; fileRef = FA328A5416157BBE00A2DC0F /* delete-2.png */; };
 		FA328A5816157BBE00A2DC0F /* Remove_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FA328A5516157BBE00A2DC0F /* Remove_Icon.png */; };
 		FA328A5916157BBE00A2DC0F /* remove.png in Resources */ = {isa = PBXBuildFile; fileRef = FA328A5616157BBE00A2DC0F /* remove.png */; };
-		FA388B8B162674440000E9BB /* iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388B7A162674440000E9BB /* iPad.png */; };
 		FA388B8C162674440000E9BB /* iPad_small.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388B7B162674440000E9BB /* iPad_small.png */; };
 		FA388B8D162674440000E9BB /* iPad_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388B7C162674440000E9BB /* iPad_small@2x.png */; };
 		FA388B90162674440000E9BB /* iPhone_small.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388B7F162674440000E9BB /* iPhone_small.png */; };
@@ -444,6 +443,10 @@
 		FA7393031589D92E00CE23A0 /* messages.png in Resources */ = {isa = PBXBuildFile; fileRef = FA7392FF1589D92D00CE23A0 /* messages.png */; };
 		FA7393041589D92E00CE23A0 /* status_update.png in Resources */ = {isa = PBXBuildFile; fileRef = FA7393001589D92E00CE23A0 /* status_update.png */; };
 		FA7DCE3B158E3AA300347EDA /* download_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = FA7DCE3A158E3AA300347EDA /* download_btn.png */; };
+		FA7DF8A816410A8C003E823D /* FriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA7DF8A616410A8C003E823D /* FriendsViewController.m */; };
+		FA7DF8A916410A8C003E823D /* FriendsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7DF8A716410A8C003E823D /* FriendsViewController.xib */; };
+		FA7DF8AB16410AE8003E823D /* Profile_FriendCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7DF8AA16410AE8003E823D /* Profile_FriendCell.xib */; };
+		FA7DF8AD1641158A003E823D /* profile_message.png in Resources */ = {isa = PBXBuildFile; fileRef = FA7DF8AC1641158A003E823D /* profile_message.png */; };
 		FA86928F15B678F100CA8491 /* ThumbnailPostCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = FA86928E15B678F100CA8491 /* ThumbnailPostCellView.m */; };
 		FA8A7F391592BD1900EC6E74 /* icon_camera_small_unscaled.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FA8A7F381592BD1900EC6E74 /* icon_camera_small_unscaled.jpg */; };
 		FA8A7F3D1592C24800EC6E74 /* camera_icon.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = FA8A7F3B1592C24800EC6E74 /* camera_icon.jpeg */; };
@@ -452,6 +455,7 @@
 		FA8A7F431592C80900EC6E74 /* TakePhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA8A7F411592C80900EC6E74 /* TakePhotoViewController.xib */; };
 		FA8D6BCA15EF7366005FD412 /* ActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8D6BC815EF7366005FD412 /* ActivityViewController.m */; };
 		FA8D6BCB15EF7366005FD412 /* ActivityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA8D6BC915EF7366005FD412 /* ActivityViewController.xib */; };
+		FA92C0E1163E862A0066FE57 /* Profile_EventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA92C0E0163E862A0066FE57 /* Profile_EventCell.xib */; };
 		FA949C6E163A862B00B6FE9D /* Profile_EventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA949C6D163A862B00B6FE9D /* Profile_EventViewController.m */; };
 		FA949C70163A8A7000B6FE9D /* event_thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = FA949C6F163A8A7000B6FE9D /* event_thumb.png */; };
 		FA98785715AD34D20002B490 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = FA98785615AD34D20002B490 /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -468,6 +472,7 @@
 		FAA4FE9B163536AC00624790 /* Group_wallPost.png in Resources */ = {isa = PBXBuildFile; fileRef = FAA4FE98163536AC00624790 /* Group_wallPost.png */; };
 		FAA703EC1636481C0029B432 /* UserProfileComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA703EA1636481C0029B432 /* UserProfileComponentViewController.m */; };
 		FAA703ED1636481C0029B432 /* UserProfileComponentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAA703EB1636481C0029B432 /* UserProfileComponentViewController.xib */; };
+		FAA8DC42163E44930012DB3A /* MultiLineSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA8DC41163E44930012DB3A /* MultiLineSegmentedControl.m */; };
 		FAA902DA15E39222009D9DD6 /* GLTapLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA902D415E39222009D9DD6 /* GLTapLabel.m */; };
 		FAA902DB15E39222009D9DD6 /* NSAttributedString+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA902D715E39222009D9DD6 /* NSAttributedString+Attributes.m */; };
 		FAA902DC15E39222009D9DD6 /* OHAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA902D915E39222009D9DD6 /* OHAttributedLabel.m */; };
@@ -516,8 +521,6 @@
 		FAFA776B157DE44900A55669 /* UICommentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFA776A157DE44600A55669 /* UICommentsCell.m */; };
 		FAFA776E157DED0000A55669 /* CommentsCellContent.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFA776D157DECFD00A55669 /* CommentsCellContent.m */; };
 		FAFA7771157E156000A55669 /* UserPAInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFA7770157E154A00A55669 /* UserPAInfo.m */; };
-		FAFDD9BA15A28CBB00392DFA /* FriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFDD9B815A28CBB00392DFA /* FriendsViewController.m */; };
-		FAFDD9BB15A28CBB00392DFA /* FriendsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAFDD9B915A28CBB00392DFA /* FriendsViewController.xib */; };
 		FAFEC9571581DE47005DCF27 /* PostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFEC9551581DE47005DCF27 /* PostViewController.m */; };
 		FAFEC9581581DE47005DCF27 /* PostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAFEC9561581DE47005DCF27 /* PostViewController.xib */; };
 /* End PBXBuildFile section */
@@ -991,7 +994,6 @@
 		FA328A5416157BBE00A2DC0F /* delete-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete-2.png"; sourceTree = "<group>"; };
 		FA328A5516157BBE00A2DC0F /* Remove_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Remove_Icon.png; sourceTree = "<group>"; };
 		FA328A5616157BBE00A2DC0F /* remove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = remove.png; sourceTree = "<group>"; };
-		FA388B7A162674440000E9BB /* iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPad.png; sourceTree = "<group>"; };
 		FA388B7B162674440000E9BB /* iPad_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPad_small.png; sourceTree = "<group>"; };
 		FA388B7C162674440000E9BB /* iPad_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPad_small@2x.png"; sourceTree = "<group>"; };
 		FA388B7F162674440000E9BB /* iPhone_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPhone_small.png; sourceTree = "<group>"; };
@@ -1078,6 +1080,11 @@
 		FA7392FF1589D92D00CE23A0 /* messages.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = messages.png; sourceTree = "<group>"; };
 		FA7393001589D92E00CE23A0 /* status_update.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = status_update.png; sourceTree = "<group>"; };
 		FA7DCE3A158E3AA300347EDA /* download_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = download_btn.png; sourceTree = "<group>"; };
+		FA7DF8A516410A8C003E823D /* FriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsViewController.h; sourceTree = "<group>"; };
+		FA7DF8A616410A8C003E823D /* FriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsViewController.m; sourceTree = "<group>"; };
+		FA7DF8A716410A8C003E823D /* FriendsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendsViewController.xib; sourceTree = "<group>"; };
+		FA7DF8AA16410AE8003E823D /* Profile_FriendCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Profile_FriendCell.xib; sourceTree = "<group>"; };
+		FA7DF8AC1641158A003E823D /* profile_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_message.png; sourceTree = "<group>"; };
 		FA86928D15B678F100CA8491 /* ThumbnailPostCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThumbnailPostCellView.h; path = Postadvert/PostadvertController/ThumbnailPostCellView.h; sourceTree = SOURCE_ROOT; };
 		FA86928E15B678F100CA8491 /* ThumbnailPostCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ThumbnailPostCellView.m; path = Postadvert/PostadvertController/ThumbnailPostCellView.m; sourceTree = SOURCE_ROOT; };
 		FA8A7F381592BD1900EC6E74 /* icon_camera_small_unscaled.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = icon_camera_small_unscaled.jpg; sourceTree = "<group>"; };
@@ -1089,6 +1096,7 @@
 		FA8D6BC715EF7366005FD412 /* ActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityViewController.h; sourceTree = "<group>"; };
 		FA8D6BC815EF7366005FD412 /* ActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityViewController.m; sourceTree = "<group>"; };
 		FA8D6BC915EF7366005FD412 /* ActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityViewController.xib; sourceTree = "<group>"; };
+		FA92C0E0163E862A0066FE57 /* Profile_EventCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Profile_EventCell.xib; sourceTree = "<group>"; };
 		FA949C6C163A862B00B6FE9D /* Profile_EventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile_EventViewController.h; sourceTree = "<group>"; };
 		FA949C6D163A862B00B6FE9D /* Profile_EventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile_EventViewController.m; sourceTree = "<group>"; };
 		FA949C6F163A8A7000B6FE9D /* event_thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = event_thumb.png; sourceTree = "<group>"; };
@@ -1111,6 +1119,8 @@
 		FAA703E91636481C0029B432 /* UserProfileComponentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfileComponentViewController.h; sourceTree = "<group>"; };
 		FAA703EA1636481C0029B432 /* UserProfileComponentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfileComponentViewController.m; sourceTree = "<group>"; };
 		FAA703EB1636481C0029B432 /* UserProfileComponentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProfileComponentViewController.xib; sourceTree = "<group>"; };
+		FAA8DC40163E44930012DB3A /* MultiLineSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiLineSegmentedControl.h; sourceTree = "<group>"; };
+		FAA8DC41163E44930012DB3A /* MultiLineSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiLineSegmentedControl.m; sourceTree = "<group>"; };
 		FAA902D315E39222009D9DD6 /* GLTapLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLTapLabel.h; sourceTree = "<group>"; };
 		FAA902D415E39222009D9DD6 /* GLTapLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLTapLabel.m; sourceTree = "<group>"; };
 		FAA902D515E39222009D9DD6 /* GLTapLabelDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLTapLabelDelegate.h; sourceTree = "<group>"; };
@@ -1196,9 +1206,6 @@
 		FAFA776D157DECFD00A55669 /* CommentsCellContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsCellContent.m; sourceTree = "<group>"; };
 		FAFA776F157E153500A55669 /* UserPAInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserPAInfo.h; sourceTree = "<group>"; };
 		FAFA7770157E154A00A55669 /* UserPAInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserPAInfo.m; sourceTree = "<group>"; };
-		FAFDD9B715A28CBA00392DFA /* FriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendsViewController.h; path = ../FriendsViewController.h; sourceTree = "<group>"; };
-		FAFDD9B815A28CBB00392DFA /* FriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendsViewController.m; path = ../FriendsViewController.m; sourceTree = "<group>"; };
-		FAFDD9B915A28CBB00392DFA /* FriendsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FriendsViewController.xib; path = ../FriendsViewController.xib; sourceTree = "<group>"; };
 		FAFEC9541581DE47005DCF27 /* PostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostViewController.h; sourceTree = "<group>"; };
 		FAFEC9551581DE47005DCF27 /* PostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostViewController.m; sourceTree = "<group>"; };
 		FAFEC9561581DE47005DCF27 /* PostViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostViewController.xib; sourceTree = "<group>"; };
@@ -1358,7 +1365,6 @@
 				FAB671C115C23710009459CD /* PostController */,
 				FAB6718715BE404F009459CD /* SDWebImageController */,
 				FA721E6C15A3E26200212073 /* Status Updates */,
-				FAFDD9BD15A2914400392DFA /* Friend Controller */,
 				FA4BB966158F0B7B0039BFEC /* Notification */,
 				FA86928B15B672ED00CA8491 /* UIPostCell */,
 				FA03230115774889002EB93D /* Constants.h */,
@@ -2006,7 +2012,6 @@
 			isa = PBXGroup;
 			children = (
 				FA388BC5162698FA0000E9BB /* iPhone@2x.png */,
-				FA388B7A162674440000E9BB /* iPad.png */,
 				FA388B7B162674440000E9BB /* iPad_small.png */,
 				FA388B7C162674440000E9BB /* iPad_small@2x.png */,
 				FA388B7F162674440000E9BB /* iPhone_small.png */,
@@ -2076,6 +2081,7 @@
 		FA58AD9A16008A8000977F99 /* Userprofile */ = {
 			isa = PBXGroup;
 			children = (
+				FA7DF8A416410A8C003E823D /* Friend */,
 				FA949C6B163A856800B6FE9D /* Event */,
 				FAA4FE851635206E00624790 /* Group */,
 				FAA99F70162E6E580025A50F /* Photo */,
@@ -2177,6 +2183,18 @@
 			name = "Status Updates";
 			sourceTree = "<group>";
 		};
+		FA7DF8A416410A8C003E823D /* Friend */ = {
+			isa = PBXGroup;
+			children = (
+				FA7DF8AC1641158A003E823D /* profile_message.png */,
+				FA7DF8A516410A8C003E823D /* FriendsViewController.h */,
+				FA7DF8A616410A8C003E823D /* FriendsViewController.m */,
+				FA7DF8A716410A8C003E823D /* FriendsViewController.xib */,
+				FA7DF8AA16410AE8003E823D /* Profile_FriendCell.xib */,
+			);
+			path = Friend;
+			sourceTree = "<group>";
+		};
 		FA86928B15B672ED00CA8491 /* UIPostCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -2222,6 +2240,9 @@
 				FA949C6F163A8A7000B6FE9D /* event_thumb.png */,
 				FA949C6C163A862B00B6FE9D /* Profile_EventViewController.h */,
 				FA949C6D163A862B00B6FE9D /* Profile_EventViewController.m */,
+				FA92C0E0163E862A0066FE57 /* Profile_EventCell.xib */,
+				FAA8DC40163E44930012DB3A /* MultiLineSegmentedControl.h */,
+				FAA8DC41163E44930012DB3A /* MultiLineSegmentedControl.m */,
 			);
 			path = Event;
 			sourceTree = "<group>";
@@ -2295,8 +2316,8 @@
 			children = (
 				FAA99F72162E6E870025A50F /* Profile_PhotosViewController.h */,
 				FAA99F73162E6E870025A50F /* Profile_PhotosViewController.m */,
-				FAA99F74162E6E870025A50F /* Profile_PhotosViewController.xib */,
 				FAA99F77162E982B0025A50F /* Profile_PhotoListViewController.h */,
+				FAA99F74162E6E870025A50F /* Profile_PhotosViewController.xib */,
 				FAA99F78162E982B0025A50F /* Profile_PhotoListViewController.m */,
 				FAA99F79162E982B0025A50F /* Profile_PhotoListViewController.xib */,
 			);
@@ -2376,17 +2397,6 @@
 				FA549A3415DCCBB4006BEBBA /* UITablePostViewController_IPad.xib */,
 			);
 			path = PostController;
-			sourceTree = "<group>";
-		};
-		FAFDD9BD15A2914400392DFA /* Friend Controller */ = {
-			isa = PBXGroup;
-			children = (
-				FAFDD9B715A28CBA00392DFA /* FriendsViewController.h */,
-				FAFDD9B815A28CBB00392DFA /* FriendsViewController.m */,
-				FAFDD9B915A28CBB00392DFA /* FriendsViewController.xib */,
-			);
-			name = "Friend Controller";
-			path = Notification;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2742,7 +2752,6 @@
 				FA12397C159B07290026838C /* GlobalAlertViewController.xib in Resources */,
 				FA123984159B0C7C0026838C /* UIAlertCell.xib in Resources */,
 				FAABB49D159C5E13002E9CAC /* MessageViewController.xib in Resources */,
-				FAFDD9BB15A28CBB00392DFA /* FriendsViewController.xib in Resources */,
 				FA721E7215A3E2B400212073 /* StatusUpdatesViewController.xib in Resources */,
 				FAA3347315AACAAC0010E554 /* EnlargeImageViewControllerV2.xib in Resources */,
 				FAC815E115B3E86100E3D8CE /* UIPostCell_Landscape.xib in Resources */,
@@ -2782,7 +2791,6 @@
 				FA328A5816157BBE00A2DC0F /* Remove_Icon.png in Resources */,
 				FA328A5916157BBE00A2DC0F /* remove.png in Resources */,
 				FA59DB031622DCDB00CFBF7C /* UIShortPostCell.xib in Resources */,
-				FA388B8B162674440000E9BB /* iPad.png in Resources */,
 				FA388B8C162674440000E9BB /* iPad_small.png in Resources */,
 				FA388B8D162674440000E9BB /* iPad_small@2x.png in Resources */,
 				FA388B90162674440000E9BB /* iPhone_small.png in Resources */,
@@ -2814,6 +2822,10 @@
 				FAA703ED1636481C0029B432 /* UserProfileComponentViewController.xib in Resources */,
 				FAAA4AEB1639375F007154E2 /* UserProfileComponentViewController_Group.xib in Resources */,
 				FA949C70163A8A7000B6FE9D /* event_thumb.png in Resources */,
+				FA92C0E1163E862A0066FE57 /* Profile_EventCell.xib in Resources */,
+				FA7DF8A916410A8C003E823D /* FriendsViewController.xib in Resources */,
+				FA7DF8AB16410AE8003E823D /* Profile_FriendCell.xib in Resources */,
+				FA7DF8AD1641158A003E823D /* profile_message.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2950,7 +2962,6 @@
 				FA12397F159B08A30026838C /* AlertCellContent.m in Sources */,
 				FA123982159B0C660026838C /* UIAlertCell.m in Sources */,
 				FAABB49C159C5E13002E9CAC /* MessageViewController.m in Sources */,
-				FAFDD9BA15A28CBB00392DFA /* FriendsViewController.m in Sources */,
 				FA721E7115A3E2B400212073 /* StatusUpdatesViewController.m in Sources */,
 				FA98785715AD34D20002B490 /* NSData+Base64.m in Sources */,
 				FA98785C15AD710D0002B490 /* PostadvertControllerV2.m in Sources */,
@@ -2989,6 +3000,8 @@
 				FAA4FE8A1635210300624790 /* Profile_GroupsViewController.m in Sources */,
 				FAA703EC1636481C0029B432 /* UserProfileComponentViewController.m in Sources */,
 				FA949C6E163A862B00B6FE9D /* Profile_EventViewController.m in Sources */,
+				FAA8DC42163E44930012DB3A /* MultiLineSegmentedControl.m in Sources */,
+				FA7DF8A816410A8C003E823D /* FriendsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

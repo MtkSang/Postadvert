@@ -48,7 +48,7 @@
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 25)];
     view.backgroundColor = [UIColor clearColor];
     
-    self.shortTitle.text = [NSString stringWithFormat:@"%@'s albums", fullName];
+    self.shortTitle.text = [NSString stringWithFormat:@"%@'s Albums", fullName];
     //setting ActivityView
     [activityView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [activityView setColor:[UIColor grayColor]];
@@ -113,27 +113,32 @@
     
     // Configure the cell...
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    NSArray *listData;
     NSDictionary *cellData;
     switch (self.segmentControl.selectedSegmentIndex) {
         case 0:
-            cellData = [listContent_all objectAtIndex:indexPath.section];
+            listData = listContent_all;
+            //cellData = [listContent_all objectAtIndex:indexPath.section];
             break;
         case 1:
-            cellData = [listContent_my objectAtIndex:indexPath.section];
+            listData = listContent_my;
+            //cellData = [listContent_my objectAtIndex:indexPath.section];
             break;
         default:
-            cellData = [listContent_my objectAtIndex:indexPath.section];
+            listData = listContent_my;
             break;
     }
-    
-    
-    
+    if (listData.count <= indexPath.section) {
+        listData = nil;
+        return cell;
+    }
+    cellData = [listData objectAtIndex:indexPath.section];
     NSString *imageURL = [NSData stringDecodeFromBase64String: [cellData objectForKey:@"thumbnail"]];
     [cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"photoDefault.png"]];
     cell.textLabel.text = [NSString stringWithFormat:@"%@ (%d)",[NSData stringDecodeFromBase64String:[cellData objectForKey:@"name"] ], [[cellData objectForKey:@"total_photos"] integerValue]];
     cell.textLabel.numberOfLines = 2;
     cell.detailTextLabel.text = [NSData stringDecodeFromBase64String:[cellData objectForKey:@"created"]];
-
+    listData = nil;
     return cell;
 }
 

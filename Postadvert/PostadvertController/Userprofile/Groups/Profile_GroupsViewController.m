@@ -122,24 +122,34 @@
     
     // Configure the cell...
     NSDictionary *cellData;
+    NSArray *listData;
     switch (self.segmentControl.selectedSegmentIndex) {
         case 0:
-            cellData = [listContent_all objectAtIndex:indexPath.section];
+            listData = listContent_all;
+            //cellData = [listContent_all objectAtIndex:indexPath.section];
             break;
         case 1:
-            cellData = [listContent_my objectAtIndex:indexPath.section];
+            listData = listContent_my;
+            //cellData = [listContent_my objectAtIndex:indexPath.section];
             break;
         case 2:
-            cellData = [listContent_invition objectAtIndex:indexPath.section];
+            listData = listContent_invition;
+            //cellData = [listContent_invition objectAtIndex:indexPath.section];
             break;
         case 3:
-            cellData = [filteredListContent objectAtIndex:indexPath.section];
+            listData = filteredListContent;
+            //cellData = [listContent_past objectAtIndex:indexPath.section];
             break;
         default:
-            cellData = [listContent_my objectAtIndex:indexPath.section];
+            listData = listContent_my;
             break;
     }
-    
+    if (listData.count <= indexPath.section) {
+        listData = nil;
+        return cell;
+    }
+
+    cellData = [listData objectAtIndex:indexPath.section];
     NSString *imageURL = [NSData stringDecodeFromBase64String: [cellData objectForKey:@"thumb"]];
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:1];
     [imageView setImageWithURL:[NSURL URLWithString:imageURL]placeholderImage:[UIImage imageNamed:@"group_thumb.png"]];
@@ -168,7 +178,7 @@
     num = [[cellData objectForKey:@"wall_count"] integerValue];
     [wall_count setTitle:[NSString stringWithFormat:@"%d Wall Posts", num] forState:UIControlStateNormal];
     
-    
+    listData = nil;
     return cell;
 }
 
@@ -248,7 +258,7 @@
 #pragma mark -
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-        [self.searchDisplayController.searchResultsTableView setContentOffset:CGPointZero];
+    [self.searchDisplayController.searchResultsTableView setContentOffset:CGPointZero];
     [self filterContentForSearchText:searchText];
 }
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar

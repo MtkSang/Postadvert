@@ -1169,7 +1169,7 @@
             NSLog(@"Custome View %@", customViewCtr.view);
             customViewCtr.view.frame = overlay.frame;
             [self.overlay addSubview: customViewCtr.view];
-            
+            [(FriendsViewController*)customViewCtr setNavigationController: self.navigationController];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"showDetailFromSubView_SideBar" object:nil];
             
         }

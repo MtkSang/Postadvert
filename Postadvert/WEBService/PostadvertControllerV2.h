@@ -21,6 +21,10 @@
 +(PostadvertControllerV2*)sharedPostadvertController;
 - (void) checkNetworkStatus:(NSNotification *)notice;
 - (BOOL) isConnectToWeb;
+
+
+- (id) jsonObjectFromWebserviceWithFunctionName:(NSString*/*Function name*/)functionName parametterName: (NSArray*/*Parametter array */) paramettersName parametterValue:(NSArray*/*parameters values*/) paramettersValus;
+
 - (long) registrationLogin:(NSString *)userName :(NSString *)password;
 -(void) testFunction;
 - (id) getPostsWithWall:(NSString*) wallId from:(NSString*) start andCount:(NSString*) count WithUserID:(NSString*)userID;
@@ -39,6 +43,11 @@
 -(id) getUserAlbumsWithUserID:(NSString*)userID;
 -(id) getAllAlbumsWithUserID:(NSString*)userID fromID:(NSString*)albumID limit:(NSString*)limit;
 -(id) getPhotoOfAlbumWithAlbumID:(NSString*)albumID;
+//Event
+-(id) getAllPastEvents:(NSString*)eventID limit:(NSString*)limit;
+-(id) getUserCurrentEvents:(NSString*)user_id limit:(NSString*)limit;
+-(id) getAllCurrentEvents:(NSString*)event_id limit:(NSString*)limit;
+
 
 -(id) getFriendStatusWithUserID:(NSString*)userID andOtherID:(NSString*)otherID;
 

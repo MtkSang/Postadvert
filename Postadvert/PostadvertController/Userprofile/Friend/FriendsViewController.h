@@ -19,6 +19,7 @@
     NSInteger currentIndex_friend;
     BOOL isLoadData;
     long userID;
+    NSString *userFullName;
 }
 @property (nonatomic, weak) id <FriendsViewControllerDelegate> delegate;
 @property (nonatomic, weak) UINavigationController *navigationController;
@@ -27,7 +28,7 @@
 
 - (NSInteger)getTotalFriends;
 - (id)getFriendsFrom:(NSInteger)start count:(NSInteger)count;
-- (id)initWithUserID:(long) userID;
+- (id)initWithUserID:(long) userID_ fullName:(NSString*)fullname;
 @end
 
 @protocol FriendsViewControllerDelegate

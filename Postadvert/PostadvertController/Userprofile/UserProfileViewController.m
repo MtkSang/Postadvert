@@ -521,7 +521,7 @@
 - (IBAction)userFriends:(id)sender
 {
     //FriendsViewController
-    FriendsViewController *viewCtr = [[FriendsViewController alloc]initWithUserID:userInfo.registrationID];
+    FriendsViewController *viewCtr = [[FriendsViewController alloc]initWithUserID:userInfo.registrationID fullName:userInfo.fullName];
     viewCtr.navigationController = self.navigationController;
     [self.navigationController pushViewController:viewCtr animated:YES];
 }
