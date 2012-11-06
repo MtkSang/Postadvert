@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D4881F601648C91E0042DA51 /* Profile_CommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4881F5E1648C91E0042DA51 /* Profile_CommentViewController.m */; };
+		D4881F611648C91E0042DA51 /* Profile_CommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4881F5F1648C91E0042DA51 /* Profile_CommentViewController.xib */; };
 		FA007CB31589809500C21D0E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = FA007CAC1589809500C21D0E /* README.md */; };
 		FA007CB41589809500C21D0E /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = FA007CAE1589809500C21D0E /* UIImage+Alpha.m */; };
 		FA007CB51589809500C21D0E /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = FA007CB01589809500C21D0E /* UIImage+Resize.m */; };
@@ -388,7 +390,6 @@
 		FA388BC1162698970000E9BB /* Default-Portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388BB9162698970000E9BB /* Default-Portrait@2x.png */; };
 		FA388BC2162698970000E9BB /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388BBA162698970000E9BB /* Default.png */; };
 		FA388BC3162698970000E9BB /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388BBB162698970000E9BB /* Default@2x.png */; };
-		FA388BC6162698FA0000E9BB /* iPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388BC5162698FA0000E9BB /* iPhone@2x.png */; };
 		FA388BC8162699070000E9BB /* iPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA388BC7162699070000E9BB /* iPhone@2x.png */; };
 		FA49688515901D89000339F6 /* UIMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA49688415901D89000339F6 /* UIMessageCell.xib */; };
 		FA49688B15908864000339F6 /* popoverBackgroundCustom.png in Resources */ = {isa = PBXBuildFile; fileRef = FA49688715908864000339F6 /* popoverBackgroundCustom.png */; };
@@ -536,6 +537,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D4881F5D1648C91E0042DA51 /* Profile_CommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile_CommentViewController.h; sourceTree = "<group>"; };
+		D4881F5E1648C91E0042DA51 /* Profile_CommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile_CommentViewController.m; sourceTree = "<group>"; };
+		D4881F5F1648C91E0042DA51 /* Profile_CommentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Profile_CommentViewController.xib; sourceTree = "<group>"; };
 		FA007CAC1589809500C21D0E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		FA007CAD1589809500C21D0E /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
 		FA007CAE1589809500C21D0E /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
@@ -1011,7 +1015,6 @@
 		FA388BB9162698970000E9BB /* Default-Portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x.png"; sourceTree = "<group>"; };
 		FA388BBA162698970000E9BB /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		FA388BBB162698970000E9BB /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		FA388BC5162698FA0000E9BB /* iPhone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPhone@2x.png"; sourceTree = "<group>"; };
 		FA388BC7162699070000E9BB /* iPhone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPhone@2x.png"; sourceTree = "<group>"; };
 		FA49688415901D89000339F6 /* UIMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIMessageCell.xib; sourceTree = "<group>"; };
 		FA49688715908864000339F6 /* popoverBackgroundCustom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverBackgroundCustom.png; sourceTree = "<group>"; };
@@ -1244,6 +1247,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D4881F5C1648C8EC0042DA51 /* Comment */ = {
+			isa = PBXGroup;
+			children = (
+				D4881F5D1648C91E0042DA51 /* Profile_CommentViewController.h */,
+				D4881F5E1648C91E0042DA51 /* Profile_CommentViewController.m */,
+				D4881F5F1648C91E0042DA51 /* Profile_CommentViewController.xib */,
+			);
+			path = Comment;
+			sourceTree = "<group>";
+		};
 		FA007C9D1589802C00C21D0E /* ImageTool */ = {
 			isa = PBXGroup;
 			children = (
@@ -2011,7 +2024,6 @@
 		FA388B79162674440000E9BB /* icons */ = {
 			isa = PBXGroup;
 			children = (
-				FA388BC5162698FA0000E9BB /* iPhone@2x.png */,
 				FA388B7B162674440000E9BB /* iPad_small.png */,
 				FA388B7C162674440000E9BB /* iPad_small@2x.png */,
 				FA388B7F162674440000E9BB /* iPhone_small.png */,
@@ -2081,6 +2093,7 @@
 		FA58AD9A16008A8000977F99 /* Userprofile */ = {
 			isa = PBXGroup;
 			children = (
+				D4881F5C1648C8EC0042DA51 /* Comment */,
 				FA7DF8A416410A8C003E823D /* Friend */,
 				FA949C6B163A856800B6FE9D /* Event */,
 				FAA4FE851635206E00624790 /* Group */,
@@ -2173,9 +2186,9 @@
 				FA721E7015A3E2B400212073 /* StatusUpdatesViewController.xib */,
 				FA5C5B9015EDF2FA0073DBE9 /* ActivityContent.h */,
 				FA5C5B9115EDF2FA0073DBE9 /* ActivityContent.m */,
+				FA5C5B9715EE235B0073DBE9 /* UIActivityCell.xib */,
 				FA5C5B9415EE0AA00073DBE9 /* UIActivityCell.h */,
 				FA5C5B9515EE0AA00073DBE9 /* UIActivityCell.m */,
-				FA5C5B9715EE235B0073DBE9 /* UIActivityCell.xib */,
 				FA8D6BC715EF7366005FD412 /* ActivityViewController.h */,
 				FA8D6BC815EF7366005FD412 /* ActivityViewController.m */,
 				FA8D6BC915EF7366005FD412 /* ActivityViewController.xib */,
@@ -2808,7 +2821,6 @@
 				FA388BC1162698970000E9BB /* Default-Portrait@2x.png in Resources */,
 				FA388BC2162698970000E9BB /* Default.png in Resources */,
 				FA388BC3162698970000E9BB /* Default@2x.png in Resources */,
-				FA388BC6162698FA0000E9BB /* iPhone@2x.png in Resources */,
 				FA388BC8162699070000E9BB /* iPhone@2x.png in Resources */,
 				FA6BF99F162D392A007BA656 /* Profile_VideoViewController.xib in Resources */,
 				FA6BF9A1162D45E1007BA656 /* video_icon.jpg in Resources */,
@@ -2826,6 +2838,7 @@
 				FA7DF8A916410A8C003E823D /* FriendsViewController.xib in Resources */,
 				FA7DF8AB16410AE8003E823D /* Profile_FriendCell.xib in Resources */,
 				FA7DF8AD1641158A003E823D /* profile_message.png in Resources */,
+				D4881F611648C91E0042DA51 /* Profile_CommentViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3002,6 +3015,7 @@
 				FA949C6E163A862B00B6FE9D /* Profile_EventViewController.m in Sources */,
 				FAA8DC42163E44930012DB3A /* MultiLineSegmentedControl.m in Sources */,
 				FA7DF8A816410A8C003E823D /* FriendsViewController.m in Sources */,
+				D4881F601648C91E0042DA51 /* Profile_CommentViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3050,6 +3064,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -3067,8 +3082,11 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-lxml2";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = NO;
 			};
 			name = Debug;
 		};
@@ -3078,6 +3096,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -3089,6 +3108,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-lxml2";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
