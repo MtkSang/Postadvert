@@ -7,7 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+@class UIPlaceHolderTextView;
+@class UIActivityCell;
+@interface Profile_CommentViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
+{
+    NSMutableArray *listComments;
+    UIActivityCell *actiCell;
+    
+}
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *botView;
+@property (weak, nonatomic) IBOutlet UIButton *btnSend;
+@property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *textBox;
 
-@interface Profile_CommentViewController : UIViewController
+- (id)initWithActivityCell:(UIActivityCell*) cell;
+- (IBAction)btnSendClicked:(id)sender;
 
 @end

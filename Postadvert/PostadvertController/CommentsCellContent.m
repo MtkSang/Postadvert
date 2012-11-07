@@ -9,7 +9,7 @@
 #import "CommentsCellContent.h"
 
 @implementation CommentsCellContent
-@synthesize  userAvatar,userPostName,text;
+@synthesize  userAvatarURL,userPostName,text, userPostID, commnetID, created;
 
 - (id) init
 {
@@ -17,4 +17,9 @@
     return self;
 }
 
+
++ (float) getCellHeighWithContent:(CommentsCellContent*)content
+{
+    return 70;
+}
 @end
