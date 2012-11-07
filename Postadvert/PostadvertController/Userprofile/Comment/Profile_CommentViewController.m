@@ -14,9 +14,13 @@
 #import "UICommentsCell.h"
 #import "CommentsCellContent.h"
 #import "UIActivityCell.h"
-
+#import "UIImageView+URL.h"
+#import "ActivityContent.h"
+#import "MBProgressHUD.h"
+#import "PostadvertControllerV2.h"
+#import "NSData+Base64.h"
 @interface Profile_CommentViewController ()
-
+- (void) loadCommentsInBackground;
 @end
 
 @implementation Profile_CommentViewController
@@ -32,9 +36,11 @@
 
 - (id)initWithActivityCell:(UIActivityCell *)cell
 {
+    //Must call from this contructor
     self = [super init];
     if (self) {
         actiCell = cell;
+        actiCell.typeOfCurrentView = 1;
     }
     return  self;
 }
@@ -53,6 +59,11 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction)];
     [_tableView addGestureRecognizer:tap];
     tap = nil;
+    
+    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+    //load Data
+    MBProgressHUD * actView = [[MBProgressHUD alloc]initWithView:self.view];
+    [actView showWhileExecuting:@selector(loadCommentsInBackground) onTarget:self withObject:nil animated:NO];
 
 }
 
@@ -70,6 +81,11 @@
     [super viewDidUnload];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return NO;
+    
+}
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -90,7 +106,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0 ) {
-        return  actiCell.frame.size.height;
+        return  actiCell.frame.size.height - 2;
     }
     return [CommentsCellContent getCellHeighWithContent:[listComments objectAtIndex:indexPath.row]];
 }
@@ -124,15 +140,30 @@
     }
     static NSString *CellIdentifier = @"UICommentCell";
     
-    UITableViewCell *cell = [UITableViewCell \]
+    UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier];
+    
     if (cell == nil) {
-        cell = [[UICommentsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        NSArray *nib = nil;
+        nib = [[NSBundle mainBundle] loadNibNamed:CellIdentifier owner:self options:nil];
+        cell = (UITableViewCell *)[nib objectAtIndex:0];
+
     }
-    cell = [listCells objectAtIndex:indexPath.row];
-    NSLog(@"Cell%@", [listCells objectAtIndex:indexPath.row]);
-    //[cell.contentView addSubview: [ cell drawContent]];
-    NSLog(@"%@", cell.description);
+    CommentsCellContent *content = [listComments objectAtIndex:indexPath.row];
+    //ImageView
+    UIImageView *imageView = (UIImageView*)[cell viewWithTag:1];
+    [imageView setImageWithURL:[NSURL URLWithString: content.userAvatarURL]];
+    //Username
+    UILabel *userName = (UILabel*)[cell viewWithTag:2];
+    userName.text = content.userPostName;
+    //text
+    UILabel *text = (UILabel*)[cell viewWithTag:3];
+    text.text = content.text;
+    //Create
+    UILabel *created = (UILabel*)[cell viewWithTag:4];
+    created.text = content.created;
     tableView.scrollEnabled = YES;
+    
+    cell.backgroundView = [[UIView alloc]initWithFrame:cell.bounds];
     return cell;
 }
 #pragma mark - Table view delegate
@@ -144,12 +175,13 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 1) {
-        if (_content.totalClap) {
+        if (actiCell._content.totalClap) {
             return CELL_COMMENTS_HEADER_HEIGHT;
         }
     }
     return 10.0;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == 1) {
@@ -166,7 +198,7 @@
     if (section == 1) {
         // Create view for header
         
-        if (_content.totalClap > 0) {
+        if (actiCell._content.totalClap > 0) {
             header = [[UIView alloc]initWithFrame:CGRectMake(0.0, 0.0, CELL_COMMENTS_WIDTH, CELL_COMMENTS_HEADER_HEIGHT)];
             header.backgroundColor = [UIColor clearColor];
             //icon clap
@@ -178,9 +210,9 @@
             lbPeopleClap.backgroundColor = [UIColor clearColor];
             [lbPeopleClap setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
             
-            if (_content.isClap) {
+            if (actiCell._content.isClap) {
                 // did clap
-                switch (_content.totalClap) {
+                switch (actiCell._content.totalClap) {
                     case 1:
                         lbPeopleClap.text = @"You like this";
                         break;
@@ -188,17 +220,17 @@
                         lbPeopleClap.text = @"You and another like this";
                         break;
                     default:
-                        lbPeopleClap.text = [NSString stringWithFormat:@"You and %d others like this.", _content.totalClap - 1];
+                        lbPeopleClap.text = [NSString stringWithFormat:@"You and %d others like this.", actiCell._content.totalClap - 1];
                         break;
                 }
                 
             }else {
-                switch (_content.totalClap) {
+                switch (actiCell._content.totalClap) {
                     case 1:
                         lbPeopleClap.text = @"A persion likes this";
                         break;
                     default:
-                        lbPeopleClap.text = [NSString stringWithFormat:@"%d people like this.", _content.totalClap];
+                        lbPeopleClap.text = [NSString stringWithFormat:@"%d people like this.", actiCell._content.totalClap];
                         break;
                 }
                 
@@ -219,11 +251,11 @@
 - (void)textViewDidChange:(UITextView *)textView
 {
     if ([textView.text isEqualToString:@""]) {
-        btnSend.enabled = NO;
-        btnSend.titleLabel.textColor = [UIColor lightGrayColor];
+        _btnSend.enabled = NO;
+        _btnSend.titleLabel.textColor = [UIColor lightGrayColor];
     }else {
-        btnSend.enabled = YES;
-        btnSend.titleLabel.textColor = [UIColor blueColor];
+        _btnSend.enabled = YES;
+        _btnSend.titleLabel.textColor = [UIColor blueColor];
         //        CGSize constraint = CGSizeMake(textView.frame.size.width, 64.0 );
         //        CGSize size = [textView.text sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
         //        if (size.height > 32.0) {
@@ -245,7 +277,7 @@
     pt = CGPointMake(0.0, 216);
     [(UIScrollView*)self.view setContentOffset:pt animated:YES];
     _tableView.frame = CGRectMake(0.0, 216, self.view.frame.size.width, _tableView.frame.size.height - 216);
-    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listCells.count -1 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count -1 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
 // Called when the UIKeyboardWillHideNotification is sent
@@ -264,20 +296,53 @@
 #pragma mark - implement
 - (void) addCell:(CommentsCellContent *) commentContent
 {
-    if (listCells == nil) {
-        listCells = [[NSMutableArray alloc] init ];
+    if (listComments == nil) {
+        listComments = [[NSMutableArray alloc] init ];
     }
-    _content.totalComment += 1;
-    [_content.listComments addObject:commentContent];
-    UICommentsCell *cell = [[UICommentsCell alloc]init];
-    [cell updateCellWithContent:commentContent];
-    [listCells addObject:cell];
-    cell = nil;
+    actiCell._content.totalComment += 1;
+
+    [listComments addObject:commentContent];
     [_tableView reloadData];
-    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listCells.count - 1 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count - 1 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 }
 
+- (void) loadCommentsInBackground
+{
+    //getStatusComments($status_id, $comment_type, $limit, $comment_id, $base64_image = false)
+    
+    NSArray *data;
+    NSString *functionName;
+    NSArray *paraNames;
+    NSArray *paraValues;
+    // actID
+    functionName = @"getStatusComments";
+    paraNames = [NSArray arrayWithObjects:@"status_id", @"comment_type", @"limit", @"comment_id",nil];
+    paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%d", actiCell._content.target_id], actiCell._content.commnent_type, @"0", @"0", nil];
+    
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+    if (listComments == nil) {
+        listComments = [[NSMutableArray alloc] init ];
+    }
+    for (NSDictionary *dict in data) {
+        CommentsCellContent *content = [[CommentsCellContent alloc]init];
+        content.commnetID = [[dict objectForKey:@"id"] integerValue];
+        content.userAvatarURL = [NSData stringDecodeFromBase64String: [dict objectForKey:@"actor_thumb"]];
+        content.userPostName = [dict objectForKey:@"actor_name"];
+        content.text = [NSData stringDecodeFromBase64String:[dict objectForKey:@"content"]];
+        content.created = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
+        content.userPostID = [[dict objectForKey:@"actor_id"] integerValue];
+        [listComments addObject:content];
+    }
+    
+    [_tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+    
+}
 
 - (IBAction)btnSendClicked:(id)sender {
+}
+
+- (void) tapAction
+{
+    [_textBox resignFirstResponder];
 }
 @end

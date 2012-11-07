@@ -110,7 +110,7 @@
     content.totalComment += 1;
     CommentsCellContent *newComments = [[CommentsCellContent alloc]init];
     newComments.text = comment.text;
-    newComments.userAvatar = [UserPAInfo sharedUserPAInfo].imgAvatar;
+    //newComments.userAvatarURL = [UserPAInfo sharedUserPAInfo].imgAvatar;
     newComments.userPostName = [UserPAInfo sharedUserPAInfo].usernamePU;
     [content.listComments addObject:newComments];
     self.navigationController.navigationBarHidden = NO;

@@ -30,6 +30,7 @@
 //    IBOutlet UIView *botView;
 
     //internal var
+
     SDWebImageRootViewController *imageViewCtr;
     BOOL isDidDraw;
     BOOL isLoadContent;
@@ -48,7 +49,7 @@
 @property (nonatomic, strong) IBOutlet UIView *botView;
 @property (nonatomic) BOOL isLoadContent;
 @property (nonatomic) BOOL isShowFullText;
-
+@property (nonatomic)         int typeOfCurrentView;
 @property (nonatomic, strong) ActivityContent *_content;
 @property (nonatomic) Float32 cellHeight;
 @property (nonatomic, strong) UINavigationController *navigationController;

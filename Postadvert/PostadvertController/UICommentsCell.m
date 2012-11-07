@@ -83,10 +83,10 @@
     if (!_contentCellView) {
         _contentCellView = [[UIView alloc]init];
     }
-    if (_content.userAvatar == nil) {
-        _content.userAvatar = [UIImage imageNamed:@"avatar.png"];
-    }
-    avarta = [[UIImageView alloc]initWithImage:_content.userAvatar ];
+//    if (_content.userAvatar == nil) {
+//        _content.userAvatar = [UIImage imageNamed:@"avatar.png"];
+//    }
+//    avarta = [[UIImageView alloc]initWithImage:_content.userAvatar ];
     avarta.contentMode = UIViewContentModeScaleAspectFill;
     avarta.frame = CGRectMake(CELL_CONTENT_MARGIN_LEFT, CELL_CONTENT_MARGIN_TOP, cAvartaComments, cAvartaComments);
     [_contentCellView addSubview:avarta];

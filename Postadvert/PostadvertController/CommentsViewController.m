@@ -131,7 +131,7 @@
         CommentsCellContent *commnet = [[CommentsCellContent alloc] init];
         commnet.userPostName = _content.userPostName;
         commnet.text = _content.text;
-        commnet.userAvatar = _content.userAvatar;
+        //commnet.userAvatar = _content.userAvatar;
         [cell updateCellWithContent:commnet];
         commnet = nil;
         return cell.height;
@@ -167,7 +167,7 @@
         CommentsCellContent *commnet = [[CommentsCellContent alloc] init];
         commnet.userPostName = _content.userPostName;
         commnet.text = _content.text;
-        commnet.userAvatar = _content.userAvatar;
+        //commnet.userAvatar = _content.userAvatar;
         [cell updateCellWithContent:commnet];
         commnet = nil;
         return cell;
@@ -411,7 +411,7 @@
     
     CommentsCellContent *newComments = [[CommentsCellContent alloc]init];
     newComments.text = comment.text;
-    newComments.userAvatar = [UserPAInfo sharedUserPAInfo].imgAvatar;
+    //newComments.userAvatar = [UserPAInfo sharedUserPAInfo].imgAvatar;
     newComments.userPostName = [UserPAInfo sharedUserPAInfo].usernamePU;
     [self addCell:newComments];
     newComments = nil;

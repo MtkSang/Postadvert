@@ -10,6 +10,7 @@
 
 @implementation ActivityContent
 
+@synthesize activity_ID;
 @synthesize status_ID;
 @synthesize actor_id;
 @synthesize actor_gender;

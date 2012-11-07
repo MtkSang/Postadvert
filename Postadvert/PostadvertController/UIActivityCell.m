@@ -16,6 +16,7 @@
 #import "LinkPreview.h"
 #import "UserPAInfo.h"
 #import "CommentsViewController.h"
+#import "Profile_CommentViewController.h"
 
 @interface UIActivityCell()
 
@@ -44,6 +45,7 @@
 @synthesize cellHeight;
 @synthesize navigationController;
 @synthesize isDidDraw;
+@synthesize typeOfCurrentView;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -494,18 +496,51 @@
 
 - (void) commentButtonClick:(id) sender
 {
-    if (_content.totalComment == 0) {
-        return;
+    if (typeOfCurrentView == 1) {
+        if ([self.superview  isKindOfClass:[UITableView class]]) {
+            UITableView *tableView = (UITableView*) self.superview;
+            @try {
+                [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self._content.totalComment inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+            }
+            @catch (NSException *exception) {
+                NSLog(@"Exception: Try to scroll to bottom");
+            }
+            @finally {
+                NSLog(@"Unknow Exception: Try to scroll to bottom");
+            }
+        }
     }
-    CommentsViewController *commentViewCtr = [[CommentsViewController alloc]init];
-    //[self addCommentsListenner];
-    [navigationController pushViewController: commentViewCtr animated:YES];
-    // = nil;
-    commentViewCtr = nil;
+    else
+    {
+        NSLog(@"%@", self.superview);
+        if (_content.totalComment == 0) {
+            return;
+        }
+        Profile_CommentViewController *commentViewCtr = [[Profile_CommentViewController alloc]initWithActivityCell:self];
+        //[self addCommentsListenner];
+        
+        [navigationController pushViewController: commentViewCtr animated:YES];
+        // = nil;
+        commentViewCtr = nil;
+    }
+    
 }
 
 - (void) plusButtonClicked
 {
+    if (typeOfCurrentView == 1) {
+            Profile_CommentViewController *viewCtr = (Profile_CommentViewController*)self.superview.superview.superview;
+        @try {
+             [(UITextView*)viewCtr.textBox becomeFirstResponder];
+        }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
+    
+    }
 //    //navigationController.navigationBarHidden =YES;
 //    AddCommentViewController *addCommand = [[AddCommentViewController alloc]init];
 //    addCommand.content = self.content;
@@ -800,6 +835,12 @@
         _content.totalClap -= 1;
     }
     [self refreshClapCommentsView];
+    if (typeOfCurrentView == 1) {
+        if ([self.superview isKindOfClass:[UITableView class]]) {
+            UITableView *tableView = (UITableView*) self.superview;
+            [tableView reloadData];
+        }
+    }
 }
 #pragma mark OHAttributedLabelDelegate
 

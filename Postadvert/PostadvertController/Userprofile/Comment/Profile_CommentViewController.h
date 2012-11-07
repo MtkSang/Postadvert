@@ -13,6 +13,7 @@
 {
     NSMutableArray *listComments;
     UIActivityCell *actiCell;
+    UITableView *actiCellSuperView;
     
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
