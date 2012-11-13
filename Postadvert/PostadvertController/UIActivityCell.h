@@ -13,6 +13,7 @@
 @class LinkPreview;
 @class ThumbnailPostCellView;
 @class SDWebImageRootViewController;
+@class Profile_CommentViewController;
 @interface UIActivityCell : UITableViewCell <UIActionSheetDelegate, OHAttributedLabelDelegate>//< UITextViewDelegate>
 {
     ActivityContent *_content;
@@ -54,7 +55,7 @@
 @property (nonatomic) Float32 cellHeight;
 @property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic)         BOOL isDidDraw;
-
+@property (nonatomic, weak)   Profile_CommentViewController *commentViewCtr;
 
 - (void) updateCellWithContent:(ActivityContent *)content;
 - (void) clapButtonClicked:(id) sender;
@@ -62,6 +63,7 @@
 - (void) commentButtonClick:(id) sender;
 - (void) loadNibFile;
 - (void) updateView;
+- (void) refreshClapCommentsView;
 + (Float32) getCellHeightWithContent:(ActivityContent*)content;
 @end
 

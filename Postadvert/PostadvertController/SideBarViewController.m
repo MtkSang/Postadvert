@@ -98,6 +98,7 @@ static void singleton_remover() {
     [mainCtr.navigationController.navigationBar addGestureRecognizer:[self addPanGesture:self]];
     [sideBar.navigationController.navigationBar addGestureRecognizer:[self addPanGesture:self]];
     [sideBar.view addGestureRecognizer:[self addPanGesture:self]];
+    [mainCtr.view addGestureRecognizer:[self addPanGesture:self]];
     CGRect frame = navDetail.view.frame;
     frame.origin.x = self.view.frame.size.width - cRemainView;
     navDetail.view.frame = frame;

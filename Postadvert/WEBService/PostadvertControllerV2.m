@@ -208,6 +208,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
         NSData *imageData = [NSData dataFromBase64String:base64Str];
         UIImage *image = [UIImage imageWithData:imageData];
         [UserPAInfo sharedUserPAInfo].imgAvatar = image;
+        [UserPAInfo sharedUserPAInfo].avatarUrl = [userInfo objectForKey:@"avatarUrl"];
         //save user info
         NSUserDefaults *database = [[NSUserDefaults alloc]init];
         [database setValue:[UserPAInfo sharedUserPAInfo].usernamePU forKey:@"userNamePA"];

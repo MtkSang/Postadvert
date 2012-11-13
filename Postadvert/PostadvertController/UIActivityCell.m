@@ -20,7 +20,6 @@
 
 @interface UIActivityCell()
 
-- (void) refreshClapCommentsView;
 - (NSString*) setNameWithAction;
 
 @end
@@ -497,17 +496,15 @@
 - (void) commentButtonClick:(id) sender
 {
     if (typeOfCurrentView == 1) {
-        if ([self.superview  isKindOfClass:[UITableView class]]) {
-            UITableView *tableView = (UITableView*) self.superview;
-            @try {
-                [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self._content.totalComment inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-            }
-            @catch (NSException *exception) {
-                NSLog(@"Exception: Try to scroll to bottom");
-            }
-            @finally {
-                NSLog(@"Unknow Exception: Try to scroll to bottom");
-            }
+        @try {
+            
+            [self.commentViewCtr.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.commentViewCtr.tableView numberOfRowsInSection:1] - 1 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"Exception: Try to scroll to bottom");
+        }
+        @finally {
+            
         }
     }
     else
@@ -529,9 +526,8 @@
 - (void) plusButtonClicked
 {
     if (typeOfCurrentView == 1) {
-            Profile_CommentViewController *viewCtr = (Profile_CommentViewController*)self.superview.superview.superview;
         @try {
-             [(UITextView*)viewCtr.textBox becomeFirstResponder];
+            [(UITextView*) self.commentViewCtr.textBox becomeFirstResponder];
         }
         @catch (NSException *exception) {
             

@@ -21,6 +21,11 @@
 #import "NSData+Base64.h"
 @interface Profile_CommentViewController ()
 - (void) loadCommentsInBackground;
+- (void)keyboardWilBeShown:(NSNotification*)aNotification;
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification;
+
+- (IBAction)commentBtnClicked:(id)sender ;
+- (IBAction)clapBtnClicked:(id)sender ;
 @end
 
 @implementation Profile_CommentViewController
@@ -41,6 +46,10 @@
     if (self) {
         actiCell = cell;
         actiCell.typeOfCurrentView = 1;
+        actiCell.commentViewCtr = self;
+        actiCell.botView.hidden = YES;
+        actiCellSuperView = (UITableView*)actiCell.superview;
+        listComments = [[NSMutableArray alloc]init];
     }
     return  self;
 }
@@ -59,10 +68,12 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction)];
     [_tableView addGestureRecognizer:tap];
     tap = nil;
-    
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     //load Data
     MBProgressHUD * actView = [[MBProgressHUD alloc]initWithView:self.view];
+    //actView.center = _tableView.center;
+    actView.userInteractionEnabled = NO;
+    [self.view addSubview:actView];
     [actView showWhileExecuting:@selector(loadCommentsInBackground) onTarget:self withObject:nil animated:NO];
 
 }
@@ -72,7 +83,41 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    actiCell.typeOfCurrentView = 1;
+    
+}
+- (void) viewWillDisappear:(BOOL)animated
+{
+    actiCell.typeOfCurrentView = 0;
+    [super viewWillDisappear:animated];
+}
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWilBeShown:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+    //Draw backview
+    [actiCell removeFromSuperview];
+    [actiCellSuperView reloadData];
+    actiCell.botView.hidden = NO;
+    
+    
+}
 - (void)viewDidUnload {
     [self setTableView:nil];
     [self setBotView:nil];
@@ -85,6 +130,11 @@
 {
     return NO;
     
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [_tableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.01];
 }
 #pragma mark - Table view data source
 
@@ -106,9 +156,9 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0 ) {
-        return  actiCell.frame.size.height - 2;
+        return  [UIActivityCell getCellHeightWithContent:actiCell._content] - actiCell.botView.frame.size.height - 2;
     }
-    return [CommentsCellContent getCellHeighWithContent:[listComments objectAtIndex:indexPath.row]];
+    return [CommentsCellContent getCellHeighWithContent:[listComments objectAtIndex:indexPath.row] withWidth:actiCell.frame.size.width - 74];
 }
 //- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 //{
@@ -119,6 +169,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
+        [actiCell updateView];
         return actiCell;
     }
     
@@ -158,6 +209,13 @@
     //text
     UILabel *text = (UILabel*)[cell viewWithTag:3];
     text.text = content.text;
+    [text setNeedsDisplay];
+    CGSize constraint = CGSizeMake(actiCell.frame.size.width - 74, 20000.0f);
+    CGSize size = [content.text sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    CGRect frame = text.frame;
+    frame.size = size;
+    text.frame = frame;
+//    [text setAutoresizingMask: UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin ];
     //Create
     UILabel *created = (UILabel*)[cell viewWithTag:4];
     created.text = content.created;
@@ -175,9 +233,10 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 1) {
-        if (actiCell._content.totalClap) {
-            return CELL_COMMENTS_HEADER_HEIGHT;
-        }
+         return CELL_COMMENTS_HEADER_HEIGHT;
+//        if (actiCell._content.totalClap) {
+//            return CELL_COMMENTS_HEADER_HEIGHT;
+//        }
     }
     return 10.0;
 }
@@ -198,8 +257,8 @@
     if (section == 1) {
         // Create view for header
         
-        if (actiCell._content.totalClap > 0) {
-            header = [[UIView alloc]initWithFrame:CGRectMake(0.0, 0.0, CELL_COMMENTS_WIDTH, CELL_COMMENTS_HEADER_HEIGHT)];
+        if (actiCell._content.totalClap >= 0) {
+            header = [[UIView alloc]initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, CELL_COMMENTS_HEADER_HEIGHT)];
             header.backgroundColor = [UIColor clearColor];
             //icon clap
             UIImageView *clapIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"clap.png"]];
@@ -210,36 +269,69 @@
             lbPeopleClap.backgroundColor = [UIColor clearColor];
             [lbPeopleClap setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
             
-            if (actiCell._content.isClap) {
-                // did clap
-                switch (actiCell._content.totalClap) {
-                    case 1:
-                        lbPeopleClap.text = @"You like this";
-                        break;
-                    case 2:
-                        lbPeopleClap.text = @"You and another like this";
-                        break;
-                    default:
-                        lbPeopleClap.text = [NSString stringWithFormat:@"You and %d others like this.", actiCell._content.totalClap - 1];
-                        break;
-                }
-                
-            }else {
-                switch (actiCell._content.totalClap) {
-                    case 1:
-                        lbPeopleClap.text = @"A persion likes this";
-                        break;
-                    default:
-                        lbPeopleClap.text = [NSString stringWithFormat:@"%d people like this.", actiCell._content.totalClap];
-                        break;
-                }
-                
-            }
+//            if (actiCell._content.isClap) {
+//                // did clap
+//                switch (actiCell._content.totalClap) {
+//                    case 1:
+//                        lbPeopleClap.text = @"You like this";
+//                        break;
+//                    case 2:
+//                        lbPeopleClap.text = @"You and another like this";
+//                        break;
+//                    default:
+//                        lbPeopleClap.text = [NSString stringWithFormat:@"You and %d others like this.", actiCell._content.totalClap - 1];
+//                        break;
+//                }
+//                
+//            }else {
+//                switch (actiCell._content.totalClap) {
+//                    case 1:
+//                        lbPeopleClap.text = @"A persion likes this";
+//                        break;
+//                    default:
+//                        lbPeopleClap.text = [NSString stringWithFormat:@"%d people like this.", actiCell._content.totalClap];
+//                        break;
+//                }
+//                
+//            }
+            lbPeopleClap.text =  [NSString stringWithFormat:@"%d", actiCell._content.totalClap];
             
             [header addSubview:clapIcon];
             [header addSubview:lbPeopleClap];
             clapIcon = nil;
             lbPeopleClap = nil;
+            
+            //Commnets
+            UIButton *commentBtn = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width - 120, 7, 100, 15)];
+            [commentBtn setTitle:[NSString stringWithFormat:@"%d comments", actiCell._content.totalComment] forState:UIControlStateNormal];
+            [commentBtn.titleLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
+            [commentBtn setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];
+            [commentBtn sizeToFit];
+            commentBtn.frame = CGRectMake(self.view.frame.size.width - commentBtn.frame.size.width - 20, 7, commentBtn.frame.size.width, commentBtn.frame.size.height);
+            //commentBtn.titleLabel.textColor = [UIColor colorWithRed:79.0/255 green:178.0/255 blue:187.0/255 alpha:1];
+            commentBtn.titleLabel.textColor = actiCell.commentBtn.titleLabel.textColor;
+            [commentBtn setTitleColor:actiCell.commentBtn.titleLabel.textColor forState:UIControlStateNormal];
+            [commentBtn addTarget:self action:@selector(commentBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [header addSubview:commentBtn];
+            
+            //clap btn
+            
+            UIButton *clapBtn = [[UIButton alloc]init];
+            [clapBtn.titleLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
+            if (actiCell._content.isClap) {
+                [clapBtn setTitle:@"Unclap" forState:UIControlStateNormal];
+            }else
+                [clapBtn setTitle:@"Clap" forState:UIControlStateNormal];
+            [clapBtn setTitleColor:actiCell.commentBtn.titleLabel.textColor forState:UIControlStateNormal];
+            [clapBtn sizeToFit];
+            clapBtn.layer.cornerRadius = 5.0;
+            //clapBtn.layer.borderWidth = 0.20;
+            clapBtn.backgroundColor = [UIColor colorWithRed:225.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
+            [clapBtn.layer setMasksToBounds:YES];
+            clapBtn.frame = CGRectMake(self.view.center.x - clapBtn.frame.size.width/2.0 - 5, 4, clapBtn.frame.size.width + 10, clapBtn.frame.size.height + 6);
+            [clapBtn addTarget:self action:@selector(clapBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [header addSubview:clapBtn];
+            
         }
         
         
@@ -271,13 +363,27 @@
 // Called when the UIKeyboardDidShowNotification is sent.
 - (void)keyboardWilBeShown:(NSNotification*)aNotification
 {
+    NSDictionary *userInfo = [aNotification userInfo];
+    CGRect frame = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    frame = [self.view convertRect:frame fromView:nil];
     CGPoint pt = CGPointZero;
-    
     ((UIScrollView*)self.view).scrollEnabled = YES;
-    pt = CGPointMake(0.0, 216);
+    pt = CGPointMake(0.0, frame.size.height);
     [(UIScrollView*)self.view setContentOffset:pt animated:YES];
-    _tableView.frame = CGRectMake(0.0, 216, self.view.frame.size.width, _tableView.frame.size.height - 216);
-    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count -1 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    _tableView.frame = CGRectMake(0.0, frame.size.height, self.view.frame.size.width, _tableView.frame.size.height - frame.size.height);
+    @try {
+        if (listComments.count > 0) {
+             [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count -1 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        }
+       
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@ scrollToRowAtIndexPath", [self class]);
+    }
+    @finally {
+        
+    }
+
 }
 
 // Called when the UIKeyboardWillHideNotification is sent
@@ -286,10 +392,14 @@
     //    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     //    ((UIScrollView*) self.view).contentInset = contentInsets;
     //    ((UIScrollView*) self.view).scrollIndicatorInsets = contentInsets;
-    
+    NSDictionary *userInfo = [aNotification userInfo];
+    CGRect frame = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    frame = [self.view convertRect:frame fromView:nil];
+
     [(UIScrollView*)self.view setContentOffset:CGPointZero animated:YES];
     ((UIScrollView*)self.view).scrollEnabled = NO;
-    _tableView.frame = CGRectMake(0.0, 0.0, self.view.frame.size.width, _tableView.frame.size.height + 216);
+    _tableView.frame = CGRectMake(0.0, 0.0, self.view.frame.size.width, _tableView.frame.size.height + frame.size.height);
+
 }
 
 
@@ -300,10 +410,18 @@
         listComments = [[NSMutableArray alloc] init ];
     }
     actiCell._content.totalComment += 1;
-
+    [actiCell refreshClapCommentsView];
     [listComments addObject:commentContent];
     [_tableView reloadData];
-    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count - 1 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+    @try {
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count - 1 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+    }
+    @catch (NSException *exception) {
+        
+    }
+    @finally {
+        
+    }
 }
 
 - (void) loadCommentsInBackground
@@ -333,12 +451,50 @@
         content.userPostID = [[dict objectForKey:@"actor_id"] integerValue];
         [listComments addObject:content];
     }
-    
+    //[_tableView reloadData];
     [_tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
     
 }
 
 - (IBAction)btnSendClicked:(id)sender {
+    CommentsCellContent *newComments = [[CommentsCellContent alloc]init];
+
+    newComments.userPostName = [UserPAInfo sharedUserPAInfo].usernamePU;
+    newComments.userAvatarURL = [UserPAInfo sharedUserPAInfo].avatarUrl;
+    newComments.text = _textBox.text;
+    newComments.created = @"Just now";
+    newComments.userPostID = [UserPAInfo sharedUserPAInfo].registrationID;
+    [self addCell:newComments];
+    newComments = nil;
+    [_textBox resignFirstResponder];
+    _textBox.text = @"";
+}
+
+- (IBAction)clapBtnClicked:(id)sender {
+    
+    //Update local
+    actiCell._content.isClap = !actiCell._content.isClap;
+    if (actiCell._content.isClap) {
+        actiCell._content.totalClap += 1;
+    }else {
+        actiCell._content.totalClap -= 1;
+    }
+    [_tableView reloadData];
+    [actiCell refreshClapCommentsView];
+}
+
+- (IBAction)commentBtnClicked:(id)sender {
+    @try {
+        
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count - 1 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Exception: Try to scroll to bottom");
+    }
+    @finally {
+        
+    }
+
 }
 
 - (void) tapAction

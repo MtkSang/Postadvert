@@ -15,5 +15,5 @@
 @property (nonatomic, strong)   NSString *created;
 @property (nonatomic)           long      userPostID;
 @property (nonatomic)           long      commnetID;
-+ (float) getCellHeighWithContent:(CommentsCellContent*)content;
++ (float) getCellHeighWithContent:(CommentsCellContent*)content withWidth:(float) width;
 @end

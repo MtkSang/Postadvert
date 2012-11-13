@@ -7,7 +7,7 @@
 //
 
 #import "CommentsCellContent.h"
-
+#import "Constants.h"
 @implementation CommentsCellContent
 @synthesize  userAvatarURL,userPostName,text, userPostID, commnetID, created;
 
@@ -18,8 +18,10 @@
 }
 
 
-+ (float) getCellHeighWithContent:(CommentsCellContent*)content
++ (float) getCellHeighWithContent:(CommentsCellContent*)content withWidth:(float) width
 {
-    return 70;
+    CGSize constraint = CGSizeMake(width, 20000.0f);
+    CGSize size = [content.text sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    return 65 - 21 + size.height;
 }
 @end
