@@ -1539,8 +1539,8 @@
     if (listContent.count == 0) {
         [self loadCells];
     }
+    
     CommentsViewController *commentViewCtr = [[CommentsViewController alloc]init];
-    commentViewCtr.content = (PostCellContent*)[listContent objectAtIndex:0];
     [self.navigationController pushViewController: commentViewCtr animated:YES];
     // = nil;
     commentViewCtr = nil;

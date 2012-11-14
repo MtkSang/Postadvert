@@ -7,21 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
-@class PostCellContent;
+@class UIPostCell;
 @class UIPlaceHolderTextView;
 
 @interface CommentsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 {
-    IBOutlet UITableView *_tableView;
-    IBOutlet UIView *botView;
-    IBOutlet UIPlaceHolderTextView *comment;
-    IBOutlet UIButton *btnSend;
-    UIBarButtonItem *rightNaviBar;
-    NSMutableArray *listCells;
-    UIBarButtonItem *leftBarBtnItem;
-    UIBarButtonItem *preRightNaviBar;
+    NSMutableArray *listComments;
+    UIPostCell *actiCell;
+    UIPostCell *dataCellFromMain;
+    UITableView *actiCellSuperView;
+    
 }
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *botView;
+@property (weak, nonatomic) IBOutlet UIButton *btnSend;
+@property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *textBox;
 
-@property (nonatomic, weak) PostCellContent *content;
-- (IBAction) buttonSendClicked:(id)sender;
+- (id)initWithPostCell:(UIPostCell *)cell;
+- (IBAction)btnSendClicked:(id)sender;
+
 @end

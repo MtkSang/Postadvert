@@ -60,10 +60,11 @@
 - (void) updateCellWithContent:(ActivityContent *)content;
 - (void) clapButtonClicked:(id) sender;
 - (void) plusButtonClicked;
-- (void) commentButtonClick:(id) sender;
+- (void) commentButtonClicked:(id) sender;
 - (void) loadNibFile;
 - (void) updateView;
 - (void) refreshClapCommentsView;
+- (void) insertClap;
 + (Float32) getCellHeightWithContent:(ActivityContent*)content;
 @end
 

@@ -71,5 +71,6 @@
 - (void) commentButtonClick:(id) sender;
 - (void) loadNibFile;
 - (void) updateView;
+- (void) refreshClapCommentsView;
 + (Float32) getCellHeightWithContent:(PostCellContent*)content andOption:(int)opt;
 @end

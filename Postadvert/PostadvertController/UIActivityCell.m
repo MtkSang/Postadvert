@@ -17,11 +17,11 @@
 #import "UserPAInfo.h"
 #import "CommentsViewController.h"
 #import "Profile_CommentViewController.h"
+#import "PostadvertControllerV2.h"
 
 @interface UIActivityCell()
 
 - (NSString*) setNameWithAction;
-
 @end
 
 @implementation UIActivityCell
@@ -83,6 +83,12 @@
         numClap    = (UILabel*)[self viewWithTag:11];
         quickCommentBtn = (UIButton*)[self viewWithTag:12];
         isDidDraw = YES;
+//        for (UITapGestureRecognizer *tapGesture in self.gestureRecognizers) {
+//            if ([tapGesture isKindOfClass:[UITapGestureRecognizer class]]) {
+//                [tapGesture addTarget:self action:@selector(commentButtonClicked:)];
+//            }
+//            
+//        }
     }
 }
 
@@ -236,7 +242,7 @@
         commentBtn.titleLabel.textColor = [UIColor colorWithRed:79.0/255 green:178.0/255 blue:187.0/255 alpha:1];
         //commentBtn.titleLabel.textColor = [UIColor blueColor];
         
-        [commentBtn addTarget:self action:@selector(commentButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [commentBtn addTarget:self action:@selector(commentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         //- - > Quick commentBtn
         [quickCommentBtn addTarget:self action:@selector(plusButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         
@@ -493,7 +499,7 @@
     uias = nil;
 }
 
-- (void) commentButtonClick:(id) sender
+- (void) commentButtonClicked:(id) sender
 {
     if (typeOfCurrentView == 1) {
         @try {
@@ -511,7 +517,7 @@
     {
         NSLog(@"%@", self.superview);
         if (_content.totalComment == 0) {
-            return;
+            //return;
         }
         Profile_CommentViewController *commentViewCtr = [[Profile_CommentViewController alloc]initWithActivityCell:self];
         //[self addCommentsListenner];
@@ -665,6 +671,21 @@
 
 }
 
+- (void) insertClap
+{
+//    insertLike($target_id, $comment_type, $user_id)
+    
+    id data;
+    NSString *functionName;
+    NSArray *paraNames;
+    NSArray *paraValues;
+    
+    functionName = @"insertLike";
+    paraNames = [NSArray arrayWithObjects:@"target_id", @"comment_type", @"user_id",nil];
+    paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%d", _content.target_id], _content.commnent_type, [NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], nil];
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName:functionName parametterName:paraNames parametterValue:paraValues];
+
+}
 
 
 + (NSString*) makeTextStringWithContent:(ActivityContent*)content
@@ -827,6 +848,7 @@
     _content.isClap = !_content.isClap;
     if (_content.isClap) {
         _content.totalClap += 1;
+        [self insertClap];
     }else {
         _content.totalClap -= 1;
     }

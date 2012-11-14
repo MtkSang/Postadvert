@@ -244,21 +244,23 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    UIPostCell *cell = (UIPostCell*)[tableView cellForRowAtIndexPath:indexPath];
+    [cell commentButtonClick:cell.commentBtn];
     
-    if (optionView) {
-        return;
-    }
-    UITablePostViewController *detailOnePost;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
-        detailOnePost = [[UITablePostViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    }else
-    {
-        detailOnePost = [[UITablePostViewController alloc] initWithNibName:@"UITablePostViewController_IPad" bundle:nil];
-    }
-    detailOnePost.optionView = 1;
-    [detailOnePost setPostCellContent:[listContent objectAtIndex:indexPath.section]];
-    detailOnePost.navigationController =  self.navigationController;
-    [self.navigationController pushViewController:detailOnePost animated:YES];
+//    if (optionView) {
+//        return;
+//    }
+//    UITablePostViewController *detailOnePost;
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
+//        detailOnePost = [[UITablePostViewController alloc] initWithStyle:UITableViewStyleGrouped];
+//    }else
+//    {
+//        detailOnePost = [[UITablePostViewController alloc] initWithNibName:@"UITablePostViewController_IPad" bundle:nil];
+//    }
+//    detailOnePost.optionView = 1;
+//    [detailOnePost setPostCellContent:[listContent objectAtIndex:indexPath.section]];
+//    detailOnePost.navigationController =  self.navigationController;
+//    [self.navigationController pushViewController:detailOnePost animated:YES];
     
 }
 #pragma mark MBProgressHUDDelegate methods

@@ -13,6 +13,7 @@
 {
     NSMutableArray *listComments;
     UIActivityCell *actiCell;
+    UIActivityCell *dataCellFromMain;
     UITableView *actiCellSuperView;
     
 }

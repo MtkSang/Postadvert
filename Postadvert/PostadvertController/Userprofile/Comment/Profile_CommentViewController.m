@@ -44,11 +44,29 @@
     //Must call from this contructor
     self = [super init];
     if (self) {
-        actiCell = cell;
+        dataCellFromMain = cell;
+
+        NSArray *nib = nil;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
+            nib = [[NSBundle mainBundle] loadNibNamed:@"UIActivityCell" owner:self options:nil];
+        }
+        else{
+            nib = [[NSBundle mainBundle] loadNibNamed:@"UIActivityCell" owner:self options:nil];
+        }
+        actiCell = (UIActivityCell *)[nib objectAtIndex:0];
+        [actiCell loadNibFile];
+        actiCell.navigationController = self.navigationController;
+        [actiCell updateCellWithContent:cell._content];
+        [actiCell setSelectionStyle:UITableViewCellEditingStyleNone];
+        [actiCell setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+//        cell.backgroundView = [[UIView alloc]initWithFrame:cell.bounds];
+//        cell.backgroundView.backgroundColor = [UIColor whiteColor];
+        
+        
         actiCell.typeOfCurrentView = 1;
         actiCell.commentViewCtr = self;
         actiCell.botView.hidden = YES;
-        actiCellSuperView = (UITableView*)actiCell.superview;
+        actiCellSuperView = (UITableView*)cell.superview;
         listComments = [[NSMutableArray alloc]init];
     }
     return  self;
@@ -87,12 +105,15 @@
 {
     [super viewWillAppear:animated];
     actiCell.typeOfCurrentView = 1;
+    actiCell.botView.hidden = YES;
     
 }
 - (void) viewWillDisappear:(BOOL)animated
 {
     actiCell.typeOfCurrentView = 0;
     [super viewWillDisappear:animated];
+    dataCellFromMain._content = actiCell._content;
+    [dataCellFromMain refreshClapCommentsView];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -104,6 +125,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification object:nil];
+    
 }
 
 - (void) viewDidDisappear:(BOOL)animated
@@ -112,7 +134,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     //Draw backview
-    [actiCell removeFromSuperview];
     [actiCellSuperView reloadData];
     actiCell.botView.hidden = NO;
     
@@ -156,7 +177,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0 ) {
-        return  [UIActivityCell getCellHeightWithContent:actiCell._content] - actiCell.botView.frame.size.height - 2;
+        return  [UIActivityCell getCellHeightWithContent:actiCell._content] - actiCell.botView.frame.size.height - 3;
     }
     return [CommentsCellContent getCellHeighWithContent:[listComments objectAtIndex:indexPath.row] withWidth:actiCell.frame.size.width - 74];
 }
@@ -476,6 +497,7 @@
     actiCell._content.isClap = !actiCell._content.isClap;
     if (actiCell._content.isClap) {
         actiCell._content.totalClap += 1;
+        [actiCell insertClap];
     }else {
         actiCell._content.totalClap -= 1;
     }

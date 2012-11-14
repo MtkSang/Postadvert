@@ -724,77 +724,86 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
         NSLog(@"Array %@", infoArray);
         for (NSDictionary *dict in infoArray) {
             NSLog(@"dict %@", dict);
-            ActivityContent *content = [[ActivityContent alloc]init];
-            content.activity_type = [dict objectForKey:@"act_type"];
-            content.activity_ID = [dict objectForKey:@"act_id"];
-            content.actor_id = [[dict objectForKey:@"actor_id"] integerValue];
-            content.actor_name = [dict objectForKey:@"actor_name"];
-            content.actor_gender = [dict objectForKey:@"actor_gender"];
-            NSString *base64Str = [dict objectForKey:@"actor_thumb"];
-            NSData *imageData = [NSData dataFromBase64String:base64Str];
-            UIImage *image = [UIImage imageWithData:imageData];
-            if (image == nil) {
-                image = [UIImage imageNamed:@"user_default_thumb.png"];
+            @try {
+                ActivityContent *content = [[ActivityContent alloc]init];
+                content.activity_type = [dict objectForKey:@"act_type"];
+                content.activity_ID = [dict objectForKey:@"act_id"];
+                content.actor_id = [[dict objectForKey:@"actor_id"] integerValue];
+                content.actor_name = [dict objectForKey:@"actor_name"];
+                content.actor_gender = [dict objectForKey:@"actor_gender"];
+                NSString *base64Str = [dict objectForKey:@"actor_thumb"];
+                NSData *imageData = [NSData dataFromBase64String:base64Str];
+                UIImage *image = [UIImage imageWithData:imageData];
+                if (image == nil) {
+                    image = [UIImage imageNamed:@"user_default_thumb.png"];
+                }
+                content.actor_thumbl = image;
+                if ([[dict objectForKey:@"actor_2"] isKindOfClass:[NSArray class]]) {
+                    content.actor_2 = [dict objectForKey:@"actor_2"];
+                }
+                content.app_type = [dict objectForKey:@"app"];
+                content.cid = [[dict objectForKey: @"cid"] integerValue];
+                content.commnent_type = [dict objectForKey:@"comment_type"];
+                content.commentContent = [NSData stringDecodeFromBase64String: [dict objectForKey:@"content"]];
+                content.actionStringFromServer = [NSData stringDecodeFromBase64String:[dict objectForKey:@"action"]];
+                content.created_time = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
+                content.status_ID = [[dict objectForKey:@"id"] integerValue];
+                content.like_id = [[dict objectForKey:@"like_id"] integerValue];
+                //Like info
+                NSDictionary *likeInfo = [dict objectForKey:@"like_info"];
+                content.isClap = [[likeInfo objectForKey:@"like_status"] boolValue];
+                content.totalClap = [[likeInfo objectForKey:@"like_total"] integerValue];
+                
+                content.like_type = [dict objectForKey:@"like_type"];
+                //target
+                if ([[dict objectForKey:@"target_id"] isKindOfClass:[NSNull class]]) {
+                    content.target_id = 0;
+                }else
+                    content.target_id = [[dict objectForKey:@"target_id"] integerValue];
+                content.target_name = [NSData stringDecodeFromBase64String:[dict objectForKey:@"target_name"]];
+                if (![[dict objectForKey:@"target_author_id"] isKindOfClass:[NSNull class]]) {
+                    content.target_author_id = [[dict objectForKey:@"target_author_id"] integerValue] ;
+                }else
+                    content.target_author_id = 0 ;
+                
+                content.target_author_name = [dict objectForKey:@"target_author_name"];
+                
+                content.title =  [NSData stringDecodeFromBase64String:[dict objectForKey:@"action"]];
+                //photo_info
+                NSDictionary *photo_info = [dict objectForKey:@"photo_info"];
+                content.photo_info_id = [[photo_info objectForKey:@"id"] integerValue];
+                //            content.photo_info_image = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"image"]];
+                //            content.photo_info_thumb = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"photo_thumb_url"]];
+                content.listImages = [[NSMutableArray alloc]init];
+                NSString *fullImage = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"image"] ];
+                NSString *thumbnail = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"photo_thumb_url"]];
+                if (fullImage.length || thumbnail.length) {
+                    [content.listImages addObject:[NSArray arrayWithObjects:fullImage, thumbnail, nil]];
+                }
+                //video_info
+                content.video = [dict objectForKey:@"video_info"];
+                if ([content.video isKindOfClass:[NSDictionary class]]) {
+                    //                content.video = [[NSMutableDictionary alloc]init];
+                    //                [content.video setValue:[NSData stringDecodeFromBase64String: [video objectForKey:@"description"]  ]forKey:@"description"];
+                    //                [content.video setValue:[NSData stringDecodeFromBase64String: [video objectForKey:@"thumb"]  ]forKey:@"thumb"];
+                    //                [content.video setValue:[NSData stringDecodeFromBase64String: [video objectForKey:@"title"]  ]forKey:@"title"];
+                    //                [content.video setValue:[NSData stringDecodeFromBase64String: [video objectForKey:@"url"]  ]forKey:@"url"];
+                    //                [content.video setValue:[video objectForKey:@"id"] forKey:@"id"];
+                }else
+                    content.video = nil;
+                //content.video = nil;
+                //total comments
+                content.totalComment = [[dict objectForKey:@"total_comments"] integerValue];
+                
+                [listContent addObject:content];
+
             }
-            content.actor_thumbl = image;
-            if ([[dict objectForKey:@"actor_2"] isKindOfClass:[NSArray class]]) {
-                content.actor_2 = [dict objectForKey:@"actor_2"];
+            @catch (NSException *exception) {
+                NSLog(@"There is an exception: %@", exception);
             }
-            content.app_type = [dict objectForKey:@"app"];
-            content.cid = [[dict objectForKey: @"cid"] integerValue];
-            content.commnent_type = [dict objectForKey:@"comment_type"];
-            content.commentContent = [NSData stringDecodeFromBase64String: [dict objectForKey:@"content"]];
-            content.actionStringFromServer = [NSData stringDecodeFromBase64String:[dict objectForKey:@"action"]];
-            content.created_time = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
-            content.status_ID = [[dict objectForKey:@"id"] integerValue];
-            content.like_id = [[dict objectForKey:@"like_id"] integerValue];
-            //Like info
-            NSDictionary *likeInfo = [dict objectForKey:@"like_info"];
-            content.isClap = [[likeInfo objectForKey:@"like_status"] boolValue];
-            content.totalClap = [[likeInfo objectForKey:@"like_total"] integerValue];
-            
-            content.like_type = [dict objectForKey:@"like_type"];
-            //target
-            if ([[dict objectForKey:@"target_id"] isKindOfClass:[NSNull class]]) {
-                content.target_id = 0;
-            }else
-                content.target_id = [[dict objectForKey:@"target_id"] integerValue];
-            content.target_name = [NSData stringDecodeFromBase64String:[dict objectForKey:@"target_name"]];
-            if (![[dict objectForKey:@"target_author_id"] isKindOfClass:[NSNull class]]) {
-                content.target_author_id = [[dict objectForKey:@"target_author_id"] integerValue] ;
-            }else
-                content.target_author_id = 0 ;
-            
-            content.target_author_name = [dict objectForKey:@"target_author_name"];
-            
-            content.title =  [NSData stringDecodeFromBase64String:[dict objectForKey:@"action"]];
-            //photo_info
-            NSDictionary *photo_info = [dict objectForKey:@"photo_info"];
-            content.photo_info_id = [[photo_info objectForKey:@"id"] integerValue];
-//            content.photo_info_image = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"image"]];
-//            content.photo_info_thumb = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"photo_thumb_url"]];
-            content.listImages = [[NSMutableArray alloc]init];
-            NSString *fullImage = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"image"] ];
-            NSString *thumbnail = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"photo_thumb_url"]];
-            if (fullImage.length || thumbnail.length) {
-                [content.listImages addObject:[NSArray arrayWithObjects:fullImage, thumbnail, nil]];
+            @finally {
+                
             }
-            //video_info
-            content.video = [dict objectForKey:@"video_info"];
-            if ([content.video isKindOfClass:[NSDictionary class]]) {
-//                content.video = [[NSMutableDictionary alloc]init];
-//                [content.video setValue:[NSData stringDecodeFromBase64String: [video objectForKey:@"description"]  ]forKey:@"description"];
-//                [content.video setValue:[NSData stringDecodeFromBase64String: [video objectForKey:@"thumb"]  ]forKey:@"thumb"];
-//                [content.video setValue:[NSData stringDecodeFromBase64String: [video objectForKey:@"title"]  ]forKey:@"title"];
-//                [content.video setValue:[NSData stringDecodeFromBase64String: [video objectForKey:@"url"]  ]forKey:@"url"];
-//                [content.video setValue:[video objectForKey:@"id"] forKey:@"id"];
-            }else
-                content.video = nil;
-            //content.video = nil;
-            //total comments
-            content.totalComment = [[dict objectForKey:@"total_comments"] integerValue];
-            
-            [listContent addObject:content];
         }
     }
     return listContent;

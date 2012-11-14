@@ -25,7 +25,6 @@
 
 
 @interface UIPostCell()
-- (void) refreshClapCommentsView;
 - (void) addCommentsListenner;
 - (void) removeCommentsListenner;
 - (void) plusSuccessWithPost;
@@ -606,13 +605,11 @@
 
 - (void) commentButtonClick:(id) sender
 {
-    if (_content.listComments.count == 0) {
-        return;
+    if (_content.totalComment == 0) {
+        //return;
     }
-    [self addCommentsListenner];
-    CommentsViewController *commentViewCtr = [[CommentsViewController alloc]init];
+    CommentsViewController *commentViewCtr = [[CommentsViewController alloc]initWithPostCell:self];
     NSLog(@"Content %@", _content);
-    commentViewCtr.content = _content;
     //[self addCommentsListenner];
     [navigationController pushViewController: commentViewCtr animated:YES];
     // = nil;
