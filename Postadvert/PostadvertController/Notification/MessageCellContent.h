@@ -15,4 +15,15 @@
 @property (nonatomic, strong)   NSDate *datePost;
 @property (nonatomic, strong)   UIImage *imageAttachment;
 //@property (nonatomic, strong)   NSTimer *timePost;
+
+@property (nonatomic)   NSInteger msg_id;
+@property (nonatomic)   NSInteger parent_id;
+@property (nonatomic, strong)   NSString *subject;
+@property (nonatomic, strong)   NSMutableArray *partners;
+@property (nonatomic, strong)   NSString *created;
+@property (nonatomic)   BOOL is_read;
+@property (nonatomic, strong)   NSString *messageThumbURL;
+
+- (id)initWithDictionary:(NSDictionary*)dict;
+- (void) parseDataWithOption:(NSInteger) opt;
 @end

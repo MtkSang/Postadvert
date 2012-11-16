@@ -7,20 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MBProgressHUD.h"
 @protocol MessageViewControllerDelegate;
-@interface MessageViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchDisplayDelegate>
+@interface MessageViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchDisplayDelegate, MBProgressHUDDelegate>
 {
     id <MessageViewControllerDelegate> delegate;
     NSMutableArray *listMessageCellContent;
     NSMutableArray *filteredListContent;
-    IBOutlet UITableView *tableView;
     UINavigationController *navigationController;
+    MBProgressHUD *hud;
 }
 //@property (nonatomic, strong) NSMutableArray *listMessageCellContent;
 //@property (nonatomic, strong) NSMutableArray *filteredListContent;
 @property (nonatomic, weak) id <MessageViewControllerDelegate> delegate;
 @property (nonatomic, weak) UINavigationController *navigationController;
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 

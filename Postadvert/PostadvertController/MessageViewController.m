@@ -11,13 +11,15 @@
 #import "Constants.h"
 #import "UIMessageCell.h"
 #import "UserPAInfo.h"
+#import "PostadvertControllerV2.h"
+#import "UIImageView+URL.h"
+
 @interface MessageViewController ()
 - (void) loadlistMessageCellContent;
 @end
 
 @implementation MessageViewController
 @synthesize delegate = _delegate;
-@synthesize tableView = _tableView;
 //@synthesize listMessageCellContent = _listMessageCellContent;
 //@synthesize filteredListContent =filteredListContent;
 @synthesize navigationController = _navigationController;
@@ -36,16 +38,26 @@
     [self.view setAutoresizesSubviews:YES];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     // Do any additional setup after loading the view from its nib.
-    [self loadlistMessageCellContent];
+    hud = [[MBProgressHUD alloc]initWithView:self.view];
+    hud.userInteractionEnabled = NO;
+    [self.view addSubview:hud];
+    [hud showWhileExecuting:@selector(loadlistMessageCellContent) onTarget:self withObject:nil animated:YES];
 }
 
 - (void)viewDidUnload
 {
+    [self setTableView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    MBProgressHUD *thread = [[MBProgressHUD alloc]init];
+    [thread showWhileExecuting:@selector(changeIcon) onTarget:self withObject:nil animated:NO];
+}
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     //return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -84,15 +96,29 @@
         cellCentent = ((MessageCellContent*)[listMessageCellContent objectAtIndex:indexPath.row]);
     }
 
+
+    if (cellCentent.is_read) {
+        [cell.imageView setImageWithURL:[NSURL URLWithString:cellCentent.messageThumbURL] placeholderImage:[UIImage imageNamed:@"read_message.png"]];
+        cell.iconSendView.hidden = YES;
+            cell.backgroundColor = [UIColor clearColor];
+        //cell.message.textColor = [UIColor lightGrayColor];
+    }else
+    {
+        [cell.imageView setImageWithURL:[NSURL URLWithString:cellCentent.messageThumbURL] placeholderImage:[UIImage imageNamed:@"unread_message.png"]];
+        if (!cell.iconSendView.image) {
+            cell.iconSendView.image = [UIImage imageNamed:@"unread_icon.png"];
+        }
+        
+        cell.iconSendView.hidden = NO;
+        //cell.message.textColor = [UIColor darkGrayColor];
+        cell.contentView.backgroundColor = [UIColor colorWithRed:225/255.0 green:245/255.0 blue:245/255.0 alpha:0.5];
+        
+    }
     
     cell.message.text = cellCentent.text;
-    cell.imageView.image = cellCentent.userAvatar;
     cell.userPostName.text = cellCentent.userPostName;
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"MM:dd:yy"];
-    NSString *theDate = [dateFormat stringFromDate:cellCentent.datePost];
-    cell.postTime.text = theDate;
-    theDate = nil;
+    cell.postTime.text = cellCentent.created;
+
     cellCentent = nil;
 
     return cell;   
@@ -101,7 +127,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 47;
+    return 48;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -130,7 +156,13 @@
     cellContent = nil;
 }
 
+#pragma mark MBProgressHUDDelegate methods
 
+- (void)hudWasHidden:(MBProgressHUD *)_hud {
+	// Remove HUD from screen when the HUD was hidded
+	[_hud removeFromSuperview];
+    _hud = nil;
+}
 
 #pragma mark -
 #pragma mark UISearchDisplayController Delegate Methods
@@ -201,42 +233,81 @@
 
 - (void) loadlistMessageCellContent
 {
-    if(listMessageCellContent == nil)
+    @try {
+        if(listMessageCellContent == nil)
         listMessageCellContent = [[NSMutableArray alloc] init];
-    [listMessageCellContent removeAllObjects];
-    
-    MessageCellContent *message = [[MessageCellContent alloc]init];
-    message.text = @"Thank you!";
-    message.userPostName = [UserPAInfo sharedUserPAInfo].usernamePU;
-    message.userAvatar = [UserPAInfo sharedUserPAInfo].imgAvatar;
-    message.datePost = [NSDate date];
-    
-    [listMessageCellContent addObject:message];
-    
-    MessageCellContent *message2 = [[MessageCellContent alloc]init];
-    message2.text = @"あなたも";
-    message2.userAvatar = [UserPAInfo sharedUserPAInfo].imgAvatar;
-    message2.userPostName = @"Ray";
-    message2.datePost = [NSDate date];
-    
-    [listMessageCellContent addObject:message2];
-    
-    for (int i =1; i < 10; i++) {
-        MessageCellContent *message3 = [[MessageCellContent alloc]init];
-        message3.userPostName = [NSString stringWithFormat:@"User %d", i];
-        message3.userAvatar = [UserPAInfo sharedUserPAInfo].imgAvatar;
-        message3.text = [NSString stringWithFormat:@"This is an automatic text %d",i];
-        message3.datePost = [NSDate distantPast];
-        [listMessageCellContent addObject:message3];
+        [listMessageCellContent removeAllObjects];
+        
+        id data;
+        NSString *functionName;
+        NSArray *paraNames;
+        NSArray *paraValues;
+        functionName = @"getAllMessages";
+        paraNames = [NSArray arrayWithObjects:@"user_id", @"msg_id", @"limit", nil];
+        paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], @"0", @"0", nil];
+        
+        data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+        
+        for (NSDictionary *dict  in data) {
+            MessageCellContent *message = [[MessageCellContent alloc]initWithDictionary:dict];
+            [listMessageCellContent addObject:message];
+        }
+        
+        [self.tableView reloadData];
+        if (listMessageCellContent.count) {
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
     }
-    
-    [self.tableView reloadData];
-    if (listMessageCellContent.count) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    @catch (NSException *exception) {
+        NSLog(@"%@", exception);
     }
-    
+
 }
 
+-(void) changeIcon
+{
+    return;
+    NSInteger count = 0;
+    UIImage *img = [UIImage imageNamed:@"unread_icon.png"];
+    while (self) {
+        if (count % 2) {
+            img = [UIImage imageNamed:@"unread_icon.png"];
+        }else
+            img = [UIImage imageNamed:@"unread_message.png"];
+        for (MessageCellContent *message in listMessageCellContent) {
+            if (!message.is_read) {
+                //change
+                int index = [listMessageCellContent indexOfObject:message];
+                NSIndexPath * indecPath =  [NSIndexPath indexPathForRow:index inSection:0];
+                NSArray *data = [NSArray arrayWithObjects:indecPath, img, nil];
+                [self performSelectorOnMainThread:@selector(updateMessageWithIndexPath:) withObject:data waitUntilDone:NO];
+                
+            }
+        }
+        
+        sleep(3);
+        count ++;
+        if (count > 100000) {
+            count = 0;
+        }
+NSLog(@"%d", count);
+    }
+}
+
+- (void) updateMessageWithIndexPath:(NSArray*)data
+{
+    return;
+    @try {
+        NSIndexPath *indexPath = [data objectAtIndex:0];
+        UIMessageCell *cell = (UIMessageCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+        cell.iconSendView.image = [data objectAtIndex:1];
+        cell.backgroundColor = [UIColor redColor];
+        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@", exception);
+    }
+}
 
 #pragma mark Content Filtering
 

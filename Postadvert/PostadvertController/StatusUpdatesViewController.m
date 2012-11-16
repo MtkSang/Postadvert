@@ -23,6 +23,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        [self performSelectorInBackground:@selector(getDataFromWS) withObject:nil];
+        
     }
     return self;
 }
@@ -33,7 +35,7 @@
     // Do any additional setup after loading the view from its nib.
     //[self performSelectorInBackground:@selector(getData) withObject:nil];
     //[self performSelectorInBackground:@selector(getdataFromLink) withObject:nil];
-    [self performSelectorInBackground:@selector(sendDataFromWS2) withObject:nil];
+    [self performSelectorInBackground:@selector(getDataFromWS) withObject:nil];
 }
 
 - (void)viewDidUnload
@@ -208,67 +210,34 @@
  </soap:Envelope>
  */
 -(void) getDataFromWS{
-    NSString *soapFormat = [NSString stringWithFormat: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                            @"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
-                            @"<soap:Body>"
-                            @"<hello xmlns=\"http://jmobile.futureworkz.com.sg/fwz_service/\">"
-                            @"<name>%@</name><"
-                            @"age>%@</age>"
-                            @"</hello>"
-                            @"</soap:Body>"
-                            @"</soap:Envelope>",@"Ray", @"25"];
-                                                
-
-        
-                            
-                            
-    NSLog(@"The request format is: \n%@",soapFormat); 
+    theRequest =
+    [NSMutableURLRequest  requestWithURL:[NSURL URLWithString:@"http://api.supplychainasia.org/users/authenticate.json?key=90bf4f08f12279ed4ebf6a7b5893ac3eda06c554"]
+                             cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                         timeoutInterval:10.0];
     
-    NSURL *locationOfWebService = [NSURL URLWithString:@"http://jmobile.futureworkz.com.sg/fwz_service/fwz_server_wsdl.php"];//http://jmobile.futureworkz.com.sg/fwz_service/fwz_server_wsdl.php?wsdl
-    
-    NSLog(@"web url = %@",locationOfWebService);
-    
-    theRequest = [[NSMutableURLRequest alloc]initWithURL:locationOfWebService];// cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:4];
-                                    
-    NSString *msgLength = [NSString stringWithFormat:@"%d",[soapFormat length]];
-    
-    
-    [theRequest addValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    [theRequest addValue:@"http://jmobile.futureworkz.com.sg/fwz_service/hello" forHTTPHeaderField:@"SOAPAction"];
-    [theRequest addValue:msgLength forHTTPHeaderField:@"Content-Length"];
     [theRequest setHTTPMethod:@"POST"];
-    //the below encoding is used to send data over the net
-    [theRequest setHTTPBody:[soapFormat dataUsingEncoding:NSUTF8StringEncoding]];
     
-    myConnect = [[NSURLConnection alloc]initWithRequest:theRequest delegate:self startImmediately:YES];
+    // NSLog(@"username=%@&password=%@",username.text, password.text);
+    [theRequest setHTTPBody:[ [NSString stringWithFormat:@"username=%@&password=%@",@"fanhaijun", @"123123"]  dataUsingEncoding:NSUTF8StringEncoding]];
+    NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:theRequest delegate:self startImmediately:YES];
+    
+    
+    if (theConnection) {
+        
+        // Create the NSMutableData to hold the received data.
+        // receivedData is an instance variable declared elsewhere.
+        
+        webData = [NSMutableData data] ;
+        
+    } else {
+        
+        // Inform the user that the connection failed.
+        
+        UIAlertView *connectFailMessage = [[UIAlertView alloc] initWithTitle:@"Error " message:@"Connection to Server Failed."  delegate: self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+        [connectFailMessage show];
+        
+    }
 
-    if (myConnect) {
-        NSLog(@"Connection OK");
-        webData = [[NSMutableData alloc]init];
-        
-    }
-    else {
-        NSLog(@"No Connection established");
-    }   
-    
-    NSURLResponse *response;
-    NSError *error;	
-    NSData *data = [NSURLConnection sendSynchronousRequest:theRequest returningResponse:&response error:&error];
-    
-    NSLog(@"data : %@ ;respond: %@ ;error %@; data:%@",data.description, response.description, error, [data JSONRepresentation]);
-    NSString *results = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]; 
-    NSLog(@"%@",results);
-    CXMLDocument *doc = [[CXMLDocument alloc] initWithData:data options:0 error:nil];
-    NSLog(@"DATA :%@", doc);
-    NSArray *nodes = NULL;
-    //  searching for return nodes (return from WS)
-    nodes = [doc nodesForXPath:@"//return" error:nil];
-    
-    for (CXMLElement *node in nodes) {
-        jsonStringData = [node.stringValue copy];
-        NSLog(@"node %@", node.stringValue);
-        
-    }
 }
 /*
  login_type = email or username

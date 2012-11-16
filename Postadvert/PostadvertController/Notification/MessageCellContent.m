@@ -7,12 +7,94 @@
 //
 
 #import "MessageCellContent.h"
+#import "NSData+Base64.h"
+#import "CredentialInfo.h"
 
 @implementation MessageCellContent
 
 @synthesize  userAvatar,userPostName,text, datePost, imageAttachment;
 
+
+@synthesize msg_id;
+@synthesize parent_id;
+@synthesize subject;
+@synthesize partners;
+@synthesize created;
+@synthesize is_read;
+@synthesize messageThumbURL;
+- (id) initWithDictionary:(NSDictionary *)dict
+{
+    self = [super init];
+    if (self) {
+        @try {
+            self.msg_id = [[dict objectForKey:@"msg_id"] integerValue];
+            self.parent_id = [[dict objectForKey:@"id"] integerValue];
+            self.subject = [NSData stringDecodeFromBase64String: [dict objectForKey:@"subject"]];
+            self.partners = [[NSMutableArray alloc]init];
+            NSArray *listParners = [dict objectForKey:@"partners"];
+            for (NSDictionary *dict in listParners) {
+                CredentialInfo *aPartner = [[CredentialInfo alloc]init];
+                aPartner.registrationID = [[dict objectForKey:@"id"]integerValue];
+                aPartner.fullName = [dict objectForKey:@"name"];
+                aPartner.avatarUrl = [dict objectForKey:@"thumb"];
+                [self.partners addObject:aPartner];
+            }
+            listParners = nil;
+            self.created = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
+            self.is_read = [[dict objectForKey:@"is_read"] boolValue];
+            self.userPostName = @"";
+        }
+        @catch (NSException *exception) {
+            NSLog(@"%@", exception);
+        }
+        
+    }
+    [self parseDataWithOption:1];
+    return self;
+}
+
+- (void) parseDataWithOption:(NSInteger) opt
+{
+    //parse for quickly preview
+    if (opt == 1) {
+        //self.userPostName
+        for (CredentialInfo* apartner in self.partners) {
+            self.userPostName = [self.userPostName stringByAppendingFormat:@"%@, ", apartner.fullName];
+        }
+        @try {
+            self.userPostName = [self.userPostName substringToIndex:self.userPostName.length - 2];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"%@", exception);
+        }
+        
+        //text
+        self.text = self.subject;
+        //thumURL
+        self.messageThumbURL = [(CredentialInfo*)[self.partners lastObject] avatarUrl];
+    }
+}
+
+
 @end
+
+//
+//[msg_id] => 111//cai nay anh tra len lai cho em luc goi ham nay
+//            [id] => 22//day la parent_id, luc goi ham getConversation a dua len cho e
+//            [subject] => UkU6aGo=
+//            [partners] => Array//danh sach nhung nguoi co trong tn
+//                (
+//                                     [0] => stdClass Object
+//                                         (
+//                                                                      [id] => 95
+//                                                                      [name] => david nguyen
+//                                                                      [thumb] => http://stroff.com/images/avatar/thumb_2092c3d688417681157a4ef0.jpg
+//                                                                  )
+//
+//                                 )
+//
+//            [created] => MyBkYXlzIGFnbw==
+//            [is_read] => 0
 
 
 /*
