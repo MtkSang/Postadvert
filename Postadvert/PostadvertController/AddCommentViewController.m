@@ -107,15 +107,21 @@
 }
 
 -(IBAction)postButtinClicked{
-    content.totalComment += 1;
-    CommentsCellContent *newComments = [[CommentsCellContent alloc]init];
-    newComments.text = comment.text;
-    //newComments.userAvatarURL = [UserPAInfo sharedUserPAInfo].imgAvatar;
-    newComments.userPostName = [UserPAInfo sharedUserPAInfo].usernamePU;
-    [content.listComments addObject:newComments];
-    self.navigationController.navigationBarHidden = NO;
-    [self dismissModalViewControllerAnimated:YES];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"plusSuccessWithPost" object:nil];
+    if (self.delegate) {
+        content.totalComment += 1;
+        [self.delegate postWithText:comment.text];
+        self.navigationController.navigationBarHidden = NO;
+        [self dismissModalViewControllerAnimated:YES];
+    }
+//    content.totalComment += 1;
+//    CommentsCellContent *newComments = [[CommentsCellContent alloc]init];
+//    newComments.text = comment.text;
+//    //newComments.userAvatarURL = [UserPAInfo sharedUserPAInfo].imgAvatar;
+//    newComments.userPostName = [UserPAInfo sharedUserPAInfo].usernamePU;
+//    [content.listComments addObject:newComments];
+//    self.navigationController.navigationBarHidden = NO;
+//    [self dismissModalViewControllerAnimated:YES];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"plusSuccessWithPost" object:nil];
     
 }
 

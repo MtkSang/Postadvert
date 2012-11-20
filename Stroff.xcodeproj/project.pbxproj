@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D440FF3F1659EB1100E04BC8 /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D440FF3E1659EB1100E04BC8 /* ChatViewController.xib */; };
 		D45BC8C3164A38E9008D3CBA /* UICommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D45BC8C2164A38E9008D3CBA /* UICommentCell.xib */; };
 		D47DB0711651F1C100E8C9B7 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D47DB06B1651F1C100E8C9B7 /* Default-568h@2x.png */; };
 		D47DB0721651F1C100E8C9B7 /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = D47DB06C1651F1C100E8C9B7 /* Default-Landscape.png */; };
@@ -435,7 +436,6 @@
 		FA6BF99F162D392A007BA656 /* Profile_VideoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA6BF99D162D392A007BA656 /* Profile_VideoViewController.xib */; };
 		FA6BF9A1162D45E1007BA656 /* video_icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FA6BF9A0162D45E1007BA656 /* video_icon.jpg */; };
 		FA6DD3FA1591767A00A08600 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6DD3F81591767A00A08600 /* ChatViewController.m */; };
-		FA6DD3FB1591767A00A08600 /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA6DD3F91591767A00A08600 /* ChatViewController.xib */; };
 		FA6DDB0515E3299B0016C755 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6DDB0415E3299B0016C755 /* CoreText.framework */; };
 		FA6E940315C8FFC8003B5AB4 /* LinkPreview.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA6E940215C8FFC8003B5AB4 /* LinkPreview.xib */; };
 		FA72165215E765EF004630D2 /* arrow_down.png in Resources */ = {isa = PBXBuildFile; fileRef = FA72165115E765EF004630D2 /* arrow_down.png */; };
@@ -540,6 +540,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D440FF3E1659EB1100E04BC8 /* ChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatViewController.xib; sourceTree = "<group>"; };
 		D45BC8C2164A38E9008D3CBA /* UICommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICommentCell.xib; sourceTree = "<group>"; };
 		D47DB06B1651F1C100E8C9B7 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		D47DB06C1651F1C100E8C9B7 /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
@@ -1075,7 +1076,6 @@
 		FA6BF9A0162D45E1007BA656 /* video_icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = video_icon.jpg; sourceTree = "<group>"; };
 		FA6DD3F71591767A00A08600 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		FA6DD3F81591767A00A08600 /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
-		FA6DD3F91591767A00A08600 /* ChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatViewController.xib; sourceTree = "<group>"; };
 		FA6DDB0415E3299B0016C755 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		FA6E940115C8FF71003B5AB4 /* LinkPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LinkPreview.h; path = ../LinkPreview.h; sourceTree = "<group>"; };
 		FA6E940215C8FFC8003B5AB4 /* LinkPreview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LinkPreview.xib; path = ../LinkPreview.xib; sourceTree = "<group>"; };
@@ -2086,7 +2086,7 @@
 				FA49688415901D89000339F6 /* UIMessageCell.xib */,
 				FA6DD3F71591767A00A08600 /* ChatViewController.h */,
 				FA6DD3F81591767A00A08600 /* ChatViewController.m */,
-				FA6DD3F91591767A00A08600 /* ChatViewController.xib */,
+				D440FF3E1659EB1100E04BC8 /* ChatViewController.xib */,
 			);
 			name = Message;
 			sourceTree = "<group>";
@@ -2755,7 +2755,6 @@
 				FA49688C15908864000339F6 /* popoverBoundCustom.png in Resources */,
 				FA49688D15908864000339F6 /* popoverTitleMessage.png in Resources */,
 				FA49688E15908864000339F6 /* popoverUpCustom.png in Resources */,
-				FA6DD3FB1591767A00A08600 /* ChatViewController.xib in Resources */,
 				FA8A7F391592BD1900EC6E74 /* icon_camera_small_unscaled.jpg in Resources */,
 				FA8A7F3D1592C24800EC6E74 /* camera_icon.jpeg in Resources */,
 				FA8A7F3E1592C24800EC6E74 /* take-photo.png in Resources */,
@@ -2843,6 +2842,7 @@
 				D4FEF629165625AE00CE1129 /* read_message.png in Resources */,
 				D4FEF62A165625AE00CE1129 /* unread_message.png in Resources */,
 				D4FEF62D16562E8500CE1129 /* unread_icon.png in Resources */,
+				D440FF3F1659EB1100E04BC8 /* ChatViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

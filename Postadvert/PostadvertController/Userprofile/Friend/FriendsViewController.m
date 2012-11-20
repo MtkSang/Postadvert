@@ -354,9 +354,6 @@
     }
     //
     [self.tableView reloadData];
-    if (sectionedListContent.count) {
-        //[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    }
     self.activityView.hidden = YES;
     [self.activityView stopAnimating];
 }

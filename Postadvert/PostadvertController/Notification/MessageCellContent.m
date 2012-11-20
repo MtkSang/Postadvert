@@ -9,6 +9,7 @@
 #import "MessageCellContent.h"
 #import "NSData+Base64.h"
 #import "CredentialInfo.h"
+#import "UserPAInfo.h"
 
 @implementation MessageCellContent
 
@@ -17,41 +18,92 @@
 
 @synthesize msg_id;
 @synthesize parent_id;
+@synthesize author_id;
 @synthesize subject;
 @synthesize partners;
 @synthesize created;
 @synthesize is_read;
 @synthesize messageThumbURL;
-- (id) initWithDictionary:(NSDictionary *)dict
+- (id) initWithDictionary:(NSDictionary *)dict withOption:(NSInteger)opt
 {
     self = [super init];
     if (self) {
         @try {
-            self.msg_id = [[dict objectForKey:@"msg_id"] integerValue];
-            self.parent_id = [[dict objectForKey:@"id"] integerValue];
-            self.subject = [NSData stringDecodeFromBase64String: [dict objectForKey:@"subject"]];
-            self.partners = [[NSMutableArray alloc]init];
-            NSArray *listParners = [dict objectForKey:@"partners"];
-            for (NSDictionary *dict in listParners) {
-                CredentialInfo *aPartner = [[CredentialInfo alloc]init];
-                aPartner.registrationID = [[dict objectForKey:@"id"]integerValue];
-                aPartner.fullName = [dict objectForKey:@"name"];
-                aPartner.avatarUrl = [dict objectForKey:@"thumb"];
-                [self.partners addObject:aPartner];
+            if (opt == 1) {
+                self.msg_id = [[dict objectForKey:@"msg_id"] integerValue];
+                self.parent_id = [[dict objectForKey:@"id"] integerValue];
+                self.subject = [NSData stringDecodeFromBase64String: [dict objectForKey:@"subject"]];
+                self.partners = [[NSMutableArray alloc]init];
+                NSArray *listParners = [dict objectForKey:@"partners"];
+                for (NSDictionary *dict in listParners) {
+                    CredentialInfo *aPartner = [[CredentialInfo alloc]init];
+                    aPartner.registrationID = [[dict objectForKey:@"id"]integerValue];
+                    aPartner.fullName = [dict objectForKey:@"name"];
+                    aPartner.avatarUrl = [dict objectForKey:@"thumb"];
+                    [self.partners addObject:aPartner];
+                }
+                listParners = nil;
+                self.created = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
+                self.is_read = [[dict objectForKey:@"is_read"] boolValue];
+                self.userPostName = @"";
+                [self parseDataWithOption:opt];
             }
-            listParners = nil;
-            self.created = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
-            self.is_read = [[dict objectForKey:@"is_read"] boolValue];
-            self.userPostName = @"";
+            if (opt == 2) {
+//                [id] => 111
+//                            [content] => d2Zo
+//                            [created] => MyBkYXlzIGFnbw==
+//                            [author_id] => 95
+//                            [is_read] => 0
+                self.msg_id = [[dict objectForKey:@"id"] integerValue];
+                self.text = [NSData stringDecodeFromBase64String:[dict objectForKey:@"content"]];
+                self.created = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
+                self.author_id = [[dict objectForKey:@"author_id"] integerValue];
+                self.is_read = [[dict objectForKey:@"is_read"] boolValue];
+                
+            }
         }
         @catch (NSException *exception) {
             NSLog(@"%@", exception);
         }
         
     }
-    [self parseDataWithOption:1];
+    
     return self;
 }
+
+- (id) initWithDictionary:(NSDictionary *)dict andSuperMessage:(MessageCellContent*)superMessage
+{
+    self = [super init];
+    if (self) {
+        @try {
+            self.msg_id = [[dict objectForKey:@"id"] integerValue];
+            self.text = [NSData stringDecodeFromBase64String:[dict objectForKey:@"content"]];
+            self.created = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
+            self.author_id = [[dict objectForKey:@"author_id"] integerValue];
+            self.is_read = [[dict objectForKey:@"is_read"] boolValue];
+            for (CredentialInfo *userInfo in superMessage.partners) {
+                if (self.author_id == userInfo.registrationID) {
+                    self.messageThumbURL = userInfo.avatarUrl;
+                    self.userPostName = userInfo.fullName;
+                    break;
+                }
+            }
+            if (self.author_id == [UserPAInfo sharedUserPAInfo].registrationID) {
+                self.messageThumbURL = [UserPAInfo sharedUserPAInfo].avatarUrl;
+                self.userPostName = [UserPAInfo sharedUserPAInfo].fullName;
+                self.author_id = [UserPAInfo sharedUserPAInfo].registrationID;
+                self.is_read = YES;
+            }
+        }
+        @catch (NSException *exception) {
+            NSLog(@"%@", exception);
+        }
+        
+    }
+    
+    return self;
+}
+
 
 - (void) parseDataWithOption:(NSInteger) opt
 {

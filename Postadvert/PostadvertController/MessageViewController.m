@@ -22,7 +22,7 @@
 @synthesize delegate = _delegate;
 //@synthesize listMessageCellContent = _listMessageCellContent;
 //@synthesize filteredListContent =filteredListContent;
-@synthesize navigationController = _navigationController;
+//@synthesize navigationController = _navigationController;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -35,9 +35,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view setAutoresizesSubviews:YES];
-    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    //[self.view setAutoresizesSubviews:YES];
+    //self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     // Do any additional setup after loading the view from its nib.
+    self.tableView.tableFooterView = [[UIView alloc]init];
     hud = [[MBProgressHUD alloc]initWithView:self.view];
     hud.userInteractionEnabled = NO;
     [self.view addSubview:hud];
@@ -57,6 +58,7 @@
     [super viewDidAppear:animated];
     MBProgressHUD *thread = [[MBProgressHUD alloc]init];
     [thread showWhileExecuting:@selector(changeIcon) onTarget:self withObject:nil animated:NO];
+    [self.tableView setContentOffset:CGPointMake(0, 44) animated:YES];
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -249,17 +251,18 @@
         data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
         
         for (NSDictionary *dict  in data) {
-            MessageCellContent *message = [[MessageCellContent alloc]initWithDictionary:dict];
+            MessageCellContent *message = [[MessageCellContent alloc]initWithDictionary:dict withOption:1];
             [listMessageCellContent addObject:message];
         }
         
         [self.tableView reloadData];
-        if (listMessageCellContent.count) {
-            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        }
+        
     }
     @catch (NSException *exception) {
         NSLog(@"%@", exception);
+    }
+    @finally {
+        
     }
 
 }

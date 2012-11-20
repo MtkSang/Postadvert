@@ -14,7 +14,7 @@
     id <MessageViewControllerDelegate> delegate;
     NSMutableArray *listMessageCellContent;
     NSMutableArray *filteredListContent;
-    UINavigationController *navigationController;
+    //UINavigationController *navigationController;
     MBProgressHUD *hud;
 }
 //@property (nonatomic, strong) NSMutableArray *listMessageCellContent;

@@ -494,17 +494,21 @@
     
 }
 
-- (IBAction)clapBtnClicked:(id)sender {
-    
-    //Update local
-    actiCell.content.isClap = !actiCell.content.isClap;
-    if (actiCell.content.isClap) {
-        actiCell.content.totalClap += 1;
-    }else {
-        actiCell.content.totalClap -= 1;
-    }
+- (void) clap_UnClapPost:(id)sender
+{
+    [actiCell clap_UnClapPost];
+    UIButton *btn = (UIButton*)sender;
+    btn.userInteractionEnabled = YES;
     [_tableView reloadData];
-    [actiCell refreshClapCommentsView];
+}
+
+- (IBAction)clapBtnClicked:(id)sender {
+    UIButton *btn = (UIButton*)sender;
+    btn.userInteractionEnabled = NO;
+    [self performSelectorInBackground:@selector(clap_UnClapPost:) withObject:sender];
+
+    //Update local
+    
 }
 
 - (IBAction)commentBtnClicked:(id)sender {

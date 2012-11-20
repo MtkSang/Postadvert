@@ -962,9 +962,9 @@
     
             
     if (didShow == NO) {
-        chatViewCtr = [[ChatViewController alloc]init];
+        chatViewCtr = [[ChatViewController alloc]initWithInfo:info];
         //chatViewCtr.infoChatting = nil;
-        [chatViewCtr setInfoChatting:info];
+        //[chatViewCtr setInfoChatting:info];
         NSLog(@"info %@  %@",info.userPostName, chatViewCtr.infoChatting.userPostName);
         //[chatViewCtr loadListMessageCellContent];
         [self.navigationController pushViewController:chatViewCtr animated:YES];
@@ -1135,7 +1135,7 @@
             //messageCtr.view.frame = CGRectMake(0.0, cStatusAndNavBar, self.view.frame.size.width, self.view.frame.size.height - cStatusAndNavBar);
             //set navigationViewCtr if want to full screen
             //messageCtr.navigationController =self.navigationController;
-            
+            customViewCtr.view.frame = overlay.frame;
             [self.overlay addSubview: customViewCtr.view];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"showDetailFromSubView_SideBar" object:nil];
@@ -1166,7 +1166,6 @@
                     customViewCtr = [[FriendsViewController alloc] init];
                 }
             }
-            NSLog(@"Custome View %@", customViewCtr.view);
             customViewCtr.view.frame = overlay.frame;
             [self.overlay addSubview: customViewCtr.view];
             [(FriendsViewController*)customViewCtr setNavigationController: self.navigationController];

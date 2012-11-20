@@ -18,12 +18,14 @@
 
 @property (nonatomic)   NSInteger msg_id;
 @property (nonatomic)   NSInteger parent_id;
+@property (nonatomic)   NSInteger author_id;
 @property (nonatomic, strong)   NSString *subject;
 @property (nonatomic, strong)   NSMutableArray *partners;
 @property (nonatomic, strong)   NSString *created;
 @property (nonatomic)   BOOL is_read;
 @property (nonatomic, strong)   NSString *messageThumbURL;
 
-- (id)initWithDictionary:(NSDictionary*)dict;
+- (id)initWithDictionary:(NSDictionary*)dict withOption:(NSInteger)opt;
+- (id) initWithDictionary:(NSDictionary *)dict andSuperMessage:(MessageCellContent*)superMessage;
 - (void) parseDataWithOption:(NSInteger) opt;
 @end

@@ -19,6 +19,8 @@
 #import "UILabel+RectForLetter.h"
 #import "SDWebImageRootViewController.h"
 #import "NSAttributedString+Attributes.h"
+#import "PostadvertControllerV2.h"
+#import "UserPAInfo.h"
 
 #define CharacterLimit 200
 
@@ -88,6 +90,12 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+#pragma mark - AddCommentDelegate
+
+- (void) postWithText:(NSString *)str
+{
+    [self performSelector:@selector(sendCommentWithText:) withObject:str];
 }
 
 #pragma mark - textView delegate
@@ -639,7 +647,8 @@
     //navigationController.navigationBarHidden =YES;
     AddCommentViewController *addCommand = [[AddCommentViewController alloc]init];
     addCommand.content = self.content;
-    [self addCommentsListenner];
+    addCommand.delegate = self;
+    //[self addCommentsListenner];
     [navigationController presentModalViewController:addCommand animated:NO];
     // = nil;
     addCommand = nil;
@@ -685,6 +694,51 @@
     imageLink = nil;
 }
 
+- (void)sendCommentWithText:(NSString*)str
+{
+    //    insertPostComment($user_id, $post_id, $content)
+    id data;
+    NSString *functionName;
+    NSArray *paraNames;
+    NSArray *paraValues;
+    
+    functionName = @"insertPostComment";
+    paraNames = [NSArray arrayWithObjects:@"user_id", @"post_id", @"content",nil];
+    paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], [NSString stringWithFormat:@"%d", _content.ID_Post], str, nil];
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName:functionName parametterName:paraNames parametterValue:paraValues];
+    
+    [self refreshClapCommentsView];
+    
+}
+
+- (void) clap_UnClapPost
+{
+    id data;
+    NSString *functionName;
+    NSArray *paraNames;
+    NSArray *paraValues;
+    functionName = @"clap";
+    paraNames = [NSArray arrayWithObjects:@"user_id", @"post_id", @"type", nil];
+    paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], [NSString stringWithFormat:@"%d",_content.ID_Post],@"easy_post", nil];
+    
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+    @try {
+        NSInteger isClap = [[data objectForKey:@"clap"] integerValue];
+        NSInteger totalClap = [[data objectForKey:@"total_clap"] integerValue];
+        _content.totalClap = totalClap;
+        if (isClap) {
+            _content.isClap = YES;
+        }
+        else{
+            _content.isClap = NO;
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    }
+    
+    [self refreshClapCommentsView];
+}
 
 #pragma mark - UIActionSheet Delegate
 
@@ -692,17 +746,8 @@
 {
     // user pressed "Cancel"
     if(buttonIndex == [uias cancelButtonIndex]) return;
-    // user pressed "Clap"/"Unclap" 
-    //Upadte server
-    
-    //Update local
-    _content.isClap = !_content.isClap;
-    if (_content.isClap) {
-        _content.totalClap += 1;
-    }else {
-        _content.totalClap -= 1;
-    }
-    [self refreshClapCommentsView];
+    //Clap/UNClap
+    [self performSelectorInBackground:@selector(clap_UnClapPost) withObject:nil];
 }
 
 

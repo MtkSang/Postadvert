@@ -25,5 +25,6 @@
 
 - (id)initWithPostCell:(UIPostCell *)cell;
 - (IBAction)btnSendClicked:(id)sender;
+- (void) clap_UnClapPost:(id)sender;
 
 @end

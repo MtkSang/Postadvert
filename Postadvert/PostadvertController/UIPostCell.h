@@ -9,13 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "DetailViewController.h"
 #import "OHAttributedLabel.h"
+#import "AddCommentViewController.h"
 @class PostCellContent;
 @class LinkPreview;
 @class LinkViewController;
 @class ImageViewController;
 @class ThumbnailPostCellView;
 @class SDWebImageRootViewController;
-@interface UIPostCell : UITableViewCell <UIActionSheetDelegate, OHAttributedLabelDelegate>//< UITextViewDelegate>
+@interface UIPostCell : UITableViewCell <UIActionSheetDelegate, OHAttributedLabelDelegate, AddCommentViewControllerDelegate>//< UITextViewDelegate>
 {
     IBOutlet OHAttributedLabel *titlePost;
     IBOutlet OHAttributedLabel *textContent;
@@ -69,6 +70,8 @@
 - (NSString*) getYoutubeIDFromUrl:(NSString*) url;
 - (void) plusButtonClicked;
 - (void) commentButtonClick:(id) sender;
+- (void) sendCommentWithText:(NSString*)str;
+- (void) clap_UnClapPost;
 - (void) loadNibFile;
 - (void) updateView;
 - (void) refreshClapCommentsView;

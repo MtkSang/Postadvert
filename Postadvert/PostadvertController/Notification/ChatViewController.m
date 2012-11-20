@@ -15,6 +15,8 @@
 #import "Constants.h"
 #import "WEPopoverController.h"
 #import "TakePhotoViewController.h"
+#import "PostadvertControllerV2.h"
+#import "UIImageView+URL.h"
 @interface ChatViewController ()
 - (void) updateLeftBarBtnStateSideBar;
 - (void) updateLeftBarBtnStateNormal;
@@ -34,26 +36,45 @@
     return self;
 }
 
+- (id) initWithInfo:(MessageCellContent*)info
+{
+    self = [[ChatViewController alloc]init];
+    if (self) {
+        self.infoChatting = info;
+    }
+    return self;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    message.layer.cornerRadius = 5.0;
-    message.layer.borderWidth = 0.25;
-    message.placeholder = @"Write a reply";
-    btnSend.layer.cornerRadius = 5.0;
-    btnSend.layer.borderWidth = 0.20;
-    btnSend.backgroundColor = [UIColor colorWithRed:225.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
+    self.message.layer.cornerRadius = 5.0;
+    self.message.layer.borderWidth = 0.25;
+    self.message.placeholder = @"Write a reply";
+    self.btnSend.layer.cornerRadius = 5.0;
+    self.btnSend.layer.borderWidth = 0.20;
+    self.btnSend.backgroundColor = [UIColor colorWithRed:225.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
     
+    self.tableView.tableFooterView = [[UIView alloc]init];
     //TapGesture
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction)];
     [_tableView addGestureRecognizer:tap];
     tap = nil;
-    [self loadListMessageCellContent];
+    
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    hud.userInteractionEnabled = YES;
+    [self.view addSubview:hud];
+    [hud showWhileExecuting:@selector(loadListMessageCellContent) onTarget:self withObject:nil animated:NO];
+
 }
 
 - (void)viewDidUnload
 {
+    [self setTableView:nil];
+    [self setBotView:nil];
+    [self setBtnPickPicture:nil];
+    [self setMessage:nil];
+    [self setBtnSend:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -62,34 +83,16 @@
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    NSDictionary *dict = [NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:1] forKey:@"inOutComments"];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"inOutComments" object:nil userInfo:dict];
-    dict = nil;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLeftBarBtnStateNormal) name:@"updateLeftBarBtnStateNormal" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLeftBarBtnStateSideBar) name:@"updateLeftBarBtnStateSideBar" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWilBeShown:)
                                                  name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification object:nil];
-    
-    //Set rightBar
-    preRightNaviBar = self.navigationItem.rightBarButtonItem;
-    //rightNaviBar = [[UIBarButtonItem alloc] initWithTitle: _content.isClap ? @"Unclap" : @"  Clap  " style:UIBarButtonItemStylePlain target:self action:@selector(clapBtnClick:)];
-    //self.navigationItem.rightBarButtonItem = rightNaviBar;
-    
-    
 }
 - (void) viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    NSDictionary *dict = [NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:0] forKey:@"inOutComments"];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"inOutComments" object:nil userInfo:dict];
-    dict = nil;
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    self.navigationItem.rightBarButtonItem = preRightNaviBar;
 }
 
 
@@ -102,6 +105,20 @@
     NSLog(@"Rotated %@", self);
 }
 #pragma mark - Table view data source
+- (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 25)];
+    UILabel *lbTitle = [[UILabel alloc]initWithFrame:headerView.frame];
+    [lbTitle setText:self.infoChatting.subject];
+    [lbTitle setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_TITLE_SIZE]];
+    [lbTitle setTextColor:[UIColor colorWithRed:79/255.0 green:177/255.0 blue:190/255.0 alpha:1]];
+    [lbTitle setTextAlignment:NSTextAlignmentCenter];
+    lbTitle.backgroundColor = [UIColor clearColor];
+    [headerView setAutoresizesSubviews:YES];
+    [lbTitle setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight ];
+    [headerView addSubview:lbTitle];
+    return headerView;
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -119,7 +136,7 @@
 {
     MessageCellContent *cellContent = [listMessageCellContent objectAtIndex:[indexPath row]];
     
-    CGSize constraint = CGSizeMake(244, 20000.0f);
+    CGSize constraint = CGSizeMake(self.view.frame.size.width - 74, 20000.0f);
     
     CGSize size = [cellContent.text sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
     CGFloat lableHieght = 21.0;
@@ -133,36 +150,48 @@
     return height;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)ctableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"UIMessageCell";
-    UIMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (!cell) {
-        cell = [[UIMessageCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    static NSString *MyIdentifier = @"UIMessageCell";
+    // Try to retrieve from the table view a now-unused cell with the given identifier.
+    UIMessageCell *cell = [ctableView dequeueReusableCellWithIdentifier:MyIdentifier];
+    // If no cell is available, create a new one using the given identifier.
+    if (cell == nil) {
+        cell = [[UIMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
     }
-    cell.message.numberOfLines = 0;
-    cell.message.text = ((MessageCellContent*)[listMessageCellContent objectAtIndex:indexPath.row]).text;
-    
+    MessageCellContent *cellCentent;
+   cellCentent = ((MessageCellContent*)[listMessageCellContent objectAtIndex:indexPath.row]);    
+    if (cellCentent.is_read) {
+        [cell.imageView setImageWithURL:[NSURL URLWithString:cellCentent.messageThumbURL] placeholderImage:[UIImage imageNamed:@"read_message.png"]];
+        cell.iconSendView.hidden = YES;
+        cell.backgroundColor = [UIColor clearColor];
+        //cell.message.textColor = [UIColor lightGrayColor];
+    }else
     {
-        CGSize constraint = CGSizeMake(244, 20000.0f);
+        [cell.imageView setImageWithURL:[NSURL URLWithString:cellCentent.messageThumbURL] placeholderImage:[UIImage imageNamed:@"unread_message.png"]];
+        if (!cell.iconSendView.image) {
+            cell.iconSendView.image = [UIImage imageNamed:@"unread_icon.png"];
+        }
         
-        CGSize size = [cell.message.text sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-        CGFloat lableHieght = 21.0;
+        cell.iconSendView.hidden = NO;
+        //cell.message.textColor = [UIColor darkGrayColor];
+        cell.contentView.backgroundColor = [UIColor colorWithRed:225/255.0 green:245/255.0 blue:245/255.0 alpha:0.5];
         
-        CGFloat height = MAX(size.height - lableHieght , 0.0) + lableHieght;
-        CGRect frame = cell.message.frame;
-        frame.size.height = height;
-        cell.message.frame = frame;
     }
+    cell.message.text = cellCentent.text;
+    CGSize constraint = CGSizeMake(self.view.frame.size.width - 74, 20000.0f);
     
-    cell.imageView.image = ((MessageCellContent*)[listMessageCellContent objectAtIndex:indexPath.row]).userAvatar;
-    cell.imageViewAttachment.image = ((MessageCellContent*)[listMessageCellContent objectAtIndex:indexPath.row]).imageAttachment;
-    cell.userPostName.text = ((MessageCellContent*)[listMessageCellContent objectAtIndex:indexPath.row]).userPostName;
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"MM:dd:yy"];
-    NSString *theDate = [dateFormat stringFromDate:((MessageCellContent*)[listMessageCellContent objectAtIndex:indexPath.row]).datePost];
-    cell.postTime.text = theDate;
-    theDate = nil;
+    CGSize size = [cell.message.text sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    CGRect frame = cell.message.frame;
+    frame.size = size;
+    cell.message.frame = frame;
+
+    
+    cell.userPostName.text = cellCentent.userPostName;
+    cell.postTime.text = cellCentent.created;
+    
+    cellCentent = nil;
+    
     return cell;
 }
 
@@ -178,7 +207,7 @@
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    btnSend.titleLabel.textColor = [UIColor redColor];
+    self.btnSend.titleLabel.textColor = [UIColor redColor];
     [self updatePostBtnState];
 }
 #pragma mark - Handle Keyboard
@@ -214,17 +243,17 @@
     //Update icon btn TakePhoto
     
     if (imageAttachment) {
-        [btnPickPicture setImage:imageAttachment forState:UIControlStateNormal];
+        [self.btnPickPicture setImage:imageAttachment forState:UIControlStateNormal];
     }else {
-        [btnPickPicture setImage:[UIImage imageNamed:@"take-photo.png"] forState:UIControlStateNormal];
+        [self.btnPickPicture setImage:[UIImage imageNamed:@"take-photo.png"] forState:UIControlStateNormal];
     }
     
     BOOL canEnable = NO;
     if (imageAttachment) {
         canEnable = YES;
     }
-    NSString *text = [message.text stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-    if ([message.text isEqualToString:@""] || [text isEqualToString:@""]) {
+    NSString *text = [self.message.text stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    if ([self.message.text isEqualToString:@""] || [text isEqualToString:@""]) {
         //canEnable = NO;
     }else {
         canEnable = YES;
@@ -233,11 +262,11 @@
 
     //Update post btn
     if (canEnable) {
-        btnSend.enabled = YES;
-        btnSend.titleLabel.textColor = [UIColor blueColor];
+        self.btnSend.enabled = YES;
+        self.btnSend.titleLabel.textColor = [UIColor blueColor];
     }else {
-        btnSend.titleLabel.textColor = [UIColor lightGrayColor];
-        btnSend.enabled = NO;
+        self.btnSend.titleLabel.textColor = [UIColor lightGrayColor];
+        self.btnSend.enabled = NO;
     }
 }
 
@@ -270,23 +299,35 @@
 - (void) tapAction
 {
     NSLog(@"Tap");
-    [message resignFirstResponder];
+    [self.message resignFirstResponder];
 }
 
 - (IBAction) buttonSendClicked:(id)sender
 {
+    //sendReplyMessage($user_id, $msg_parent, $content, $limit)
+    id data;
+    NSString *functionName;
+    NSArray *paraNames;
+    NSArray *paraValues;
+    functionName = @"sendReplyMessage";
+    paraNames = [NSArray arrayWithObjects:@"user_id", @"msg_parent", @"content", @"limit", nil];
+    paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], [NSString stringWithFormat:@"%d",self.infoChatting.parent_id],self.message.text, @"5", nil];
+    
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
     
     MessageCellContent *newComments = [[MessageCellContent alloc]init];
-    newComments.text = message.text;
+    newComments.text = self.message.text;
     newComments.userAvatar = [UserPAInfo sharedUserPAInfo].imgAvatar;
     newComments.userPostName = [UserPAInfo sharedUserPAInfo].usernamePU;
     newComments.datePost = [NSDate date]; 
     newComments.imageAttachment = imageAttachment;
-    
+    newComments.is_read = 1;
+    newComments.messageThumbURL = [UserPAInfo sharedUserPAInfo].avatarUrl;
+    newComments.created = @"Just now";
     [self addCell:newComments];
     newComments = nil;
-    [message resignFirstResponder];
-    message.text = @"";
+    [self.message resignFirstResponder];
+    self.message.text = @"";
     imageAttachment = nil;
     [self updatePostBtnState];
 }
@@ -296,37 +337,22 @@
     if(listMessageCellContent == nil)
         listMessageCellContent = [[NSMutableArray alloc] init];
     [listMessageCellContent removeAllObjects];
+    //getConversation($user_id, $parent_id, $msg_id, $limit, $base64_image = false)
+    id data;
+    NSString *functionName;
+    NSArray *paraNames;
+    NSArray *paraValues;
+    functionName = @"getConversation";
+    paraNames = [NSArray arrayWithObjects:@"user_id", @"parent_id", @"msg_id", @"limit", nil];
+    paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], [NSString stringWithFormat:@"%d",self.infoChatting.parent_id],@"0", @"0", nil];
     
-    MessageCellContent *message1 = [[MessageCellContent alloc]init];
-    message1.text = @"Good morning!";
-    message1.userPostName = [UserPAInfo sharedUserPAInfo].usernamePU;
-    message1.userAvatar = [UserPAInfo sharedUserPAInfo].imgAvatar;
-    message1.datePost = [NSDate date];
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
     
-    [listMessageCellContent addObject:message1];
-    
-    MessageCellContent *message2 = [[MessageCellContent alloc]init];
-    message2.text = @"Good moring!";
-    message2.userAvatar = [UIImage imageNamed:@"user01.png"];
-    message2.userPostName = _infoChatting.userPostName;
-    message2.datePost = [NSDate date];
-    
-    [listMessageCellContent addObject:message2];
-    
-    for (int i =1; i < 10; i++) {
-        MessageCellContent *message3 = [[MessageCellContent alloc]init];
-        message3.userPostName = [UserPAInfo sharedUserPAInfo].usernamePU;
-        message3.userAvatar = [UserPAInfo sharedUserPAInfo].imgAvatar;
-        message3.text = [NSString stringWithFormat:@"This is an automatic text %d 1",i];
-        message3.datePost = [NSDate date];
-        [listMessageCellContent addObject:message3];
-        MessageCellContent *message4 = [[MessageCellContent alloc]init];
-        message4.userPostName = self.infoChatting.userPostName;
-        message4.userAvatar =  [UIImage imageNamed:@"user01.png"];
-        message4.text = [NSString stringWithFormat:@"This is an automatic text %d 2",i];
-        message4.datePost = [NSDate date];
-        [listMessageCellContent addObject:message4];
+    for (NSDictionary *dict  in data) {
+        MessageCellContent *message = [[MessageCellContent alloc]initWithDictionary:dict andSuperMessage:self.infoChatting];
+        [listMessageCellContent addObject:message];
     }
+    
     
     [_tableView reloadData];
 }
@@ -343,7 +369,7 @@
 		[popoverController dismissPopoverAnimated:YES];
 		popoverController = nil;
 	} else {
-        [message resignFirstResponder];
+        [self.message resignFirstResponder];
         TakePhotoViewController *contentViewController = [[TakePhotoViewController alloc] init];
 		CGRect rect = CGRectMake(0.0 , 400,((UIView*)sender).frame.size.width + 6, 70);
 		//self.navigationController.navigationBarHidden = YES;
