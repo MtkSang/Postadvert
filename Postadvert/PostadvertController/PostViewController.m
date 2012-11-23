@@ -18,6 +18,8 @@
 #import "UIImage+Resize.h"
 #import "NSData+Base64.h"
 #import <QuartzCore/QuartzCore.h>
+#import "PostadvertControllerV2.h"
+#import "MyUIImagePickerViewController.h"
 
 #define MaxImageCanSave  20
 #define marginImage 15.0
@@ -31,8 +33,18 @@
 @end
 
 @implementation PostViewController
-@synthesize activity = _activity, avatarImg = _avatarImg, phTextView = _phTextView, scrollView = _scrollView, btnPost = _btnPost, thumbnailView = _thumbnailView, botView = _botView, photoButton = _photoButton;
-@synthesize popoverCtr = _popoverCtr;
+@synthesize popoverCtr;
+@synthesize wall_id;
+
+
+- (id)initWithWallID:(NSInteger) wallID
+{
+    self = [[PostViewController alloc]initWithNibName:@"PostViewController" bundle:nil];
+    if (self) {
+        self.wall_id = wallID;
+    }
+    return self;
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -62,37 +74,45 @@
     //
     listImageNeedToPost = [[NSMutableArray alloc]init];
     nextID = 0;
+    
+    //Set up view
+    self.titleView.layer.cornerRadius = 5.0;
+    self.phTitleTextView.layer.cornerRadius = 5.0;
+    [self.phTitleTextView setPlaceholder:@"Enter Title of Post ..."];
+    [self.phTextView setPlaceholder:@"Type the Contents of Post ..."];
+    
+    [(UITextView*)_phTitleTextView becomeFirstResponder];
 }
 
 - (void)viewDidUnload
 {
+    [self setTitleView:nil];
+    [self setPhTitleTextView:nil];
+    [self setBtnTitle:nil];
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
     imagePicker = nil;
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    
     [self setModalInPopover:YES];
 }
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     //delete old file
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *pathToDocuments=[paths objectAtIndex:0];
-    for (int i =1; i <= nextID; i++) {
-        [[NSFileManager defaultManager]removeItemAtPath:[NSString stringWithFormat:@"%@/newPost%d.jpg", pathToDocuments, i] error:nil];
-    }
-    paths = nil;
-    pathToDocuments = nil;
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *pathToDocuments=[paths objectAtIndex:0];
+//    for (int i =1; i <= nextID; i++) {
+//        [[NSFileManager defaultManager]removeItemAtPath:[NSString stringWithFormat:@"%@/newPost%d.jpg", pathToDocuments, i] error:nil];
+//    }
+//    paths = nil;
+//    pathToDocuments = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return YES;
+    return interfaceOrientation == UIInterfaceOrientationPortrait;
 }
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
@@ -121,12 +141,35 @@
 
 -(IBAction)postButtinClicked{
     
-    [[NSUserDefaults standardUserDefaults] setObject:self.phTextView.text forKey:@"_text_NewPost"];
-    [[NSUserDefaults standardUserDefaults] setInteger:nextID forKey:@"_nextID_NewPost"];
+    //insertEasyPost($user_id, $wall_id, $title, $content, $image, $limit, $base64_image = false)
+    id data;
+    NSString *functionName;
+    NSArray *paraNames;
+    NSArray *paraValues;
+    functionName = @"insertEasyPost";
+    
+    if (listImageNeedToPost.count) {
+        //image = [UIImage imageNamed:@"1.jpg"];
+        imageData = [[NSData alloc]initWithContentsOfFile:[listImageNeedToPost objectAtIndex:0]];
+        encodedImage = [imageData base64EncodedString];
+        int count = 1;
+        while (count < listImageNeedToPost.count) {
+            encodedImage = [encodedImage stringByAppendingString:@"EASYPOSTIMAGE"];
+            imageData =[[NSData alloc]initWithContentsOfFile:[listImageNeedToPost objectAtIndex:count]];
+            encodedImage = [encodedImage stringByAppendingString:[imageData base64EncodedString]];
+            count ++;
+        }
+    }
+    
+    paraNames = [NSArray arrayWithObjects:@"user_id", @"wall_id", @"title", @"content", @"image", @"limit", nil];
+    paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], [NSString stringWithFormat:@"%d",self.wall_id], _phTitleTextView.text, _phTextView.text, encodedImage, @"1", nil];
+    
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+    
     self.navigationController.navigationBarHidden = NO;
     [self dismissModalViewControllerAnimated:YES];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"plusSuccessWithPost" object:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"newPostWithData" object:nil];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"plusSuccessWithPost" object:nil];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"newPostWithData" object:nil];
 }
 
 
@@ -143,10 +186,8 @@
     [self.activity startAnimating ];
     self.btnPost.enabled = NO;
     self.botView.userInteractionEnabled = NO;
-    //UIImage *image = [self normalizedImage:[info objectForKey:@"UIImagePickerControllerOriginalImage"]];
-    //[info setValue:nil forKey:@"UIImagePickerControllerOriginalImage"];
+    //[self SaveAndShowImage:info];
     [NSThread detachNewThreadSelector:@selector(SaveAndShowImage:) toTarget:self withObject: info];
-    //picker = nil;
     
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -187,7 +228,11 @@
         canEnable = YES;
     }
     text = nil;
-    
+    NSString *titleText = [_phTitleTextView.text stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    titleText = [titleText stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if ([titleText isEqualToString:@""]) {
+        canEnable = NO;
+    }
     //Update post btn
     if (canEnable) {
         _btnPost.enabled = YES;
@@ -199,30 +244,30 @@
 - (IBAction)makeKeyboardGoAway:(id)sender
 {
     [self.phTextView resignFirstResponder];
+    [self.phTitleTextView resignFirstResponder];
 }
 
 -(IBAction)takePhoto:(id)sender 
 {
-    // Set source to the camera
-    if ([UIImagePickerController isSourceTypeAvailable:
-         UIImagePickerControllerSourceTypeCamera]) 
-    {
-        // Set source to the Photo Library
-        imagePicker.sourceType =UIImagePickerControllerSourceTypeCamera;
-        
-    }
+    MyUIImagePickerViewController *picker = [[MyUIImagePickerViewController alloc]initWithRoot:self];
+    picker.delegate = self;
+    [self presentViewController:picker animated:YES completion:^(void)
+     {
+         NSLog(@"Presented");
+     }];
     
-    // Show image picker
-//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//    NSString *pathToDocuments=[paths objectAtIndex:0];
-//    NSError *error;
-//    [[NSFileManager defaultManager]removeItemAtPath:[NSString stringWithFormat:@"%@/newPost%d.jpg", pathToDocuments, nextID + 1] error:&error];
-//    if (error) {
-//        NSLog(@"Error %@", error);
+//    // Set source to the camera
+//    if ([UIImagePickerController isSourceTypeAvailable:
+//         UIImagePickerControllerSourceTypeCamera]) 
+//    {
+//        // Set source to the Photo Library
+//        imagePicker.sourceType =UIImagePickerControllerSourceTypeCamera;
+//        
 //    }
-//    paths = nil;
-//    pathToDocuments = nil;
-	[self presentModalViewController:imagePicker animated:YES];
+//	[self presentViewController:imagePicker animated:YES completion:^(void)
+//     {
+//         NSLog(@"presend completion");
+//     }];
 }
 -(IBAction)chooseFromLibrary:(id)sender 
 {
@@ -394,8 +439,7 @@
     NSLog(@"Before show Image");
     [listImageNeedToPost addObject:filePath];
     [self showThumbnailWithPath:filePath];
-    
-    self.btnPost.enabled = YES;
+    [self performSelectorOnMainThread:@selector(updatePostBtnState) withObject:nil waitUntilDone:NO];
     self.botView.userInteractionEnabled = YES;
     [self.activity stopAnimating];
     self.activity.hidden = YES;
@@ -454,4 +498,49 @@
     CGSize size = CGSizeMake((total)* (cImageWidth + marginImage) + CELL_CONTENT_MARGIN_LEFT + CELL_CONTENT_MARGIN_RIGHT ,75);
     self.thumbnailView.contentSize = size;
 }
+
+#pragma mark - MyUIImagePickerViewController
+
+- (void) didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    [self setActivityLocation];
+    self.activity.hidden = NO;
+    [self.activity startAnimating ];
+    self.btnPost.enabled = NO;
+    self.botView.userInteractionEnabled = NO;
+    [self SaveAndShowImage:info];
+}
+
+- (void) didFinishPickingMediaWithImage:(UIImage *)image
+{
+    [self setActivityLocation];
+    self.activity.hidden = NO;
+    [self.activity startAnimating ];
+    self.btnPost.enabled = NO;
+    self.botView.userInteractionEnabled = NO;
+    
+    //save
+    nextID += 1;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *pathToDocuments=[paths objectAtIndex:0];
+    NSString *filePath = [NSString stringWithFormat:@"%@/newPost%d.jpg", pathToDocuments, nextID];
+    NSLog(@"Before using UIImageJPEGRepresentation ");
+    NSData *imageData = UIImageJPEGRepresentation(image, 01.0f);
+    NSLog(@"After using UIImageJPEGRepresentation ");
+    NSLog(@"Path %@ ", filePath);
+    [imageData writeToFile: filePath atomically:YES];
+    NSLog(@"After Write File");
+    paths = nil;
+    imageData = nil;
+    image = nil;
+    pathToDocuments= nil;
+    NSLog(@"Before show Image");
+    [listImageNeedToPost addObject:filePath];
+    [self showThumbnailWithPath:filePath];
+    [self performSelectorOnMainThread:@selector(updatePostBtnState) withObject:nil waitUntilDone:NO];
+    self.botView.userInteractionEnabled = YES;
+    [self.activity stopAnimating];
+    self.activity.hidden = YES;
+}
+
 @end

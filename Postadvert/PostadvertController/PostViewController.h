@@ -7,15 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MyUIImagePickerViewController.h"
 @class PostCellContent;
 @class UIPlaceHolderTextView;
 @class UIPostCell;
-@interface PostViewController : UIViewController<UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface PostViewController : UIViewController<UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, MyUIImagePickerViewControllerDelegate>
 {
     UIImagePickerController *imagePicker;
     NSInteger nextID;
     NSMutableArray *listImageNeedToPost;
+    NSData *imageData;
+    NSString *encodedImage;
 }
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *btnTitle;
+@property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *phTitleTextView;
+@property (weak, nonatomic) IBOutlet UIView *titleView;
 
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activity;
 @property (nonatomic, weak)IBOutlet UIImageView *avatarImg;
@@ -26,5 +32,7 @@
 @property (nonatomic, weak)IBOutlet UIView *botView;
 @property (nonatomic, weak)IBOutlet UIScrollView *thumbnailView;
 @property (nonatomic, strong) UIPopoverController *popoverCtr;
+@property (nonatomic)   NSInteger wall_id;
+- (id)initWithWallID:(NSInteger) wallID;
 - (IBAction)makeKeyboardGoAway:(id)sender;
 @end

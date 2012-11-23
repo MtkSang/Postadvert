@@ -32,6 +32,7 @@
 //@synthesize myTableView = myTableView;
 @synthesize navigationController = _navigationCtr;
 @synthesize optionView;
+@synthesize wall_id;
 //
 //- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 //{
@@ -354,6 +355,7 @@
 }
 - (void) loadCellsWithWallID:(NSInteger)wallID From:(NSInteger)from Count:(NSInteger) count
 {
+    self.wall_id = wallID;
     NSLog(@"Wall ID %d", wallID);
     isLoadData = YES;
     if (listContent) {

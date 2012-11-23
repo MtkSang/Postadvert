@@ -17,6 +17,11 @@
 		D47DB0761651F1C100E8C9B7 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D47DB0701651F1C100E8C9B7 /* Default.png */; };
 		D4881F601648C91E0042DA51 /* Profile_CommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4881F5E1648C91E0042DA51 /* Profile_CommentViewController.m */; };
 		D4881F611648C91E0042DA51 /* Profile_CommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4881F5F1648C91E0042DA51 /* Profile_CommentViewController.xib */; };
+		D4A6FC6D165C820A0071D2CE /* AccountSetting.plist in Resources */ = {isa = PBXBuildFile; fileRef = D4A6FC6C165C820A0071D2CE /* AccountSetting.plist */; };
+		D4A6FC71165CBAAA0071D2CE /* account_setting_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A6FC6F165CBAAA0071D2CE /* account_setting_icon.png */; };
+		D4A6FC72165CBAAA0071D2CE /* log_out_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A6FC70165CBAAA0071D2CE /* log_out_icon.png */; };
+		D4DD9036165F60C9004033E4 /* MyUIImagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4DD9034165F60C9004033E4 /* MyUIImagePickerViewController.m */; };
+		D4DD9037165F60C9004033E4 /* MyUIImagePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4DD9035165F60C9004033E4 /* MyUIImagePickerViewController.xib */; };
 		D4FEF629165625AE00CE1129 /* read_message.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FEF627165625AE00CE1129 /* read_message.png */; };
 		D4FEF62A165625AE00CE1129 /* unread_message.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FEF628165625AE00CE1129 /* unread_message.png */; };
 		D4FEF62D16562E8500CE1129 /* unread_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FEF62C16562E8500CE1129 /* unread_icon.png */; };
@@ -551,6 +556,12 @@
 		D4881F5D1648C91E0042DA51 /* Profile_CommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile_CommentViewController.h; sourceTree = "<group>"; };
 		D4881F5E1648C91E0042DA51 /* Profile_CommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile_CommentViewController.m; sourceTree = "<group>"; };
 		D4881F5F1648C91E0042DA51 /* Profile_CommentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Profile_CommentViewController.xib; sourceTree = "<group>"; };
+		D4A6FC6C165C820A0071D2CE /* AccountSetting.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AccountSetting.plist; sourceTree = "<group>"; };
+		D4A6FC6F165CBAAA0071D2CE /* account_setting_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account_setting_icon.png; sourceTree = "<group>"; };
+		D4A6FC70165CBAAA0071D2CE /* log_out_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = log_out_icon.png; sourceTree = "<group>"; };
+		D4DD9033165F60C9004033E4 /* MyUIImagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyUIImagePickerViewController.h; sourceTree = "<group>"; };
+		D4DD9034165F60C9004033E4 /* MyUIImagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyUIImagePickerViewController.m; sourceTree = "<group>"; };
+		D4DD9035165F60C9004033E4 /* MyUIImagePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyUIImagePickerViewController.xib; sourceTree = "<group>"; };
 		D4FEF627165625AE00CE1129 /* read_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = read_message.png; sourceTree = "<group>"; };
 		D4FEF628165625AE00CE1129 /* unread_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unread_message.png; sourceTree = "<group>"; };
 		D4FEF62C16562E8500CE1129 /* unread_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unread_icon.png; sourceTree = "<group>"; };
@@ -1358,6 +1369,7 @@
 				FA03217015772BEB002EB93D /* InfoPlist.strings */,
 				FA03217315772BEB002EB93D /* main.m */,
 				FA03217515772BEB002EB93D /* Stroff-Prefix.pch */,
+				D4A6FC6C165C820A0071D2CE /* AccountSetting.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1440,6 +1452,9 @@
 				FAFEC9541581DE47005DCF27 /* PostViewController.h */,
 				FAFEC9551581DE47005DCF27 /* PostViewController.m */,
 				FAFEC9561581DE47005DCF27 /* PostViewController.xib */,
+				D4DD9033165F60C9004033E4 /* MyUIImagePickerViewController.h */,
+				D4DD9034165F60C9004033E4 /* MyUIImagePickerViewController.m */,
+				D4DD9035165F60C9004033E4 /* MyUIImagePickerViewController.xib */,
 			);
 			path = PostadvertController;
 			sourceTree = "<group>";
@@ -1947,6 +1962,8 @@
 		FA0323FD157752AF002EB93D /* main_menu */ = {
 			isa = PBXGroup;
 			children = (
+				D4A6FC6F165CBAAA0071D2CE /* account_setting_icon.png */,
+				D4A6FC70165CBAAA0071D2CE /* log_out_icon.png */,
 				FA7392FD1589D92D00CE23A0 /* events.png */,
 				FA7392FE1589D92D00CE23A0 /* friends.png */,
 				FA7392FF1589D92D00CE23A0 /* messages.png */,
@@ -2843,6 +2860,10 @@
 				D4FEF62A165625AE00CE1129 /* unread_message.png in Resources */,
 				D4FEF62D16562E8500CE1129 /* unread_icon.png in Resources */,
 				D440FF3F1659EB1100E04BC8 /* ChatViewController.xib in Resources */,
+				D4A6FC6D165C820A0071D2CE /* AccountSetting.plist in Resources */,
+				D4A6FC71165CBAAA0071D2CE /* account_setting_icon.png in Resources */,
+				D4A6FC72165CBAAA0071D2CE /* log_out_icon.png in Resources */,
+				D4DD9037165F60C9004033E4 /* MyUIImagePickerViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3020,6 +3041,7 @@
 				FAA8DC42163E44930012DB3A /* MultiLineSegmentedControl.m in Sources */,
 				FA7DF8A816410A8C003E823D /* FriendsViewController.m in Sources */,
 				D4881F601648C91E0042DA51 /* Profile_CommentViewController.m in Sources */,
+				D4DD9036165F60C9004033E4 /* MyUIImagePickerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

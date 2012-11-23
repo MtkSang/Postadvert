@@ -183,10 +183,9 @@ static void singleton_remover() {
     //[self setState:sideBarState];
 }
 - (void) viewWillAppear:(BOOL)animated{
-    
-    [super viewWillAppear:animated];
-    
+
     if (!didShowListLogin) {
+        [super viewWillAppear:animated];
         sideBarState = 4;
         [self sideBarUpdate];
         NSLog(@"User ID %ld", [UserPAInfo sharedUserPAInfo].registrationID);
@@ -209,12 +208,15 @@ static void singleton_remover() {
                 self.navigationController.navigationBarHidden = YES;
             }
         }else {
+            self.navigationController.navigationBarHidden = YES;
             didShowListLogin = 2;
             //set the Main Page as the very first page
             previousState = 1;
+
             [self viewWillAppear:YES];
         }
     }else {
+        
         if (didShowListLogin == 2) {
             
             //navDetail.navigationBarHidden = NO;
@@ -244,6 +246,7 @@ static void singleton_remover() {
 }
 -(void) viewDidAppear:(BOOL)animated
 {
+    //[[UIApplication sharedApplication] setStatusBarHidden:NO];
     NSLog(@"Self %@, navdetail %@ detail %@", self.view, navDetail.view, mainCtr.view);
     NSLog(@"Side didAppear");
     [super viewDidAppear:animated];

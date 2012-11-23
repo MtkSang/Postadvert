@@ -507,8 +507,10 @@
 
 - (IBAction)commentBtnClicked:(id)sender {
     @try {
+        if (listComments.count) {
+            [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count - 1 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        }
         
-        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count - 1 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
     @catch (NSException *exception) {
         NSLog(@"Exception: Try to scroll to bottom");

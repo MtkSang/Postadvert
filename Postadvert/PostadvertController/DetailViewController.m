@@ -289,15 +289,11 @@
     
     NSLog(@"%@ Frame: %f %f %f %f", self , self.overlay.frame.size.width, self.overlay.frame.size.height, customViewCtr.view.frame.size.width, customViewCtr.view.frame.size.height);
     if (popoverController) {
-                popoverController.view.hidden = NO;
+        popoverController.view.hidden = NO;
         CGRect rect = [viewUseToGetRectPopover convertRect:viewUseToGetRectPopover.frame toView:nil];
         rect = [viewUseToGetRectPopover convertRect:viewUseToGetRectPopover.frame toView:self.navigationController.view];
-        [popoverController repositionPopoverFromRect:rect inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionUp];
-        
-        
-        
-        NSLog(@"%@ Frame: %f %f %f %f", self , self.overlay.frame.size.width, self.overlay.frame.size.height, customViewCtr.view.frame.size.width, customViewCtr.view.frame.size.height);
-
+        //[popoverController repositionPopoverFromRect:viewUseToGetRectPopover.frame inView:topMenu permittedArrowDirections:UIPopoverArrowDirectionUp];
+        [popoverController presentPopoverFromRect:viewUseToGetRectPopover.frame inView:topMenu permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
     }
 }
 //
@@ -345,8 +341,8 @@
 		
 		popoverController.delegate = self;
 		popoverController.passthroughViews = [NSArray arrayWithObject:self.view];
-		[popoverController presentPopoverFromRect:rect  
-                                           inView:self.navigationController.view
+		[popoverController presentPopoverFromRect:viewUseToGetRectPopover.frame
+                                           inView:topMenu
                          permittedArrowDirections:(UIPopoverArrowDirectionUp)
                                          animated:YES];
     }
@@ -381,13 +377,30 @@
 		}
 		
 		popoverController.delegate = self;
-		popoverController.passthroughViews = [NSArray arrayWithObject:self.view];
-		[popoverController presentPopoverFromRect:rect
-												inView:self.navigationController.view
-							  permittedArrowDirections:(UIPopoverArrowDirectionUp)
-											  animated:YES];
+		popoverController.passthroughViews = [NSArray arrayWithObject:self.navigationController];
+		[self presentPopover];
     }
 
+}
+- (void) presentPopover
+{
+    float menuWidth = 280;
+    // increase width
+    float increase_width = menuWidth - topMenu.frame.size.width;
+    float moveX = increase_width / 2.0;
+    CGRect frame = viewUseToGetRectPopover.frame;
+    frame.origin.x += moveX;
+    UIView *view = [[UIView alloc]initWithFrame:topMenu.frame];
+    CGRect viewFrame = topMenu.frame;
+    viewFrame.size.width= menuWidth;
+    viewFrame.origin.x -= moveX;
+    view.frame = viewFrame;
+    view.hidden = YES;
+    [self.navigationController.navigationBar addSubview:view];
+    [popoverController presentPopoverFromRect:frame
+                                       inView: view
+                     permittedArrowDirections:(UIPopoverArrowDirectionUp)
+                                     animated:YES];
 }
 
 - (void) onTouchGlobalAlert:(id)sender
@@ -413,8 +426,8 @@
 		}
 		popoverController.delegate = self;
 		popoverController.passthroughViews = [NSArray arrayWithObject:self.navigationController.view];
-		[popoverController presentPopoverFromRect:rect  
-                                           inView:self.navigationController.view
+		[popoverController presentPopoverFromRect:viewUseToGetRectPopover.frame
+                                           inView:topMenu
                          permittedArrowDirections:(UIPopoverArrowDirectionUp)
                                          animated:YES];
     }
@@ -646,8 +659,9 @@
 - (void) showNewPost
 {
     {
-        PostViewController *postViewCtr = [[PostViewController alloc] init];
-        [self newPostAddListenner];
+        PostViewController *postViewCtr = [[PostViewController alloc] initWithWallID:postViewController.wall_id];
+        //[self newPostAddListenner];
+        
         [self.navigationController presentModalViewController:postViewCtr animated:YES];
         postViewCtr = nil;
     }
@@ -678,11 +692,21 @@
     x +=  btn2.frame.size.width + 10; 
     btn3.frame = CGRectMake( x , self.navigationController.navigationBar.frame.size.height/4, self.navigationController.navigationBar.frame.size.height/2, self.navigationController.navigationBar.frame.size.height/2);
     x +=  btn3.frame.size.width;
-    menu.frame= CGRectMake((self.view.frame.size.width - x) / 2.0, 0.0, x, self.navigationController.navigationBar.frame.size.height);
+    
+    float menuWidth = x;
+    // increase width
+    float increase_width = menuWidth - x;
+    float moveX = increase_width / 2.0;
+    
+    menu.frame= CGRectMake((self.view.frame.size.width - menuWidth) / 2.0, 0.0, menuWidth, self.navigationController.navigationBar.frame.size.height);
     [menu addSubview:btn1];
     [menu addSubview:btn2];
     [menu addSubview:btn3];
-    
+    for (UIView *aView in menu.subviews) {
+        CGRect frame = aView.frame;
+        frame.origin.x += moveX;
+        aView.frame = frame;
+    }
     btn1 = nil;
     btn2 = nil;
     btn3 = nil;
@@ -1419,14 +1443,14 @@
 	ret.rightBgMargin = bgMargin;
 	ret.topBgMargin = bgMargin;
 	ret.bottomBgMargin = bgMargin;
-	ret.leftBgCapSize = imageSize.width/2;
+	ret.leftBgCapSize = imageSize.width/2 ;
 	ret.topBgCapSize = imageSize.height/2;
 	ret.bgImageName = bgImageName;
 	ret.leftContentMargin = contentMargin;
 	ret.rightContentMargin = contentMargin;
 	ret.topContentMargin = contentMargin;
 	ret.bottomContentMargin = contentMargin;
-	ret.arrowMargin = 1.0;
+	ret.arrowMargin = 2.0;
 	
 	ret.upArrowImageName = @"popoverArrowUpSimple.png";
 	ret.downArrowImageName = @"popoverArrowDownSimple.png";

@@ -56,7 +56,7 @@
         }
         actiCell = (UIPostCell *)[nib objectAtIndex:0];
         [actiCell loadNibFile];
-        actiCell.navigationController = self.navigationController;
+        actiCell.navigationController = cell.navigationController;
         [actiCell updateCellWithContent:cell.content andOption:1];
         [actiCell setSelectionStyle:UITableViewCellEditingStyleNone];
         [actiCell setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
@@ -513,8 +513,10 @@
 
 - (IBAction)commentBtnClicked:(id)sender {
     @try {
+        if (listComments.count) {
+            [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count - 1 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        }
         
-        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count - 1 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
     @catch (NSException *exception) {
         NSLog(@"Exception: Try to scroll to bottom");

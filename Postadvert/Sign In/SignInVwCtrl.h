@@ -20,6 +20,7 @@
     IBOutlet UIButton           *signupBtn;
     BOOL                        _autoLogin;
     int                         forTest;
+    BOOL                        _isSuccess;
 //    IBOutlet UIView             *loginErrorVw;
 }
 

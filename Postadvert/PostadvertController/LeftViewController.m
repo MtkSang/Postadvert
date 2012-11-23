@@ -198,7 +198,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -213,7 +213,10 @@
         case 02:
             return listItems.count;
             break;
-            
+        case 03:
+            return appSettings.count;
+            break;
+    
         default:
             break;
     }
@@ -285,8 +288,19 @@
         return cell;
     }
     //default
-    cell.imageView.image = [listImages objectAtIndex:indexPath.row];
-    cell.textLabel.text = [listItems objectAtIndex:indexPath.row];
+    if (indexPath.section == 2) {
+        cell.imageView.image = [listImages objectAtIndex:indexPath.row];
+        cell.textLabel.text = [listItems objectAtIndex:indexPath.row];
+        return cell;
+    }
+    //Settings
+    
+    if (indexPath.section == 3) {
+        NSDictionary *dict = [appSettings objectAtIndex:indexPath.row];
+        cell.imageView.image = [UIImage imageNamed: [dict objectForKey:@"ItemIcon"]];
+        cell.textLabel.text = [dict objectForKey:@"ItemName"];
+        return cell;
+    }
     
     return cell;
 }
@@ -326,7 +340,7 @@
     if(section == 2)
         return cHeaderHeight;
     if (section == 3) {
-        return self.view.frame.size.height;
+        return cHeaderHeight;
     }
     return 0;
 }
@@ -398,6 +412,20 @@
         //[nextSideController getSubNums];
         [self.navigationController pushViewController:nextSideController animated:YES];
         nextSideController.navigationController.navigationBarHidden = NO;
+    }
+    if (indexPath.section == 3) {
+        if (indexPath.row == 1) {
+            UIActionSheet *uias = [[UIActionSheet alloc] initWithTitle:@"Are you sure you want to log out?"
+                                                              delegate:self
+                                                     cancelButtonTitle:@"Cancel"
+                                                destructiveButtonTitle:nil
+                                                     otherButtonTitles:@"Log Out", nil];
+        
+            [uias setDestructiveButtonIndex:0];
+            
+            [uias showInView:self.view];
+            uias = nil;
+        }
     }
     
 }
@@ -511,73 +539,73 @@
     UIButton *btn2 = [UIButton buttonWithType:UIButtonTypeCustom];
     UIButton *btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
     UIButton *btnDiv = [UIButton buttonWithType:UIButtonTypeCustom];
-    if ([UserPAInfo sharedUserPAInfo].registrationID) {//Login OK
-        btn2.layer.borderColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]].CGColor ;
-        [btn2.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:11]];
-        [btn2 setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]] forState:UIControlStateNormal];
-        [btn2 setTitle:@"My Account" forState:UIControlStateNormal];
-        [btn2 sizeToFit];
-        [btn2.titleLabel setTextAlignment:UITextAlignmentRight];
-        btn2.frame = CGRectMake(self.view.frame.size.width - cRemainView - btn2.frame.size.width - 10.0, 0, btn2.frame.size.width, self.navigationController.navigationBar.frame.size.height / 2.0);
-        //[btn2 addTarget:self action:@selector(onTouchCreateAccountBtn:) forControlEvents:UIControlEventTouchUpInside];
-        [menu addSubview:btn2];
-        
-        [btnDiv.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:11]];
-        [btnDiv setTitle:@"|" forState:UIControlStateNormal];
-        btnDiv.layer.borderColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]].CGColor;
-        [btnDiv setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]] forState:UIControlStateNormal];
-        [btnDiv sizeToFit];
-        [btnDiv.titleLabel setTextAlignment:UITextAlignmentRight];
-        btnDiv.frame = CGRectMake(btn2.frame.origin.x - btnDiv.frame.size.width - 05.0, 0, btnDiv.frame.size.width, self.navigationController.navigationBar.frame.size.height / 2.0);
-        //[btn1 addTarget:self action:@selector(onTouchLogOutBtn:) forControlEvents:UIControlEventTouchUpInside];
-        [menu addSubview:btnDiv];
-        
-        
-        [btn1.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:11]];
-        [btn1 setTitle:@"Log out" forState:UIControlStateNormal];
-        btn1.layer.borderColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]].CGColor;
-        [btn1 setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]] forState:UIControlStateNormal];
-        [btn1 sizeToFit];
-        [btn1.titleLabel setTextAlignment:UITextAlignmentRight];
-        btn1.frame = CGRectMake(btnDiv.frame.origin.x - btn1.frame.size.width - 05.0, 0, btn1.frame.size.width, 20);
-        [btn1 addTarget:self action:@selector(onTouchLogOutBtn:) forControlEvents:UIControlEventTouchUpInside];
-        [menu addSubview:btn1];
-        
-    }else {
-        //cMaxLeftView =
-        btn2.layer.borderColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]].CGColor ;
-        [btn2.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:11]];
-        [btn2 setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]] forState:UIControlStateNormal];
-        [btn2 setTitle:@"Free Sign Up" forState:UIControlStateNormal];
-        [btn2 sizeToFit];
-        [btn2.titleLabel setTextAlignment:UITextAlignmentRight];
-        btn2.frame = CGRectMake(self.view.frame.size.width - cRemainView - btn2.frame.size.width - 10.0, 0, btn2.frame.size.width, 20);
-        [btn2 addTarget:self action:@selector(onTouchCreateAccountBtn:) forControlEvents:UIControlEventTouchUpInside];
-        [menu addSubview:btn2];
-        
-        [btn1.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:11]];
-        [btn1 setTitle:@"Login" forState:UIControlStateNormal];
-        btn1.layer.borderColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]].CGColor;
-        [btn1 setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]] forState:UIControlStateNormal];
-        [btn1 sizeToFit];
-        [btn1.titleLabel setTextAlignment:UITextAlignmentRight];
-        btn1.frame = CGRectMake(btn2.frame.origin.x - btn1.frame.size.width - 10.0, 0, btn1.frame.size.width, 20);
-        [btn1 addTarget:self action:@selector(onTouchSignInBtn:) forControlEvents:UIControlEventTouchUpInside];
-        [menu addSubview:btn1];
-        
-    }
+//    if ([UserPAInfo sharedUserPAInfo].registrationID) {//Login OK
+//        btn2.layer.borderColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]].CGColor ;
+//        [btn2.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:11]];
+//        [btn2 setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]] forState:UIControlStateNormal];
+//        [btn2 setTitle:@"My Account" forState:UIControlStateNormal];
+//        [btn2 sizeToFit];
+//        [btn2.titleLabel setTextAlignment:UITextAlignmentRight];
+//        btn2.frame = CGRectMake(self.view.frame.size.width - cRemainView - btn2.frame.size.width - 10.0, 0, btn2.frame.size.width, self.navigationController.navigationBar.frame.size.height / 2.0);
+//        //[btn2 addTarget:self action:@selector(onTouchCreateAccountBtn:) forControlEvents:UIControlEventTouchUpInside];
+//        [menu addSubview:btn2];
+//        
+//        [btnDiv.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:11]];
+//        [btnDiv setTitle:@"|" forState:UIControlStateNormal];
+//        btnDiv.layer.borderColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]].CGColor;
+//        [btnDiv setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]] forState:UIControlStateNormal];
+//        [btnDiv sizeToFit];
+//        [btnDiv.titleLabel setTextAlignment:UITextAlignmentRight];
+//        btnDiv.frame = CGRectMake(btn2.frame.origin.x - btnDiv.frame.size.width - 05.0, 0, btnDiv.frame.size.width, self.navigationController.navigationBar.frame.size.height / 2.0);
+//        //[btn1 addTarget:self action:@selector(onTouchLogOutBtn:) forControlEvents:UIControlEventTouchUpInside];
+//        [menu addSubview:btnDiv];
+//        
+//        
+//        [btn1.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:11]];
+//        [btn1 setTitle:@"Log out" forState:UIControlStateNormal];
+//        btn1.layer.borderColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]].CGColor;
+//        [btn1 setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]] forState:UIControlStateNormal];
+//        [btn1 sizeToFit];
+//        [btn1.titleLabel setTextAlignment:UITextAlignmentRight];
+//        btn1.frame = CGRectMake(btnDiv.frame.origin.x - btn1.frame.size.width - 05.0, 0, btn1.frame.size.width, 20);
+//        [btn1 addTarget:self action:@selector(onTouchLogOutBtn:) forControlEvents:UIControlEventTouchUpInside];
+//        [menu addSubview:btn1];
+//        
+//    }else {
+//        //cMaxLeftView =
+//        btn2.layer.borderColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]].CGColor ;
+//        [btn2.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:11]];
+//        [btn2 setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]] forState:UIControlStateNormal];
+//        [btn2 setTitle:@"Free Sign Up" forState:UIControlStateNormal];
+//        [btn2 sizeToFit];
+//        [btn2.titleLabel setTextAlignment:UITextAlignmentRight];
+//        btn2.frame = CGRectMake(self.view.frame.size.width - cRemainView - btn2.frame.size.width - 10.0, 0, btn2.frame.size.width, 20);
+//        [btn2 addTarget:self action:@selector(onTouchCreateAccountBtn:) forControlEvents:UIControlEventTouchUpInside];
+//        [menu addSubview:btn2];
+//        
+//        [btn1.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:11]];
+//        [btn1 setTitle:@"Login" forState:UIControlStateNormal];
+//        btn1.layer.borderColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]].CGColor;
+//        [btn1 setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]] forState:UIControlStateNormal];
+//        [btn1 sizeToFit];
+//        [btn1.titleLabel setTextAlignment:UITextAlignmentRight];
+//        btn1.frame = CGRectMake(btn2.frame.origin.x - btn1.frame.size.width - 10.0, 0, btn1.frame.size.width, 20);
+//        [btn1 addTarget:self action:@selector(onTouchSignInBtn:) forControlEvents:UIControlEventTouchUpInside];
+//        [menu addSubview:btn1];
+//        
+//    }
     NSString *country = [UserPAInfo sharedUserPAInfo].userCountryPA;
     if ([country isEqualToString:@""] || country == nil) {
         country = @"Singapore";
     }
     UIButton *btn3 = [UIButton buttonWithType:UIButtonTypeCustom];
     btn3.layer.borderColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]].CGColor;
-    [btn3.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:11]];
+    [btn3.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:12]];
     [btn3 setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]] forState:UIControlStateNormal];
     [btn3 setTitle:country forState:UIControlStateNormal];
     [btn3 sizeToFit];
-    [btn3.titleLabel setTextAlignment:UITextAlignmentRight];
-    btn3.frame = CGRectMake(self.view.frame.size.width - cRemainView - btn3.frame.size.width - 10.0, self.navigationController.navigationBar.frame.size.height/2.0, btn3.frame.size.width, self.navigationController.navigationBar.frame.size.height/2.0);
+    [btn3.titleLabel setTextAlignment:UITextAlignmentLeft];
+    btn3.frame = CGRectMake(self.view.frame.size.width - cRemainView - btn3.frame.size.width - 10.0, 3, btn3.frame.size.width, self.navigationController.navigationBar.frame.size.height/2.0);
     [btn3 addTarget:self action:@selector(onTouchCountry:) forControlEvents:UIControlEventTouchUpInside];
     [menu addSubview:btn3];
     
@@ -587,14 +615,17 @@
     [btnFlag setBackgroundImage:[LeftViewController getFlagWithName:country] forState:UIControlStateNormal];
     [btnFlag setBackgroundImage:[LeftViewController getFlagWithName:country] forState:UIControlStateHighlighted];
     [btnFlag sizeToFit];
-    btnFlag.frame = CGRectMake(btn3.frame.origin.x - 22 - 5.0 , self.navigationController.navigationBar.frame.size.height/2.0,  22, self.navigationController.navigationBar.frame.size.height/2.0);
+    btnFlag.frame = CGRectMake(btn3.frame.origin.x - 25 - 5 , 3,  25, self.navigationController.navigationBar.frame.size.height/2.0);
     [btnFlag addTarget:self action:@selector(onTouchCountry:) forControlEvents:UIControlEventTouchUpInside];
     [menu addSubview:btnFlag];
     menu.autoresizesSubviews = YES;
-    UIViewAutoresizing autoResize = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    UIViewAutoresizing autoResize = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin ;
+    
     for (UIView *view in menu.subviews) {
         [view setAutoresizingMask:autoResize];
     }
+    btnFlag.autoresizingMask =  UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin;
+    btn3.autoresizingMask =  UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin;
     [menu setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin];
     country = nil;
     btn1 = nil;
@@ -760,6 +791,10 @@
     [listIamgesFavorites addObject:[UIImage imageNamed:@"messages.png"]];
     [listIamgesFavorites addObject:[UIImage imageNamed:@"events.png"]];
     [listIamgesFavorites addObject:[UIImage imageNamed:@"friends.png"]];
+    
+    //Load app settings
+    NSString *plistPathForAppSeeting = [[NSBundle mainBundle] pathForResource:@"AccountSetting" ofType:@"plist"];
+    appSettings = [NSArray arrayWithContentsOfFile:plistPathForAppSeeting];
 }
 
 
@@ -1038,6 +1073,18 @@
 	//The popover is automatically dismissed if you click outside it, unless you return NO here
 	return YES;
 }
+
+
+#pragma mark - UIActionSheet Delegate
+
+- (void)actionSheet:(UIActionSheet *)uias clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    // user pressed "Cancel"
+    if(buttonIndex == [uias cancelButtonIndex]) return;
+    //log out
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"logOutListener" object:nil];
+}
+
 
 #pragma mark - GestureRecognizer Delegate
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {

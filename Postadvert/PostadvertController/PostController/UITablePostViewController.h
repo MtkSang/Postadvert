@@ -32,6 +32,7 @@
 }
 
 //@property (nonatomic, weak) IBOutlet UITableView *myTableView;
+@property (nonatomic)   NSInteger wall_id;
 @property (nonatomic, weak) UINavigationController *navigationController;
 @property (nonatomic) int optionView;
 - (void) loadCellsWithWallID:(NSInteger)wallID From:(NSInteger)from Count:(NSInteger) count;
