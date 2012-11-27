@@ -177,7 +177,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0 ) {
-        return  [UIPostCell getCellHeightWithContent:actiCell.content andOption:1] - actiCell.botView.frame.size.height - 3;
+        return  [UIPostCell getCellHeightWithContent:actiCell.content andOption:1] - actiCell.botView.frame.size.height + 3;
     }
     return [CommentsCellContent getCellHeighWithContent:[listComments objectAtIndex:indexPath.row] withWidth:actiCell.frame.size.width - 74];
 }

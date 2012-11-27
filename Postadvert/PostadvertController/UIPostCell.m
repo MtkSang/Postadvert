@@ -241,9 +241,9 @@
     
     
     //BotView
-    frame = botView.frame;
-    frame.origin.y = cellHeight;
-    botView.frame = frame;
+//    frame = botView.frame;
+//    frame.origin.y = cellHeight;
+//    botView.frame = frame;
     //ClapComment
     
     //- - > Clap num
@@ -393,15 +393,16 @@
         
         
         //BotView
-        frame = botView.frame;
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            frame.origin.x = leftMarginContent - CELL_CONTENT_MARGIN_LEFT;
-            frame.size.width = frame.size.width - (leftMarginContent - CELL_CONTENT_MARGIN_LEFT);
-        }
-        frame.origin.y = cellHeight;
-        botView.frame = frame;
+//        frame = botView.frame;
+//        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//            frame.origin.x = leftMarginContent - CELL_CONTENT_MARGIN_LEFT;
+//            frame.size.width = frame.size.width - (leftMarginContent - CELL_CONTENT_MARGIN_LEFT);
+//        }
+//        frame.origin.y = cellHeight;
+//        botView.frame = frame;
           //ClapComment
-        //[clapComment setBackgroundColor:[UIColor colorWithRed:219.0/255.0 green:219.0/255.0 blue:219.0/255.0 alpha:1.0]];
+        [clapComment setBackgroundColor:[UIColor colorWithRed:219.0/255.0 green:219.0/255.0 blue:219.0/255.0 alpha:1.0]];
+        botView.backgroundColor = clapComment.backgroundColor;
         //[clapComment.layer setCornerRadius:4.0];
         //- - > clapbtn
         [clapBtn addTarget:self action:@selector(clapButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -497,9 +498,9 @@
         }
                 
         //BotView
-        frame = botView.frame;
-        frame.origin.y = cellHeight;
-        botView.frame = frame;
+//        frame = botView.frame;
+//        frame.origin.y = cellHeight;
+//        botView.frame = frame;
         //ClapComment
         
         //- - > Clap num
@@ -597,9 +598,9 @@
     
    
     //Bot view
-    cellHeight += 26 + CELL_MARGIN_BETWEEN_CONTROLL;//botView.frame.size.height = 26
+    cellHeight += 26;//botView.frame.size.height = 26
     
-    cellHeight += CELL_MARGIN_BETWEEN_CONTROLL;
+    //cellHeight += CELL_MARGIN_BETWEEN_CONTROLL;
     return cellHeight;
 }
 

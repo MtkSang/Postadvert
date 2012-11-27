@@ -16,8 +16,6 @@
     UIImagePickerController *imagePicker;
     NSInteger nextID;
     NSMutableArray *listImageNeedToPost;
-    NSData *imageData;
-    NSString *encodedImage;
 }
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *btnTitle;
 @property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *phTitleTextView;

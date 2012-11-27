@@ -126,6 +126,10 @@
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification object:nil];
     
+    if (self.showKeyboard) {
+        [self.textBox becomeFirstResponder];
+    }
+    
 }
 
 - (void) viewDidDisappear:(BOOL)animated
@@ -177,7 +181,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0 ) {
-        return  [UIActivityCell getCellHeightWithContent:actiCell._content] - actiCell.botView.frame.size.height - 3;
+        return  [UIActivityCell getCellHeightWithContent:actiCell._content] - actiCell.botView.frame.size.height + 3;
     }
     return [CommentsCellContent getCellHeighWithContent:[listComments objectAtIndex:indexPath.row] withWidth:actiCell.frame.size.width - 74];
 }
@@ -491,18 +495,21 @@
     _textBox.text = @"";
 }
 
+- (void) clap_UnClapPost:(id)sender
+{
+    [actiCell insertClap];
+    UIButton *btn = (UIButton*)sender;
+    btn.userInteractionEnabled = YES;
+    [_tableView reloadData];
+}
+
 - (IBAction)clapBtnClicked:(id)sender {
+    UIButton *btn = (UIButton*)sender;
+    btn.userInteractionEnabled = NO;
+    [self performSelectorInBackground:@selector(clap_UnClapPost:) withObject:sender];
     
     //Update local
-    actiCell._content.isClap = !actiCell._content.isClap;
-    if (actiCell._content.isClap) {
-        actiCell._content.totalClap += 1;
-        [actiCell insertClap];
-    }else {
-        actiCell._content.totalClap -= 1;
-    }
-    [_tableView reloadData];
-    [actiCell refreshClapCommentsView];
+    
 }
 
 - (IBAction)commentBtnClicked:(id)sender {

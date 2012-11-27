@@ -48,6 +48,12 @@
 @property (nonatomic, strong) IBOutlet UIButton *commentBtn;
 @property (nonatomic, strong) IBOutlet UIButton *quickCommentBtn;
 @property (nonatomic, strong) IBOutlet UIView *botView;
+
+@property (nonatomic, strong) UIButton *clapIcon;
+@property (nonatomic, strong) UIButton *commentIcon;
+@property (nonatomic, strong) UILabel *numComment;
+@property (nonatomic, strong) UIButton *dotBtn;
+
 @property (nonatomic) BOOL isLoadContent;
 @property (nonatomic) BOOL isShowFullText;
 @property (nonatomic)         int typeOfCurrentView;
@@ -56,6 +62,7 @@
 @property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic)         BOOL isDidDraw;
 @property (nonatomic, weak)   Profile_CommentViewController *commentViewCtr;
+
 
 - (void) updateCellWithContent:(ActivityContent *)content;
 - (void) clapButtonClicked:(id) sender;

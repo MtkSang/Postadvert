@@ -147,7 +147,8 @@
     NSArray *paraNames;
     NSArray *paraValues;
     functionName = @"insertEasyPost";
-    
+    NSData *imageData;
+    NSString *encodedImage;
     if (listImageNeedToPost.count) {
         //image = [UIImage imageNamed:@"1.jpg"];
         imageData = [[NSData alloc]initWithContentsOfFile:[listImageNeedToPost objectAtIndex:0]];
@@ -160,7 +161,9 @@
             count ++;
         }
     }
-    
+    if (! encodedImage) {
+        encodedImage = @"";
+    }
     paraNames = [NSArray arrayWithObjects:@"user_id", @"wall_id", @"title", @"content", @"image", @"limit", nil];
     paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], [NSString stringWithFormat:@"%d",self.wall_id], _phTitleTextView.text, _phTextView.text, encodedImage, @"1", nil];
     
@@ -249,11 +252,17 @@
 
 -(IBAction)takePhoto:(id)sender 
 {
+    
     MyUIImagePickerViewController *picker = [[MyUIImagePickerViewController alloc]initWithRoot:self];
     picker.delegate = self;
     [self presentViewController:picker animated:YES completion:^(void)
      {
          NSLog(@"Presented");
+         [self setActivityLocation];
+         self.activity.hidden = NO;
+         [self.activity startAnimating ];
+         self.btnPost.enabled = NO;
+         self.botView.userInteractionEnabled = NO;
      }];
     
 //    // Set source to the camera
@@ -518,7 +527,6 @@
     [self.activity startAnimating ];
     self.btnPost.enabled = NO;
     self.botView.userInteractionEnabled = NO;
-    
     //save
     nextID += 1;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);

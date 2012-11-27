@@ -178,7 +178,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UIActivityCell *cell = (UIActivityCell*)[tableView cellForRowAtIndexPath:indexPath];
-    [cell commentButtonClicked:cell.commentBtn];
+    [cell commentButtonClicked:nil];
 }
 
 #pragma mark -

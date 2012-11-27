@@ -244,7 +244,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     //NSLog(@"web url = %@",locationOfWebService);
     
     NSMutableURLRequest *theRequest = [[NSMutableURLRequest alloc]initWithURL:locationOfWebService];// cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:4];
-    
+    [theRequest setTimeoutInterval:120];
     NSString *msgLength = [NSString stringWithFormat:@"%d",[soapFormat length]];
     
     
@@ -314,7 +314,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     //NSLog(@"web url = %@",locationOfWebService);
     
     NSMutableURLRequest *theRequest = [[NSMutableURLRequest alloc]initWithURL:locationOfWebService];// cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:4];
-    
+    [theRequest setTimeoutInterval:120];
     NSString *msgLength = [NSString stringWithFormat:@"%d",[soapFormat length]];
     
     
@@ -329,7 +329,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     NSError *error;
     NSData *data = [NSURLConnection sendSynchronousRequest:theRequest returningResponse:&response error:&error];
     //NSString *results = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    //NSLog(@"%@",results);
+    NSLog(@"%@",error);
     CXMLDocument *doc = [[CXMLDocument alloc] initWithData:data options:0 error:nil];
     //NSLog(@"DATA :%@", doc);
     NSArray *nodes = NULL;

@@ -37,7 +37,7 @@
     if(!isShowed)
     {
         isShowed = YES;
-        imagePicker = [[UIImagePickerController alloc]initWithRootViewController:_root];
+        imagePicker = [[UIImagePickerController alloc]init];
         imagePicker.delegate = self;
         // Set source to the camera
         if ([UIImagePickerController isSourceTypeAvailable:
@@ -76,11 +76,8 @@
 
 - (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    if (self.delegate) {
-        UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-        [self.delegate didFinishPickingMediaWithImage:image];
-    }
-    
+    UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    [self performSelectorInBackground:@selector(selectedImage:) withObject:image];
     [picker dismissViewControllerAnimated:YES completion:^(void){
         NSLog(@"Finish");
     }];
@@ -95,5 +92,11 @@
     }
 }
 
+- (void) selectedImage:(UIImage*)image
+{
+    if (self.delegate) {
+        [self.delegate didFinishPickingMediaWithImage:image];
+    }
+}
 
 @end
