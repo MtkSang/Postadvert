@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIView *botView;
 @property (weak, nonatomic) IBOutlet UIButton *btnSend;
 @property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *textBox;
+@property (nonatomic)   BOOL    showKeyboard;
 
 - (id)initWithPostCell:(UIPostCell *)cell;
 - (IBAction)btnSendClicked:(id)sender;

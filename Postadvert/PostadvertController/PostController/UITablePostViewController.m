@@ -246,7 +246,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UIPostCell *cell = (UIPostCell*)[tableView cellForRowAtIndexPath:indexPath];
-    [cell commentButtonClick:cell.commentBtn];
+    [cell commentButtonClick:nil];
     
 //    if (optionView) {
 //        return;

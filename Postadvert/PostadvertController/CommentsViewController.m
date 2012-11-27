@@ -121,6 +121,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification object:nil];
+    if (self.showKeyboard) {
+        [self.textBox becomeFirstResponder];
+    }
+
 }
 
 - (void) viewDidDisappear:(BOOL)animated

@@ -128,6 +128,12 @@
         quickCommentBtn = (UIButton*)[self viewWithTag:12];
         titlePost    = (OHAttributedLabel*)[self viewWithTag:13];
         timeCreated = (UILabel*)[self viewWithTag:14];
+        _clapIcon    = (UIButton*)[self viewWithTag:15];
+        _commentIcon = (UIButton*)[self viewWithTag:16];
+        _numComment    = (UILabel*)[self viewWithTag:17];
+        _dotBtn     = (UIButton*) [self viewWithTag:18];
+        
+        
         isDidDraw = YES;
     }
 }
@@ -395,20 +401,19 @@
         frame.origin.y = cellHeight;
         botView.frame = frame;
           //ClapComment
-        [clapComment setBackgroundColor:[UIColor colorWithRed:219.0/255.0 green:219.0/255.0 blue:219.0/255.0 alpha:1.0]];
-        [clapComment.layer setCornerRadius:4.0];
+        //[clapComment setBackgroundColor:[UIColor colorWithRed:219.0/255.0 green:219.0/255.0 blue:219.0/255.0 alpha:1.0]];
+        //[clapComment.layer setCornerRadius:4.0];
         //- - > clapbtn
         [clapBtn addTarget:self action:@selector(clapButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         //- - > Clap num
-        numClap.text = [NSString stringWithFormat:@"%d", _content.totalClap];
         //- - > button comments
 
-        commentBtn.titleLabel.textColor = [UIColor colorWithRed:79.0/255 green:178.0/255 blue:187.0/255 alpha:1];
+        //commentBtn.titleLabel.textColor = [UIColor colorWithRed:79.0/255 green:178.0/255 blue:187.0/255 alpha:1];
         //commentBtn.titleLabel.textColor = [UIColor blueColor];
-        [commentBtn setTitle:[NSString stringWithFormat:@"%d comments",_content.totalComment] forState:UIControlStateNormal];
+        //[commentBtn setTitle:[NSString stringWithFormat:@"%d comments",_content.totalComment] forState:UIControlStateNormal];
         [commentBtn addTarget:self action:@selector(commentButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         //- - > Quick commentBtn
-        [quickCommentBtn addTarget:self action:@selector(plusButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        //[quickCommentBtn addTarget:self action:@selector(plusButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         
         cellHeight += frame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
         isLoadContent = YES;
@@ -504,6 +509,7 @@
         
         //cellHeight += frame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
     }
+    [self refreshClapCommentsView];
     //[self performSelectorOnMainThread:@selector(setNeedsLayout) withObject:nil waitUntilDone:YES];
     //[self setNeedsDisplay];
     //[self performSelector:@selector(setNeedsDisplay)];
@@ -591,7 +597,7 @@
     
    
     //Bot view
-    cellHeight += 38 + CELL_MARGIN_BETWEEN_CONTROLL;//botView.frame.size.height = 38
+    cellHeight += 26 + CELL_MARGIN_BETWEEN_CONTROLL;//botView.frame.size.height = 26
     
     cellHeight += CELL_MARGIN_BETWEEN_CONTROLL;
     return cellHeight;
@@ -600,15 +606,16 @@
 - (void) clapButtonClicked:(id) sender
 {
     
+    [self performSelectorInBackground:@selector(clap_UnClapPost) withObject:nil];
     
-    UIActionSheet *uias = [[UIActionSheet alloc] initWithTitle:nil
-                                                      delegate:self 
-                                             cancelButtonTitle:@"Cancel"
-                                        destructiveButtonTitle:nil 
-                                             otherButtonTitles:_content.isClap ? @"Unclap" : @"Clap", nil];
-    
-    [uias showInView:self];
-    uias = nil;
+//    UIActionSheet *uias = [[UIActionSheet alloc] initWithTitle:nil
+//                                                      delegate:self 
+//                                             cancelButtonTitle:@"Cancel"
+//                                        destructiveButtonTitle:nil 
+//                                             otherButtonTitles:_content.isClap ? @"Unclap" : @"Clap", nil];
+//    
+//    [uias showInView:self];
+//    uias = nil;
 }
 
 - (void) commentButtonClick:(id) sender
@@ -619,7 +626,11 @@
     CommentsViewController *commentViewCtr = [[CommentsViewController alloc]initWithPostCell:self];
     NSLog(@"Content %@", _content);
     //[self addCommentsListenner];
+    if (sender != nil) {
+        commentViewCtr.showKeyboard = YES;
+    }
     [navigationController pushViewController: commentViewCtr animated:YES];
+    
     // = nil;
     commentViewCtr = nil;
 }
@@ -757,7 +768,79 @@
 {
     if (isDidDraw) {
         numClap.text = [NSString stringWithFormat:@"%d", _content.totalClap];
-        [commentBtn setTitle:[NSString stringWithFormat:@"%d comments",_content.totalComment] forState:UIControlStateNormal];
+        NSString *clapBtTitle = _content.isClap ? @"Unclap" : @"Clap";
+        [clapBtn setTitle:clapBtTitle forState:UIControlStateNormal];
+        [clapBtn setTitle:clapBtTitle forState:UIControlStateHighlighted];
+        _numComment.text = [NSString stringWithFormat:@"%d", _content.totalComment];
+        //Update location
+        float y = 3;
+        [clapBtn sizeToFit];
+        [commentBtn sizeToFit];
+        [_dotBtn sizeToFit];
+        CGRect frame = clapBtn.frame;
+        frame.origin.x = CELL_CONTENT_MARGIN_LEFT;
+        frame.origin.y = y;
+        clapBtn.frame = frame;
+        
+        frame = _dotBtn.frame;
+        frame.origin.x = clapBtn.frame.origin.x + clapBtn.frame.size.width + 3;
+        frame.origin.y = -y;
+        _dotBtn.frame = frame;
+        
+        frame = commentBtn.frame;
+        frame.origin.x = _dotBtn.frame.origin.x + _dotBtn.frame.size.width + 3;
+        frame.origin.y = y;
+        commentBtn.frame = frame;
+        
+        float width = self.contentView.frame.size.width - CELL_CONTENT_MARGIN_RIGHT;
+        if (_content.totalComment) {
+            [_numComment sizeToFit];
+            width -= _numComment.frame.size.width;
+            frame = _numComment.frame;
+            //width -= frame.size.width;
+            frame.origin.x = width;
+            frame.origin.y = y;
+            _numComment.frame = frame;
+            
+            //[_commentIcon sizeToFit];
+            width -= (_commentIcon.frame.size.width + 3);
+            frame =_commentIcon.frame;
+            frame.origin.x = width;
+            frame.origin.y = y;
+            _commentIcon.frame = frame;
+            
+            _commentIcon.hidden = NO;
+            _numComment.hidden = NO;
+            width -= 5;
+        }else{
+            _numComment.hidden = YES;
+            _commentIcon.hidden = YES;
+        }
+        
+        if (_content.totalClap) {
+            numClap.hidden = NO;
+            _clapIcon.hidden = NO;
+            
+            [numClap sizeToFit];
+            width -= numClap.frame.size.width;
+            frame = numClap.frame;
+            //width -= frame.size.width;
+            frame.origin.x = width;
+            frame.origin.y = y;
+            numClap.frame = frame;
+            
+            //[_clapIcon sizeToFit];
+            width -= (_clapIcon.frame.size.width + 3);
+            frame =_clapIcon.frame;
+            frame.origin.x = width;
+            frame.origin.y = y;
+            _clapIcon.frame = frame;
+        }else
+        {
+            numClap.hidden = YES;
+            _clapIcon.hidden = YES;
+        }
+        
     }
     
 

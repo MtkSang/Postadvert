@@ -87,7 +87,6 @@
     tableVw.separatorColor = [UIColor clearColor];
     tableVw.separatorStyle = UITableViewCellSeparatorStyleNone;
     ((UIScrollView*)self.view).scrollEnabled = NO;
-    [(UIScrollView*)self.view setContentSize:CGSizeMake(320.0, 480 + 216)];
     
 }
 
@@ -131,6 +130,12 @@
 // Called when the UIKeyboardDidShowNotification is sent.
 - (void)keyboardWilBeShown:(NSNotification*)aNotification
 {
+    
+    NSDictionary *userInfo = [aNotification userInfo];
+    CGRect frame = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    frame = [self.view convertRect:frame fromView:nil];
+    [(UIScrollView*)self.view setContentSize:CGSizeMake(frame.size.width, 480 + frame.size.height)];
+    
     CGPoint pt = CGPointZero;
     
     ((UIScrollView*)self.view).scrollEnabled = YES;
@@ -168,6 +173,7 @@
             NSLog(@"Don't know control.");
             break;
     }
+    
     
     [(UIScrollView*)self.view setContentOffset:pt animated:YES];
 }
