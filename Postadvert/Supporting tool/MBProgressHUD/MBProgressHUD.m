@@ -290,7 +290,16 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		if (animationType == MBProgressHUDAnimationZoom) {
 			self.transform = rotationTransform;
 		}
-		[UIView commitAnimations];
+        @try {
+            [UIView commitAnimations];
+        }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
+		
 	}
 	else {
 		self.alpha = 1.0f;

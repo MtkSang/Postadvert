@@ -17,14 +17,16 @@
 #import "GlobalNotificationsViewController.h"
 #import "GlobalAlertViewController.h"
 #import "MessageViewController.h"
+#import "PostViewController.h"
 
 @class DetailViewController;
 @class ChatViewController;
+@class UploadImagesViewController;
 @protocol DetailViewControllerDelegate <NSObject>
 - (void) pushViewControllerWithView:(UIView*) view;
 @end
 
-@interface DetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MBProgressHUDDelegate, WEPopoverControllerDelegate,GlobalNotificationsViewControllerDelegate, GlobalAlertViewControllerDelegate, MessageViewControllerDelegate >
+@interface DetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MBProgressHUDDelegate, WEPopoverControllerDelegate,GlobalNotificationsViewControllerDelegate, GlobalAlertViewControllerDelegate, MessageViewControllerDelegate, PostViewControllerDelegate >
 {
 #if EXPERIEMENTAL_ORIENTATION_SUPPORT
     CGPoint _containerOrigin;
@@ -46,6 +48,7 @@
     UIView *viewUseToGetRectPopover;
     //Message
     BOOL isMessage;//Chatting
+    UploadImagesViewController *uploadImagesView;
     
 }
 

@@ -11,15 +11,20 @@
 @class PostCellContent;
 @class UIPlaceHolderTextView;
 @class UIPostCell;
+@protocol PostViewControllerDelegate;
+
 @interface PostViewController : UIViewController<UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, MyUIImagePickerViewControllerDelegate>
 {
     UIImagePickerController *imagePicker;
     NSInteger nextID;
     NSMutableArray *listImageNeedToPost;
 }
+@property(nonatomic, weak) id <PostViewControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *btnTitle;
 @property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *phTitleTextView;
 @property (weak, nonatomic) IBOutlet UIView *titleView;
+@property (weak, nonatomic) IBOutlet UIView *topView;
+
 
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activity;
 @property (nonatomic, weak)IBOutlet UIImageView *avatarImg;
@@ -33,4 +38,10 @@
 @property (nonatomic)   NSInteger wall_id;
 - (id)initWithWallID:(NSInteger) wallID;
 - (IBAction)makeKeyboardGoAway:(id)sender;
+@end
+
+@protocol PostViewControllerDelegate
+
+- (void) uploadImagesToPostID:(NSInteger)postID andListImages:(NSArray*)array;
+
 @end

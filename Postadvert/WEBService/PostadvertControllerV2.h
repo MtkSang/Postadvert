@@ -13,17 +13,18 @@
     Reachability* internetReachable;
     Reachability* hostReachable;
     BOOL isChecked;
-    int remainCount;
     
 }
 @property (nonatomic) BOOL internetActive;
 @property (nonatomic) BOOL hostActive;
+@property (nonatomic) int remainCount;
 +(PostadvertControllerV2*)sharedPostadvertController;
 - (void) checkNetworkStatus:(NSNotification *)notice;
 - (BOOL) isConnectToWeb;
 
 
 - (id) jsonObjectFromWebserviceWithFunctionName:(NSString*/*Function name*/)functionName parametterName: (NSArray*/*Parametter array */) paramettersName parametterValue:(NSArray*/*parameters values*/) paramettersValus;
+- (id) jsonObjectFromWebserviceWithFunctionName:(NSString*/*Function name*/)functionName parametterName: (NSArray*/*Parametter array */) paramettersName parametterValue:(NSArray*/*parameters values*/) paramettersValus callBackDelegate:(id) delegate;
 
 - (long) registrationLogin:(NSString *)userName :(NSString *)password;
 -(void) testFunction;

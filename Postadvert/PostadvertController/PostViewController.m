@@ -80,7 +80,12 @@
     self.phTitleTextView.layer.cornerRadius = 5.0;
     [self.phTitleTextView setPlaceholder:@"Enter Title of Post ..."];
     [self.phTextView setPlaceholder:@"Type the Contents of Post ..."];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWilBeShown:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
     [(UITextView*)_phTitleTextView becomeFirstResponder];
 }
 
@@ -89,6 +94,7 @@
     [self setTitleView:nil];
     [self setPhTitleTextView:nil];
     [self setBtnTitle:nil];
+    [self setTopView:nil];
     [super viewDidUnload];
     imagePicker = nil;
 }
@@ -96,6 +102,7 @@
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self setModalInPopover:YES];
+    [self updateViewAfterRatation];
 }
 - (void)viewDidDisappear:(BOOL)animated
 {
@@ -110,14 +117,18 @@
 //    pathToDocuments = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return interfaceOrientation == UIInterfaceOrientationPortrait;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
+    if (interfaceOrientation==UIInterfaceOrientationPortrait ) {
+        return YES;
+    } else {
+        return NO;
+    }
 }
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     NSLog(@"Rotated %@", self);
     [self setActivityLocation];
+    [self updateViewAfterRatation];
 }
 
 //- (void) dealloc
@@ -147,28 +158,44 @@
     NSArray *paraNames;
     NSArray *paraValues;
     functionName = @"insertEasyPost";
-    NSData *imageData;
-    NSString *encodedImage;
-    if (listImageNeedToPost.count) {
-        //image = [UIImage imageNamed:@"1.jpg"];
-        imageData = [[NSData alloc]initWithContentsOfFile:[listImageNeedToPost objectAtIndex:0]];
-        encodedImage = [imageData base64EncodedString];
-        int count = 1;
-        while (count < listImageNeedToPost.count) {
-            encodedImage = [encodedImage stringByAppendingString:@"EASYPOSTIMAGE"];
-            imageData =[[NSData alloc]initWithContentsOfFile:[listImageNeedToPost objectAtIndex:count]];
-            encodedImage = [encodedImage stringByAppendingString:[imageData base64EncodedString]];
-            count ++;
-        }
-    }
-    if (! encodedImage) {
-        encodedImage = @"";
-    }
+    
     paraNames = [NSArray arrayWithObjects:@"user_id", @"wall_id", @"title", @"content", @"image", @"limit", nil];
-    paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], [NSString stringWithFormat:@"%d",self.wall_id], _phTitleTextView.text, _phTextView.text, encodedImage, @"1", nil];
+    paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], [NSString stringWithFormat:@"%d",self.wall_id], _phTitleTextView.text, _phTextView.text, @"", @"1", nil];
     
     data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
     
+    NSInteger newPostId;
+    @try {
+        NSDictionary *dict = [data objectAtIndex:0];
+        
+        newPostId = [[[dict objectForKey:@"post"] objectForKey:@"id"]integerValue];
+    }
+    @catch (NSException *exception) {
+        
+    }
+
+    if (self.delegate) {
+        [self.delegate uploadImagesToPostID:newPostId andListImages:listImageNeedToPost];
+    }
+    
+//    NSData *imageData;
+//    NSString *encodedImage;
+//    if (listImageNeedToPost.count) {
+//        functionName = @"uploadPostImage";
+//        
+//         paraNames = [NSArray arrayWithObjects:@"imageString", @"post_id", nil];
+//        int count = 0;
+//        while (count < listImageNeedToPost.count) {
+//            imageData =[[NSData alloc]initWithContentsOfFile:[listImageNeedToPost objectAtIndex:count]];
+//            encodedImage = [imageData base64EncodedString];
+//            count ++;
+//            paraValues = [NSArray arrayWithObjects:encodedImage,[NSString stringWithFormat:@"%d", newPostId], nil];
+//            //uploadPostImage($imageString, $post_id, $folder = ''
+//            
+//            data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+//            
+//        }
+//    }
     self.navigationController.navigationBarHidden = NO;
     [self dismissModalViewControllerAnimated:YES];
 //    [[NSNotificationCenter defaultCenter] postNotificationName:@"plusSuccessWithPost" object:nil];
@@ -218,6 +245,64 @@
 }
 
 #pragma mark - implement
+#pragma mark - Handle Keyboard
+
+// Called when the UIKeyboardDidShowNotification is sent.
+- (void)keyboardWilBeShown:(NSNotification*)aNotification
+{
+    NSDictionary *userInfo = [aNotification userInfo];
+    CGRect frame = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    frame = [self.view convertRect:frame fromView:nil];
+    
+    CGRect frameMainView = self.view.bounds;
+    
+    //frameMainView = [self.view convertRect:frameMainView fromView:nil];
+    
+    float maxHeigh =  frameMainView.size.height - (self.scrollView.frame.origin.y + self.phTextView.frame.origin.y + frame.size.height);
+    if (self.scrollView.frame.size.height < maxHeigh) {
+        maxHeigh = self.scrollView.frame.size.height;
+    }
+    
+    frame = self.phTextView.frame;
+    frame.size.height = maxHeigh;
+    self.phTextView.frame = frame;
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    //    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    //    ((UIScrollView*) self.view).contentInset = contentInsets;
+    //    ((UIScrollView*) self.view).scrollIndicatorInsets = contentInsets;
+    NSDictionary *userInfo = [aNotification userInfo];
+    CGRect frame = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    frame = [self.view convertRect:frame fromView:nil];
+    
+    
+}
+
+- (void) updateViewAfterRatation
+{
+    CGRect frame;
+    CGRect frameBotView = self.botView.frame;
+    CGRect frameScrollView = self.scrollView.frame;
+    CGRect frameMainView = self.view.bounds;
+    
+    frameScrollView.size.height = frameMainView.size.height - frameBotView.size.height - frameScrollView.origin.y;
+    if (frameScrollView.size.height < 0) {
+        frameScrollView.size.height = 0;
+    }
+    self.scrollView.frame = frameScrollView;
+    //Update Photobtn
+    frame = self.photoButton.frame;
+    frame.origin.y = frameScrollView.size.height - frame.size.height;
+    self.photoButton.frame = frame;
+    
+    if (!self.phTitleTextView.isFirstResponder) {
+        //[self.phTextView becomeFirstResponder];
+    }
+    
+}
 - (void) updatePostBtnState
 {
     BOOL canEnable = NO;
@@ -436,7 +521,24 @@
     NSString *pathToDocuments=[paths objectAtIndex:0];
     NSString *filePath = [NSString stringWithFormat:@"%@/newPost%d.jpg", pathToDocuments, nextID];
     NSLog(@"Before using UIImageJPEGRepresentation ");
-    NSData *imageData = UIImageJPEGRepresentation(image, 01.0f);
+    
+    NSData *imageData = UIImageJPEGRepresentation(image, 1.0f);
+    //NSData *imageData = UIImagePNGRepresentation(image);
+    NSLog(@"Before %f %f %f", image.size.width, image.size.height, imageData.length/(1024*1024.0f));
+    float leng = imageData.length / (1024.0f*1024.0f );
+    float f = 1;
+    while (leng > 4) {
+        f -= 0.1;
+        if (f < 0) {
+            break;
+        }
+        imageData = UIImageJPEGRepresentation(image, f);
+        leng = imageData.length / (1024.0f*1024.0f );
+        NSLog(@"Before %f %f %f", image.size.width, image.size.height, leng);
+    }
+    
+   
+
     NSLog(@"After using UIImageJPEGRepresentation ");
     NSLog(@"Path %@ ", filePath);
     [imageData writeToFile: filePath atomically:YES];
@@ -545,6 +647,13 @@
     NSLog(@"Before show Image");
     [listImageNeedToPost addObject:filePath];
     [self showThumbnailWithPath:filePath];
+    [self performSelectorOnMainThread:@selector(updatePostBtnState) withObject:nil waitUntilDone:NO];
+    self.botView.userInteractionEnabled = YES;
+    [self.activity stopAnimating];
+    self.activity.hidden = YES;
+}
+- (void) didCancelPickingMedia
+{
     [self performSelectorOnMainThread:@selector(updatePostBtnState) withObject:nil waitUntilDone:NO];
     self.botView.userInteractionEnabled = YES;
     [self.activity stopAnimating];

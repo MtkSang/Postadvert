@@ -31,6 +31,7 @@
 #import "UITablePostViewController.h"
 #import "SupportFunction.h"
 #import "Userprofile/UserProfileViewController.h"
+#import "UploadImagesViewController.h"
 
 //
 #import "UserProfileViewController.h"
@@ -260,6 +261,13 @@
     HUD.backgroundColor = [UIColor clearColor];
     HUD.delegate = self;
     NSLog(@"Overlay %@ \n Self %@", overlay, self.view);
+    
+    if (! uploadImagesView) {
+        uploadImagesView = [[UploadImagesViewController alloc]init];
+        uploadImagesView.view.frame = CGRectMake(0, 0, self.view.frame.size.width, cCellHeight);
+        uploadImagesView.view.hidden = YES;
+        [self.view addSubview:uploadImagesView.view];
+    }
 }
 
 //#if EXPERIEMENTAL_ORIENTATION_SUPPORT
@@ -661,7 +669,7 @@
     {
         PostViewController *postViewCtr = [[PostViewController alloc] initWithWallID:postViewController.wall_id];
         //[self newPostAddListenner];
-        
+        postViewCtr.delegate = self;
         [self.navigationController presentModalViewController:postViewCtr animated:YES];
         postViewCtr = nil;
     }
@@ -1603,4 +1611,19 @@
 {
     NSLog(@"Selected a friend. Go to Friend's Profile");
 }
+
+#pragma mark PostViewControllerDelegate
+- (void) uploadImagesToPostID:(NSInteger)postID andListImages:(NSArray *)array
+{
+    uploadImagesView.view.hidden = NO;
+    
+    uploadImagesView.postID = postID;
+    uploadImagesView.listImageNeedToPost = [[NSArray alloc]initWithArray:array];
+    [uploadImagesView uploadtoPost:postID withListImages:array];
+    
+    //[uploadImagesView performSelectorInBackground:@selector(uploadImage) withObject:nil];
+    //MBProgressHUD *addEasyPost = [[MBProgressHUD alloc]initWithView:uploadImagesView.view];
+    //[addEasyPost showWhileExecuting:@selector(uploadImage) onTarget:uploadImagesView withObject:nil animated:YES];
+}
+
 @end

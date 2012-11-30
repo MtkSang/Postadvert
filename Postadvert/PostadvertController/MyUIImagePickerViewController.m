@@ -76,8 +76,9 @@
 
 - (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-    [self performSelectorInBackground:@selector(selectedImage:) withObject:image];
+    //UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    [self performSelectorInBackground:@selector(selectedInfo:) withObject:info];
+    //[self.delegate didFinishPickingMediaWithInfo:info];
     [picker dismissViewControllerAnimated:YES completion:^(void){
         NSLog(@"Finish");
     }];
@@ -88,7 +89,14 @@
 	
 	[picker dismissViewControllerAnimated:YES completion:nil];
     if (self.delegate) {
-        //[self.delegate didCancelPickingMedia];
+        [self.delegate didCancelPickingMedia];
+    }
+}
+
+- (void) selectedInfo:(NSDictionary*)info
+{
+    if (self.delegate) {
+        [self.delegate didFinishPickingMediaWithInfo:info];
     }
 }
 

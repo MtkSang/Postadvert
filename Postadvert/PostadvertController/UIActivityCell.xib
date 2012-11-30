@@ -280,7 +280,7 @@
 											<object class="IBUILabel" id="631641486">
 												<reference key="NSNextResponder" ref="219662453"/>
 												<int key="NSvFlags">293</int>
-												<string key="NSFrame">{{267, 3}, {11, 21}}</string>
+												<string key="NSFrame">{{268, 3}, {11, 21}}</string>
 												<reference key="NSSuperview" ref="219662453"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="1004898703"/>
@@ -305,9 +305,10 @@
 											<object class="IBUILabel" id="520709582">
 												<reference key="NSNextResponder" ref="219662453"/>
 												<int key="NSvFlags">293</int>
-												<string key="NSFrame">{{305, 3}, {15, 21}}</string>
+												<string key="NSFrame">{{307, 3}, {15, 21}}</string>
 												<reference key="NSSuperview" ref="219662453"/>
 												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<bool key="IBUIOpaque">NO</bool>
 												<bool key="IBUIClipsSubviews">YES</bool>
@@ -329,7 +330,7 @@
 											<object class="IBUIButton" id="604885734">
 												<reference key="NSNextResponder" ref="219662453"/>
 												<int key="NSvFlags">293</int>
-												<string key="NSFrame">{{245, 0}, {20, 20}}</string>
+												<string key="NSFrame">{{246, 0}, {20, 20}}</string>
 												<reference key="NSSuperview" ref="219662453"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="631641486"/>
@@ -349,7 +350,7 @@
 												<reference key="IBUINormalTitleShadowColor" ref="668094370"/>
 												<object class="NSCustomResource" key="IBUINormalImage">
 													<string key="NSClassName">NSImage</string>
-													<string key="NSResourceName">clap_icon.png</string>
+													<string key="NSResourceName">clap_black_white.png</string>
 												</object>
 												<reference key="IBUIFontDescription" ref="703291664"/>
 												<reference key="IBUIFont" ref="224655109"/>
@@ -357,7 +358,7 @@
 											<object class="IBUIButton" id="1004898703">
 												<reference key="NSNextResponder" ref="219662453"/>
 												<int key="NSvFlags">293</int>
-												<string key="NSFrame">{{275, 0}, {20, 20}}</string>
+												<string key="NSFrame">{{276, 0}, {20, 20}}</string>
 												<reference key="NSSuperview" ref="219662453"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="520709582"/>
@@ -383,7 +384,7 @@
 												<reference key="IBUIFont" ref="224655109"/>
 											</object>
 										</array>
-										<string key="NSFrameSize">{320, 26}</string>
+										<string key="NSFrameSize">{322, 26}</string>
 										<reference key="NSSuperview" ref="367619385"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="383256798"/>
@@ -393,12 +394,11 @@
 											<bytes key="NSWhite">MQA</bytes>
 											<reference key="NSCustomColorSpace" ref="6039901"/>
 										</object>
-										<bool key="IBUIClipsSubviews">YES</bool>
 										<int key="IBUITag">8</int>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 									</object>
 								</array>
-								<string key="NSFrame">{{0, 216}, {320, 26}}</string>
+								<string key="NSFrame">{{-1, 217}, {322, 26}}</string>
 								<reference key="NSSuperview" ref="529072215"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="219662453"/>
@@ -408,7 +408,6 @@
 									<bytes key="NSWhite">MQA</bytes>
 									<reference key="NSCustomColorSpace" ref="6039901"/>
 								</object>
-								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUITag">7</int>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
@@ -767,7 +766,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="clap_icon.png">{33, 33}</string>
+			<string key="clap_black_white.png">{48, 50}</string>
 			<string key="comment_icon.png">{33, 33}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">1926</string>

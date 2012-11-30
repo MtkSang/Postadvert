@@ -71,7 +71,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
         
         // now patiently wait for the notification
     }
-    remainCount = 0;
+    self.remainCount = 0;
     return self;
 }
 
@@ -223,7 +223,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
 - (id) jsonObjectFromWebserviceWithFunctionName:(NSString*/*Function name*/)functionName andParametter: (NSString*/*Parametter String */) parametterString
 {
     ShowNetworkActivityIndicator();
-    remainCount ++;
+    self.remainCount ++;
     NSString *soapFormat = [NSString stringWithFormat: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"
                             @"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
                             @"<soap:Body>"
@@ -244,7 +244,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     //NSLog(@"web url = %@",locationOfWebService);
     
     NSMutableURLRequest *theRequest = [[NSMutableURLRequest alloc]initWithURL:locationOfWebService];// cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:4];
-    [theRequest setTimeoutInterval:120];
+    //[theRequest setTimeoutInterval:120];
     NSString *msgLength = [NSString stringWithFormat:@"%d",[soapFormat length]];
     
     
@@ -256,7 +256,9 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     [theRequest setHTTPBody:[soapFormat dataUsingEncoding:NSUTF8StringEncoding]];
     
     NSURLResponse *response;
-    NSError *error;	
+    NSError *error;
+    
+    
     NSData *data = [NSURLConnection sendSynchronousRequest:theRequest returningResponse:&response error:&error];
     //NSString *results = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     //NSLog(@"%@",results);
@@ -271,16 +273,16 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     for (CXMLElement *node in nodes) {
         jsonObject = [jsonParser objectWithString:node.stringValue];
     }
-    remainCount --;
-    if (remainCount< 1) {
-        remainCount = 0;
+    self.remainCount --;
+    if (self.remainCount< 1) {
+        self.remainCount = 0;
         HideNetworkActivityIndicator();
     }
     
     return jsonObject;
 }
 
-- (id) jsonObjectFromWebserviceWithFunctionName:(NSString*/*Function name*/)functionName parametterName: (NSArray*/*Parametter array */) paramettersName parametterValue:(NSArray*/*parameters values*/) paramettersValus
+- (id) jsonObjectFromWebserviceWithFunctionName:(NSString*/*Function name*/)functionName parametterName: (NSArray*/*Parametter array */) paramettersName parametterValue:(NSArray*/*parameters values*/) paramettersValus callBackDelegate:(id) delegate
 {
     if (paramettersName.count != paramettersValus.count) {
         return nil;
@@ -293,7 +295,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
         count ++;
     }
     ShowNetworkActivityIndicator();
-    remainCount ++;
+    self.remainCount ++;
     NSString *soapFormat = [NSString stringWithFormat: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"
                             @"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
                             @"<soap:Body>"
@@ -341,9 +343,94 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     for (CXMLElement *node in nodes) {
         jsonObject = [jsonParser objectWithString:node.stringValue];
     }
-    remainCount --;
-    if (remainCount< 1) {
-        remainCount = 0;
+    self.remainCount --;
+    if (self.remainCount< 1) {
+        self.remainCount = 0;
+        HideNetworkActivityIndicator();
+    }
+    
+    NSDictionary *infoDict;
+    NSArray *infoArray;
+    if ([jsonObject isKindOfClass:[NSDictionary class]])
+    {
+        infoDict = [NSDictionary dictionaryWithDictionary: jsonObject];
+        return infoDict;
+        
+    }
+    else if ([jsonObject isKindOfClass:[NSArray class]])
+    {
+        infoArray = [NSArray arrayWithArray:jsonObject];
+        return infoArray;
+    }
+    
+    
+    return jsonObject;
+}
+
+- (id) jsonObjectFromWebserviceWithFunctionName:(NSString*/*Function name*/)functionName parametterName: (NSArray*/*Parametter array */) paramettersName parametterValue:(NSArray*/*parameters values*/) paramettersValus
+{
+    if (paramettersName.count != paramettersValus.count) {
+        return nil;
+    }
+    NSString *parametterString = @"";
+    int count = 0;
+    for (NSString* ns1 in paramettersName) {
+        NSString *parametterStr = [NSString stringWithFormat:@"<%@>%@</%@>", ns1, [paramettersValus objectAtIndex:count], ns1];
+        parametterString = [parametterString stringByAppendingString:parametterStr];
+        count ++;
+    }
+    ShowNetworkActivityIndicator();
+    self.remainCount ++;
+    NSString *soapFormat = [NSString stringWithFormat: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                            @"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
+                            @"<soap:Body>"
+                            @"<%@ xmlns=\"http://stroff.com/ws/server_side/\">"
+                            @"%@"
+                            @"</%@>"
+                            @"</soap:Body>"
+                            @"</soap:Envelope>",functionName, parametterString, functionName];
+    
+    
+    
+    
+    
+    //NSLog(@"The request format is: \n%@",soapFormat);
+    
+    NSURL *locationOfWebService = [NSURL URLWithString:@"http://stroff.com/ws/server_side/api.php?wsdl"];//http://jmobile.futureworkz.com.sg/fwz_service/fwz_server_wsdl.php?wsdl
+    
+    //NSLog(@"web url = %@",locationOfWebService);
+    
+    NSMutableURLRequest *theRequest = [[NSMutableURLRequest alloc]initWithURL:locationOfWebService];// cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:4];
+    [theRequest setTimeoutInterval:120];
+    NSString *msgLength = [NSString stringWithFormat:@"%d",[soapFormat length]];
+    
+    
+    [theRequest addValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [theRequest addValue:@"" forHTTPHeaderField:@"SOAPAction"];
+    [theRequest addValue:msgLength forHTTPHeaderField:@"Content-Length"];
+    [theRequest setHTTPMethod:@"POST"];
+    //the below encoding is used to send data over the net
+    [theRequest setHTTPBody:[soapFormat dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSURLResponse *response;
+    NSError *error;
+    NSData *data = [NSURLConnection sendSynchronousRequest:theRequest returningResponse:&response error:&error];
+    //NSString *results = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"%@",error);
+    CXMLDocument *doc = [[CXMLDocument alloc] initWithData:data options:0 error:nil];
+    //NSLog(@"DATA :%@", doc);
+    NSArray *nodes = NULL;
+    //  searching for return nodes (return from WS)
+    nodes = [doc nodesForXPath:@"//return" error:nil];
+    //Get info
+    SBJsonParser *jsonParser = [[SBJsonParser alloc]init];
+    id jsonObject;
+    for (CXMLElement *node in nodes) {
+        jsonObject = [jsonParser objectWithString:node.stringValue];
+    }
+    self.remainCount --;
+    if (self.remainCount< 1) {
+        self.remainCount = 0;
         HideNetworkActivityIndicator();
     }
     

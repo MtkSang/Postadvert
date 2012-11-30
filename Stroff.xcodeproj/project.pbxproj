@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		D440FF3F1659EB1100E04BC8 /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D440FF3E1659EB1100E04BC8 /* ChatViewController.xib */; };
+		D44516701666F94700A69E46 /* clap_black_white.png in Resources */ = {isa = PBXBuildFile; fileRef = D445166F1666F94700A69E46 /* clap_black_white.png */; };
+		D44516731666F9B900A69E46 /* black-white-clapping-hands-th.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D44516721666F9B900A69E46 /* black-white-clapping-hands-th.jpg */; };
+		D445167A16671CE100A69E46 /* UploadImagesController.m in Sources */ = {isa = PBXBuildFile; fileRef = D445167916671CE100A69E46 /* UploadImagesController.m */; };
+		D4451681166741F600A69E46 /* error_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4451680166741F600A69E46 /* error_icon.png */; };
+		D445168316674A9600A69E46 /* fail_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D445168216674A9600A69E46 /* fail_icon.png */; };
+		D44516871667628000A69E46 /* UploadImagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D44516851667627F00A69E46 /* UploadImagesViewController.m */; };
+		D44516881667628000A69E46 /* UploadImagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D44516861667628000A69E46 /* UploadImagesViewController.xib */; };
 		D45BC8C3164A38E9008D3CBA /* UICommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D45BC8C2164A38E9008D3CBA /* UICommentCell.xib */; };
 		D47DB0711651F1C100E8C9B7 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D47DB06B1651F1C100E8C9B7 /* Default-568h@2x.png */; };
 		D47DB0721651F1C100E8C9B7 /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = D47DB06C1651F1C100E8C9B7 /* Default-Landscape.png */; };
@@ -550,6 +557,15 @@
 
 /* Begin PBXFileReference section */
 		D440FF3E1659EB1100E04BC8 /* ChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatViewController.xib; sourceTree = "<group>"; };
+		D445166F1666F94700A69E46 /* clap_black_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clap_black_white.png; sourceTree = "<group>"; };
+		D44516721666F9B900A69E46 /* black-white-clapping-hands-th.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "black-white-clapping-hands-th.jpg"; sourceTree = "<group>"; };
+		D445167816671CE100A69E46 /* UploadImagesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadImagesController.h; sourceTree = "<group>"; };
+		D445167916671CE100A69E46 /* UploadImagesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadImagesController.m; sourceTree = "<group>"; };
+		D4451680166741F600A69E46 /* error_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = error_icon.png; sourceTree = "<group>"; };
+		D445168216674A9600A69E46 /* fail_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fail_icon.png; sourceTree = "<group>"; };
+		D44516841667627F00A69E46 /* UploadImagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadImagesViewController.h; sourceTree = "<group>"; };
+		D44516851667627F00A69E46 /* UploadImagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadImagesViewController.m; sourceTree = "<group>"; };
+		D44516861667628000A69E46 /* UploadImagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UploadImagesViewController.xib; sourceTree = "<group>"; };
 		D45BC8C2164A38E9008D3CBA /* UICommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICommentCell.xib; sourceTree = "<group>"; };
 		D47DB06B1651F1C100E8C9B7 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		D47DB06C1651F1C100E8C9B7 /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
@@ -955,7 +971,7 @@
 		FA0323E9157752AF002EB93D /* icon_Speaker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_Speaker.png; sourceTree = "<group>"; };
 		FA0323EA157752AF002EB93D /* icon_Speaker_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_Speaker_2.png; sourceTree = "<group>"; };
 		FA0323EB157752AF002EB93D /* icon_status.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_status.png; sourceTree = "<group>"; };
-		FA0323EC157752AF002EB93D /* icon_valid_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_valid_1.png; sourceTree = "<group>"; };
+		FA0323EC157752AF002EB93D /* icon_valid_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_valid_1.png; path = ../icon_valid_1.png; sourceTree = "<group>"; };
 		FA0323ED157752AF002EB93D /* icon_WordTalk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_WordTalk.png; sourceTree = "<group>"; };
 		FA0323EE157752AF002EB93D /* image_music_note.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image_music_note.png; sourceTree = "<group>"; };
 		FA0323EF157752AF002EB93D /* image_online_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image_online_1.png; sourceTree = "<group>"; };
@@ -1918,7 +1934,6 @@
 				FA0323E9157752AF002EB93D /* icon_Speaker.png */,
 				FA0323EA157752AF002EB93D /* icon_Speaker_2.png */,
 				FA0323EB157752AF002EB93D /* icon_status.png */,
-				FA0323EC157752AF002EB93D /* icon_valid_1.png */,
 				FA0323ED157752AF002EB93D /* icon_WordTalk.png */,
 				FA0323EE157752AF002EB93D /* image_music_note.png */,
 				FA0323EF157752AF002EB93D /* image_online_1.png */,
@@ -2184,6 +2199,11 @@
 		FA5EFEC315D259B800EBDCFB /* Other Icon */ = {
 			isa = PBXGroup;
 			children = (
+				FA0323EC157752AF002EB93D /* icon_valid_1.png */,
+				D445168216674A9600A69E46 /* fail_icon.png */,
+				D44516721666F9B900A69E46 /* black-white-clapping-hands-th.jpg */,
+				D4451680166741F600A69E46 /* error_icon.png */,
+				D445166F1666F94700A69E46 /* clap_black_white.png */,
 				D4B20911166467270024EBF3 /* clap_icon.png */,
 				D4B20912166467270024EBF3 /* comment_icon.png */,
 				D49A399C1663515E00E77B0A /* SignUpForStroff.png */,
@@ -2306,6 +2326,11 @@
 				FA03230D15774B08002EB93D /* PostAdvertController.m */,
 				FA98785A15AD710D0002B490 /* PostadvertControllerV2.h */,
 				FA98785B15AD710D0002B490 /* PostadvertControllerV2.m */,
+				D445167816671CE100A69E46 /* UploadImagesController.h */,
+				D445167916671CE100A69E46 /* UploadImagesController.m */,
+				D44516841667627F00A69E46 /* UploadImagesViewController.h */,
+				D44516851667627F00A69E46 /* UploadImagesViewController.m */,
+				D44516861667628000A69E46 /* UploadImagesViewController.xib */,
 			);
 			name = WEBService;
 			path = Postadvert/WEBService;
@@ -2880,6 +2905,11 @@
 				D49A399D1663515F00E77B0A /* SignUpForStroff.png in Resources */,
 				D4B20913166467270024EBF3 /* clap_icon.png in Resources */,
 				D4B20914166467270024EBF3 /* comment_icon.png in Resources */,
+				D44516701666F94700A69E46 /* clap_black_white.png in Resources */,
+				D44516731666F9B900A69E46 /* black-white-clapping-hands-th.jpg in Resources */,
+				D4451681166741F600A69E46 /* error_icon.png in Resources */,
+				D445168316674A9600A69E46 /* fail_icon.png in Resources */,
+				D44516881667628000A69E46 /* UploadImagesViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3058,6 +3088,8 @@
 				FA7DF8A816410A8C003E823D /* FriendsViewController.m in Sources */,
 				D4881F601648C91E0042DA51 /* Profile_CommentViewController.m in Sources */,
 				D4DD9036165F60C9004033E4 /* MyUIImagePickerViewController.m in Sources */,
+				D445167A16671CE100A69E46 /* UploadImagesController.m in Sources */,
+				D44516871667628000A69E46 /* UploadImagesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

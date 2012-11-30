@@ -51,6 +51,7 @@
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
+        self.tableView.backgroundColor = [UIColor colorWithRed:235/255.0 green:247/255.0 blue:247/255.0 alpha:1];
     }
     return self;
 }
@@ -60,7 +61,7 @@
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadTableViewCellWithInfo:) name:@"UIPostCell_More_Click" object:nil];
     
-    self.view.backgroundColor = [UIColor colorWithRed:225.0/255.0 green:235.0/255.0 blue:245.0/255.0 alpha:1];
+    //self.view.backgroundColor = [UIColor colorWithRed:225.0/255.0 green:235.0/255.0 blue:245.0/255.0 alpha:1];
     //setup footview
     UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44)];
     [footerView setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth];
@@ -68,6 +69,7 @@
     self.view.frame =[[UIScreen mainScreen] bounds];
     self.tableView.frame = [[UIScreen mainScreen] bounds];
     [self.tableView setTableFooterView: footerView];
+    self.view.backgroundColor = [UIColor colorWithRed:235/255.0 green:247/255.0 blue:247/255.0 alpha:1];
     footerLoading = [[MBProgressHUD alloc]initWithView:self.tableView.tableFooterView];
     footerLoading.hasBackground = NO;
     footerLoading.mode = MBProgressHUDModeIndeterminate;
