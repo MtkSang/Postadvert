@@ -1,36 +1,44 @@
 //
 //  UINotificationsCell.m
-//  Postadvert
+//  Stroff
 //
-//  Created by Mtk Ray on 6/26/12.
+//  Created by Ray on 12/6/12.
 //  Copyright (c) 2012 Futureworkz. All rights reserved.
 //
 
 #import "UINotificationsCell.h"
 #import "NotificationsCellContent.h"
-
+#import "UIImageView+URL.h"
 @implementation UINotificationsCell
 
-@synthesize postTime = _postTime;
-@synthesize imageAvatar = _imageAvatar;
-@synthesize webView = _webView;
-@synthesize cellHeight = _cellHeight;
-
+@synthesize delegate;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        // Initialization code
+    }
+    return self;
+}
+- (id) initWithNib
 {
     NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UINotificationsCell" owner:self options:nil];
     self = [topLevelObjects objectAtIndex:0];
     topLevelObjects = nil;
-    if (!self) {
+    if (self) {
         // Initialization code
-        self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-        
+        _userAvartar = (UIImageView*)[self viewWithTag:1];
+        _text = (OHAttributedLabel*)[self viewWithTag:2];
+        _created = (UILabel*)[self viewWithTag:3];
+        _actionIcon = (UIImageView*)[self viewWithTag:4];
+        _text.underlineLinks = NO;
+        _text.linkColor = [UIColor blueColor];
+        _text.delegate = self;
     }
 
     return self;
 }
-
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
@@ -38,46 +46,57 @@
     // Configure the view for the selected state
 }
 
-- (CGFloat) setCellContent:(NotificationsCellContent*) content
+-(void) setContent:(NotificationsCellContent*)content
 {
-    //Set avatar
-    _imageAvatar.image = content.userAvatar;
+    _content = content;
+    [self updateValueForControl];
+    [self setLinkForText];
+}
+
+-(void) updateValueForControl
+{
+    if (_content == nil) {
+        return;
+    }
+
+    _text.text = _content.fullText;
+    _created.text = _content.created;
+    [_userAvartar setImageWithURL:[NSURL URLWithString:_content.actor_thumb]];
+    if (_content.is_read) {
+        self.contentView.backgroundColor = [UIColor clearColor];
+    }else
+        self.contentView.backgroundColor = [UIColor colorWithRed:225/255.0 green:245/255.0 blue:245/255.0 alpha:0.5];
+    NSRange range = [_content.action_string rangeOfString:@"clapped"];
+    if (range.length) {
+        _actionIcon.image = [UIImage imageNamed:@"clap_icon.png"];
+    }else
+        _actionIcon.image = [UIImage imageNamed:@"comment_notification_icon.png"];
+}
+
+-(void) setLinkForText
+{
+    NSString *str = [_content.wall_name stringByReplacingOccurrencesOfString:@" " withString:@"=="];
+    NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"localStroff://wall__%d__%@",_content.wall_ID, str]];
+    NSURL *urlUerProfile = [[NSURL alloc]initWithString:[NSString stringWithFormat: @"localStroff://user__%d", self.content.actor_ID]];
     
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"MM:dd:yy"];
-    NSString *theDate = [dateFormat stringFromDate:content.timeNotifications ];
-    [self.postTime setText:theDate];
-    NSString *str = [NSString stringWithFormat:@"<font color='#0222e4'>%@</font> ", content.userPostName];
-    if (content.otherUsers) {
-        switch (content.otherUsers.count) {
-            case 0:
-                break;
-            case 1:
-                str = [str stringByAppendingString:[NSString stringWithFormat:@"and <font color='#0222e4'>%@</font> ", [content.otherUsers objectAtIndex:0]]];
-                break;
-            case 2:
-                str = [str stringByAppendingString:[NSString stringWithFormat:@", <font color='#0222e4'>%@</font> and <font color='#0222e4'>%@</font> ", [content.otherUsers objectAtIndex:0], [content.otherUsers objectAtIndex:1]]];
-                break;
-            default:
-                str = [str stringByAppendingString:[NSString stringWithFormat:@", <font color='#0222e4'>%@</font> and <font color='#0222e4'>%d</font> others ", [content.otherUsers objectAtIndex:0], content.otherUsers.count - 1]];
-                break;
+    NSRange rang = [_content.fullText rangeOfString:_content.wall_name options:NSBackwardsSearch];
+    [_text addCustomLink:url inRange:rang];
+    [_text addCustomLink:urlUerProfile inRange:[_text.text rangeOfString:_content.actor_fullName]];
+    
+}
+
+#pragma mark OHAttributedLabelDelegate
+
+-(BOOL)attributedLabel:(OHAttributedLabel*)attributedLabel shouldFollowLink:(NSTextCheckingResult*)linkInfo
+{
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(didTapOnCustomLink)] ) {
+            [self.delegate didTapOnCustomLink];
         }
     }
-    str = [str stringByAppendingString:content.actionText];
-    str = [str stringByAppendingString:[NSString stringWithFormat:@"<font color='#0222e4'> %@</font>: %@", content.toObject, content.text]];
-    
-    NSString *htmlString =  [NSString stringWithFormat:@"<html><body><p>%@</p></body></html>", str];
-    [_webView loadHTMLString:htmlString baseURL:nil];
-    
-    str = nil;
-    htmlString = nil;
-    return 50.0;
+    [[NSUserDefaults standardUserDefaults] setURL:linkInfo.URL forKey:@"openURL"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"openURL" object:nil];
+    return NO;
 }
 
-#pragma mark - UIwebViewDelegate
-
-- (void)webViewDidFinishLoad:(UIWebView *)nwebView
-{
-    NSLog(@"WebView DidLoad");
-}
 @end

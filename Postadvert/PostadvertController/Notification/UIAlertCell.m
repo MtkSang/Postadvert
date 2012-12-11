@@ -41,12 +41,30 @@
 
 -(IBAction)btnNotNowClicked:(id)sender
 {
-    
+    self.message.text = @"Friend request hidden";
+    if ([self.delegate respondsToSelector:@selector(didRespondRequest:)]) {
+        NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d", self.connection_id], @"connection_id", @"-1" , @"respond_type", nil];
+        [self.delegate performSelector:@selector(didRespondRequest:) withObject:dict];
+    }
 }
 -(IBAction)btnConfirmClicked:(id)sender
 {
     self.btnConfirm.hidden = YES;
     self.btnNotNow.hidden = YES;
-    self.mutiFriends.text = @"You are friends now.";
+    self.mutiFriends.hidden = YES;
+    self.message.text = @"You are friends now.";
+    //friendRequestRespond($connection_id, $respond_type) {
+    //respond type = 1 (approve) or -1 (remove)
+    //respond_type
+    if ([self.delegate respondsToSelector:@selector(didRespondRequest:)]) {
+        NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d", self.connection_id], @"connection_id", @"1" , @"respond_type", nil];
+        [self.delegate performSelector:@selector(didRespondRequest:) withObject:dict];
+    }
+}
+- (IBAction)btnUserNameCliked:(id)sender {
+    
+    if ([self.delegate performSelector:@selector(didTapOnCustomLink)]) {
+        [self.delegate didTapOnCustomLink];
+    }
 }
 @end

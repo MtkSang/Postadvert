@@ -61,7 +61,6 @@
     // Do any additional setup after loading the view from its nib
     self.navigationController.navigationBarHidden = YES;
     self.activity.hidden = YES;
-    [self.phTextView becomeFirstResponder];
     self.avatarImg.image = [UserPAInfo sharedUserPAInfo].imgAvatar;
     [self.photoButton setImage:[UIImage imageNamed:@"icon_capture_photo_sel.png"] forState:UIControlStateSelected];
     imagePicker = [[UIImagePickerController alloc] init];
@@ -174,7 +173,9 @@
         
     }
 
-    if (self.delegate) {
+    // testing
+    //newPostId = 1464;
+    if (self.delegate && listImageNeedToPost.count) {
         [self.delegate uploadImagesToPostID:newPostId andListImages:listImageNeedToPost];
     }
     
@@ -297,10 +298,6 @@
     frame = self.photoButton.frame;
     frame.origin.y = frameScrollView.size.height - frame.size.height;
     self.photoButton.frame = frame;
-    
-    if (!self.phTitleTextView.isFirstResponder) {
-        //[self.phTextView becomeFirstResponder];
-    }
     
 }
 - (void) updatePostBtnState

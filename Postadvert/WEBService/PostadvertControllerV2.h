@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 @class Reachability;
+@class PostCellContent;
 @interface PostadvertControllerV2 : NSObject
 {
     Reachability* internetReachable;
@@ -22,6 +23,8 @@
 - (void) checkNetworkStatus:(NSNotification *)notice;
 - (BOOL) isConnectToWeb;
 
+
++ (PostCellContent*)getaPostCellWithDict:(NSDictionary*)dict;
 
 - (id) jsonObjectFromWebserviceWithFunctionName:(NSString*/*Function name*/)functionName parametterName: (NSArray*/*Parametter array */) paramettersName parametterValue:(NSArray*/*parameters values*/) paramettersValus;
 - (id) jsonObjectFromWebserviceWithFunctionName:(NSString*/*Function name*/)functionName parametterName: (NSArray*/*Parametter array */) paramettersName parametterValue:(NSArray*/*parameters values*/) paramettersValus callBackDelegate:(id) delegate;

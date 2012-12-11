@@ -66,7 +66,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
         [internetReachable startNotifier];
         
         // check if a pathway to a random host exists
-        hostReachable = [Reachability reachabilityWithHostName: @"postadvert.com"];
+        hostReachable = [Reachability reachabilityWithHostName: @"stroff.com"];
         [hostReachable startNotifier];
         
         // now patiently wait for the notification
@@ -175,7 +175,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
 {    
     
     if(![self isConnectToWeb]){
-        [self showAlertWithMessage:@"This device does not connect to Internet." andTitle:@"Postadvert"];
+        [self showAlertWithMessage:@"This device does not connect to Internet." andTitle:@"Stroff"];
         return 0;
     }
     id jsonObject = [self jsonObjectFromWebserviceWithFunctionName:@"login" andParametter:
@@ -481,122 +481,133 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
         NSLog(@"Array %@", infoArray);
         for (NSDictionary *dict in infoArray) {
             NSLog(@"One Post: %@", dict);
-            PostCellContent *cellContent = [[PostCellContent alloc]init];
-            //Author
-            @try {
-                NSDictionary *author = [dict objectForKey:@"author"];
-                if ([author isKindOfClass:[NSDictionary class]]) {
-                    NSLog(@"Author %@", author);
-                    cellContent.userPostName = [author objectForKey:@"name"];
-                    NSLog(@"Username %@", cellContent.userPostName);
-                    //User Avatar
-                    NSString *urlAvatar = [author objectForKey:@"thumb"];
-                    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlAvatar]];
-                    cellContent.userAvatar = [UIImage imageWithData:imageData];
-                    imageData = nil;
-                    
-                }else {
-                    continue;
-                }
-            }
-            @catch (NSException *exception) {
-                NSLog(@"%@",exception);
-            }
+            PostCellContent *cellContent;
+            cellContent = [PostadvertControllerV2 getaPostCellWithDict:dict];
             
-            //Comments
-            @try {
-                NSDictionary *comments = [dict objectForKey:@"comments"];
-                NSLog(@"comments %@", comments);
-                if ([comments isKindOfClass:[NSDictionary class]]) {
-                    NSArray *commentsList = [comments objectForKey:@"comments_list"];
-                    cellContent.listComments = [NSMutableArray arrayWithArray:commentsList];
-                    cellContent.totalComment = [[comments objectForKey:@"total_comments"] integerValue];
-                }
-            }
-            @catch (NSException *exception) {
-                NSLog(@"%@",exception);
-            }
-    
-                        //Like
-            @try {
-                NSDictionary *like = [dict objectForKey:@"like"];
-                if ([like isKindOfClass:[NSDictionary class]]) {
-                    cellContent.isClap = [[like objectForKey:@"is_liked"] boolValue];
-                    NSLog(@"Is Like %d", cellContent.isClap);
-                    cellContent.totalClap = [[like objectForKey:@"total_likes"] integerValue];
-                }
-            }
-            @catch (NSException *exception) {
-                NSLog(@"%@",exception);
-            }
-            
-            //Post
-            @try {
-                NSDictionary *post = [dict objectForKey:@"post"];
-                cellContent.ID_Post = [[post objectForKey:@"id"] integerValue];
-                cellContent.text = [NSData stringDecodeFromBase64String:[post objectForKey:@"post"]];
-                cellContent.titlePost = [NSData stringDecodeFromBase64String: [post objectForKey:@"title"]];
-                NSLog(@"Detail a post : %@ Title is:%@", post, cellContent.titlePost);
-                //time
-                NSString *timePost = [post objectForKey:@"created_on_lapseTime"];
-                if ([timePost isKindOfClass:[NSString class]]) {
-                    cellContent.created_on_lapseTime = [NSData stringDecodeFromBase64String:timePost];
-                }else
-                    cellContent.created_on_lapseTime = @"";
-            }
-            @catch (NSException *exception) {
-                NSLog(@"%@",exception);
-            }
-           
-            // - > website
-            @try {
-                NSDictionary *website = [dict objectForKey:@"website"];
-                if ([website isKindOfClass:[NSDictionary class]]) {
-                    [cellContent.listLinks addObject:[website objectForKey:@"url"]];
-                    cellContent.linkWebsite = [NSDictionary dictionaryWithDictionary:website];
-                    //description
-                    //title
-                }
-            }
-            @catch (NSException *exception) {
-                NSLog(@"%@",exception);
-            }
-            
-            
-            // - > yotube
-            @try {
-                NSDictionary *youtube = [dict objectForKey:@"youtube"];
-                if ([youtube isKindOfClass:[NSDictionary class]]) {
-                    cellContent.linkYoutube = [NSDictionary dictionaryWithDictionary:youtube];
-                    [cellContent.listVideos addObject:[youtube objectForKey:@"url"]];
-                }
-            }
-            @catch (NSException *exception) {
-                NSLog(@"%@",exception);
-            }
-            
-
-            //Image
-            @try {
-                NSDictionary *images = [dict objectForKey:@"image"];
-                
-                NSLog(@"image %@", images);
-                NSLog(@"Kind %@", NSStringFromClass([images class]));
-                if ([images isKindOfClass:[NSArray class]]) {
-                    for (NSDictionary *dictImages in images) {
-                        [cellContent.listImages addObject:[NSArray arrayWithObjects:[dictImages objectForKey:@"full_image"],[dictImages objectForKey:@"thumb_image"], nil]];
-                    }
-                    NSLog(@"List Image %@", cellContent.listImages);
-                }
+            if (cellContent) {
                 [listCellContent addObject:cellContent];
-            }
-            @catch (NSException *exception) {
-                NSLog(@"%@",exception);
             }
         }
     }
 
     return (id)listCellContent;
+}
+
++ (PostCellContent*)getaPostCellWithDict:(NSDictionary*)dict
+{
+    PostCellContent *cellContent = [[PostCellContent alloc]init];
+    //Author
+    @try {
+        NSDictionary *author = [dict objectForKey:@"author"];
+        if ([author isKindOfClass:[NSDictionary class]]) {
+            NSLog(@"Author %@", author);
+            cellContent.userPostName = [author objectForKey:@"name"];
+            NSLog(@"Username %@", cellContent.userPostName);
+            //User Avatar
+            NSString *urlAvatar = [author objectForKey:@"thumb"];
+            NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlAvatar]];
+            cellContent.userAvatar = [UIImage imageWithData:imageData];
+            imageData = nil;
+            
+        }else {
+            return nil;
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    }
+    
+    //Comments
+    @try {
+        NSDictionary *comments = [dict objectForKey:@"comments"];
+        NSLog(@"comments %@", comments);
+        if ([comments isKindOfClass:[NSDictionary class]]) {
+            NSArray *commentsList = [comments objectForKey:@"comments_list"];
+            cellContent.listComments = [NSMutableArray arrayWithArray:commentsList];
+            cellContent.totalComment = [[comments objectForKey:@"total_comments"] integerValue];
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    }
+    
+    //Like
+    @try {
+        NSDictionary *like = [dict objectForKey:@"like"];
+        if ([like isKindOfClass:[NSDictionary class]]) {
+            cellContent.isClap = [[like objectForKey:@"is_liked"] boolValue];
+            NSLog(@"Is Like %d", cellContent.isClap);
+            cellContent.totalClap = [[like objectForKey:@"total_likes"] integerValue];
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    }
+    
+    //Post
+    @try {
+        NSDictionary *post = [dict objectForKey:@"post"];
+        cellContent.ID_Post = [[post objectForKey:@"id"] integerValue];
+        cellContent.text = [NSData stringDecodeFromBase64String:[post objectForKey:@"post"]];
+        cellContent.titlePost = [NSData stringDecodeFromBase64String: [post objectForKey:@"title"]];
+        NSLog(@"Detail a post : %@ Title is:%@", post, cellContent.titlePost);
+        //time
+        NSString *timePost = [post objectForKey:@"created_on_lapseTime"];
+        if ([timePost isKindOfClass:[NSString class]]) {
+            cellContent.created_on_lapseTime = [NSData stringDecodeFromBase64String:timePost];
+        }else
+            cellContent.created_on_lapseTime = @"";
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    }
+    
+    // - > website
+    @try {
+        NSDictionary *website = [dict objectForKey:@"website"];
+        if ([website isKindOfClass:[NSDictionary class]]) {
+            [cellContent.listLinks addObject:[website objectForKey:@"url"]];
+            cellContent.linkWebsite = [NSDictionary dictionaryWithDictionary:website];
+            //description
+            //title
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    }
+    
+    
+    // - > yotube
+    @try {
+        NSDictionary *youtube = [dict objectForKey:@"youtube"];
+        if ([youtube isKindOfClass:[NSDictionary class]]) {
+            cellContent.linkYoutube = [NSDictionary dictionaryWithDictionary:youtube];
+            [cellContent.listVideos addObject:[youtube objectForKey:@"url"]];
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    }
+    
+    
+    //Image
+    @try {
+        NSDictionary *images = [dict objectForKey:@"image"];
+        
+        NSLog(@"image %@", images);
+        NSLog(@"Kind %@", NSStringFromClass([images class]));
+        if ([images isKindOfClass:[NSArray class]]) {
+            for (NSDictionary *dictImages in images) {
+                [cellContent.listImages addObject:[NSArray arrayWithObjects:[dictImages objectForKey:@"full_image"],[dictImages objectForKey:@"thumb_image"], nil]];
+            }
+            NSLog(@"List Image %@", cellContent.listImages);
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    }
+    
+    return cellContent;
 }
 /*
  

@@ -257,7 +257,6 @@
     if (tableView.scrollEnabled == NO) {
         return;
     }
-    [self.detailVw.lbTitle setText: [NSString stringWithFormat:@"  %@", [listItems objectAtIndex:indexPath.row]]];
      NSDictionary *dict = [NSDictionary dictionaryWithObject:[listItems objectAtIndex:indexPath.row] forKey:@"itemName"];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"showDetailFromSubView" object:nil userInfo:dict];
 }

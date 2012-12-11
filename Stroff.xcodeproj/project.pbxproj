@@ -24,6 +24,8 @@
 		D47DB0761651F1C100E8C9B7 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D47DB0701651F1C100E8C9B7 /* Default.png */; };
 		D4881F601648C91E0042DA51 /* Profile_CommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4881F5E1648C91E0042DA51 /* Profile_CommentViewController.m */; };
 		D4881F611648C91E0042DA51 /* Profile_CommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4881F5F1648C91E0042DA51 /* Profile_CommentViewController.xib */; };
+		D491EF4D16703D40006A2D49 /* UINotificationsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D491EF4C16703D40006A2D49 /* UINotificationsCell.m */; };
+		D491EF5316705938006A2D49 /* comment_notification_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D491EF5216705938006A2D49 /* comment_notification_icon.png */; };
 		D49A39971663238000E77B0A /* logo_2.png in Resources */ = {isa = PBXBuildFile; fileRef = D49A39961663238000E77B0A /* logo_2.png */; };
 		D49A399A16632E4B00E77B0A /* btn1_(active).png in Resources */ = {isa = PBXBuildFile; fileRef = D49A399816632E4A00E77B0A /* btn1_(active).png */; };
 		D49A399B16632E4B00E77B0A /* btn1_(inactive).png in Resources */ = {isa = PBXBuildFile; fileRef = D49A399916632E4A00E77B0A /* btn1_(inactive).png */; };
@@ -439,7 +441,6 @@
 		FA58D3FC15999533005DFCBD /* GlobalNotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA58D3FA15999533005DFCBD /* GlobalNotificationsViewController.m */; };
 		FA58D3FD15999533005DFCBD /* GlobalNotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA58D3FB15999533005DFCBD /* GlobalNotificationsViewController.xib */; };
 		FA58D40015999584005DFCBD /* NotificationsCellContent.m in Sources */ = {isa = PBXBuildFile; fileRef = FA58D3FF15999584005DFCBD /* NotificationsCellContent.m */; };
-		FA58D403159995C3005DFCBD /* UINotificationsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA58D402159995C3005DFCBD /* UINotificationsCell.m */; };
 		FA58D405159995F8005DFCBD /* UINotificationsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA58D404159995F8005DFCBD /* UINotificationsCell.xib */; };
 		FA59DB031622DCDB00CFBF7C /* UIShortPostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA59DB021622DCDB00CFBF7C /* UIShortPostCell.xib */; };
 		FA5C5B9215EDF2FA0073DBE9 /* ActivityContent.m in Sources */ = {isa = PBXBuildFile; fileRef = FA5C5B9115EDF2FA0073DBE9 /* ActivityContent.m */; };
@@ -576,6 +577,9 @@
 		D4881F5D1648C91E0042DA51 /* Profile_CommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile_CommentViewController.h; sourceTree = "<group>"; };
 		D4881F5E1648C91E0042DA51 /* Profile_CommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile_CommentViewController.m; sourceTree = "<group>"; };
 		D4881F5F1648C91E0042DA51 /* Profile_CommentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Profile_CommentViewController.xib; sourceTree = "<group>"; };
+		D491EF4B16703D40006A2D49 /* UINotificationsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UINotificationsCell.h; sourceTree = "<group>"; };
+		D491EF4C16703D40006A2D49 /* UINotificationsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINotificationsCell.m; sourceTree = "<group>"; };
+		D491EF5216705938006A2D49 /* comment_notification_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comment_notification_icon.png; sourceTree = "<group>"; };
 		D49A39961663238000E77B0A /* logo_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_2.png; sourceTree = "<group>"; };
 		D49A399816632E4A00E77B0A /* btn1_(active).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn1_(active).png"; sourceTree = "<group>"; };
 		D49A399916632E4A00E77B0A /* btn1_(inactive).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn1_(inactive).png"; sourceTree = "<group>"; };
@@ -1092,8 +1096,6 @@
 		FA58D3FB15999533005DFCBD /* GlobalNotificationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GlobalNotificationsViewController.xib; sourceTree = "<group>"; };
 		FA58D3FE15999584005DFCBD /* NotificationsCellContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsCellContent.h; sourceTree = "<group>"; };
 		FA58D3FF15999584005DFCBD /* NotificationsCellContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsCellContent.m; sourceTree = "<group>"; };
-		FA58D401159995C3005DFCBD /* UINotificationsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UINotificationsCell.h; sourceTree = "<group>"; };
-		FA58D402159995C3005DFCBD /* UINotificationsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINotificationsCell.m; sourceTree = "<group>"; };
 		FA58D404159995F8005DFCBD /* UINotificationsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UINotificationsCell.xib; sourceTree = "<group>"; };
 		FA59DB021622DCDB00CFBF7C /* UIShortPostCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = UIShortPostCell.xib; path = Postadvert/PostadvertController/UIShortPostCell.xib; sourceTree = SOURCE_ROOT; };
 		FA5C5B9015EDF2FA0073DBE9 /* ActivityContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityContent.h; sourceTree = "<group>"; };
@@ -2166,8 +2168,8 @@
 				FA58D3FB15999533005DFCBD /* GlobalNotificationsViewController.xib */,
 				FA58D3FE15999584005DFCBD /* NotificationsCellContent.h */,
 				FA58D3FF15999584005DFCBD /* NotificationsCellContent.m */,
-				FA58D401159995C3005DFCBD /* UINotificationsCell.h */,
-				FA58D402159995C3005DFCBD /* UINotificationsCell.m */,
+				D491EF4B16703D40006A2D49 /* UINotificationsCell.h */,
+				D491EF4C16703D40006A2D49 /* UINotificationsCell.m */,
 				FA58D404159995F8005DFCBD /* UINotificationsCell.xib */,
 				FA123971159AC7E90026838C /* DetailNotificationViewController.h */,
 				FA123972159AC7E90026838C /* DetailNotificationViewController.m */,
@@ -2199,6 +2201,7 @@
 		FA5EFEC315D259B800EBDCFB /* Other Icon */ = {
 			isa = PBXGroup;
 			children = (
+				D491EF5216705938006A2D49 /* comment_notification_icon.png */,
 				FA0323EC157752AF002EB93D /* icon_valid_1.png */,
 				D445168216674A9600A69E46 /* fail_icon.png */,
 				D44516721666F9B900A69E46 /* black-white-clapping-hands-th.jpg */,
@@ -2910,6 +2913,7 @@
 				D4451681166741F600A69E46 /* error_icon.png in Resources */,
 				D445168316674A9600A69E46 /* fail_icon.png in Resources */,
 				D44516881667628000A69E46 /* UploadImagesViewController.xib in Resources */,
+				D491EF5316705938006A2D49 /* comment_notification_icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3040,7 +3044,6 @@
 				FA8A7F421592C80900EC6E74 /* TakePhotoViewController.m in Sources */,
 				FA58D3FC15999533005DFCBD /* GlobalNotificationsViewController.m in Sources */,
 				FA58D40015999584005DFCBD /* NotificationsCellContent.m in Sources */,
-				FA58D403159995C3005DFCBD /* UINotificationsCell.m in Sources */,
 				FA123974159AC7E90026838C /* DetailNotificationViewController.m in Sources */,
 				FA12397B159B07290026838C /* GlobalAlertViewController.m in Sources */,
 				FA12397F159B08A30026838C /* AlertCellContent.m in Sources */,
@@ -3090,6 +3093,7 @@
 				D4DD9036165F60C9004033E4 /* MyUIImagePickerViewController.m in Sources */,
 				D445167A16671CE100A69E46 /* UploadImagesController.m in Sources */,
 				D44516871667628000A69E46 /* UploadImagesViewController.m in Sources */,
+				D491EF4D16703D40006A2D49 /* UINotificationsCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

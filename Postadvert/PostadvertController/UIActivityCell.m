@@ -435,7 +435,16 @@
     cellHeight = CELL_CONTENT_MARGIN_TOP + imgAvatar.frame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
     constraint = CGSizeMake(cellFrame.size.width - 20 - imgAvatar.frame.size.width - imgAvatar.frame.origin.x - CELL_CONTENT_MARGIN_LEFT - CELL_CONTENT_MARGIN_RIGHT - CELL_MARGIN_BETWEEN_CONTROLL, 20000.0f);
     size = [created_time.text sizeWithFont:created_time.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-    created_time.frame = CGRectMake(3 + cAvartaContentHeight + CELL_MARGIN_BETWEEN_CONTROLL, 22, size.width, size.height);
+    @try {
+        created_time.frame = CGRectMake(3 + cAvartaContentHeight + CELL_MARGIN_BETWEEN_CONTROLL, 22, size.width, size.height);
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@", exception);
+    }
+    @finally {
+        
+    }
+    
     
     //User name; do not resize now
     //text

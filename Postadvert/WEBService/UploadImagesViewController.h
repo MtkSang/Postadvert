@@ -15,6 +15,7 @@
     NSInteger currentIndex;
     BOOL    isUploading;
     NSInteger currentDataLength;
+    NSURLConnection *myConnection;
     NSMutableData *reciveData;
     BOOL isSuccess;
 }

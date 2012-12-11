@@ -30,7 +30,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "PullRefreshTableViewController.h"
 
-#define REFRESH_HEADER_HEIGHT 52.0f
+#define REFRESH_HEADER_HEIGHT               52.0f
 
 
 @implementation PullRefreshTableViewController

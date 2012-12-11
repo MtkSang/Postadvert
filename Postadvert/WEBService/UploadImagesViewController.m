@@ -37,11 +37,14 @@
     // Do any additional setup after loading the view from its nib.
 }
 
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - implement
 
 -(void) uploadtoPost:(NSInteger)postID withListImages:(NSArray*)listImages
 {
@@ -49,6 +52,8 @@
     self.listImageNeedToPost = [[NSArray alloc]initWithArray:listImages];
     currentIndex = 0;
     isUploading = YES;
+    isSuccess = YES;
+    self.progressView.progress = 0;
     self.retryBtn.hidden = YES;
     //[self performSelectorInBackground:@selector(uploadImage) withObject:nil];
     [self uploadImage];
@@ -60,6 +65,10 @@
     if (isSuccess) {
         isUploading = NO;
         //sleep(1);
+        self.view.hidden = YES;
+    }else
+    {
+        isUploading = NO;
         self.view.hidden = YES;
     }
 }
@@ -77,6 +86,8 @@
     [self.cancelBtn setImage:[UIImage imageNamed:@"error_icon.png"] forState:UIControlStateNormal];
     self.cancelBtn.enabled = YES;
     self.retryBtn.hidden = YES;
+    isSuccess = YES;
+    isUploading = YES;
     NSString *functionName;
     NSArray *paraNames;
     NSMutableArray *paraValues;
@@ -161,8 +172,8 @@
     
     
     
-    NSURLConnection *connection = [[NSURLConnection alloc]initWithRequest:theRequest delegate:self startImmediately:YES];
-    if (connection) {
+    myConnection = [[NSURLConnection alloc]initWithRequest:theRequest delegate:self startImmediately:YES];
+    if (myConnection) {
         NSLog(@"Connection OK");
         reciveData = [[NSMutableData alloc]init];
     }
@@ -173,7 +184,33 @@
     
 }
 
+- (void) cancelPost
+{
+    //deleteEasyPost($post_id)
+    id data;
+    NSString *functionName;
+    NSArray *paraNames;
+    NSArray *paraValues;
+    
+    functionName = @"deleteEasyPost";
+    paraNames = [NSArray arrayWithObjects:@"post_id", nil];
+    paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%d", self.postID], nil];
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName:functionName parametterName:paraNames parametterValue:paraValues];
+    @try {
+        NSInteger errorCode = [[data objectForKey:@"error_code"] integerValue];
+        if (errorCode == 0) {
+            //has a error
+            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Cancel Upload" message:@"Error" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alertView show];
+        }
+    }
+    @catch (NSException *exception) {
+    }
+    
+}
+
 - (IBAction)retryBtnClicked:(id)sender {
+    [self uploadImage];
 }
 
 - (IBAction)cancelBtnClicked:(id)sender {
@@ -184,7 +221,13 @@
 #pragma mark -AlertDelegate
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    
+    if (buttonIndex == 1) {
+        NSLog(@"Cancel a post");
+        [myConnection cancel];
+        [self performSelectorInBackground:@selector(cancelPost) withObject:nil];
+        
+        [self updateViewWithState];
+    }
 }
 
 #pragma mark NSURLConnectionDelegate Protocol

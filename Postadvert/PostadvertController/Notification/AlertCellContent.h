@@ -10,8 +10,13 @@
 
 @interface AlertCellContent : NSObject
 
+@property (nonatomic)           NSInteger connection_id;
+@property (nonatomic)           NSInteger connect_from_id;
+@property( nonatomic, strong)   NSString *connect_from_name;
+@property( nonatomic, strong)   NSString *connect_from_thumb;
+@property (nonatomic, strong)   NSString *created;
+@property( nonatomic, strong)   NSString *message;
+@property( nonatomic)           NSInteger mutual_friends_count;
 
-@property( nonatomic, strong)   NSString *userPostName;
-@property( nonatomic, strong)   UIImage *imageAvatar;
-@property( nonatomic)           NSInteger numMutiFriends;
+- (id) initWithDict:(NSDictionary*)dict;
 @end

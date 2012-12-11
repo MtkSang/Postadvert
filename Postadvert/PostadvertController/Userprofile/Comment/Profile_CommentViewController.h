@@ -15,13 +15,16 @@
     UIActivityCell *actiCell;
     UIActivityCell *dataCellFromMain;
     UITableView *actiCellSuperView;
+    NSNotification *keyboardNotfication;
     
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *botView;
 @property (weak, nonatomic) IBOutlet UIButton *btnSend;
 @property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *textBox;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (nonatomic)   BOOL showKeyboard;
+
 
 - (id)initWithActivityCell:(UIActivityCell*) cell;
 - (IBAction)btnSendClicked:(id)sender;

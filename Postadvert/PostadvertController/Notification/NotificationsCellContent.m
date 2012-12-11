@@ -7,37 +7,40 @@
 //
 
 #import "NotificationsCellContent.h"
+#import "NSData+Base64.h"
 
 @implementation NotificationsCellContent
-@synthesize userPostName = _userPostName;
-@synthesize otherUsers = _otherUsers;
-@synthesize userAvatar = _userAvatar;
-@synthesize text = _text;
-@synthesize timeNotifications = _timeNotifications;
-@synthesize actionText = _actionText;
-@synthesize toObject = _toObject;
-@synthesize actionCode = _actionCode;
 
+- (id) initWithDictionnary:(NSDictionary*)dict
+{
+    self = [self init];
+    @try {
+        _notification_ID = [[dict objectForKey:@"id"] integerValue];
+        _target_ID = [[dict objectForKey:@"target_id"] integerValue];
+        NSDictionary *actor = [dict objectForKey:@"actor"];
+        _actor_ID = [[actor objectForKey:@"id"]integerValue];
+        _actor_fullName = [actor objectForKey:@"name"];
+        _actor_thumb = [actor objectForKey:@"thumb"];
+        _action_string = [dict objectForKey:@"action"];;
+        _wall_ID = [[dict objectForKey:@"wall_id"]integerValue];
+        _wall_name = [dict objectForKey:@"wall_name"];
+        _created = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
+        _is_read = [[dict objectForKey:@"is_read"] boolValue];
+        
+        _fullText = [self getFullText];
+    }
+    @catch (NSException *exception) {
+        
+    }
+    @finally {
+        
+    }
+    
+    return self;
+}
 - (NSString*) getFullText
 {
-    NSString *str = [NSString stringWithString:_userPostName];
-    if (_otherUsers) {
-        switch (_otherUsers.count) {
-            case 0:
-                break;
-            case 1:
-                str = [str stringByAppendingString:[NSString stringWithFormat:@"and %@ ", [_otherUsers objectAtIndex:0]]];
-                break;
-            case 2:
-                str = [str stringByAppendingString:[NSString stringWithFormat:@", %@ and %@ ", [_otherUsers objectAtIndex:0], [_otherUsers objectAtIndex:1]]];
-                break;
-            default:
-                str = [str stringByAppendingString:[NSString stringWithFormat:@", %@ and %d others ", [_otherUsers objectAtIndex:0], _otherUsers.count - 1]];
-                break;
-        }
-    }
-    str = [str stringByAppendingString:_actionText];
-    str = [str stringByAppendingString:[NSString stringWithFormat:@" %@: %@", _toObject, _text]];
+    NSString *str = [NSString stringWithFormat:@"%@%@%@", _actor_fullName, _action_string, _wall_name];
     return str;
 }
 @end

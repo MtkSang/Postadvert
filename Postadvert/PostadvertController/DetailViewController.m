@@ -184,8 +184,9 @@
     [super viewWillAppear:animated];
     
 }
-- (void)viewDidAppear:(BOOL)animated{
+- (void) viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    //self.navigationController.navigationBarHidden = YES;
     CGRect navFrame = self.navigationController.navigationBar.frame;
     if (topMenu == nil) {
         topMenu = [self drawPostAdvertTopMenu];
@@ -297,11 +298,7 @@
     
     NSLog(@"%@ Frame: %f %f %f %f", self , self.overlay.frame.size.width, self.overlay.frame.size.height, customViewCtr.view.frame.size.width, customViewCtr.view.frame.size.height);
     if (popoverController) {
-        popoverController.view.hidden = NO;
-        CGRect rect = [viewUseToGetRectPopover convertRect:viewUseToGetRectPopover.frame toView:nil];
-        rect = [viewUseToGetRectPopover convertRect:viewUseToGetRectPopover.frame toView:self.navigationController.view];
-        //[popoverController repositionPopoverFromRect:viewUseToGetRectPopover.frame inView:topMenu permittedArrowDirections:UIPopoverArrowDirectionUp];
-        [popoverController presentPopoverFromRect:viewUseToGetRectPopover.frame inView:topMenu permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+        [self presentPopover];
     }
 }
 //
@@ -328,19 +325,19 @@
 		[popoverController dismissPopoverAnimated:YES];
 		popoverController = nil;
         viewUseToGetRectPopover = nil;
-        [self removeDetailMessageListenner:self];
+        //[self removeDetailMessageListenner:self];
 	} else {
         //Add listenner to get data when user choice from Global Message
-        [self addDetailMessageListenner:self];
+        //[self addDetailMessageListenner:self];
+        
         viewUseToGetRectPopover = (UIView*)sender;
-        GobalMessageViewController *contentViewController = [[GobalMessageViewController alloc] init];
+        MessageViewController *contentViewController = [[MessageViewController alloc] init];
+        contentViewController.searchBar.hidden = YES;
+        contentViewController.delegate = self;
         contentViewController.navigationController = self.navigationController;
-		//CGRect rect = CGRectMake((self.view.frame.size.width / 2.0) , -014.0,((UIView*)sender).frame.size.width + 11,1);
-        CGRect rect = CGRectMake((self.view.frame.size.width / 2.0) , -01.0,((UIView*)sender).frame.size.width + 5,40);
         contentViewController.view.layer.cornerRadius = 3.0;
-        //contentViewController.contentSizeForViewInPopover = CGSizeMake(280, 460);
         contentViewController.tableView.layer.cornerRadius = 3.0;
-        //contentViewController.contentSizeForViewInPopover = CGSizeMake(260, 390);
+        contentViewController.tableView.backgroundColor = [UIColor colorWithRed:235/255.0 green:247/255.0 blue:247/255.0 alpha:1];
 		popoverController = [[WEPopoverController alloc] initWithContentViewController:(UIViewController*)contentViewController];
 		
 		if ([popoverController respondsToSelector:@selector(setContainerViewProperties:)]) {
@@ -348,11 +345,8 @@
 		}
 		
 		popoverController.delegate = self;
-		popoverController.passthroughViews = [NSArray arrayWithObject:self.view];
-		[popoverController presentPopoverFromRect:viewUseToGetRectPopover.frame
-                                           inView:topMenu
-                         permittedArrowDirections:(UIPopoverArrowDirectionUp)
-                                         animated:YES];
+		popoverController.passthroughViews = [NSArray arrayWithObject:self.navigationController];
+        [self presentPopover];
     }
     
 }
@@ -363,52 +357,22 @@
 		[popoverController dismissPopoverAnimated:YES];
 		popoverController = nil;
         viewUseToGetRectPopover = nil;
-        //[self removeDetailMessageListenner];
 	} else {
         
-        
-        //Add listenner to get data when user choice from Global Message
-        //[self addDetailMessageListenner];
         viewUseToGetRectPopover = (UIView*)sender;
         GlobalNotificationsViewController *contentViewController = [[GlobalNotificationsViewController alloc] init];
         contentViewController.delegate = self;
-		//CGRect rect = CGRectMake((self.view.frame.size.width / 2.0) , -014.0,((UIView*)sender).frame.size.width + 11,1);
-        CGRect rect = CGRectMake((self.view.frame.size.width / 2.0) , -01.0,01,40);
-        rect = [((UIView*)sender) convertRect:((UIView*)sender).frame fromView:nil];
         contentViewController.view.layer.cornerRadius = 3.0;
-        //contentViewController.contentSizeForViewInPopover = CGSizeMake(280, 460);
         contentViewController.tableView.layer.cornerRadius = 3.0;
-        //contentViewController.contentSizeForViewInPopover = CGSizeMake(260, 390);
 		popoverController = [[WEPopoverController alloc] initWithContentViewController:(UIViewController*)contentViewController];
 		if ([popoverController respondsToSelector:@selector(setContainerViewProperties:)]) {
 			[popoverController setContainerViewProperties:[self defaultContainerViewProperties]];
 		}
-		
 		popoverController.delegate = self;
 		popoverController.passthroughViews = [NSArray arrayWithObject:self.navigationController];
 		[self presentPopover];
     }
 
-}
-- (void) presentPopover
-{
-    float menuWidth = 280;
-    // increase width
-    float increase_width = menuWidth - topMenu.frame.size.width;
-    float moveX = increase_width / 2.0;
-    CGRect frame = viewUseToGetRectPopover.frame;
-    frame.origin.x += moveX;
-    UIView *view = [[UIView alloc]initWithFrame:topMenu.frame];
-    CGRect viewFrame = topMenu.frame;
-    viewFrame.size.width= menuWidth;
-    viewFrame.origin.x -= moveX;
-    view.frame = viewFrame;
-    view.hidden = YES;
-    [self.navigationController.navigationBar addSubview:view];
-    [popoverController presentPopoverFromRect:frame
-                                       inView: view
-                     permittedArrowDirections:(UIPopoverArrowDirectionUp)
-                                     animated:YES];
 }
 
 - (void) onTouchGlobalAlert:(id)sender
@@ -419,12 +383,9 @@
         viewUseToGetRectPopover = nil;
         //[self removeDetailMessageListenner];
 	} else {
-        //Add listenner to get data when user choice from Global Message
-        //[self addDetailMessageListenner];
         viewUseToGetRectPopover = (UIView*)sender;
         GlobalAlertViewController *contentViewController = [[GlobalAlertViewController alloc] init];
         contentViewController.delegate = self;
-        CGRect rect = [((UIView*)sender) convertRect:((UIView*)sender).frame toView:self.navigationController.view];
         contentViewController.view.layer.cornerRadius = 3.0;
         contentViewController.tableView.layer.cornerRadius = 3.0;
 		popoverController = [[WEPopoverController alloc] initWithContentViewController:(UIViewController*)contentViewController];
@@ -433,13 +394,40 @@
 			[popoverController setContainerViewProperties:[self defaultContainerViewProperties]];
 		}
 		popoverController.delegate = self;
-		popoverController.passthroughViews = [NSArray arrayWithObject:self.navigationController.view];
-		[popoverController presentPopoverFromRect:viewUseToGetRectPopover.frame
-                                           inView:topMenu
-                         permittedArrowDirections:(UIPopoverArrowDirectionUp)
-                                         animated:YES];
+		popoverController.passthroughViews = [NSArray arrayWithObject:self.navigationController];
+//		[popoverController presentPopoverFromRect:viewUseToGetRectPopover.frame
+//                                           inView:topMenu
+//                         permittedArrowDirections:(UIPopoverArrowDirectionUp)
+//                                         animated:YES];
+        [self presentPopover];
     }
     
+}
+- (void) presentPopover
+{
+    float menuWidth = 320;
+    // increase width
+    float increase_width = menuWidth - topMenu.frame.size.width;
+    float moveX = increase_width / 2.0;
+    CGRect frame = viewUseToGetRectPopover.frame;
+    frame.origin.x += moveX;
+    UIView *view = [self.navigationController.navigationBar viewWithTag:999];
+    if (view == nil) {
+        view = [[UIView alloc]initWithFrame:topMenu.frame];
+        view.tag = 999;
+        [self.navigationController.navigationBar addSubview:view];
+        view.hidden = YES;
+    }
+    
+    CGRect viewFrame = topMenu.frame;
+    viewFrame.size.width= menuWidth;
+    viewFrame.origin.x -= moveX;
+    view.frame = viewFrame;
+    
+    [popoverController presentPopoverFromRect:frame
+                                       inView: view
+                     permittedArrowDirections:(UIPopoverArrowDirectionUp)
+                                     animated:YES];
 }
 
 
@@ -676,6 +664,13 @@
 }
 
 - (UIView*) drawPostAdvertTopMenu {
+    
+   
+    //return nil;
+    
+    
+    
+    
     UIView *menu = [[UIView alloc]init];
     [menu setBackgroundColor:[UIColor clearColor]];
     UIButton *btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -875,6 +870,12 @@
                     NSLog(@"VKL");
                 }
             }
+            if ([[parametters objectAtIndex:0] isEqualToString:@"wall"]) {
+                if (parametters.count >1) {
+                    NSString *wallName = [[parametters lastObject] stringByReplacingOccurrencesOfString:@"==" withString:@" "];
+                    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[parametters objectAtIndex:1], @"wallID", wallName, @"itemName", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"showDetailFromSubView" object:nil userInfo:dict];                }
+            }
         }
         return NO;
     }
@@ -1057,11 +1058,16 @@
     [self.overlay addSubview: topView];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"showDetailFromSubView_SideBar" object:nil];
     
+    
+    NSInteger  wallID = [[notifi.userInfo objectForKey:@"wallID"] integerValue];
     NSString *itemName = [notifi.userInfo objectForKey:@"itemName"];
-    NSInteger  wallID = 1;
-    NSInteger countryID = 190;
-    countryID = [SupportFunction GetCountryIdFromConutryName:[UserPAInfo sharedUserPAInfo].userCountryPA];
-    wallID = [SupportFunction getWallIdFromCountryID:countryID andItemName:itemName];
+    
+    if (wallID < 1) {
+        NSInteger countryID = 190;
+        countryID = [SupportFunction GetCountryIdFromConutryName:[UserPAInfo sharedUserPAInfo].userCountryPA];
+        wallID = [SupportFunction getWallIdFromCountryID:countryID andItemName:itemName];
+    }
+    [self.lbTitle setText: [NSString stringWithFormat:@"  %@", itemName]];
     [(UITablePostViewController*)postViewController loadCellsWithWallID:wallID From:0 Count:5];
     [postViewController.view setAutoresizingMask:self.overlay.autoresizingMask];
     [postViewController.view setAutoresizesSubviews:YES];
@@ -1458,7 +1464,7 @@
 	ret.rightContentMargin = contentMargin;
 	ret.topContentMargin = contentMargin;
 	ret.bottomContentMargin = contentMargin;
-	ret.arrowMargin = 2.0;
+	ret.arrowMargin = 3.0;
 	
 	ret.upArrowImageName = @"popoverArrowUpSimple.png";
 	ret.downArrowImageName = @"popoverArrowDownSimple.png";
@@ -1511,40 +1517,15 @@
 		[popoverController dismissPopoverAnimated:YES];
 		popoverController = nil;
 	}
-    //Get Info
-    //NotificationsCellContent *info = [_info objectForKey:@"NotificationsCellContent"];
-    
-//    //Push Detail convervation
-//    DetailNotificationViewController *notiCtr = nil;
-//    //Store infor which compare if has new Convervation
-//    BOOL hasGlobalView = NO;
-//    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-//    for (UIViewController *viewCtr in viewControllers) {
-//        if ([viewCtr isKindOfClass:[ChatViewController class]]) {
-//            [viewControllers removeObject:viewCtr];
-//            hasGlobalView = YES;
-//        }
-//        if ([viewCtr isKindOfClass:[NotificationsCellContent class]]) {
-//            [viewControllers removeObject:viewCtr];
-//            hasGlobalView = YES;
-//        }
-//    }
-//    if (hasGlobalView) {
-//        [self.navigationController setViewControllers:viewControllers];
-//    }
-//    
-//    notiCtr = [[DetailNotificationViewController alloc]init];
-//    
-//    [self.navigationController pushViewController:notiCtr animated:YES];
-//    
-//    notiCtr = nil;
-//    info = nil;
-//    _info = nil;
+    if (! _info) {
+        return;
+    }
     BOOL hasView = NO;
     if ([self.navigationController.topViewController isKindOfClass:[CommentsViewController class]]) {
         hasView = YES;
-        [self performSelector:@selector(animationView:) withObject:self.navigationController.topViewController.view afterDelay:0.01];
-        return;
+
+        //[self performSelector:@selector(animationView:) withObject:self.navigationController.topViewController.view afterDelay:0.01];
+        [self.navigationController popViewControllerAnimated:NO];
     }
     
     if (hasView == NO) {
@@ -1554,7 +1535,7 @@
             if ([viewCtr isKindOfClass:[CommentsViewController class]]) {
                 popViews = [[NSArray alloc] initWithArray: [self.navigationController popToViewController:viewCtr animated:NO]];
                 [self.navigationController popViewControllerAnimated:NO];
-                hasView = YES;
+                //hasView = YES;
                 break;
             }
         }
@@ -1567,11 +1548,8 @@
         }
     }
     
-    if (listContent.count == 0) {
-        [self loadCells];
-    }
-    
-    CommentsViewController *commentViewCtr = [[CommentsViewController alloc]init];
+    NSNumber *num = [_info objectForKey:@"NotificationsCellContent"];
+    CommentsViewController *commentViewCtr = [[CommentsViewController alloc]initWithPostID:num.integerValue];
     [self.navigationController pushViewController: commentViewCtr animated:YES];
     // = nil;
     commentViewCtr = nil;
@@ -1586,6 +1564,9 @@
 		[popoverController dismissPopoverAnimated:YES];
 		popoverController = nil;
 	}
+    if (! info) {
+        return;
+    }
 }
 
 #pragma mark - MessageDetailDelegate

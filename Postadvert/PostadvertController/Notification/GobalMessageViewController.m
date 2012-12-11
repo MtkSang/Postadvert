@@ -27,7 +27,7 @@
     if (self) {
         // Custom initialization
         listMessageCellContent = [[NSMutableArray alloc] init];
-        //self.contentSizeForViewInPopover = CGSizeMake(100, 100);
+        self.contentSizeForViewInPopover = CGSizeMake(300, 600);
     }
     return self;
 }

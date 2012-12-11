@@ -42,12 +42,14 @@
     hud = [[MBProgressHUD alloc]initWithView:self.view];
     hud.userInteractionEnabled = NO;
     [self.view addSubview:hud];
+    self.contentSizeForViewInPopover = CGSizeMake(300, 600);
     [hud showWhileExecuting:@selector(loadlistMessageCellContent) onTarget:self withObject:nil animated:YES];
 }
 
 - (void)viewDidUnload
 {
     [self setTableView:nil];
+    [self setSearchBar:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -58,7 +60,7 @@
     [super viewDidAppear:animated];
     MBProgressHUD *thread = [[MBProgressHUD alloc]init];
     [thread showWhileExecuting:@selector(changeIcon) onTarget:self withObject:nil animated:NO];
-    [self.tableView setContentOffset:CGPointMake(0, 44) animated:YES];
+    //[self.tableView setContentOffset:CGPointMake(0, 44) animated:YES];
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -75,12 +77,20 @@
     }
     else
     {
+        if (listMessageCellContent.count == 0) {
+            return 1;
+        }
         return [listMessageCellContent count];
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)ctableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (listMessageCellContent.count == 0 && ctableView == self.tableView) {
+        UITableViewCell *cell = [[UITableViewCell alloc]init];
+        cell.textLabel.text = @"You have no Messages.";
+        return cell;
+    }
     static NSString *MyIdentifier = @"UIMessageCell";        
     // Try to retrieve from the table view a now-unused cell with the given identifier.
     UIMessageCell *cell = [ctableView dequeueReusableCellWithIdentifier:MyIdentifier];        

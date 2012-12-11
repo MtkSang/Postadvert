@@ -1,24 +1,32 @@
 //
 //  UINotificationsCell.h
-//  Postadvert
+//  Stroff
 //
-//  Created by Mtk Ray on 6/26/12.
+//  Created by Ray on 12/6/12.
 //  Copyright (c) 2012 Futureworkz. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+#import "OHAttributedLabel.h"
 @class NotificationsCellContent;
-@interface UINotificationsCell : UITableViewCell<UIWebViewDelegate>
+@protocol UINotificationsCellDelegate;
 
-{
-    IBOutlet UILabel *postTime;
-    IBOutlet UIWebView *webView;
-    IBOutlet UIImageView *imageAvatar;
-}
-@property (nonatomic, weak) IBOutlet UILabel *postTime;
-@property (nonatomic, weak) IBOutlet UIImageView *imageAvatar;
-@property (nonatomic, weak) IBOutlet UIWebView *webView;
-@property (nonatomic)                CGFloat cellHeight;
+@interface UINotificationsCell : UITableViewCell <OHAttributedLabelDelegate>
 
-- (CGFloat) setCellContent:(NotificationsCellContent*) content;
+@property (nonatomic, strong) NotificationsCellContent *content;
+@property (weak, nonatomic) IBOutlet UIImageView *userAvartar;
+@property (weak, nonatomic) IBOutlet OHAttributedLabel *text;
+@property (weak, nonatomic) IBOutlet UILabel *created;
+@property (weak, nonatomic) IBOutlet UIImageView *actionIcon;
+@property (weak, nonatomic) IBOutlet id<UINotificationsCellDelegate> delegate;
+
+- (id) initWithNib;
+-(void) setContent:(NotificationsCellContent*)content;
+-(void) updateValueForControl;
+@end
+
+@protocol UINotificationsCellDelegate <NSObject>
+
+- (void) didTapOnCustomLink;
+
 @end
