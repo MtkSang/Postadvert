@@ -19,7 +19,7 @@
 #import "UIImageView+URL.h"
 #import "FriendsViewController.h"
 #import "Profile_GroupsViewController.h"
-
+#import <QuartzCore/QuartzCore.h>
 @interface UserProfileViewController ()
 
 - (IBAction)btn_scrolling_bar_clicked:(id)sender;
@@ -59,6 +59,9 @@
 {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewControllerDidRotation) name:@"viewControllerDidRotation" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewControllerwillAnimateRotation) name:@"viewControllerwillAnimateRotation" object:nil];
+    
     self.clearsSelectionOnViewWillAppear = YES;
     listActivityCell = [[NSMutableArray alloc]init];
     listContent = [[NSMutableArray alloc]init];
@@ -70,6 +73,8 @@
 
 - (void)viewDidUnload
 {
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"viewControllerDidRotation" object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"viewControllerwillAnimateRotation" object:nil];
     [self setAddFriendBtn:nil];
     [self setMessageBtn:nil];
     [super viewDidUnload];
@@ -84,7 +89,26 @@
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    return YES;
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+   
+    
+    
+}
+- (void) viewControllerwillAnimateRotation
+{
+    if (popoverController) {
+        popoverController.view.hidden = YES;
+    }
+}
+
+- (void) viewControllerDidRotation
+{
+    if (popoverController) {
+        [self presentPopover];
+    }
 }
 
 #pragma mark - Table view data source
@@ -230,6 +254,40 @@
 }
 #pragma mark -
 #pragma customAction
+- (IBAction)btnPostClicked:(id)sender {
+    if (popoverController) {
+		[popoverController dismissPopoverAnimated:YES];
+		popoverController = nil;
+        viewUseToGetRectPopover = nil;
+        //[self removeDetailMessageListenner:self];
+	} else {
+        //Add listenner to get data when user choice from Global Message
+        //[self addDetailMessageListenner:self];
+        
+        viewUseToGetRectPopover = (UIView*)sender;
+        UINewStatusViewController *contentViewController = [[UINewStatusViewController alloc] init];
+        contentViewController.delegate = self;
+        //contentViewController.tableView.backgroundColor = [UIColor colorWithRed:235/255.0 green:247/255.0 blue:247/255.0 alpha:1];
+		popoverController = [[WEPopoverController alloc] initWithContentViewController:(UIViewController*)contentViewController];
+		
+		if ([popoverController respondsToSelector:@selector(setContainerViewProperties:)]) {
+			[popoverController setContainerViewProperties:[self defaultContainerViewProperties]];
+		}
+		
+		popoverController.delegate = self;
+		popoverController.passthroughViews = [NSArray arrayWithObject:self.navigationController];
+        [self presentPopover];
+    }
+
+}
+- (void) presentPopover
+{
+    [popoverController presentPopoverFromRect:viewUseToGetRectPopover.frame
+                                       inView: self.view
+                     permittedArrowDirections:(UIPopoverArrowDirectionUp)
+                                     animated:YES];
+}
+
 - (void) setLastUserId:(long) userID
 {
     lastUserId = userID;
@@ -542,7 +600,115 @@
     [self.navigationController pushViewController:viewCtr animated:YES];
 }
 
+#pragma mark WEPopoverControllerDelegate implementation
 
+- (void)popoverControllerDidDismissPopover:(WEPopoverController *)thePopoverController {
+	//Safe to release the popover here
+    popoverController = nil;
+}
+
+- (BOOL)popoverControllerShouldDismissPopover:(WEPopoverController *)thePopoverController {
+	//The popover is automatically dismissed if you click outside it, unless you return NO here
+	return YES;
+}
+- (WEPopoverContainerViewProperties *)defaultContainerViewProperties {
+	WEPopoverContainerViewProperties *ret = [[WEPopoverContainerViewProperties alloc] init];
+	
+	CGSize imageSize = CGSizeMake(30.0f, 30.0f);
+	NSString *bgImageName = @"popoverBgSimple.png";
+	CGFloat bgMargin = 6.0;
+	CGFloat contentMargin = 4.0;
+	
+	ret.leftBgMargin = bgMargin;
+	ret.rightBgMargin = bgMargin;
+	ret.topBgMargin = bgMargin;
+	ret.bottomBgMargin = bgMargin;
+	ret.leftBgCapSize = imageSize.width/2 ;
+	ret.topBgCapSize = imageSize.height/2;
+	ret.bgImageName = bgImageName;
+	ret.leftContentMargin = contentMargin;
+	ret.rightContentMargin = contentMargin;
+	ret.topContentMargin = contentMargin;
+	ret.bottomContentMargin = contentMargin;
+	ret.arrowMargin = 3.0;
+	
+	ret.upArrowImageName = @"popoverArrowUpSimple.png";
+	ret.downArrowImageName = @"popoverArrowDownSimple.png";
+	ret.leftArrowImageName = @"popoverArrowLeftSimple.png";
+	ret.rightArrowImageName = @"popoverArrowRightSimple.png";
+	return ret;
+}
+
+
+- (WEPopoverContainerViewProperties *)improvedContainerViewProperties {
+	
+	WEPopoverContainerViewProperties *props = [[WEPopoverContainerViewProperties alloc] init];
+	NSString *bgImageName = nil;
+	CGFloat bgMargin = 0.0;
+	CGFloat bgCapSize = 0.0;
+	CGFloat contentMargin = 4.0;
+	
+	bgImageName = @"popoverBg.png";
+	
+	// These constants are determined by the popoverBg.png image file and are image dependent
+	bgMargin = 13; // margin width of 13 pixels on all sides popoverBg.png (62 pixels wide - 36 pixel background) / 2 == 26 / 2 == 13
+	bgCapSize = 31; // ImageSize/2  == 62 / 2 == 31 pixels
+	
+	props.leftBgMargin = bgMargin;
+	props.rightBgMargin = bgMargin;
+	props.topBgMargin = bgMargin;
+	props.bottomBgMargin = 100;
+	props.leftBgCapSize = bgCapSize;
+	props.topBgCapSize = bgCapSize;
+	props.bgImageName = bgImageName;
+	props.leftContentMargin = contentMargin;
+	props.rightContentMargin = contentMargin - 1; // Need to shift one pixel for border to look correct
+	props.topContentMargin = contentMargin;
+	props.bottomContentMargin = 100;
+	
+	props.arrowMargin = 4.0;
+	
+	props.upArrowImageName = @"popoverArrowUp.png";
+	props.downArrowImageName = @"popoverArrowDown.png";
+	props.leftArrowImageName = @"popoverArrowLeft.png";
+	props.rightArrowImageName = @"popoverArrowRight.png";
+	return props;
+}
+
+#pragma mark - UINewStatusControllerDelegate
+
+- (void) didChageView
+{
+
+    [self performSelectorOnMainThread:@selector(hidePopover) withObject:nil waitUntilDone:YES];
+    [self performSelectorOnMainThread:@selector(showPopover) withObject:nil waitUntilDone:YES];
+}
+
+- (void) hidePopover
+{
+    [UIView setAnimationDuration:0.8];
+    [UIView setAnimationDidStopSelector:@selector( animationDidStop:finished:context: )];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+    [UIView beginAnimations:@"popover" context:(__bridge void *)popoverController.view];
+    //popoverController.view.frame = CGRectZero;
+    [UIView commitAnimations];
+}
+- (void) showPopover
+{
+    [UIView setAnimationDuration:2];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationDidStopSelector:@selector( animationDidStop:finished:context: )];
+    [UIView beginAnimations:@"popover" context: nil];
+    popoverController = [[WEPopoverController alloc] initWithContentViewController:popoverController.contentViewController];
+    if ([popoverController respondsToSelector:@selector(setContainerViewProperties:)]) {
+        [popoverController setContainerViewProperties:[self defaultContainerViewProperties]];
+    }
+    
+    popoverController.delegate = self;
+    popoverController.passthroughViews = [NSArray arrayWithObject:self.navigationController];
+    [self presentPopover];
+    [UIView commitAnimations];
+}
 @end
 
 

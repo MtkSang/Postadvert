@@ -142,6 +142,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 //    //Send data to LeftViewCntroller
+    if (listMessageCellContent.count == 0) {
+        return;
+    }
     NSDictionary *dict = [NSDictionary dictionaryWithObject:[listMessageCellContent objectAtIndex:indexPath.row] forKey:@"MessageCellContent"];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"DetailMessageListenner" object:nil userInfo:dict];
 }

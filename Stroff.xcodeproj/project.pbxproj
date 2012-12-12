@@ -15,6 +15,10 @@
 		D445168316674A9600A69E46 /* fail_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D445168216674A9600A69E46 /* fail_icon.png */; };
 		D44516871667628000A69E46 /* UploadImagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D44516851667627F00A69E46 /* UploadImagesViewController.m */; };
 		D44516881667628000A69E46 /* UploadImagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D44516861667628000A69E46 /* UploadImagesViewController.xib */; };
+		D45389F01678466500BC5612 /* FriendButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D45389EE1678466500BC5612 /* FriendButtonViewController.m */; };
+		D45389F11678466500BC5612 /* FriendButtonViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D45389EF1678466500BC5612 /* FriendButtonViewController.xib */; };
+		D45389F516785AA100BC5612 /* UINewStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D45389F316785AA100BC5612 /* UINewStatusViewController.m */; };
+		D45389F616785AA100BC5612 /* UINewStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D45389F416785AA100BC5612 /* UINewStatusViewController.xib */; };
 		D45BC8C3164A38E9008D3CBA /* UICommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D45BC8C2164A38E9008D3CBA /* UICommentCell.xib */; };
 		D47DB0711651F1C100E8C9B7 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D47DB06B1651F1C100E8C9B7 /* Default-568h@2x.png */; };
 		D47DB0721651F1C100E8C9B7 /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = D47DB06C1651F1C100E8C9B7 /* Default-Landscape.png */; };
@@ -567,6 +571,12 @@
 		D44516841667627F00A69E46 /* UploadImagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadImagesViewController.h; sourceTree = "<group>"; };
 		D44516851667627F00A69E46 /* UploadImagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadImagesViewController.m; sourceTree = "<group>"; };
 		D44516861667628000A69E46 /* UploadImagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UploadImagesViewController.xib; sourceTree = "<group>"; };
+		D45389ED1678466500BC5612 /* FriendButtonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendButtonViewController.h; sourceTree = "<group>"; };
+		D45389EE1678466500BC5612 /* FriendButtonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendButtonViewController.m; sourceTree = "<group>"; };
+		D45389EF1678466500BC5612 /* FriendButtonViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendButtonViewController.xib; sourceTree = "<group>"; };
+		D45389F216785AA100BC5612 /* UINewStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UINewStatusViewController.h; sourceTree = "<group>"; };
+		D45389F316785AA100BC5612 /* UINewStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINewStatusViewController.m; sourceTree = "<group>"; };
+		D45389F416785AA100BC5612 /* UINewStatusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UINewStatusViewController.xib; sourceTree = "<group>"; };
 		D45BC8C2164A38E9008D3CBA /* UICommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICommentCell.xib; sourceTree = "<group>"; };
 		D47DB06B1651F1C100E8C9B7 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		D47DB06C1651F1C100E8C9B7 /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
@@ -2245,6 +2255,9 @@
 				FA8D6BC715EF7366005FD412 /* ActivityViewController.h */,
 				FA8D6BC815EF7366005FD412 /* ActivityViewController.m */,
 				FA8D6BC915EF7366005FD412 /* ActivityViewController.xib */,
+				D45389F216785AA100BC5612 /* UINewStatusViewController.h */,
+				D45389F316785AA100BC5612 /* UINewStatusViewController.m */,
+				D45389F416785AA100BC5612 /* UINewStatusViewController.xib */,
 			);
 			name = "Status Updates";
 			sourceTree = "<group>";
@@ -2252,6 +2265,9 @@
 		FA7DF8A416410A8C003E823D /* Friend */ = {
 			isa = PBXGroup;
 			children = (
+				D45389ED1678466500BC5612 /* FriendButtonViewController.h */,
+				D45389EE1678466500BC5612 /* FriendButtonViewController.m */,
+				D45389EF1678466500BC5612 /* FriendButtonViewController.xib */,
 				FA7DF8AC1641158A003E823D /* profile_message.png */,
 				FA7DF8A516410A8C003E823D /* FriendsViewController.h */,
 				FA7DF8A616410A8C003E823D /* FriendsViewController.m */,
@@ -2914,6 +2930,8 @@
 				D445168316674A9600A69E46 /* fail_icon.png in Resources */,
 				D44516881667628000A69E46 /* UploadImagesViewController.xib in Resources */,
 				D491EF5316705938006A2D49 /* comment_notification_icon.png in Resources */,
+				D45389F11678466500BC5612 /* FriendButtonViewController.xib in Resources */,
+				D45389F616785AA100BC5612 /* UINewStatusViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3094,6 +3112,8 @@
 				D445167A16671CE100A69E46 /* UploadImagesController.m in Sources */,
 				D44516871667628000A69E46 /* UploadImagesViewController.m in Sources */,
 				D491EF4D16703D40006A2D49 /* UINotificationsCell.m in Sources */,
+				D45389F01678466500BC5612 /* FriendButtonViewController.m in Sources */,
+				D45389F516785AA100BC5612 /* UINewStatusViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

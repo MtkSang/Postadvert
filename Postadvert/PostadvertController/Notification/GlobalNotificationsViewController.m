@@ -265,6 +265,9 @@
 - (void)tableView:(UITableView *)ctableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [ctableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (listNotificationsCellContent.count == 0) {
+        return;
+    }
     //    //Send data to DetailViewCntroller
     NotificationsCellContent *cellContent = (NotificationsCellContent*)[listNotificationsCellContent objectAtIndex:indexPath.row];
     NSNumber *num = [NSNumber numberWithInteger:cellContent.target_ID ];

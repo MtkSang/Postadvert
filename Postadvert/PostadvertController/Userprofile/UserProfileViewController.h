@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
 #import "PullRefreshTableViewController.h"
+#import "WEPopoverController.h"
 @class CredentialInfo;
-@interface UserProfileViewController :PullRefreshTableViewController<MBProgressHUDDelegate>
+#import "UINewStatusViewController.h"
+@interface UserProfileViewController :PullRefreshTableViewController<MBProgressHUDDelegate,WEPopoverControllerDelegate, UINewStatusViewControllerDelegate>
 {
     NSMutableArray *listContent;
     NSMutableArray *listActivityCell;
@@ -24,12 +26,15 @@
     MBProgressHUD *HUD;
     BOOL isLoadData;
     long    lastUserId;
+    UIView *viewUseToGetRectPopover;
+    WEPopoverController *popoverController;
 }
 @property (nonatomic, weak) IBOutlet UIView *headerViewSection;
 @property (weak, nonatomic) IBOutlet UIButton *addFriendBtn;
 @property (weak, nonatomic) IBOutlet UIButton *messageBtn;
 @property (nonatomic, weak) UINavigationController *navigationController;
 
+- (IBAction)btnPostClicked:(id)sender;
 - (void) setLastUserId:(long) userID;
 - (id)initWithUserID:(long)userID;
 @end

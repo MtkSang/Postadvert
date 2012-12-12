@@ -302,6 +302,9 @@
 {
     [ctableView deselectRowAtIndexPath:indexPath animated:YES];
     //    //Send data to LeftViewCntroller
+    if (listAlertCellContent.count == 0) {
+        return;
+    }
     AlertCellContent *cellContent = [listAlertCellContent objectAtIndex:indexPath.row];
     NSDictionary *dict = [NSDictionary dictionaryWithObject:cellContent forKey:@"AlertCellContent"];
     if (self.delegate) {

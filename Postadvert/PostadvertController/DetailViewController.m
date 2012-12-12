@@ -298,7 +298,12 @@
     
     NSLog(@"%@ Frame: %f %f %f %f", self , self.overlay.frame.size.width, self.overlay.frame.size.height, customViewCtr.view.frame.size.width, customViewCtr.view.frame.size.height);
     if (popoverController) {
+        [UIView setAnimationDuration:0.8];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        [UIView setAnimationDidStopSelector:@selector( animationDidStop:finished:context: )];
+        [UIView beginAnimations:@"popover" context: nil];
         [self presentPopover];
+        [UIView commitAnimations];
     }
 }
 //

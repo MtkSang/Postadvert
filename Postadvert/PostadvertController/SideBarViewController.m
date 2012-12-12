@@ -166,6 +166,7 @@ static void singleton_remover() {
 //}
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"viewControllerwillAnimateRotation" object:nil];
     [self performSelector:@selector(updateWhenRotate) withObject:nil afterDelay:0.0];
     //[self setState:sideBarState];
     
@@ -180,6 +181,7 @@ static void singleton_remover() {
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     NSLog(@"Rotated %@", self);
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"viewControllerDidRotation" object:nil];
     //[self setState:sideBarState];
 }
 - (void) viewWillAppear:(BOOL)animated{
