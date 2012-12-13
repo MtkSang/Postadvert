@@ -17,6 +17,7 @@
 //
 #import "PostCellContent.h"
 #import "ActivityContent.h"
+#import "CredentialInfo.h"
 @interface PostadvertControllerV2 ()
 -(void) showAlertWithMessage: (NSString*) msg andTitle: (NSString*) title;
 @end
@@ -169,6 +170,44 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
                                               otherButtonTitles:@"OK", nil];
     [baseAlert show];
     
+}
+- (long) registrationCreate:(CredentialInfo *)credential
+{
+    //userRegister($fist_name, $last_name, $username, $email, $password)
+    return [self registrationCreateWithFirstName:credential.firstName lastName:credential.lastName userName:credential.usernamePU email:credential.email password:credential.passwordPU];
+}
+
+- (long) registrationCreateWithFirstName:(NSString *)fristName lastName:(NSString *)lastName userName:(NSString *)userName email:(NSString *)email password:(NSString *)password
+{
+    //userRegister($fist_name, $last_name, $username, $email, $password)
+    id data;
+    NSString *functionName;
+    NSArray *paraNames;
+    NSArray *paraValues;
+    functionName = @"userRegister";
+    paraNames = [NSArray arrayWithObjects:@"fist_name", @"last_name", @"username", @"email", @"password", nil];
+    paraValues = [NSArray arrayWithObjects:fristName, lastName, userName, email, password, nil];
+    
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+    long userID = 0;
+    @try {
+        userID = [[data objectForKey:@"user_id"] integerValue];
+        NSInteger errorCode = [[data objectForKey:@"error_code"] integerValue];
+        
+        if (errorCode < 0) {
+            NSString *message = [data objectForKey:@"message"];
+            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error!" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alertView show];
+        }
+        
+    }
+    @catch (NSException *exception) {
+
+    }
+    @finally {
+    }
+    
+    return userID;
 }
 
 - (long) registrationLogin:(NSString *)userName :(NSString *)password

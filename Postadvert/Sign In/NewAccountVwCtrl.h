@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class PostAdvertController;
-@interface NewAccountVwCtrl : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+@interface NewAccountVwCtrl : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 {
     PostAdvertController             *palUpCtrl;
     
@@ -23,6 +23,7 @@
 
 @property (nonatomic, strong) PostAdvertController                   *palUpCtrl;
 @property (nonatomic, strong) NSMutableArray                    *listItems;
+@property (strong, nonatomic) IBOutlet UIButton *btnCreateAccount;
 
 
 -(IBAction) touchBackBtn: (id) sender;

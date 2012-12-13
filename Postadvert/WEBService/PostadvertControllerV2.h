@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 @class Reachability;
 @class PostCellContent;
+@class CredentialInfo;
 @interface PostadvertControllerV2 : NSObject
 {
     Reachability* internetReachable;
@@ -22,13 +23,15 @@
 +(PostadvertControllerV2*)sharedPostadvertController;
 - (void) checkNetworkStatus:(NSNotification *)notice;
 - (BOOL) isConnectToWeb;
-
+-(void) showAlertWithMessage: (NSString*) msg andTitle: (NSString*) title;
 
 + (PostCellContent*)getaPostCellWithDict:(NSDictionary*)dict;
 
 - (id) jsonObjectFromWebserviceWithFunctionName:(NSString*/*Function name*/)functionName parametterName: (NSArray*/*Parametter array */) paramettersName parametterValue:(NSArray*/*parameters values*/) paramettersValus;
 - (id) jsonObjectFromWebserviceWithFunctionName:(NSString*/*Function name*/)functionName parametterName: (NSArray*/*Parametter array */) paramettersName parametterValue:(NSArray*/*parameters values*/) paramettersValus callBackDelegate:(id) delegate;
-
+- (long)registrationCreate:(CredentialInfo *) credential;
+- (long)registrationCreateWithFirstName:(NSString*)fristName lastName:(NSString*)lastName userName:(NSString*)userName email:(NSString*)email password:(NSString*) password;
+//- (void) getFullProfile;
 - (long) registrationLogin:(NSString *)userName :(NSString *)password;
 -(void) testFunction;
 - (id) getPostsWithWall:(NSString*) wallId from:(NSString*) start andCount:(NSString*) count WithUserID:(NSString*)userID;

@@ -32,7 +32,7 @@
 - (BOOL)openURL:(NSURL *)url
 {
     if ([[url absoluteString] isEqualToString:@"Localhost"]) {
-        return [self openURL:[NSURL URLWithString:@"http://www.postadvert.com"] forceOpenInSafari:YES];
+        return [self openURL:[NSURL URLWithString:@"http://www.stroff.com"] forceOpenInSafari:YES];
     }
     return [self openURL:url forceOpenInSafari:NO];
 }

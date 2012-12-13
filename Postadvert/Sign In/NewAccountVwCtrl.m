@@ -1,9 +1,10 @@
 //
 
 #import "NewAccountVwCtrl.h"
-#import "PostAdvertController.h"
+#import "PostadvertControllerV2.h"
 #import "CredentialInfo.h"
 #import <QuartzCore/QuartzCore.h>
+#import "MyApplication.h"
 
 #import "Constants.h"
 
@@ -67,8 +68,8 @@
 {
     [super viewDidLoad];
     [self.navigationController.navigationBar setHidden:YES];
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"BG1_revert.png"]];
-    self.view.backgroundColor = [UIColor clearColor];
+    //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"BG1_revert.png"]];
+    //self.view.backgroundColor = [UIColor clearColor];
     // Register Notification event for Keyboard
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWilBeShown:)
@@ -93,6 +94,7 @@
 - (void)viewDidUnload
 {
     NSLog(@"NewAccountBaseVwContrl : viewDidUnload");
+    [self setBtnCreateAccount:nil];
     [super viewDidUnload];
     self.navigationController.navigationBarHidden = NO;
     [listItems removeAllObjects];
@@ -132,9 +134,11 @@
 {
     
     NSDictionary *userInfo = [aNotification userInfo];
+    CGRect mainSize = [[UIScreen mainScreen] bounds];
+    //mainSize = [self.view convertRect:mainSize fromView:nil];
     CGRect frame = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
     frame = [self.view convertRect:frame fromView:nil];
-    [(UIScrollView*)self.view setContentSize:CGSizeMake(frame.size.width, 480 + frame.size.height)];
+    [(UIScrollView*)self.view setContentSize:CGSizeMake(frame.size.width, mainSize.size.height)];
     
     CGPoint pt = CGPointZero;
     
@@ -181,12 +185,16 @@
 // Called when the UIKeyboardWillHideNotification is sent
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
-//    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-//    ((UIScrollView*) self.view).contentInset = contentInsets;
-//    ((UIScrollView*) self.view).scrollIndicatorInsets = contentInsets;
-
+    [UIView setAnimationDuration:10.0];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDidStopSelector:@selector( animationDidStop:finished:context: )];
+    //[(UIScrollView*)self.view setContentSize:self.view.frame.size];
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    ((UIScrollView*) self.view).contentInset = contentInsets;
+    ((UIScrollView*) self.view).scrollIndicatorInsets = contentInsets;
     [(UIScrollView*)self.view setContentOffset:CGPointZero animated:YES];
     ((UIScrollView*)self.view).scrollEnabled = NO;
+    [UIView commitAnimations];
 }
 
 
@@ -195,61 +203,25 @@
 // Check if user available
 - (void)checkForUserAvailable: (NSString*) userName
 {
-    //PalUpController   *palUpCtrl = (PalUpController *)cAppiPhoneDelegate.palUpController;
-    
-    if(![palUpCtrl isConnectToWeb]){
-        [palUpCtrl showAlertWithMessage:@"This device does not connect to Internet." andTitle:@"PalUp"];
-        
+    if(![[PostadvertControllerV2 sharedPostadvertController] isConnectToWeb]){
+        [[PostadvertControllerV2 sharedPostadvertController] showAlertWithMessage:@"This device does not connect to Internet." andTitle:@"PalUp"];
         return;
     }
     
+    //checkUsername($username, $from_where = 'app')
+    id data;
+    NSString *functionName;
+    NSArray *paraNames;
+    NSArray *paraValues;
+    functionName = @"checkUsername";
+    paraNames = [NSArray arrayWithObjects:@"username", @"from_where", nil];
+    paraValues = [NSArray arrayWithObjects:userName, @"app", nil];
     
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+    
+    NSInteger value = [[data objectForKey:@"error_code"] integerValue];
 
-//    NSLog(@"checkForUserAvailable, %@", userName);
-    NSString *post = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-					  "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
-                        "<soap:Body>"
-                            "<CheckUsername xmlns='http://50.19.216.234/palup/server1.php'>"
-                                "<userName>%@</userName>"
-                            "</CheckUsername>"
-                        "</soap:Body>"
-					  "</soap:Envelope>", userName];
-	
-	NSLog(@"%@", post);
-	NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-	NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
-	
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init]; 
-	[request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@#%@", cServiceLinks, cCheckUsername]]];
-	[request setHTTPMethod:@"POST"];
-	[request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-	[request setValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-	[request setHTTPBody:postData];
-    
-	NSError *error;
-	NSURLResponse *response;
-	NSData *data= [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    
-//    NSLog(@"=====================");
-    NSString *encodeData=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];	
-/*    NSString *data1 = [encodeData stringByReplacingOccurrencesOfString:@"&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;" withString:@""];
-    [encodeData release];
-    data1 = [data1 stringByReplacingOccurrencesOfString:@"&amp;lt;" withString:@"<"];
-    //    data1 = [data1 stringByReplacingOccurrencesOfString:@"&amp;gt;" withString:@">"];
-    data1 = [data1 stringByReplacingOccurrencesOfString:@"&amp;amp;" withString:@"&"];
-    data1 = [data1 stringByReplacingOccurrencesOfString:@"&lt;" withString:@"<"];
-    data1 = [data1 stringByReplacingOccurrencesOfString:@"&gt;" withString:@">"];*/
-    
-//	NSLog(@"%@", encodeData);
-//    NSLog(@"=====================");
-
-    NSScanner *scanner = [NSScanner scannerWithString:encodeData];    
-    NSString *strResult;
-    [scanner scanUpToString:@"<return xsi:type=\"xsd:int\">" intoString:nil];
-    [scanner scanString:@"<return xsi:type=\"xsd:int\">" intoString:nil];
-    [scanner scanUpToString:@"</return>" intoString:&strResult];
-    NSLog(@"strResult: %@", strResult);
-    if ([strResult intValue]) {
+    if (value < 0) {
         lblUsrNmAvalidChk.text = @"User name is not available";
         lblUsrNmAvalidChk.textColor = [UIColor redColor];
         imgUsrNmAvalidChk.image = [UIImage imageNamed:@"icon_invalid_1.png"];
@@ -284,12 +256,28 @@
 - (NSInteger) numberOfSectionsInTableView: (UITableView *) tableView 
 {
     NSLog(@"List: %d %@",listItems.count, listItems);
-    return [listItems count];
+    return [listItems count] + 1;
 } 
 
 // Draw for cell table. Please see more help from Apple
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == listItems.count) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellWithButtonCreate"];
+        if(cell == nil)
+        {
+            //cell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 44.0)
+            //                              reuseIdentifier:newAccStr];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellWithButtonCreate"];
+            cell.frame = CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0);
+            cell.backgroundColor = [UIColor clearColor];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            self.btnCreateAccount.center = cell.center;
+            [cell addSubview:self.btnCreateAccount];
+        }
+        return cell;
+    }
+    
     static NSString *newAccStr = @"NewAccountTblId";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:newAccStr];
     if(cell == nil) 
@@ -297,7 +285,7 @@
         //cell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 44.0)
          //                              reuseIdentifier:newAccStr];
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:newAccStr];
-        cell.frame = CGRectMake(0.0, 0.0, 320.0, 44.0);
+        cell.frame = CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0);
         cell.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
@@ -463,33 +451,42 @@
 
 -(IBAction) touchCreateAccountBtn: (id) sender
 {
-    NSLog(@"User name: %@", [(UITextView*)[self.view viewWithTag:3] text]);
-    NSLog(@"Mail address: %@", [(UITextView*)[self.view viewWithTag:4] text]);
-    NSLog(@"Password: %@", [(UITextView*)[self.view viewWithTag:5] text]);
 
-    CredentialInfo *credential1 = [ [CredentialInfo alloc] initWithEmail:[(UITextView*)[self.view viewWithTag:4] text]
-                                                               userName:[(UITextView*)[self.view viewWithTag:3] text] 
-                                                               password:[(UITextView*)[self.view viewWithTag:5] text] ];
+    CredentialInfo *credential1 = [ [CredentialInfo alloc] initWithFirstName:[(UITextView*)[self.view viewWithTag:1] text]
+                                                                    lastname:[(UITextView*)[self.view viewWithTag:2] text]
+                                                                       email:[(UITextView*)[self.view viewWithTag:4] text]
+                                                                    userName:[(UITextView*)[self.view viewWithTag:3] text]
+                                                                    password:[(UITextView*)[self.view viewWithTag:5] text] ];
 
-    long logInID = [palUpCtrl registrationCreate:credential1];
+    //userRegister($fist_name, $last_name, $username, $email, $password)
+    long logInID = [[PostadvertControllerV2 sharedPostadvertController] registrationCreate:credential1];
     if (logInID) {
         NSUserDefaults* dababase = [NSUserDefaults standardUserDefaults];
         long temp = [dababase integerForKey:@"UserID"];
         if(!temp){
             [dababase setInteger:logInID forKey:@"UserID"];
+            [dababase setObject:credential1.usernamePU forKey:@"userNamePA"];
+            [dababase setObject:credential1.email forKey:@"email"];
+            [dababase setObject:credential1.passwordPU forKey:@"passwordPA"];
             [dababase synchronize];
         }
+        //[[PostadvertControllerV2 sharedPostadvertController] getFullProfile];
+        UIAlertView *baseAlert = [[UIAlertView alloc]
+                                  initWithTitle: @"Successful!"
+                                  message: @"Your account has been created.\nPlease check your email and active your account."
+                                  delegate:self
+                                  cancelButtonTitle:@"Cancel"
+                                  otherButtonTitles:@"OK", nil];
+        [baseAlert show];
         
-        [palUpCtrl getFullProfile];
-        [self.navigationController popViewControllerAnimated:YES];
         NSLog(@"Log in ID = %ld", logInID);
     } else {
         UIAlertView *baseAlert = [[UIAlertView alloc]
                                   initWithTitle: @"Alert!"
                                   message: @"Failed to create account. Please try again."
-                                  delegate:self
-                                  cancelButtonTitle:nil
-                                  otherButtonTitles:@"OK", nil];
+                                  delegate:nil
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles: nil];
         [baseAlert show];
     }
 
@@ -541,6 +538,18 @@
             break;
     }
 
+}
+
+#pragma mark - AlertView Delegate
+- (void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (alertView.cancelButtonIndex == buttonIndex) {
+
+    }else
+    {
+        [(MyApplication*)[UIApplication sharedApplication] openURL:[[NSURL alloc] initWithString:@"www.google.com"] forceOpenInSafari:YES];
+    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

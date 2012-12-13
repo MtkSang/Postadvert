@@ -43,8 +43,6 @@
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.topView removeFromSuperview];
-    [self.view addSubview:self.topView];
 }
 - (void)didReceiveMemoryWarning
 {

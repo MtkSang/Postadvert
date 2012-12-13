@@ -83,6 +83,14 @@
 
     return self;
 }
+-(id) initWithFirstName:(NSString*)first_Name lastname:(NSString*)lastName email:(NSString*) emailAddr userName:(NSString*)usrName password:(NSString*) pwd
+{
+    if (self) {
+        self.firstName = first_Name;
+        self.lastName = lastName;
+    }
+    return [self initWithEmail:emailAddr userName:usrName password:pwd];
+}
 
 -(id) initWithEmail:(NSString*) emailAddr userName:(NSString*)usrName password:(NSString*) pwd
 {

@@ -75,6 +75,7 @@
 @property(nonatomic, copy) NSString                    *usernameET;
 @property(nonatomic, copy) NSString                    *passwordET;
 @property(nonatomic, copy) NSString                    *firstName;
+@property(nonatomic, copy) NSString                    *lastName;
 @property(nonatomic, copy) NSString                    *interest;
 @property(nonatomic, copy) NSString                    *interestTypeID;
 @property(nonatomic, copy) NSString                    *registrationStatusTypeID;
@@ -101,6 +102,7 @@
 
 - (id) initWithEmail:(NSString*) emailAddr password:(NSString*) pwd;
 - (id) initWithEmail:(NSString*) emailAddr userName:(NSString*) usrName password:(NSString*) pwd;
+-(id) initWithFirstName:(NSString*)first_Name lastname:(NSString*)lastName email:(NSString*) emailAddr userName:(NSString*)usrName password:(NSString*) pwd;
 
 - (long) getRegistrationId;
 - (NSString*) getUserNamePU;
