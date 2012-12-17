@@ -41,6 +41,7 @@
 		D4B20914166467270024EBF3 /* comment_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4B20912166467270024EBF3 /* comment_icon.png */; };
 		D4DD9036165F60C9004033E4 /* MyUIImagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4DD9034165F60C9004033E4 /* MyUIImagePickerViewController.m */; };
 		D4DD9037165F60C9004033E4 /* MyUIImagePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4DD9035165F60C9004033E4 /* MyUIImagePickerViewController.xib */; };
+		D4E38EEE167F207B00FDB63B /* NewAccountVwCtrl_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4E38EED167F207B00FDB63B /* NewAccountVwCtrl_iPad.xib */; };
 		D4FEF629165625AE00CE1129 /* read_message.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FEF627165625AE00CE1129 /* read_message.png */; };
 		D4FEF62A165625AE00CE1129 /* unread_message.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FEF628165625AE00CE1129 /* unread_message.png */; };
 		D4FEF62D16562E8500CE1129 /* unread_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FEF62C16562E8500CE1129 /* unread_icon.png */; };
@@ -602,6 +603,7 @@
 		D4DD9033165F60C9004033E4 /* MyUIImagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyUIImagePickerViewController.h; sourceTree = "<group>"; };
 		D4DD9034165F60C9004033E4 /* MyUIImagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyUIImagePickerViewController.m; sourceTree = "<group>"; };
 		D4DD9035165F60C9004033E4 /* MyUIImagePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyUIImagePickerViewController.xib; sourceTree = "<group>"; };
+		D4E38EED167F207B00FDB63B /* NewAccountVwCtrl_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewAccountVwCtrl_iPad.xib; sourceTree = "<group>"; };
 		D4FEF627165625AE00CE1129 /* read_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = read_message.png; sourceTree = "<group>"; };
 		D4FEF628165625AE00CE1129 /* unread_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unread_message.png; sourceTree = "<group>"; };
 		D4FEF62C16562E8500CE1129 /* unread_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unread_icon.png; sourceTree = "<group>"; };
@@ -1515,6 +1517,7 @@
 			isa = PBXGroup;
 			children = (
 				FA03220D157734E3002EB93D /* NewAccountVwCtrl.xib */,
+				D4E38EED167F207B00FDB63B /* NewAccountVwCtrl_iPad.xib */,
 				FA03220E157734E3002EB93D /* SignInVwCtrl.xib */,
 			);
 			path = xib;
@@ -2932,6 +2935,7 @@
 				D491EF5316705938006A2D49 /* comment_notification_icon.png in Resources */,
 				D45389F11678466500BC5612 /* FriendButtonViewController.xib in Resources */,
 				D45389F616785AA100BC5612 /* UINewStatusViewController.xib in Resources */,
+				D4E38EEE167F207B00FDB63B /* NewAccountVwCtrl_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

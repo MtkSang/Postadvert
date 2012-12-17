@@ -331,7 +331,14 @@
 }
 - (IBAction)touchSignUpForPostAdvert:(id)sender
 {
-    NewAccountVwCtrl *newAccVwCtrl = [[NewAccountVwCtrl alloc] init];
+    NewAccountVwCtrl *newAccVwCtrl ;
+    
+    if ([[[UIDevice currentDevice] model] isEqualToString:@"iPad"]) {
+        newAccVwCtrl = [[NewAccountVwCtrl alloc] initWithNibName:@"NewAccountVwCtrl_iPad" bundle:nil];
+    }
+    else
+        newAccVwCtrl = [[NewAccountVwCtrl alloc] initWithNibName:@"NewAccountVwCtrl" bundle:nil];
+    
     [self.navigationController pushViewController:newAccVwCtrl animated:YES];
     self.navigationController.navigationBar.hidden = YES;
 }

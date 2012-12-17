@@ -12,7 +12,6 @@
 @implementation NewAccountVwCtrl
 
 @synthesize listItems;
-@synthesize palUpCtrl;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -22,15 +21,6 @@
         // Custom initialization
         [self initTableView];
     }
-    return self;
-}
-
--(id) initWithPostAdvertController:(PostAdvertController *) postAdvertController
-{
-    if (self) {
-        self.palUpCtrl = postAdvertController;
-    }
-    
     return self;
 }
 
@@ -77,13 +67,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWilBeShown:)
-                                                 name:UITextFieldTextDidBeginEditingNotification object:nil];
-    //[[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didParseDatafromServer) name:cRegistrationCreateFunc object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(keyboardWilBeShown:)
+//                                                 name:UITextFieldTextDidBeginEditingNotification object:nil];
+//    //[[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didParseDatafromServer) name:cRegistrationCreateFunc object:nil];
     
     [self initTableView];
-    //tableVw = [[UITableView alloc]init];
+    tableVw.tableHeaderView = self.topView;
     tableVw.scrollEnabled = NO;
     tableVw.separatorColor = [UIColor clearColor];
     tableVw.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -93,8 +83,8 @@
 
 - (void)viewDidUnload
 {
-    NSLog(@"NewAccountBaseVwContrl : viewDidUnload");
     [self setBtnCreateAccount:nil];
+    [self setTopView:nil];
     [super viewDidUnload];
     self.navigationController.navigationBarHidden = NO;
     [listItems removeAllObjects];
@@ -105,13 +95,10 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return NO;
-    // Return YES for supported orientations
+    return YES;
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
     //return YES;
 }
-
-
 
 /////////////////////
 - (void)textFieldDidBeginEditing:(UITextField *)textField
@@ -132,21 +119,30 @@
 // Called when the UIKeyboardDidShowNotification is sent.
 - (void)keyboardWilBeShown:(NSNotification*)aNotification
 {
+    if ([[[UIDevice currentDevice] model] isEqualToString:@"iPad"]) {
+        return;
+    }
     
     NSDictionary *userInfo = [aNotification userInfo];
-    CGRect mainSize = [[UIScreen mainScreen] bounds];
-    //mainSize = [self.view convertRect:mainSize fromView:nil];
+    CGRect mainBounds = [[UIScreen mainScreen] bounds];
+    CGRect mainFrame = [self.view convertRect:mainBounds fromView:nil];
     CGRect frame = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
     frame = [self.view convertRect:frame fromView:nil];
-    [(UIScrollView*)self.view setContentSize:CGSizeMake(frame.size.width, mainSize.size.height)];
+    if (frame.size.height != 0 ) {
+        keyboardFrame = frame;
+    }
+    frame = keyboardFrame;
+    CGRect viewFrame = self.view.frame;
+    viewFrame.size.height = mainFrame.size.height - keyboardFrame.size.height;
+    //self.view.frame = viewFrame;
+    [(UIScrollView*)self.view setContentSize:CGSizeMake(keyboardFrame.size.width, mainBounds.size.height + keyboardFrame.size.height)];
     
     CGPoint pt = CGPointZero;
     
-    ((UIScrollView*)self.view).scrollEnabled = YES;
-    
+
     switch (activeField.tag) {
         case 1:{
-            pt = CGPointMake(0.0, 70.0);
+            pt = CGPointMake(0.0, 52.0);
         } break;
             
         case 2:{
@@ -178,23 +174,36 @@
             break;
     }
     
+    if ([[UIApplication sharedApplication]statusBarOrientation] != UIDeviceOrientationPortrait) {
+        pt = (CGPoint) {0, 51 * activeField.tag};
+    }
     
+    
+    [(UIScrollView*)self.view setScrollEnabled:YES];
     [(UIScrollView*)self.view setContentOffset:pt animated:YES];
 }
 
 // Called when the UIKeyboardWillHideNotification is sent
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
-    [UIView setAnimationDuration:10.0];
-    [UIView setAnimationDelegate:self];
-    [UIView setAnimationDidStopSelector:@selector( animationDidStop:finished:context: )];
-    //[(UIScrollView*)self.view setContentSize:self.view.frame.size];
+//    [UIView beginAnimations:nil context:(__bridge void*)tableVw];
+//    [UIView setAnimationDuration:0.1];
+//    [UIView setAnimationDelegate:self];
+//    [UIView setAnimationDidStopSelector:@selector( animationDidStop:finished:context: )];
+    
+    CGRect mainBounds = [[UIScreen mainScreen] bounds];
+    CGRect mainFrame = [self.view convertRect:mainBounds fromView:nil];
+    CGRect viewFrame = self.view.frame;
+    viewFrame.size.height = mainFrame.size.height;
+    self.view.frame = viewFrame;
+    
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    ((UIScrollView*) self.view).contentInset = contentInsets;
-    ((UIScrollView*) self.view).scrollIndicatorInsets = contentInsets;
-    [(UIScrollView*)self.view setContentOffset:CGPointZero animated:YES];
-    ((UIScrollView*)self.view).scrollEnabled = NO;
-    [UIView commitAnimations];
+    ((UIScrollView*)self.view).contentInset = contentInsets;
+    ((UIScrollView*)self.view).scrollIndicatorInsets = contentInsets;
+    [((UIScrollView*)self.view) setContentOffset:CGPointZero animated:YES];
+    
+    ((UIScrollView*)self.view).scrollEnabled =YES;
+//    [UIView commitAnimations];
 }
 
 
@@ -204,7 +213,7 @@
 - (void)checkForUserAvailable: (NSString*) userName
 {
     if(![[PostadvertControllerV2 sharedPostadvertController] isConnectToWeb]){
-        [[PostadvertControllerV2 sharedPostadvertController] showAlertWithMessage:@"This device does not connect to Internet." andTitle:@"PalUp"];
+        [[PostadvertControllerV2 sharedPostadvertController] showAlertWithMessage:@"This device does not connect to Internet." andTitle:@"Stroff"];
         return;
     }
     
@@ -262,6 +271,12 @@
 // Draw for cell table. Please see more help from Apple
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    CGSize s = tableView.frame.size;
+    if ([[[UIDevice currentDevice] model] isEqualToString:@"iPad"]) {
+        [tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+        tableView.backgroundColor = [UIColor colorWithRed:79/255.0 green:178/255.0 blue:187/255.0 alpha:1];
+        tableView.separatorColor = [UIColor colorWithRed:79/255.0 green:178/255.0 blue:187/255.0 alpha:1];
+    }
     if (indexPath.section == listItems.count) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellWithButtonCreate"];
         if(cell == nil)
@@ -269,10 +284,13 @@
             //cell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 44.0)
             //                              reuseIdentifier:newAccStr];
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellWithButtonCreate"];
-            cell.frame = CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0);
+            cell.frame = CGRectMake(0.0, 0.0, s.width, 44.0);
             cell.backgroundColor = [UIColor clearColor];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             self.btnCreateAccount.center = cell.center;
+            if ([[[UIDevice currentDevice] model] isEqualToString:@"iPad"]) {
+                cell.contentView.backgroundColor = [UIColor colorWithRed:79/255.0 green:178/255.0 blue:187/255.0 alpha:1];
+            }
             [cell addSubview:self.btnCreateAccount];
         }
         return cell;
@@ -284,22 +302,22 @@
     {         
         //cell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 44.0)
          //                              reuseIdentifier:newAccStr];
+        unsigned int section = [indexPath section];
+        
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:newAccStr];
-        cell.frame = CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0);
+        cell.frame = CGRectMake(0.0, 0.0, s.width, 44.0);
         cell.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-        unsigned int section = [indexPath section];
-        CGSize s = tableView.frame.size;
         
-        UITextField* textField = [[UITextField alloc] initWithFrame:CGRectMake(10.0, 10.0, s.width - 35.0, 23.0)];
+        UITextField* textField = [[UITextField alloc] initWithFrame:CGRectMake(10.0, 10.0, s.width - 18, 23.0)];
         textField.delegate = self;
         [textField addTarget:self action:@selector(didEndOnExitTxt:) 
             forControlEvents:UIControlEventEditingDidEndOnExit];
         textField.font = [UIFont fontWithName:@"Helvetica" size:16.0];
         textField.textColor = [UIColor blackColor];
         textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        textField.autocapitalizationType = UITextAutocapitalizationTypeNone;        
+        textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        [textField setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
         textField.tag = section + 1;
         [textField setPlaceholder:[listItems objectAtIndex:section]];
         
@@ -339,19 +357,19 @@
         [cell.contentView addSubview:textField];
         
         if (section == 2) {
-            UIImageView *imageBG = [[UIImageView alloc ] initWithFrame:CGRectMake(9.0, 0.0, 302.0, 60.0)] ;
+            UIImageView *imageBG = [[UIImageView alloc ] initWithFrame:CGRectMake(9.0, 0.0, s.width - 18, 60.0)] ;
             imageBG.opaque = NO;
             //    imageBG.layer.cornerRadius = 10;
             //    imageBG.layer.masksToBounds = YES;
             imageBG.image = [UIImage imageNamed:@"cell_updown_enable.png"];
             [cell setBackgroundView:imageBG];
 
-            imgUsrNmAvalidChk = [[UIImageView alloc ] initWithFrame:CGRectMake(15.0, 43.0, 12.0, 12.0)];
+            imgUsrNmAvalidChk = [[UIImageView alloc ] initWithFrame:CGRectMake(15.0, 40.0, 12.0, 12.0)];
             imgUsrNmAvalidChk.opaque = NO;
             //imgUsrNmAvalidChk.image = [UIImage imageNamed:@"icon_valid_1.png"];
             [cell.contentView addSubview: imgUsrNmAvalidChk];
  
-            lblUsrNmAvalidChk = [[UILabel alloc] initWithFrame:CGRectMake(30.0, 43.0, 200.0, 14.0)];
+            lblUsrNmAvalidChk = [[UILabel alloc] initWithFrame:CGRectMake(30.0, 40.0, 200.0, 14.0)];
             lblUsrNmAvalidChk.text = @"";
             lblUsrNmAvalidChk.textColor = [UIColor greenColor];
             lblUsrNmAvalidChk.opaque = NO;
@@ -360,7 +378,7 @@
             [cell.contentView addSubview:lblUsrNmAvalidChk];
 
         } else {
-            UIImageView *imageBG = [[UIImageView alloc ] initWithFrame:CGRectMake(9.0, 0.0, 302.0, 55.0)] ;
+            UIImageView *imageBG = [[UIImageView alloc ] initWithFrame:CGRectMake(9.0, 0.0, s.width - 18, 55.0)] ;
             imageBG.opaque = NO;
             //    imageBG.layer.cornerRadius = 10;
             //    imageBG.layer.masksToBounds = YES;
@@ -418,6 +436,9 @@
         //return nil;
     }
 
+    if ([[[UIDevice currentDevice]model] isEqualToString:@"iPad"]) {
+        view.backgroundColor = [UIColor colorWithRed:79/255.0 green:178/255.0 blue:187/255.0 alpha:1];
+    }
     return view;
 }
 
@@ -494,6 +515,7 @@
 
 -(IBAction) didEndOnExitTxt: (id) sender
 {
+    //[sender resignFirstResponder];
     switch ([(UITextField*)sender tag]) {
         case 1:{
             [(UITextView*)[self.view viewWithTag:2] becomeFirstResponder];
@@ -537,7 +559,7 @@
             NSLog(@"Don't kown control.");
             break;
     }
-
+    [self keyboardWilBeShown:nil];
 }
 
 #pragma mark - AlertView Delegate

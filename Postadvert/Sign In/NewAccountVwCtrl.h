@@ -11,7 +11,6 @@
 @class PostAdvertController;
 @interface NewAccountVwCtrl : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 {
-    PostAdvertController             *palUpCtrl;
     
     UITextField                 *activeField;
     IBOutlet UITableView        *tableVw;
@@ -19,9 +18,10 @@
     UILabel                     *lblUsrNmAvalidChk;
     
     NSMutableArray              *listItems;
+    CGRect                      keyboardFrame;
 }
 
-@property (nonatomic, strong) PostAdvertController                   *palUpCtrl;
+@property (strong, nonatomic) IBOutlet UIView *topView;
 @property (nonatomic, strong) NSMutableArray                    *listItems;
 @property (strong, nonatomic) IBOutlet UIButton *btnCreateAccount;
 
@@ -29,9 +29,6 @@
 -(IBAction) touchBackBtn: (id) sender;
 -(IBAction) touchCreateAccountBtn: (id) sender;
 -(IBAction) didEndOnExitTxt: (id) sender;
-
-
--(id) initWithPostAdvertController:( PostAdvertController *)  postAdvertController;
 
 
 //-(unsigned int) tagOffsetFromIndexPath:(NSIndexPath *)indexPath;
