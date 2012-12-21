@@ -44,8 +44,8 @@
 @synthesize listImages;
 @synthesize popoverController;
 @synthesize detailVw;
-@synthesize tableView = _tableView;
-@synthesize botView = _botView;
+@synthesize tableView ;//= _tableView;
+@synthesize botView ;//= _botView;
 @synthesize listItemsFavorites;
 @synthesize listIamgesFavorites;
 

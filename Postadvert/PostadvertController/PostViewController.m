@@ -337,6 +337,7 @@
     
     MyUIImagePickerViewController *picker = [[MyUIImagePickerViewController alloc]initWithRoot:self];
     picker.delegate = self;
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     [self presentViewController:picker animated:YES completion:^(void)
      {
          NSLog(@"Presented");
@@ -617,38 +618,39 @@
     self.btnPost.enabled = NO;
     self.botView.userInteractionEnabled = NO;
     [self SaveAndShowImage:info];
+
 }
 
-- (void) didFinishPickingMediaWithImage:(UIImage *)image
-{
-    [self setActivityLocation];
-    self.activity.hidden = NO;
-    [self.activity startAnimating ];
-    self.btnPost.enabled = NO;
-    self.botView.userInteractionEnabled = NO;
-    //save
-    nextID += 1;
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *pathToDocuments=[paths objectAtIndex:0];
-    NSString *filePath = [NSString stringWithFormat:@"%@/newPost%d.jpg", pathToDocuments, nextID];
-    NSLog(@"Before using UIImageJPEGRepresentation ");
-    NSData *imageData = UIImageJPEGRepresentation(image, 01.0f);
-    NSLog(@"After using UIImageJPEGRepresentation ");
-    NSLog(@"Path %@ ", filePath);
-    [imageData writeToFile: filePath atomically:YES];
-    NSLog(@"After Write File");
-    paths = nil;
-    imageData = nil;
-    image = nil;
-    pathToDocuments= nil;
-    NSLog(@"Before show Image");
-    [listImageNeedToPost addObject:filePath];
-    [self showThumbnailWithPath:filePath];
-    [self performSelectorOnMainThread:@selector(updatePostBtnState) withObject:nil waitUntilDone:NO];
-    self.botView.userInteractionEnabled = YES;
-    [self.activity stopAnimating];
-    self.activity.hidden = YES;
-}
+//- (void) didFinishPickingMediaWithImage:(UIImage *)image
+//{
+//    [self setActivityLocation];
+//    self.activity.hidden = NO;
+//    [self.activity startAnimating ];
+//    self.btnPost.enabled = NO;
+//    self.botView.userInteractionEnabled = NO;
+//    //save
+//    nextID += 1;
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *pathToDocuments=[paths objectAtIndex:0];
+//    NSString *filePath = [NSString stringWithFormat:@"%@/newPost%d.jpg", pathToDocuments, nextID];
+//    NSLog(@"Before using UIImageJPEGRepresentation ");
+//    NSData *imageData = UIImageJPEGRepresentation(image, 01.0f);
+//    NSLog(@"After using UIImageJPEGRepresentation ");
+//    NSLog(@"Path %@ ", filePath);
+//    [imageData writeToFile: filePath atomically:YES];
+//    NSLog(@"After Write File");
+//    paths = nil;
+//    imageData = nil;
+//    image = nil;
+//    pathToDocuments= nil;
+//    NSLog(@"Before show Image");
+//    [listImageNeedToPost addObject:filePath];
+//    [self showThumbnailWithPath:filePath];
+//    [self performSelectorOnMainThread:@selector(updatePostBtnState) withObject:nil waitUntilDone:NO];
+//    self.botView.userInteractionEnabled = YES;
+//    [self.activity stopAnimating];
+//    self.activity.hidden = YES;
+//}
 - (void) didCancelPickingMedia
 {
     [self performSelectorOnMainThread:@selector(updatePostBtnState) withObject:nil waitUntilDone:NO];

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @protocol MyUIImagePickerViewControllerDelegate;
 
@@ -17,12 +18,17 @@
     UIViewController *_root;
 }
 @property (nonatomic, weak) id <MyUIImagePickerViewControllerDelegate> delegate;
+@property (nonatomic, strong)   NSMutableArray *photos;
+@property (nonatomic)           UIImagePickerControllerSourceType sourceType;
 - (id) initWithRoot:(UIViewController*) root;
+
+//+ (ALAssetsLibrary *)defaultAssetsLibrary;
 
 @end
 
-@protocol MyUIImagePickerViewControllerDelegate
+@protocol MyUIImagePickerViewControllerDelegate <NSObject>
 
+@optional
 - (void) didFinishPickingMediaWithInfo:(NSDictionary *)info;
 - (void) didFinishPickingMediaWithImage:(UIImage*)image;
 - (void) didCancelPickingMedia;

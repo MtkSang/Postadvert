@@ -73,5 +73,36 @@
     
  
  
+ MD 5
+ 
+ [12/21/12 11:35:16 AM] Mr.Q: import cái này vào #import <CommonCrypto/CommonDigest.h>
+[12/21/12 11:35:23 AM] Mr.Q: framework nhé
+[12/21/12 11:35:28 AM] boy saudoi: rồi cậu
+[12/21/12 11:35:29 AM] boy saudoi: ^^
+[12/21/12 11:35:51 AM] Mr.Q: rồi khai báo : 
+@interface NSString (MD5)
+
+- (NSString *)MD5String;
+
+@end
+trên cùng
+[12/21/12 11:36:03 AM] Mr.Q: tiếp tục
+[12/21/12 11:36:04 AM] Mr.Q: @implementation NSString (MD5)
+
+- (NSString *)MD5String {
+const char *cstr = [self UTF8String];
+unsigned char result[16];
+CC_MD5(cstr, strlen(cstr), result);
+
+return [NSString stringWithFormat:
+        @"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
+        result[0], result[1], result[2], result[3], 
+        result[4], result[5], result[6], result[7],
+        result[8], result[9], result[10], result[11],
+        result[12], result[13], result[14], result[15]
+        ];  
+}
+ 
+ 
  
  

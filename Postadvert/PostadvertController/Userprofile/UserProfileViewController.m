@@ -255,30 +255,32 @@
 #pragma mark -
 #pragma customAction
 - (IBAction)btnPostClicked:(id)sender {
-    if (popoverController) {
-		[popoverController dismissPopoverAnimated:YES];
-		popoverController = nil;
-        viewUseToGetRectPopover = nil;
-        //[self removeDetailMessageListenner:self];
-	} else {
-        //Add listenner to get data when user choice from Global Message
-        //[self addDetailMessageListenner:self];
-        
-        viewUseToGetRectPopover = (UIView*)sender;
-        UINewStatusViewController *contentViewController = [[UINewStatusViewController alloc] init];
-        contentViewController.delegate = self;
-        //contentViewController.tableView.backgroundColor = [UIColor colorWithRed:235/255.0 green:247/255.0 blue:247/255.0 alpha:1];
-		popoverController = [[WEPopoverController alloc] initWithContentViewController:(UIViewController*)contentViewController];
-		
-		if ([popoverController respondsToSelector:@selector(setContainerViewProperties:)]) {
-			[popoverController setContainerViewProperties:[self defaultContainerViewProperties]];
-		}
-		
-		popoverController.delegate = self;
-		popoverController.passthroughViews = [NSArray arrayWithObject:self.navigationController];
-        [self presentPopover];
-    }
-
+//    if (popoverController) {
+//		[popoverController dismissPopoverAnimated:YES];
+//		popoverController = nil;
+//        viewUseToGetRectPopover = nil;
+//        //[self removeDetailMessageListenner:self];
+//	} else {
+//        //Add listenner to get data when user choice from Global Message
+//        //[self addDetailMessageListenner:self];
+//        
+//        viewUseToGetRectPopover = (UIView*)sender;
+//        UINewStatusViewController *contentViewController = [[UINewStatusViewController alloc] init];
+//        contentViewController.delegate = self;
+//        //contentViewController.tableView.backgroundColor = [UIColor colorWithRed:235/255.0 green:247/255.0 blue:247/255.0 alpha:1];
+//		popoverController = [[WEPopoverController alloc] initWithContentViewController:(UIViewController*)contentViewController];
+//		
+//		if ([popoverController respondsToSelector:@selector(setContainerViewProperties:)]) {
+//			[popoverController setContainerViewProperties:[self defaultContainerViewProperties]];
+//		}
+//		
+//		popoverController.delegate = self;
+//		popoverController.passthroughViews = [NSArray arrayWithObject:self.navigationController];
+//        [self presentPopover];
+//    }
+    
+    UINewStatusViewController *newContrl = [[UINewStatusViewController alloc]initWithUserInfo:userInfo];
+    [self.navigationController presentViewController:newContrl animated:YES completion:nil];
 }
 - (void) presentPopover
 {

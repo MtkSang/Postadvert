@@ -32,7 +32,7 @@
 #import "SupportFunction.h"
 #import "Userprofile/UserProfileViewController.h"
 #import "UploadImagesViewController.h"
-
+#import "UINewStatusViewController.h"
 //
 #import "UserProfileViewController.h"
 #import "FriendsViewController.h"
@@ -659,6 +659,12 @@
 
 - (void) showNewPost
 {
+    if ([self.lbTitle.text rangeOfString:@"Status Updates"].length) {
+        
+        UINewStatusViewController *postViewCtr = [[UINewStatusViewController alloc] initWithUserInfo:[UserPAInfo sharedUserPAInfo]];
+        [self.navigationController presentViewController:postViewCtr animated:YES completion:nil];
+
+    }else
     {
         PostViewController *postViewCtr = [[PostViewController alloc] initWithWallID:postViewController.wall_id];
         //[self newPostAddListenner];

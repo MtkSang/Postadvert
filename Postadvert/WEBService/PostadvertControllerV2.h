@@ -20,6 +20,7 @@
 @property (nonatomic) BOOL internetActive;
 @property (nonatomic) BOOL hostActive;
 @property (nonatomic) int remainCount;
+@property (nonatomic) int timeOut_in_minute;
 +(PostadvertControllerV2*)sharedPostadvertController;
 - (void) checkNetworkStatus:(NSNotification *)notice;
 - (BOOL) isConnectToWeb;

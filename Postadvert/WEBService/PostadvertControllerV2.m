@@ -448,6 +448,9 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     [theRequest addValue:@"" forHTTPHeaderField:@"SOAPAction"];
     [theRequest addValue:msgLength forHTTPHeaderField:@"Content-Length"];
     [theRequest setHTTPMethod:@"POST"];
+    if (self.timeOut_in_minute > 0) {
+        [theRequest setTimeoutInterval:self.timeOut_in_minute * 60];
+    }
     //the below encoding is used to send data over the net
     [theRequest setHTTPBody:[soapFormat dataUsingEncoding:NSUTF8StringEncoding]];
     
