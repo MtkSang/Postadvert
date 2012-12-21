@@ -323,4 +323,10 @@ char *NewBase64Encode(
 	return result;
 }
 
++ (NSString *)base64EncodedStringFromplainText:(NSString*) text{
+    NSData *plainTextData = [text dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *base64String = [plainTextData base64EncodedString];
+    return base64String;
+}
+
 @end
