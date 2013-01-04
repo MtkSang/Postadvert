@@ -36,6 +36,10 @@
 //
 #import "UserProfileViewController.h"
 #import "FriendsViewController.h"
+#import "Profile_EventViewController.h"
+//DCA
+#import "StartUpJobsViewController.h"
+#import "HDBViewController.h"
 @interface DetailViewController ()
 - (void) showDetailFromSubView:(NSNotification*)notifi;
 - (IBAction)showHideSidebar:(id)sender;
@@ -77,8 +81,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterAddComment) name:@"enterAddComment" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openURL) name:@"openURL" object:nil];
     //Left Button Bar Item to sidebar
-    UIButton *abutton = [[UIButton alloc]initWithFrame:CGRectMake(0.0, 0.0, 30, 30)];
-    [abutton setImage:[UIImage imageNamed:@"list_btn.png"] forState:UIControlStateNormal];
+    UIButton *abutton = [[UIButton alloc]initWithFrame:CGRectMake(0.0, 0.0, 35, 30)];
+    [abutton setImage:[UIImage imageNamed:@"listBtn.png"] forState:UIControlStateNormal];
     [abutton addTarget:self action:@selector(showHideSidebar:) forControlEvents:UIControlEventTouchUpInside];
     [abutton setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin];
     UIBarButtonItem *leftBarItem = [[UIBarButtonItem alloc] initWithCustomView:abutton];
@@ -279,7 +283,28 @@
     //return (interfaceOrientation == UIInterfaceOrientationPortrait);
     return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight);
 }
+-(BOOL)shouldAutorotate{
+    return YES;
+}
 
+-(NSInteger)supportedInterfaceOrientations{
+    
+    //    UIInterfaceOrientationMaskLandscape;
+    //    24
+    //
+    //    UIInterfaceOrientationMaskLandscapeLeft;
+    //    16
+    //
+    //    UIInterfaceOrientationMaskLandscapeRight;
+    //    8
+    //
+    //    UIInterfaceOrientationMaskPortrait;
+    //    2
+    
+    
+    //    return UIInterfaceOrientationMaskLandscape;
+    return 2;
+}
 
 //- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 //    _containerOrigin = self.navigationController.view.frame.origin;
@@ -678,10 +703,6 @@
     
    
     //return nil;
-    
-    
-    
-    
     UIView *menu = [[UIView alloc]init];
     [menu setBackgroundColor:[UIColor clearColor]];
     UIButton *btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -700,11 +721,14 @@
     [btn3 addTarget:self action:@selector(onTouchGolbalMessage:) forControlEvents:UIControlEventTouchUpInside];
     
     float x = 0.0;
-    btn1.frame = CGRectMake(0.0, self.navigationController.navigationBar.frame.size.height/4, self.navigationController.navigationBar.frame.size.height/2, self.navigationController.navigationBar.frame.size.height /2);
-    x += btn1.frame.size.width + 10;
-    btn2.frame = CGRectMake(x , self.navigationController.navigationBar.frame.size.height/4, self.navigationController.navigationBar.frame.size.height/2, self.navigationController.navigationBar.frame.size.height/2);
-    x +=  btn2.frame.size.width + 10; 
-    btn3.frame = CGRectMake( x , self.navigationController.navigationBar.frame.size.height/4, self.navigationController.navigationBar.frame.size.height/2, self.navigationController.navigationBar.frame.size.height/2);
+    float sep = 20;
+    float btnWidth = self.navigationController.navigationBar.frame.size.height * 2.0 / 3.0;
+    float btnTop = self.navigationController.navigationBar.frame.size.height *1.0 / 3.0 / 2.0 ;
+    btn1.frame = CGRectMake(0.0, btnTop, btnWidth, btnWidth);
+    x += btn1.frame.size.width + sep;
+    btn2.frame = CGRectMake(x , btnTop, btnWidth, btnWidth);
+    x +=  btn2.frame.size.width + sep;
+    btn3.frame = CGRectMake( x , btnTop, btnWidth, btnWidth);
     x +=  btn3.frame.size.width;
     
     float menuWidth = x;
@@ -1036,6 +1060,27 @@
     for (UIView *view in overlay.subviews) {
         [view removeFromSuperview];
     }
+    //Checking Type
+    NSString *itemName = [notifi.userInfo objectForKey:@"itemName"];
+    NSInteger  wallID = [[notifi.userInfo objectForKey:@"wallID"] integerValue];
+    if (wallID < 1) {
+        NSInteger countryID = 190;
+        countryID = [SupportFunction GetCountryIdFromConutryName:[UserPAInfo sharedUserPAInfo].userCountryPA];
+        wallID = [SupportFunction getWallIdFromCountryID:countryID andItemName:itemName];
+    }
+    if (wallID < 0) {
+        //if ([itemName isEqualToString:@"StartUp Jobs"]) {
+            [self showDCAWithInfo_Noti:notifi];
+            return;
+        //}
+    }
+    
+    [self showPostListingWithInfo_Noti:notifi];
+    
+}
+
+- (void) showPostListingWithInfo_Noti:(NSNotification*)notifi
+{
     if (postViewController == nil) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
             postViewController = [[UITablePostViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -1082,7 +1127,37 @@
     [(UITablePostViewController*)postViewController loadCellsWithWallID:wallID From:0 Count:5];
     [postViewController.view setAutoresizingMask:self.overlay.autoresizingMask];
     [postViewController.view setAutoresizesSubviews:YES];
+
 }
+- (void) showDCAWithInfo_Noti:(NSNotification*)notifi
+{
+    NSString *itemName = [notifi.userInfo objectForKey:@"itemName"];
+    UIViewController *viewCtr;
+    if ([itemName isEqualToString:@"StartUp Jobs"]) {
+        StartUpJobsViewController *startUpJobs = [[StartUpJobsViewController alloc]init];
+        viewCtr = startUpJobs;
+    }
+    
+    if ([itemName isEqualToString:@"HDB"]) {
+        HDBViewController *hdbSearch = [[HDBViewController alloc]init];
+        viewCtr = hdbSearch;
+    }
+    if (!viewCtr) {
+#warning in progress
+        return;
+    }
+    
+    CGRect frame = self.overlay.frame;
+    viewCtr.view.frame = frame;
+    [self.overlay addSubview: viewCtr.view];
+    [self addChildViewController:viewCtr];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"showDetailFromSubView_SideBar" object:nil];
+    
+    [self.lbTitle setText: [NSString stringWithFormat:@"  %@", itemName]];
+    [viewCtr.view setAutoresizingMask:self.overlay.autoresizingMask];
+    [viewCtr.view setAutoresizesSubviews:YES];
+}
+
 - (void) showUserProfile
 {
     for (UIView *view in overlay.subviews) {
@@ -1192,6 +1267,31 @@
         }
             break;
         case 2://Events
+            if (overlay == nil) {
+                self.overlay = [[UIView alloc] initWithFrame:CGRectMake(0.0, cStatusAndNavBar, self.view.frame.size.width, self.view.frame.size.height - cStatusAndNavBar)];
+                [self.view addSubview:self.overlay];
+            }
+            if (overlay.superview == nil) {
+                [self.view addSubview:overlay];
+            }
+            for (UIView *view in overlay.subviews) {
+                [view removeFromSuperview];
+            }
+            [self.navigationController popToViewController:self animated:NO];
+            if (customViewCtr == nil) {
+                customViewCtr = [[Profile_EventViewController alloc] initWithFullName:[UserPAInfo sharedUserPAInfo].fullName userID: [UserPAInfo sharedUserPAInfo].registrationID ];
+            }
+            else {
+                if (![customViewCtr isKindOfClass:[Profile_EventViewController class]]) {
+                    customViewCtr = nil;
+                    customViewCtr = [[Profile_EventViewController alloc] initWithFullName:[UserPAInfo sharedUserPAInfo].fullName userID: [UserPAInfo sharedUserPAInfo].registrationID ];
+                }
+            }
+            customViewCtr.view.frame = overlay.frame;
+            [self.overlay addSubview: customViewCtr.view];
+            [(Profile_EventViewController*)customViewCtr setNavigationController: self.navigationController];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"showDetailFromSubView_SideBar" object:nil];
+            
             break;
         case 3://Friends
         {

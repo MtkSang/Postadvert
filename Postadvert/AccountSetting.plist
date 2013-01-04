@@ -12,7 +12,7 @@
 		<key>ItemName</key>
 		<string>Log Out</string>
 		<key>ItemIcon</key>
-		<string>log_out_icon.png</string>
+		<string>logout.png</string>
 	</dict>
 </array>
 </plist>

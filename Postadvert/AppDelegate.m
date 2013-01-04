@@ -59,12 +59,13 @@
     
     _viewController.navigationController.navigationBarHidden = YES;
     //_navController.navigationBarHidden = YES;
-    self.window.rootViewController = self.navController;
+    self.window.rootViewController = _navController;
     //self.window.rootViewController = _viewController;
     //[self.window addSubview:self.navController.view];
 
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
     
     return YES;
 }
@@ -194,5 +195,11 @@
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
+}
+
 
 @end

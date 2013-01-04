@@ -295,7 +295,7 @@
             //clap btn
             
             UIButton *clapBtn = [[UIButton alloc]init];
-            [clapBtn.titleLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE + 1]];
+            [clapBtn.titleLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE ]];
             if (actiCell._content.isClap) {
                 [clapBtn setTitle:@"Unclap  " forState:UIControlStateNormal];
             }else

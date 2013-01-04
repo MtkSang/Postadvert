@@ -24,47 +24,67 @@
 - (void) handlePanGesture:(UIPanGestureRecognizer*) gesture;
 @end
 
+@implementation UINavigationController (RotationIn_IOS6)
+
+-(BOOL)shouldAutorotate
+{
+    return [[self.viewControllers lastObject] shouldAutorotate];
+}
+
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return [[self.viewControllers lastObject] supportedInterfaceOrientations];
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    if( ! [[self.viewControllers lastObject] respondsToSelector:@selector(preferredInterfaceOrientationForPresentation)])
+        return UIInterfaceOrientationPortrait;
+    return [[self.viewControllers lastObject]  preferredInterfaceOrientationForPresentation];
+}
+@end
+
 @implementation SideBarViewController
 
 @synthesize navLeft, navDetail;
 @synthesize sideBarState;
 @synthesize overlay;
-static  SideBarViewController *instance_SideBar = nil;
+//static  SideBarViewController *instance_SideBar = nil;
 
 
-static void singleton_remover() {
-    instance_SideBar = nil;
-}
+//static void singleton_remover() {
+//    instance_SideBar = nil;
+//}
 
-+ (SideBarViewController*)instanceSideBar {
-    @synchronized([SideBarViewController class])
-	{
-		if (!instance_SideBar)
-			instance_SideBar = [[self alloc] init];
-        
-		return instance_SideBar;
-	}
-    
-	return nil;
-}
-
-+(id)alloc
-{
-	@synchronized([SideBarViewController class])
-	{
-		NSAssert(instance_SideBar == nil, @"Attempted to allocate a second instance of a singleton.");
-		instance_SideBar = [super alloc];
-		return instance_SideBar;
-	}
-    
-	return nil;
-}
+//+ (SideBarViewController*)instanceSideBar {
+//    @synchronized([SideBarViewController class])
+//	{
+//		if (!instance_SideBar)
+//			instance_SideBar = [[self alloc] init];
+//        
+//		return instance_SideBar;
+//	}
+//    
+//	return nil;
+//}
+//
+//+(id)alloc
+//{
+//	@synchronized([SideBarViewController class])
+//	{
+//		NSAssert(instance_SideBar == nil, @"Attempted to allocate a second instance of a singleton.");
+//		instance_SideBar = [super alloc];
+//		return instance_SideBar;
+//	}
+//    
+//	return nil;
+//}
 
 - (id)init {
     self = [super init];
     if (self) {
         
-        atexit(singleton_remover);
+        //atexit(singleton_remover);
     }
     
     return self;
@@ -117,7 +137,7 @@ static void singleton_remover() {
     [copyRightButton setBackgroundColor:[UIColor clearColor]];
     [copyRightButton.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:14]];
     [copyRightButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [copyRightButton setTitle:@"Stroff © 2012" forState:UIControlStateNormal];
+    [copyRightButton setTitle:@"Stroff © 2013" forState:UIControlStateNormal];
     [copyRightButton sizeToFit];
     NSLog(@"Bot %@", botView);
     copyRightButton.frame = CGRectMake(self.view.frame.size.width - cRemainView - copyRightButton.frame.size.width - 5.0, 0.0, copyRightButton.frame.size.width, cCellHeight - 5);
@@ -157,9 +177,34 @@ static void singleton_remover() {
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    //return (interfaceOrientation == UIInterfaceOrientationPortrait);
-    return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight);
+//    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+//    //return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight);
+    return YES;
 }
+
+-(BOOL)shouldAutorotate{
+    return YES;
+}
+
+-(NSInteger)supportedInterfaceOrientations{
+    
+    //    UIInterfaceOrientationMaskLandscape;
+    //    24
+    //
+    //    UIInterfaceOrientationMaskLandscapeLeft;
+    //    16
+    //
+    //    UIInterfaceOrientationMaskLandscapeRight;
+    //    8
+    //
+    //    UIInterfaceOrientationMaskPortrait;
+    //    2
+    
+    
+    //    return UIInterfaceOrientationMaskLandscape;
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 
 //- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 //    [self performSelector:@selector(resizeViewsForNavigationBar) withObject:nil afterDelay:(0.5f * duration)];
@@ -243,7 +288,7 @@ static void singleton_remover() {
         navDetail.view.frame = frame;
 
          NSLog(@"Self %@, navleft %@ navdetail %@", self.view, navLeft.view, navDetail.view);
-        instance_SideBar = self;
+        //instance_SideBar = self;
     }
 }
 -(void) viewDidAppear:(BOOL)animated

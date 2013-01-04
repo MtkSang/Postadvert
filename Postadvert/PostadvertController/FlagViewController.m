@@ -143,7 +143,8 @@
     else if ([country isEqualToString:@"UK"]) {
         country = @"United Kingdom";
     }
-    [UserPAInfo sharedUserPAInfo].userCountryPA = country;
+#warning unclock it to support more country
+    //[UserPAInfo sharedUserPAInfo].userCountryPA = country;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"selectedCountry" object:nil];
     cell = nil;
     country = nil;

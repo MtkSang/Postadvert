@@ -37,7 +37,7 @@ typedef enum
 - (IBAction) showHideSideBar;
 - (IBAction)buttonClicked:(id)sender;
 - (void)navMove;
-+ (SideBarViewController*)instanceSideBar;
+//+ (SideBarViewController*)instanceSideBar;
 - (UIView*) createLoginListView;
 -(IBAction) onTouchSignInBtn: (id) sender;
 -(IBAction) onTouchSignInAnonymouslybtn:(id) sender;

@@ -66,7 +66,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification object:nil];
-
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateShareBtnState) name:UITextViewTextDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateShareBtnState) name:UITextFieldTextDidChangeNotification object:nil];
+    
+    [self.startPicker addTarget:self action:@selector(datePickerChange) forControlEvents:UIControlEventValueChanged];
+    [self.endPicker addTarget:self action:@selector(datePickerChange) forControlEvents:UIControlEventValueChanged];
     
     self.contentSizeForViewInPopover = CGSizeMake(300, 300);
     self.userAvatar.image = [UserPAInfo sharedUserPAInfo].imgAvatar;
@@ -79,6 +84,9 @@
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(pickImage)];
     [self.imgPhoto addGestureRecognizer:tapGesture];
     tapGesture = nil;
+    
+    //init component
+    [self performSelectorInBackground:@selector(getEventCategory) withObject:nil];
     
     
 }
@@ -133,6 +141,14 @@
     [self setPhVideoTextViewDescription:nil];
     [self setVideoPreviewView:nil];
     [self setVideoView:nil];
+    [self setEventView:nil];
+    [self setPickerCatelogy:nil];
+    [self setTitleEvent:nil];
+    [self setLocationEvent:nil];
+    [self setStartPicker:nil];
+    [self setEndPicker:nil];
+    [self setBtnAlldayCheckBox:nil];
+    [self setEventSummary:nil];
     [super viewDidUnload];
 }
 
@@ -198,6 +214,9 @@
             self.videoPreviewView.hidden = YES;
         }
     }
+    if (activeBtn.tag == 4) {
+        self.eventView.frame = self.phStatusTextView.frame;
+    }
 
     
 
@@ -210,6 +229,25 @@
 
 #pragma mark -
 
+
+- (IBAction)btnAlldayCheckBoxClicked:(id)sender {
+    isAlldayChecked = !isAlldayChecked;
+    if (isAlldayChecked) {
+        [self.btnAlldayCheckBox setImage:[UIImage imageNamed:@"allDay_icon.png"] forState:UIControlStateNormal];
+        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSString *startString = [dateFormatter stringFromDate:[self.startPicker date]];
+        NSDate *startDate = [dateFormatter dateFromString:startString];
+        
+        NSDate *endDate = [startDate dateByAddingTimeInterval:86399];
+        
+        [self.startPicker setDate:startDate];
+        [self.endPicker setDate:endDate];
+        
+        
+    }else
+        [self.btnAlldayCheckBox setImage:[UIImage imageNamed:@"allDay_icon_uncheck.png"] forState:UIControlStateNormal];
+}
 
 - (IBAction)cancelBtnClicked:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -240,7 +278,7 @@
     }
     [self.middleView addSubview:self.photoView];
     [self.phPhotoTextView becomeFirstResponder];
-    [self.phPhotoTextView setPlaceholder:@"Say something about this photo"];
+    [self.phPhotoTextView setPlaceholder:@"Say something about this photo ..."];
     activeControll = self.phPhotoTextView;
 }
 
@@ -253,7 +291,7 @@
     
     [self.middleView addSubview:self.videoView];
     [self.videoTextField becomeFirstResponder];
-    [self.phVideoTextViewDescription setPlaceholder:@"Say something about this video"];
+    [self.phVideoTextViewDescription setPlaceholder:@"Say something about this video ..."];
     activeControll = self.videoTextField;
 }
 
@@ -263,6 +301,20 @@
     if ([self.delegate respondsToSelector:@selector(didChageView)]) {
         [self.delegate didChageView];
     }
+    [self.middleView addSubview:self.eventView];
+    self.eventView.contentSize = CGSizeMake(self.eventView.frame.size.width, 925);
+    self.eventView.frame = self.phStatusTextView.frame;
+    [self.titleEvent becomeFirstResponder];
+    [self.eventSummary setPlaceholder:@"Say something about this event ..."];
+    //setUp for pickerCatelogy
+    CGRect frame = self.pickerCatelogy.frame;
+    frame.size.height = 162.0;
+    self.pickerCatelogy.frame = frame;
+    if (catelogys.count >= 1 ) {
+        [self.pickerCatelogy selectRow:(catelogys.count / 2)  inComponent:0 animated:NO];
+    }
+    self.eventView.scrollEnabled = YES;
+    activeControll = self.titleEvent;
 }
 
 - (IBAction)btnChangeValue:(id)sender {
@@ -280,6 +332,9 @@
 }
 
 - (IBAction)btnPermittionClicked:(id)sender {
+    if (activeBtn.tag == 4) {
+        return;
+    }
     CGRect frame = self.botView.frame;
     frame.origin = CGPointZero;
     self.permissionTableView.frame = frame;
@@ -288,10 +343,11 @@
 }
 
 - (IBAction)btnAddVideoClicked:(id)sender {
-//    self.videoTextField.enabled = NO;
-//    self.btnAddVideo.enabled = NO;
+    self.videoTextField.enabled = NO;
+    self.btnAddVideo.enabled = NO;
     [self addNewVideo];
     //[self performSelectorInBackground:@selector(addNewVideo) withObject:nil];
+    
 }
 
 - (void) removeAllSubviews:(UIView*) supperView
@@ -301,6 +357,37 @@
     }
 }
 
+- (void) updateShareBtnState
+{
+    switch (activeBtn.tag) {
+        case 1:
+            if ([self.phStatusTextView.text isEqualToString:@""]) {
+                self.shareBtn.enabled = NO;
+            }else
+                self.shareBtn.enabled = YES;
+            break;
+        case 2:
+            if (!hasPhoto) {
+                self.shareBtn.enabled = NO;
+            }else
+                self.shareBtn.enabled = YES;
+            break;
+        case 3:
+            if (!hasVideo) {
+                self.shareBtn.enabled = NO;
+            }else
+                self.shareBtn.enabled = YES;
+            break;
+        case 4:
+            if ([self.titleEvent.text isEqualToString:@""] || [self.locationEvent.text isEqualToString:@""]) {
+                self.shareBtn.enabled = NO;
+            }else
+                self.shareBtn.enabled = YES;
+            break;
+        default:
+            break;
+    }
+}
 #pragma mark UITableViewDataSource
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
@@ -362,6 +449,56 @@
     [tableView removeFromSuperview];
     [UIView commitAnimations];
     [activeControll becomeFirstResponder];
+}
+
+#pragma mark UITextFieldDelegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    activeControll = textField;
+}
+
+//#pragma mark UITextViewDelegate
+//
+//- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+//{
+//    [self updateShareBtnState];
+//    return YES;
+//}
+//
+//- (void)textViewDidChange:(UITextView *)textView
+//{
+//    [self updateShareBtnState];
+//}
+#pragma mark UIPickerViewDelegate
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if (row >= catelogys.count) {
+        return @"Unknow";
+    }
+    if (pickerView == self.pickerCatelogy) {
+        NSDictionary *dict = [catelogys objectAtIndex:row];
+        return [dict objectForKey:@"name"];
+    }
+    return @"";
+}
+
+#pragma mark UIPickerViewDatasource
+- (NSInteger) pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    if (pickerView == self.pickerCatelogy) {
+        return catelogys.count;
+    }
+    return 0;
+}
+- (NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    if (pickerView == self.pickerCatelogy) {
+        return 1;
+    }
+    
+    return 0;
 }
 
 #pragma mark -
@@ -435,6 +572,24 @@
         paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], self.videoTextField.text, self.phVideoTextViewDescription.text, acess, @"1", @"1", nil];
     }
     
+    if (activeBtn.tag == 4) {
+        
+        NSInteger selectedRow = [self.pickerCatelogy selectedRowInComponent:0];
+        NSDictionary *dict = [catelogys objectAtIndex:selectedRow];
+        NSString *catelogyID = [dict objectForKey:@"id"];
+        
+        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        NSString *theTimeStart, *theTimeEnd;
+        theTimeStart =  [dateFormatter stringFromDate:[self.startPicker date]];
+        theTimeEnd = [dateFormatter stringFromDate:[self.endPicker date]];
+        //createEventUpdate($user_id, $title, $content_id = 0, $summary, $description, $category = 2, $location, $start_time, $end_time, $permission = 0, $allowinvite = 1, $limit = 5, $base64_image = false)
+        
+        functionName = @"createEventUpdate";
+        paraNames = [NSArray arrayWithObjects:@"user_id", @"title", @"content_id", @"summary", @"description", @"category", @"location", @"start_time", @"end_time", @"permission", @"allowinvite", @"limit", nil];
+        paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], self.titleEvent.text, @"0", self.eventSummary.text, @"", catelogyID, self.locationEvent.text, theTimeStart, theTimeEnd, @"0", @"1", @"1", nil];
+    }
+    
     data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
     [PostadvertControllerV2 sharedPostadvertController].timeOut_in_minute = 0;
 }
@@ -486,9 +641,56 @@
         
     }
     
+    [self updateShareBtnState];
     
     
+}
+
+- (void) getEventCategory
+{
+    //getEventCategory
+    id data;
+    NSString *functionName;
+    NSArray *paraNames;
+    NSArray *paraValues;
+    functionName = @"getEventCategory";
+    paraNames = [[NSArray alloc]init];
     
+    
+    paraValues = [[NSArray alloc]init];
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+    catelogys = [[NSMutableArray alloc]init];
+    @try {
+        for (NSDictionary *dict in data) {
+            [catelogys addObject:dict];
+        }
+        if (catelogys.count) {
+            [self.pickerCatelogy performSelectorOnMainThread:@selector(reloadAllComponents) withObject:nil waitUntilDone:NO];
+        }
+    }
+    @catch (NSException *exception) {
+        
+    }
+}
+
+- (void) datePickerChange
+{
+    isAlldayChecked = NO;
+    if (isAlldayChecked) {
+        [self.btnAlldayCheckBox setImage:[UIImage imageNamed:@"allDay_icon.png"] forState:UIControlStateNormal];
+        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSString *startString = [dateFormatter stringFromDate:[self.startPicker date]];
+        NSDate *startDate = [dateFormatter dateFromString:startString];
+        
+        NSDate *endDate = [startDate dateByAddingTimeInterval:86399];
+        
+        [self.startPicker setDate:startDate];
+        [self.endPicker setDate:endDate];
+        
+        
+    }else
+        [self.btnAlldayCheckBox setImage:[UIImage imageNamed:@"allDay_icon_uncheck.png"] forState:UIControlStateNormal];
 }
 
 #pragma mark UIActionSheetDelegate

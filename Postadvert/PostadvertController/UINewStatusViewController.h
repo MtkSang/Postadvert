@@ -13,14 +13,16 @@
 @class CredentialInfo;
 @class LinkPreview;
 
-@interface UINewStatusViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, MyUIImagePickerViewControllerDelegate, UIActionSheetDelegate>
+@interface UINewStatusViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, MyUIImagePickerViewControllerDelegate, UIActionSheetDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate>
 {
     CredentialInfo *userInfo;
     UIButton *activeBtn;
     UIView *activeControll;
     NSInteger permittionIndex;
+    NSMutableArray *catelogys;
     BOOL    hasPhoto;
     BOOL    hasVideo;
+    BOOL    isAlldayChecked;
 }
 @property (weak, nonatomic) id <UINewStatusViewControllerDelegate> delegate;
 @property (nonatomic) NSInteger targetID;
@@ -46,6 +48,15 @@
 @property (strong, nonatomic) IBOutlet UIButton *btnAddVideo;
 @property (strong, nonatomic) IBOutlet UIPlaceHolderTextView *phVideoTextViewDescription;
 @property (strong, nonatomic) IBOutlet LinkPreview *videoPreviewView;
+@property (strong, nonatomic) IBOutlet UIScrollView *eventView;
+@property (strong, nonatomic) IBOutlet UIPickerView *pickerCatelogy;
+@property (strong, nonatomic) IBOutlet UITextField *titleEvent;
+@property (strong, nonatomic) IBOutlet UITextField *locationEvent;
+@property (strong, nonatomic) IBOutlet UIDatePicker *endPicker;
+@property (strong, nonatomic) IBOutlet UIDatePicker *startPicker;
+@property (strong, nonatomic) IBOutlet UIButton *btnAlldayCheckBox;
+@property (strong, nonatomic) IBOutlet UIPlaceHolderTextView *eventSummary;
+- (IBAction)btnAlldayCheckBoxClicked:(id)sender;
 - (IBAction)cancelBtnClicked:(id)sender;
 - (IBAction)shareBtnClicked:(id)sender;
 - (IBAction)btnStatusClicked:(id)sender;

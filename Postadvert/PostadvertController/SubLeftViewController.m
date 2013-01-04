@@ -187,17 +187,30 @@
         [cell.contentView addSubview:labelNum];
     }
     if (!isload) {
-        if (listNums.count >= indexPath.row) {
-            labelNum.text = [NSString stringWithFormat:@"%d", [(NSNumber*)[listNums objectAtIndex:indexPath.row]intValue ]];
+        NSInteger value = [(NSNumber*)[listNums objectAtIndex:indexPath.row]intValue ];
+        if (value >= 0) {
+            labelNum.hidden = NO;
+            labelNum.text = [NSString stringWithFormat:@"%d", value];
             UIActivityIndicatorView *activityView = (UIActivityIndicatorView*)[cell viewWithTag:2];
             [activityView stopAnimating ];
         }else {
+            labelNum.hidden = YES;
             labelNum.text = @"0";
         }
     }else {
         labelNum.text = @"";
+        NSInteger  wallID = 1;
+        NSInteger countryID = 190;
+        countryID = [SupportFunction GetCountryIdFromConutryName:[UserPAInfo sharedUserPAInfo].userCountryPA];
+        wallID = [SupportFunction getWallIdFromCountryID:countryID andItemName:[listItems objectAtIndex:indexPath.row]];
         UIActivityIndicatorView *activityView = (UIActivityIndicatorView*)[cell viewWithTag:2];
-        [activityView startAnimating ];
+        if (wallID > 0) {
+            activityView.hidden = NO;
+            [activityView startAnimating ];
+        }else
+            activityView.hidden = YES;
+            
+        
     }
     [labelNum sizeToFit];
     labelNum.frame = CGRectMake(self.view.frame.size.width - cRemainView - labelNum.frame.size.width - 15.0 , (cCellHeight - labelNum.frame.size.height) / 2.0, labelNum.frame.size.width + 10.0 , labelNum.frame.size.height);
@@ -297,8 +310,13 @@
         NSInteger countryID = 190;
         countryID = [SupportFunction GetCountryIdFromConutryName:[UserPAInfo sharedUserPAInfo].userCountryPA];
         wallID = [SupportFunction getWallIdFromCountryID:countryID andItemName:itemName];
+        if (wallID < 0) {
+            [new_listNums addObject:[NSNumber numberWithInt:-1]];
+            continue;
+        }
         NSNumber *num = [[PostadvertControllerV2 sharedPostadvertController] getCountPostsWithWallId:[NSString stringWithFormat:@"%d", wallID]];
         [new_listNums addObject:num];
+        
     }
     isload = NO;
     listNums = new_listNums;

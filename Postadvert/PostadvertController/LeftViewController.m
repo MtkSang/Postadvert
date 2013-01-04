@@ -263,9 +263,14 @@
     
     
     if (indexPath.section == 0) {//User area
-        UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, (cCellHeight - cAvartaHeight)/2.0, cAvartaHeight, cAvartaHeight)];
-        imageView.image = [UIImage imageNamed:@"avatar.png"];
-        [cell.contentView addSubview:imageView];
+        UIImageView * imageView = (UIImageView*)[cell.contentView viewWithTag:1];
+        if (!imageView) {
+            imageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, (cCellHeight - cAvartaHeight)/2.0, cAvartaHeight, cAvartaHeight)];
+            imageView.image = [UIImage imageNamed:@"avatar.png"];
+            imageView.tag = 1;
+            [cell.contentView addSubview:imageView];
+        }
+        
         //imageView.contentMode = UIViewContentModeScaleAspectFill;
         //int iAutoFill =  [database integerForKey:cAutoFillInfor];
         if ([UserPAInfo sharedUserPAInfo].registrationID) {//Login OK
@@ -299,6 +304,7 @@
         NSDictionary *dict = [appSettings objectAtIndex:indexPath.row];
         cell.imageView.image = [UIImage imageNamed: [dict objectForKey:@"ItemIcon"]];
         cell.textLabel.text = [dict objectForKey:@"ItemName"];
+        NSLog(@"%@", cell.textLabel.text);
         return cell;
     }
     
@@ -605,7 +611,7 @@
     [btn3 setTitle:country forState:UIControlStateNormal];
     [btn3 sizeToFit];
     [btn3.titleLabel setTextAlignment:UITextAlignmentLeft];
-    btn3.frame = CGRectMake(self.view.frame.size.width - cRemainView - btn3.frame.size.width - 10.0, 3, btn3.frame.size.width, self.navigationController.navigationBar.frame.size.height/2.0);
+    btn3.frame = CGRectMake(self.view.frame.size.width - cRemainView - btn3.frame.size.width - 10.0, self.navigationController.navigationBar.frame.size.height/4.0, btn3.frame.size.width, self.navigationController.navigationBar.frame.size.height/2.0);
     [btn3 addTarget:self action:@selector(onTouchCountry:) forControlEvents:UIControlEventTouchUpInside];
     [menu addSubview:btn3];
     
@@ -615,7 +621,7 @@
     [btnFlag setBackgroundImage:[LeftViewController getFlagWithName:country] forState:UIControlStateNormal];
     [btnFlag setBackgroundImage:[LeftViewController getFlagWithName:country] forState:UIControlStateHighlighted];
     [btnFlag sizeToFit];
-    btnFlag.frame = CGRectMake(btn3.frame.origin.x - 25 - 5 , 3,  25, self.navigationController.navigationBar.frame.size.height/2.0);
+    btnFlag.frame = CGRectMake(btn3.frame.origin.x - 25 - 5 , self.navigationController.navigationBar.frame.size.height/4.0,  25, self.navigationController.navigationBar.frame.size.height/2.0);
     [btnFlag addTarget:self action:@selector(onTouchCountry:) forControlEvents:UIControlEventTouchUpInside];
     [menu addSubview:btnFlag];
     menu.autoresizesSubviews = YES;
@@ -645,6 +651,10 @@
             [subItem addObject:@"Blogshop Xpress"];
             break;
         case 1:
+            [subItem addObject:@"HDB"];
+            [subItem addObject:@"Condos"];
+            [subItem addObject:@"Planded Property"];
+            [subItem addObject:@"Rooms For Rent"];
             [subItem addObject:@"Co-Broke Xpress"];
             [subItem addObject:@"Property Xchange"];
             break;
@@ -666,6 +676,7 @@
             break;
         case 6:
             [subItem addObject:@"Business Xchange"];
+            [subItem addObject:@"StartUp Jobs"];
             break;
         case 7:
             [subItem addObject:@"Travel Xchange"];
@@ -690,6 +701,10 @@
             break;
         case 1:
             [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
+            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
+            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
+            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
+            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
             [subItem addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
             break;
         case 2:
@@ -710,6 +725,7 @@
             break;
         case 6:
             [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
+            [subItem addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
             break;
         case 7:
             [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
@@ -773,7 +789,7 @@
 - (void) getList
 {
     
-    listItems = [[NSMutableArray alloc]initWithObjects:@"SHOPPING",@"PROPERTY", @"TECHNOLOGY", @"VEHICLES", @"PETS", @"JOBS", @"BUSINESS", @"TRAVEL", @"SPORTS", nil];
+    listItems = [[NSMutableArray alloc]initWithObjects:@"SHOPPING",@"PROPERTY", @"TECHNOLOGY", @"VEHICLES", @"PETS", @"JOBS", @"ENTREPRENEURSHIP", @"TRAVEL", @"SPORTS", nil];
     listImages = [[NSMutableArray alloc]init];
     [listImages addObject:[UIImage imageNamed:@"shopping.png"]];
     [listImages addObject:[UIImage imageNamed:@"property.png"]];
@@ -785,7 +801,7 @@
     [listImages addObject:[UIImage imageNamed:@"travel.png"]];
     [listImages addObject:[UIImage imageNamed:@"sport.png"]];
     
-    listItemsFavorites = [[NSMutableArray alloc]initWithObjects:@"STATUS UPDATES",@"MESSAGES", @"EVENTS", @"FRIENDS", nil];
+    listItemsFavorites = [[NSMutableArray alloc]initWithObjects:@"STATUS UPDATES",@"MESSAGES", @"EVENTS", @"CONTACTS", nil];
     listIamgesFavorites = [[NSMutableArray alloc] init];
     [listIamgesFavorites addObject:[UIImage imageNamed:@"status_update.png"]];
     [listIamgesFavorites addObject:[UIImage imageNamed:@"messages.png"]];
