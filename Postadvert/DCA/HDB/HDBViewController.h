@@ -14,13 +14,17 @@
     UIButton *rightButton;
     UIButton *currentButton;
     
+    NSDictionary *staticData;
     NSMutableArray *mainFiles;
+    NSMutableArray *mainFilesValues;
     NSMutableArray *moreOptions;
     NSString *keyWorlds;
-    NSMutableArray *serachBy;
+    NSMutableArray *searchBy;
     NSMutableArray *filters;
+    NSInteger internalItemID;
 }
 @property (strong, nonatomic) NSString *itemName;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *lbTitle;
+@property (strong, nonatomic) IBOutlet UITableViewCell *CellWithSearchBar;
 @end

@@ -105,20 +105,20 @@
     NSLog(@"Rotated %@", self);
 }
 #pragma mark - Table view data source
-- (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 25)];
-    UILabel *lbTitle = [[UILabel alloc]initWithFrame:headerView.frame];
-    [lbTitle setText:self.infoChatting.subject];
-    [lbTitle setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_TITLE_SIZE]];
-    [lbTitle setTextColor:[UIColor colorWithRed:79/255.0 green:177/255.0 blue:190/255.0 alpha:1]];
-    [lbTitle setTextAlignment:NSTextAlignmentCenter];
-    lbTitle.backgroundColor = [UIColor clearColor];
-    [headerView setAutoresizesSubviews:YES];
-    [lbTitle setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight ];
-    [headerView addSubview:lbTitle];
-    return headerView;
-}
+//- (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 25)];
+//    UILabel *lbTitle = [[UILabel alloc]initWithFrame:headerView.frame];
+//    [lbTitle setText:self.infoChatting.subject];
+//    [lbTitle setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_TITLE_SIZE]];
+//    [lbTitle setTextColor:[UIColor colorWithRed:79/255.0 green:177/255.0 blue:190/255.0 alpha:1]];
+//    [lbTitle setTextAlignment:NSTextAlignmentCenter];
+//    lbTitle.backgroundColor = [UIColor clearColor];
+//    [headerView setAutoresizesSubviews:YES];
+//    [lbTitle setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight ];
+//    [headerView addSubview:lbTitle];
+//    return headerView;
+//}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -350,6 +350,7 @@
     
     for (NSDictionary *dict  in data) {
         MessageCellContent *message = [[MessageCellContent alloc]initWithDictionary:dict andSuperMessage:self.infoChatting];
+        message.is_read = YES;
         [listMessageCellContent addObject:message];
     }
     

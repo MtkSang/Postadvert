@@ -50,6 +50,7 @@
     NSString                    *moviesTypeIDs;
     
     NSString                    *userCountryPA;
+    int                         userCountryID;
     UIImage                     *imgAvatar;
 }
 
@@ -99,10 +100,11 @@
 @property(nonatomic, copy) NSString                    *movies;
 @property(nonatomic, copy) NSString                    *moviesTypeIDs;
 @property(nonatomic, copy) NSString                    *userCountryPA;
+@property(nonatomic, assign) int                      userCountryID;
 
 - (id) initWithEmail:(NSString*) emailAddr password:(NSString*) pwd;
 - (id) initWithEmail:(NSString*) emailAddr userName:(NSString*) usrName password:(NSString*) pwd;
--(id) initWithFirstName:(NSString*)first_Name lastname:(NSString*)lastName email:(NSString*) emailAddr userName:(NSString*)usrName password:(NSString*) pwd;
+-(id) initWithFirstName:(NSString*)first_Name lastname:(NSString*)lastName email:(NSString*) emailAddr userName:(NSString*)usrName password:(NSString*) pwd countryID:(int) countryID;
 
 - (long) getRegistrationId;
 - (NSString*) getUserNamePU;

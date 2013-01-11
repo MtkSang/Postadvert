@@ -10,6 +10,7 @@
 #import "Constants.h"
 #import "LeftViewController.h"
 #import "UserPAInfo.h"
+#import "SupportFunction.h"
 @interface FlagViewController ()
 
 @end
@@ -31,6 +32,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.tableView.tableFooterView = [[UIView alloc] init];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -135,7 +137,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (currentSeleted) {
+        [currentSeleted setAccessoryType:UITableViewCellAccessoryNone];
+    }
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    currentSeleted = cell;
+    [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSString *country = cell.textLabel.text;
     if ([country isEqualToString:@"US"]) {
         country = @"United States";
@@ -146,6 +154,11 @@
 #warning unclock it to support more country
     //[UserPAInfo sharedUserPAInfo].userCountryPA = country;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"selectedCountry" object:nil];
+    if ([self.delegate respondsToSelector:@selector(didSelectCountryWithCpuntryID:countryName:)]) {
+        NSInteger countryID = [SupportFunction GetCountryIdFromConutryName:country];
+        [self.delegate didSelectCountryWithCpuntryID:countryID countryName:country];
+        [self dismissModalViewControllerAnimated:YES];
+    }
     cell = nil;
     country = nil;
 }

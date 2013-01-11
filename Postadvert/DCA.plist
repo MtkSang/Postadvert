@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>HDB Search</key>
+	<dict>
+		<key>Sale</key>
+		<dict>
+			<key>Main Fields</key>
+			<array>
+				<string>HDB Type</string>
+				<string>HDB Estate</string>
+				<string>Price</string>
+				<string>Size</string>
+				<string>Bedrooms</string>
+			</array>
+			<key>More Options</key>
+			<array>
+				<string>PSF</string>
+				<string>Ad Owner</string>
+				<string>Washrooms</string>
+				<string>Val&apos;n Price</string>
+				<string>Unit Level</string>
+				<string>Furnishing</string>
+				<string>Condition</string>
+				<string>Constructed</string>
+			</array>
+			<key>Sort By</key>
+			<array>
+				<string>Date (new to old)</string>
+				<string>Date (old to new)</string>
+				<string>Price (low to high)</string>
+				<string>Price (high to low)</string>
+				<string>Size (low to high)</string>
+				<string>Size (high to low)</string>
+				<string>PSF (low to high)</string>
+				<string>PSF (high to low)</string>
+			</array>
+			<key>Filters</key>
+			<array>
+				<string>With Photos</string>
+				<string>With Videos</string>
+			</array>
+		</dict>
+		<key>Rent</key>
+		<dict>
+			<key>Main Fields</key>
+			<array>
+				<string>HDB Type</string>
+				<string>HDB Estate</string>
+				<string>Monthly Rental</string>
+				<string>Size</string>
+				<string>Bedrooms</string>
+			</array>
+			<key>More Options</key>
+			<array>
+				<string>Lease Term</string>
+				<string>PSF</string>
+				<string>Ad Owner</string>
+				<string>Washrooms</string>
+				<string>Val&apos;n Price</string>
+				<string>Unit Level</string>
+				<string>Furnishing</string>
+				<string>Condition</string>
+				<string>Constructed</string>
+			</array>
+			<key>Sort By</key>
+			<array>
+				<string>Date (new to old)</string>
+				<string>Date (old to new)</string>
+				<string>Monthly Rental (low to high)</string>
+				<string>Monthly Rental (high to low)</string>
+				<string>Size (low to high)</string>
+				<string>Size (high to low)</string>
+				<string>PSF (low to high)</string>
+				<string>PSF (high to low)</string>
+			</array>
+			<key>Filters</key>
+			<array>
+				<string>With Photos</string>
+				<string>With Videos</string>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

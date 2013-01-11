@@ -672,7 +672,8 @@
             break;
         case 5:
             [subItem addObject:@"Jobs Xpress"];
-            [subItem addObject:@"Jobs Xchange"];
+            [subItem addObject:@"Freelance Jobs"];
+            [subItem addObject:@"Bid for Tasks"];
             break;
         case 6:
             [subItem addObject:@"Business Xchange"];
@@ -721,6 +722,7 @@
             break;
         case 5:
             [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
+            [subItem addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
             [subItem addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
             break;
         case 6:

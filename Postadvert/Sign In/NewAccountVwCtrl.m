@@ -5,6 +5,8 @@
 #import "CredentialInfo.h"
 #import <QuartzCore/QuartzCore.h>
 #import "MyApplication.h"
+#import "FlagViewController.h"
+#import "LeftViewController.h"
 
 #import "Constants.h"
 
@@ -48,9 +50,7 @@
     [listItems addObject:@"Email Address"];
     [listItems addObject:@"Password"];
     [listItems addObject:@"Confirm Password"];
-    
-    
-    
+    [listItems addObject:@"Country of Residence"];
 }
 
 
@@ -71,13 +71,15 @@
 //                                             selector:@selector(keyboardWilBeShown:)
 //                                                 name:UITextFieldTextDidBeginEditingNotification object:nil];
 //    //[[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didParseDatafromServer) name:cRegistrationCreateFunc object:nil];
-    
+    CGRect mainBounds = [[UIScreen mainScreen] bounds];
+    mainBounds.size.height = mainBounds.size.height + self.topView.frame.size.height;
     [self initTableView];
     tableVw.tableHeaderView = self.topView;
     tableVw.scrollEnabled = NO;
     tableVw.separatorColor = [UIColor clearColor];
     tableVw.separatorStyle = UITableViewCellSeparatorStyleNone;
-    ((UIScrollView*)self.view).scrollEnabled = NO;
+    [tableVw setFrame:mainBounds];
+    ((UIScrollView*)self.view).scrollEnabled = YES;
     
 }
 
@@ -98,6 +100,11 @@
     return YES;
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
     //return YES;
+}
+
+- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [(UIScrollView*)self.view setContentSize:tableVw.contentSize];
 }
 
 /////////////////////
@@ -135,7 +142,8 @@
     CGRect viewFrame = self.view.frame;
     viewFrame.size.height = mainFrame.size.height - keyboardFrame.size.height;
     //self.view.frame = viewFrame;
-    [(UIScrollView*)self.view setContentSize:CGSizeMake(keyboardFrame.size.width, mainBounds.size.height + keyboardFrame.size.height)];
+    CGSize contentSize = tableVw.contentSize;
+    [(UIScrollView*)self.view setContentSize:CGSizeMake(keyboardFrame.size.width, contentSize.height + keyboardFrame.size.height)];
     
     CGPoint pt = CGPointZero;
     
@@ -165,7 +173,7 @@
         }
             break;
         case 7:{
-            pt = CGPointMake(0.0, 180.0);
+            pt = CGPointMake(0.0, 250.0);
         }
             break;
 
@@ -177,7 +185,6 @@
     if ([[UIApplication sharedApplication]statusBarOrientation] != UIDeviceOrientationPortrait) {
         pt = (CGPoint) {0, 51 * activeField.tag};
     }
-    
     
     [(UIScrollView*)self.view setScrollEnabled:YES];
     [(UIScrollView*)self.view setContentOffset:pt animated:YES];
@@ -198,6 +205,7 @@
     self.view.frame = viewFrame;
     
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    [((UIScrollView*)self.view) setContentSize:tableVw.contentSize];
     ((UIScrollView*)self.view).contentInset = contentInsets;
     ((UIScrollView*)self.view).scrollIndicatorInsets = contentInsets;
     [((UIScrollView*)self.view) setContentOffset:CGPointZero animated:YES];
@@ -264,8 +272,8 @@
 
 - (NSInteger) numberOfSectionsInTableView: (UITableView *) tableView 
 {
-    NSLog(@"List: %d %@",listItems.count, listItems);
-    return [listItems count] + 1;
+    int count = listItems.count + 1;
+    return count;
 } 
 
 // Draw for cell table. Please see more help from Apple
@@ -292,7 +300,41 @@
                 cell.contentView.backgroundColor = [UIColor colorWithRed:79/255.0 green:178/255.0 blue:187/255.0 alpha:1];
             }
             [cell addSubview:self.btnCreateAccount];
+            
+            //setUP for view
+            CGRect frameTable = tableView.frame;
+            frameTable.size.height = tableView.contentSize.height;
+            tableView.frame = frameTable;
+            [(UIScrollView*)self.view setContentSize:tableView.contentSize];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
         }
+        return cell;
+    }
+    
+    if (indexPath.section == 6) {
+        static NSString *newAccStrCountry = @"NewAccountCountry";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:newAccStrCountry];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:newAccStrCountry];
+            cell.tag = 7;
+            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+            UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"accessoryView.png"] highlightedImage:[UIImage imageNamed:@"accessoryViewSelected.png"]];
+            [cell setAccessoryView:imgView];
+            
+            UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, cCellHeight)];
+            view.backgroundColor = [UIColor whiteColor];
+            cell.backgroundView = view;
+            
+            UIView *selectedBackgroudView = [[UIView alloc] init];
+            selectedBackgroudView.backgroundColor = [UIColor blueColor];
+            [cell setSelectedBackgroundView:selectedBackgroudView];
+            
+            cell.textLabel.backgroundColor = [UIColor whiteColor];
+            [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
+            cell.textLabel.text = @"Singapore";
+            cell.imageView.image = [LeftViewController getFlagWithName:cell.textLabel.text];
+        }
+        cellCountry = cell;
         return cell;
     }
     
@@ -350,6 +392,10 @@
                 
             case 5:{
                 textField.secureTextEntry = YES;
+                textField.returnKeyType = UIReturnKeyNext;
+            }break;
+            case 6:{
+                textField.secureTextEntry = YES;
                 textField.returnKeyType = UIReturnKeyDone;
             }break;
         }
@@ -401,7 +447,7 @@
 }
 
 - (float) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if ((section == 2) || (section == 3)) {
+    if ((section == 2) || (section == 3) || (section == 6)) {
         return 24.0;
     }
     return 12.0;
@@ -410,7 +456,7 @@
 - (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *view;
-    if ((section == 2) || (section == 3)) {
+    if ((section == 2) || (section == 3 ) || (section == 6) ) {
         CGRect rcView = CGRectZero;
         rcView.size.height = 24.0;
         rcView.size.width = tableView.frame.size.width;
@@ -425,9 +471,15 @@
         
         if (section == 2) {
             lable.text = @"Choose a Unique Username";
-        } else {
+        }
+        if (section == 3) {
             lable.text = @"Valid email to confirm";
         }
+        
+        if (section == 6) {
+            lable.text = @"Country of Residence";
+        }
+        
         
         view = [[UIView alloc] initWithFrame:rcView];
         [view addSubview:lable];
@@ -442,6 +494,26 @@
     return view;
 }
 
+#pragma mark - UITaleViewDelegate
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell.tag == 7) {
+        cellCountry = cell;
+        [self showCountryToSelect];
+    }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - 
+- (void) showCountryToSelect
+{
+    FlagViewController *flagViewCtr = [[FlagViewController alloc] init];
+    flagViewCtr.delegate = self;
+    [self presentViewController:flagViewCtr animated:YES completion:nil];
+}
 
 -(IBAction) touchBackBtn: (id) sender
 {
@@ -477,9 +549,11 @@
                                                                     lastname:[(UITextView*)[self.view viewWithTag:2] text]
                                                                        email:[(UITextView*)[self.view viewWithTag:4] text]
                                                                     userName:[(UITextView*)[self.view viewWithTag:3] text]
-                                                                    password:[(UITextView*)[self.view viewWithTag:5] text] ];
+                                                                    password:[(UITextView*)[self.view viewWithTag:5] text]
+                                                                    countryID:countryID];
 
     //userRegister($fist_name, $last_name, $username, $email, $password)
+    //userRegister($fist_name, $last_name, $username, $email, $password, $country)
     long logInID = [[PostadvertControllerV2 sharedPostadvertController] registrationCreate:credential1];
     if (logInID) {
         NSUserDefaults* dababase = [NSUserDefaults standardUserDefaults];
@@ -536,7 +610,12 @@
         case 5:{
             [(UITextView*)[self.view viewWithTag:6] becomeFirstResponder];
         }
+            break;
         case 6:{
+            [activeField resignFirstResponder];
+            [(UITextView*)[self.view viewWithTag:7] becomeFirstResponder];
+            [self showCountryToSelect];
+            //[(UITextView*)[self.view viewWithTag:7] becomeFirstResponder];
             //[self touchCreateAccountBtn:( (UIButton*)[self.view viewWithTag:98] )];
             //[(UITextView*)[self.view viewWithTag:98] becomeFirstResponder];
             //[self touchCreateAccountBtn:nil];
@@ -572,6 +651,19 @@
         [(MyApplication*)[UIApplication sharedApplication] openURL:[[NSURL alloc] initWithString:@"www.google.com"] forceOpenInSafari:YES];
     }
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - FlagViewControllerDelegate
+
+- (void) didSelectCountryWithCpuntryID:(NSInteger)countryID_ countryName:(NSString *)countryName
+{
+    cellCountry.textLabel.text = countryName;
+    cellCountry.imageView.image = [LeftViewController getFlagWithName:countryName];
+    countryID = countryID_;
+    [(UIScrollView*)self.view setContentSize:tableVw.contentSize];
+    CGRect farme = tableVw.frame;
+    [(UIScrollView*)self.view scrollRectToVisible:farme animated:YES];
+    [(UIScrollView*)self.view setContentSize:tableVw.contentSize];
 }
 
 @end

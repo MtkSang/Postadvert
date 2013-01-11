@@ -168,7 +168,7 @@
 
     }
 
-    if ([[itemName uppercaseString] isEqualToString:[@"Jobs Xchange" uppercaseString]]) {
+    if ([[itemName uppercaseString] isEqualToString:[@"Freelance Jobs" uppercaseString]]) {
         switch (countryID) {
             case 190:
                 return 41;

@@ -174,19 +174,20 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
 - (long) registrationCreate:(CredentialInfo *)credential
 {
     //userRegister($fist_name, $last_name, $username, $email, $password)
-    return [self registrationCreateWithFirstName:credential.firstName lastName:credential.lastName userName:credential.usernamePU email:credential.email password:credential.passwordPU];
+    return [self registrationCreateWithFirstName:credential.firstName lastName:credential.lastName userName:credential.usernamePU email:credential.email password:credential.passwordPU countryID:credential.userCountryID];
 }
 
-- (long) registrationCreateWithFirstName:(NSString *)fristName lastName:(NSString *)lastName userName:(NSString *)userName email:(NSString *)email password:(NSString *)password
+- (long) registrationCreateWithFirstName:(NSString *)fristName lastName:(NSString *)lastName userName:(NSString *)userName email:(NSString *)email password:(NSString *)password countryID:(int) countryID_
 {
     //userRegister($fist_name, $last_name, $username, $email, $password)
+    //userRegister($fist_name, $last_name, $username, $email, $password, $country)
     id data;
     NSString *functionName;
     NSArray *paraNames;
     NSArray *paraValues;
     functionName = @"userRegister";
-    paraNames = [NSArray arrayWithObjects:@"fist_name", @"last_name", @"username", @"email", @"password", nil];
-    paraValues = [NSArray arrayWithObjects:fristName, lastName, userName, email, password, nil];
+    paraNames = [NSArray arrayWithObjects:@"fist_name", @"last_name", @"username", @"email", @"password", @"country", nil];
+    paraValues = [NSArray arrayWithObjects:fristName, lastName, userName, email, password, [NSString stringWithFormat:@"%d", countryID_], nil];
     
     data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
     long userID = 0;

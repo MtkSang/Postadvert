@@ -45,7 +45,7 @@
 @synthesize appearance, appearanceTypeID;
 @synthesize childrenTypeID, children;
 @synthesize movies, moviesTypeIDs, musicTypeIDs;
-@synthesize userCountryPA;
+@synthesize userCountryPA, userCountryID;
 
 
 -(id) init
@@ -83,11 +83,12 @@
 
     return self;
 }
--(id) initWithFirstName:(NSString*)first_Name lastname:(NSString*)lastName email:(NSString*) emailAddr userName:(NSString*)usrName password:(NSString*) pwd
+-(id) initWithFirstName:(NSString*)first_Name lastname:(NSString*)lastName email:(NSString*) emailAddr userName:(NSString*)usrName password:(NSString*) pwd countryID:(int) countryID
 {
     if (self) {
         self.firstName = first_Name;
         self.lastName = lastName;
+        self.userCountryID = countryID;
     }
     return [self initWithEmail:emailAddr userName:usrName password:pwd];
 }

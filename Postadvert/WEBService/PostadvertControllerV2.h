@@ -31,7 +31,7 @@
 - (id) jsonObjectFromWebserviceWithFunctionName:(NSString*/*Function name*/)functionName parametterName: (NSArray*/*Parametter array */) paramettersName parametterValue:(NSArray*/*parameters values*/) paramettersValus;
 - (id) jsonObjectFromWebserviceWithFunctionName:(NSString*/*Function name*/)functionName parametterName: (NSArray*/*Parametter array */) paramettersName parametterValue:(NSArray*/*parameters values*/) paramettersValus callBackDelegate:(id) delegate;
 - (long)registrationCreate:(CredentialInfo *) credential;
-- (long)registrationCreateWithFirstName:(NSString*)fristName lastName:(NSString*)lastName userName:(NSString*)userName email:(NSString*)email password:(NSString*) password;
+- (long)registrationCreateWithFirstName:(NSString*)fristName lastName:(NSString*)lastName userName:(NSString*)userName email:(NSString*)email password:(NSString*) password countryID:(int) countryID_;
 //- (void) getFullProfile;
 - (long) registrationLogin:(NSString *)userName :(NSString *)password;
 -(void) testFunction;

@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @class PostAdvertController;
-@interface NewAccountVwCtrl : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
+#import "FlagViewController.h"
+@interface NewAccountVwCtrl : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, FlagViewControllerDelegate>
 {
     
     UITextField                 *activeField;
@@ -19,6 +20,8 @@
     
     NSMutableArray              *listItems;
     CGRect                      keyboardFrame;
+    UITableViewCell *cellCountry;
+    int                         countryID;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *topView;
