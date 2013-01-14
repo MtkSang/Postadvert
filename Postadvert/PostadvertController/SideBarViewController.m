@@ -440,6 +440,7 @@
     
     navDetail.view.frame = frame;
     [UIView commitAnimations];
+    [self sideBarUpdate];
     [self updateNavigationBarItem];
 }
 

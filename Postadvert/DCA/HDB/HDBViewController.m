@@ -11,6 +11,8 @@
 #import "Constants.h"
 @interface HDBViewController ()
 - (NSInteger) getInternalItemIDWithItemName:(NSString*)itemName;
+- (IBAction) makeKeyBoardGoAway;
+- (void) hideKeyboardWhenSwitchViews;
 @end
 
 @implementation HDBViewController
@@ -58,12 +60,30 @@
     self.tableView.separatorColor = [UIColor colorWithRed:79.0/255 green:177.0/255 blue:190.0/255 alpha:1];
     //self.tableView.separatorColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"DCASeprator.png"]];
     
+    //SearchBar
+    for(UIView *subView in self.searchBar.subviews) {
+        if([subView conformsToProtocol:@protocol(UITextInputTraits)]) {
+            @try {
+                [(UITextField *)subView setKeyboardAppearance: UIKeyboardAppearanceAlert];
+                [(UITextField *)subView setReturnKeyType:UIReturnKeyDone];
+                [(UITextField *)subView setEnablesReturnKeyAutomatically:NO];
+            }
+            @catch (NSException *exception) {
+                
+            }
+        }
+    }
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillBeShown:)
                                                  name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hideKeyboardWhenSwitchViews)
+                                                 name:@"sideBarUpdate"
+                                               object:nil];
 }
 - (void) viewDidAppear:(BOOL)animated
 {
@@ -81,7 +101,9 @@
     [self setLbTitle:nil];
     [self setTableView:nil];
     [self setCellWithSearchBar:nil];
+    [self setSearchBar:nil];
     [super viewDidUnload];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma button
@@ -154,12 +176,41 @@
 }
 - (void) keyboardWillBeShown:(NSNotification*) notification
 {
+    NSDictionary *info = notification.userInfo;
+    CGRect frame = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    frame = [self.view convertRect:frame fromView:nil];
     
+    CGSize contentSize = self.tableView.contentSize;
+    contentSize.height = contentSize.height + frame.size.height;
+    
+    [self.tableView setContentSize:contentSize];
+    
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:4] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 - (void) keyboardWillBeHidden:(NSNotification*) notification
 {
+    NSDictionary *info = notification.userInfo;
+    CGRect frame = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    frame = [self.view convertRect:frame fromView:nil];
     
+    CGSize contentSize = self.tableView.contentSize;
+    contentSize.height = contentSize.height - frame.size.height;
+    
+    [self.tableView setContentSize:contentSize];
+
+}
+- (void) hideKeyboardWhenSwitchViews
+{
+    NSNumber *num = [[NSUserDefaults standardUserDefaults] objectForKey:@"sideBarUpdate"];
+    if (num.integerValue == 1) {
+        [self makeKeyBoardGoAway];
+    }
+}
+
+- (IBAction) makeKeyBoardGoAway
+{
+    [self.searchBar resignFirstResponder];
 }
 #pragma mark - Table view data source
 
@@ -170,6 +221,9 @@
     }
     if (section == 3) {
         return @"Filters";
+    }
+    if (section == 4) {
+        return @"Keywords";
     }
     return nil;
 }
@@ -397,6 +451,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.section == 3) {
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        if (cell.accessoryType == UITableViewCellAccessoryCheckmark) {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+        else
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
+    
     // Navigation logic may go here. Create and push another view controller.
     /*
      <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
@@ -404,6 +467,13 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
+}
+
+#pragma mark - UISearchBar Delegate
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
 }
 
 @end

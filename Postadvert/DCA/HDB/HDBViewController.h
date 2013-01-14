@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HDBViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface HDBViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 {
     UIButton *leftButton;
     UIButton *rightButton;
@@ -27,4 +27,5 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *lbTitle;
 @property (strong, nonatomic) IBOutlet UITableViewCell *CellWithSearchBar;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @end

@@ -676,8 +676,8 @@
             [subItem addObject:@"Bid for Tasks"];
             break;
         case 6:
-            [subItem addObject:@"Business Xchange"];
             [subItem addObject:@"StartUp Jobs"];
+            [subItem addObject:@"Business Xchange"];
             break;
         case 7:
             [subItem addObject:@"Travel Xchange"];
