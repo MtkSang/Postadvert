@@ -653,7 +653,7 @@
         case 1:
             [subItem addObject:@"HDB"];
             [subItem addObject:@"Condos"];
-            [subItem addObject:@"Planded Property"];
+            [subItem addObject:@"Landed Property"];
             [subItem addObject:@"Rooms For Rent"];
             [subItem addObject:@"Co-Broke Xpress"];
             [subItem addObject:@"Property Xchange"];

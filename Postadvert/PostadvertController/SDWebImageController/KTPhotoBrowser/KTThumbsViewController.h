@@ -19,6 +19,7 @@
    KTThumbsView *scrollView_;
    BOOL viewDidAppearOnce_;
    BOOL navbarWasTranslucent_;
+    CGRect frameForThumbSize_;
 }
 
 @property (nonatomic, retain) id <KTPhotoBrowserDataSource> dataSource;

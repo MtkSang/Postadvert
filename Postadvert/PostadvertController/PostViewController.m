@@ -23,6 +23,8 @@
 
 #define MaxImageCanSave  20
 #define marginImage 15.0
+#define cLocalImageWidth 65.0
+#define cLocalImageHeight 65.0
 
 @interface PostViewController ()
 - (void) updatePostBtnState;
@@ -483,15 +485,15 @@
 
 - (void) showThumbnailWithPath:(NSString*) path
 {
-    UIImage *image = [[UIImage imageWithContentsOfFile:path]resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(cImageWidth, cImageHeight) interpolationQuality:0];
+    UIImage *image = [[UIImage imageWithContentsOfFile:path]resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(cLocalImageWidth, cLocalImageHeight) interpolationQuality:0];
     NSInteger total = listImageNeedToPost.count;
-    image = [image croppedImage:CGRectMake(0, 0, cImageWidth, cImageHeight)];
+    image = [image croppedImage:CGRectMake(0, 0, cLocalImageWidth, cLocalImageHeight)];
     UIImageView *imgView = [[UIImageView alloc] initWithImage:image];
     imgView.contentMode = UIViewContentModeScaleAspectFill;
-    imgView.frame = CGRectMake( 10,10, cImageWidth, cImageHeight);
+    imgView.frame = CGRectMake( 10,10, cLocalImageWidth, cLocalImageHeight);
     
     //Bound
-    UIView *boundView = [[UIView alloc]initWithFrame:CGRectMake( ( (cImageWidth + marginImage)* (total - 1)) + CELL_CONTENT_MARGIN_LEFT, 0, cImageWidth + marginImage, cImageHeight + marginImage)];
+    UIView *boundView = [[UIView alloc]initWithFrame:CGRectMake( ( (cLocalImageWidth + marginImage)* (total - 1)) + CELL_CONTENT_MARGIN_LEFT, 0, cLocalImageWidth + marginImage, cLocalImageHeight + marginImage)];
     UIButton *delete_btn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 22, 22)];
     //delete_btn.layer.cornerRadius = 3.0;
     [delete_btn setImage:[UIImage imageNamed:@"remove.png"] forState:UIControlStateNormal];
@@ -586,7 +588,7 @@
     for (UIView *view in self.thumbnailView.subviews) {
         if (view.tag > 0) {
             CGRect frame = view.frame;
-            frame.origin.x = (cImageWidth + marginImage)* index + CELL_CONTENT_MARGIN_LEFT ;
+            frame.origin.x = (cLocalImageWidth + marginImage)* index + CELL_CONTENT_MARGIN_LEFT ;
             //
             [UIView setAnimationDuration:0.0];
             [UIView setAnimationDelegate:self];
@@ -604,7 +606,7 @@
 - (void) setThumbnailContentSize
 {
     int total = listImageNeedToPost.count;
-    CGSize size = CGSizeMake((total)* (cImageWidth + marginImage) + CELL_CONTENT_MARGIN_LEFT + CELL_CONTENT_MARGIN_RIGHT ,75);
+    CGSize size = CGSizeMake((total)* (cLocalImageWidth + marginImage) + CELL_CONTENT_MARGIN_LEFT + CELL_CONTENT_MARGIN_RIGHT ,75);
     self.thumbnailView.contentSize = size;
 }
 

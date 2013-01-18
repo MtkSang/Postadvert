@@ -32,8 +32,9 @@
         // Set default values.
         thumbsHaveBorder_ = YES;
         thumbsPerRow_ = NSIntegerMin; // Forces caluation because on view size.
-        thumbSize_ = CGSizeMake(65, 65);
-        
+        //thumbSize_ = CGSizeMake(65, 65);
+        //thumbSize_ = CGSizeMake(cImageWidth, cImageHeight);
+        thumbSize_ = frame.size;
         // We keep a collection of reusable thumbnail
         // views. This improves performance by not
         // requiring a create view each and every time.
@@ -112,8 +113,8 @@
     }
     
     if (itemsPerRow < 1) itemsPerRow = 1;  // Ensure at least one per row.
-    
     int spaceWidth = round((visibleWidth - thumbSize_.width * itemsPerRow) / (itemsPerRow + 1));
+    spaceWidth = CELL_MARGIN_BETWEEN_IMAGE;
     //int spaceHeight = spaceWidth;
     
     // Calculate content size.
@@ -177,6 +178,7 @@
             [thumbView setHasBorder:thumbsHaveBorder_];
             
             [self addSubview:thumbView];
+            NSLog(@"%d %@", self.subviews.count, self.subviews);
         }
         
         
@@ -228,6 +230,7 @@
     if (itemsPerRow < 1) itemsPerRow = 1;  // Ensure at least one per row.
     
     int spaceWidth = round((visibleWidth - thumbSize_.width * itemsPerRow) / (itemsPerRow + 1));
+    spaceWidth = CELL_MARGIN_BETWEEN_IMAGE;
     int spaceHeight = spaceWidth;
     
     // Calculate content size.

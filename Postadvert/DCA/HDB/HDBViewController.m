@@ -13,6 +13,8 @@
 - (NSInteger) getInternalItemIDWithItemName:(NSString*)itemName;
 - (IBAction) makeKeyBoardGoAway;
 - (void) hideKeyboardWhenSwitchViews;
+- (IBAction)moreOptionChangeValue:(id)sender;
+- (void) reloadInternalID;
 @end
 
 @implementation HDBViewController
@@ -88,7 +90,30 @@
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:7] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    @try {
+        return;
+        switch (internalItemID) {
+            case 1:
+                [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:5] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                break;
+            case 2:
+                [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:5] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                break;
+            case 101:
+                [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:7] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                break;
+                
+            case 102:
+                [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:7] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                break;
+            default:
+                break;
+        }
+    }
+    @catch (NSException *exception) {
+        
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -131,9 +156,16 @@
     NSInteger internalID = 0;
     if ([itemName isEqualToString:@"HDB Search"]) {
         if (currentButton == leftButton) {
-            internalID = 1;
+            if (isMoreOptionOn) {
+                internalID = 101;//sale on
+            }
+            else
+                internalID = 1;//sale off
         }else
-            internalID = 2;
+            if (isMoreOptionOn) {
+                internalID = 102;//rent on
+            }else
+                internalID = 2;//rent off
     }
     
     return internalID;
@@ -212,192 +244,354 @@
 {
     [self.searchBar resignFirstResponder];
 }
+
+- (IBAction)moreOptionChangeValue:(id)sender
+{
+    if ([sender isKindOfClass:[UISwitch class]]) {
+        UISwitch *switchBtn = (UISwitch*)sender;
+        isMoreOptionOn = [switchBtn isOn];
+        [self reloadInternalID];
+        [self.tableView reloadData];
+    }
+}
+- (void) reloadInternalID
+{
+    if (isMoreOptionOn) {
+        internalItemID += 100;
+    }
+    else
+        internalItemID -= 100;
+    if (internalItemID < 0 || internalItemID > 200) {
+        internalItemID = [self getInternalItemIDWithItemName:self.itemName];
+    }
+}
 #pragma mark - Table view data source
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 2) {
-        return @"Sort";
+    if (isMoreOptionOn) {
+        if (section == 2) {
+            return @"Sort";
+        }
+        if (section == 3) {
+            return @"Filters";
+        }
+        if (section == 4) {
+            return @"Keywords";
+        }
+    }else
+    {
+        if (section == 2) {
+            return @"Keywords";
+        }
     }
-    if (section == 3) {
-        return @"Filters";
-    }
-    if (section == 4) {
-        return @"Keywords";
-    }
+    
     return nil;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 8;
+    if (isMoreOptionOn) {
+        return 8;
+    }
+    return 6;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    switch (section) {
-        case 0:
-            return mainFiles.count;
-            break;
-        case 3:
-            return filters.count;
-            break;
-        default:
-            return 1;
-            break;
+    if (isMoreOptionOn) {
+        switch (section) {
+            case 0:
+                return mainFiles.count;
+                break;
+            case 3:
+                return filters.count;
+                break;
+            default:
+                return 1;
+                break;
+        }
+    }else
+    {
+        switch (section) {
+            case 0:
+                return mainFiles.count;
+                break;
+            default:
+                return 1;
+                break;
+        }
     }
+    
     
     return 01;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
-        static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier1];
-            [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
-            [cell.textLabel setTextColor:[UIColor whiteColor]];
-            [cell.detailTextLabel setTextColor:[UIColor blackColor]];
-            [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
-            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-            UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"accessoryView.png"] highlightedImage:[UIImage imageNamed:@"accessoryViewSelected.png"]];
-            [cell setAccessoryView:imgView];
-        }
-        
-        cell.textLabel.text = [mainFiles objectAtIndex:indexPath.row];
-        
-        
-        cell.detailTextLabel.text = [mainFilesValues objectAtIndex:indexPath.row];
-        [cell.detailTextLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
-        
-        
-        return cell;
-    }
-    
-    if ([indexPath section] == 1) {
-        static NSString *CellIdentifier2 = @"CellStartUpJobsWithMoreOption";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier2];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier2];
-            [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
-            [cell.textLabel setTextColor:[UIColor whiteColor]];
-
-            [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
-            [cell setAccessoryType:UITableViewCellAccessoryNone];
-            UISwitch *switchBtn = [[UISwitch alloc]init];
-            [switchBtn sizeToFit];
-            CGRect frame = cell.frame;
-            CGRect framebtn = switchBtn.frame;
-            framebtn.origin.x = frame.size.width - framebtn.size.width - 20;
-            framebtn.origin.y = (cCellHeight - framebtn.size.height) / 2;
-            switchBtn.frame = framebtn;
-            [switchBtn setOnTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"leftPressed.png"] ]];
-            [cell addSubview:switchBtn];
-            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-            cell.textLabel.text = @"More Options";
-        }
-        
-        
-        return cell;
-    }
-    if (indexPath.section == 2) {
-        static NSString *CellIdentifier3 = @"CellStartUpJobsWithSort";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier3];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier3];
-            [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
-            [cell.textLabel setTextColor:[UIColor whiteColor]];
+    if (internalItemID == 1) {// SALE off
+        if (indexPath.section == 0) {
+            static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier1];
+                [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
+                [cell.textLabel setTextColor:[UIColor whiteColor]];
+                [cell.detailTextLabel setTextColor:[UIColor blackColor]];
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"accessoryView.png"] highlightedImage:[UIImage imageNamed:@"accessoryViewSelected.png"]];
+                [cell setAccessoryView:imgView];
+            }
             
-            [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
-            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-            UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"accessoryView.png"] highlightedImage:[UIImage imageNamed:@"accessoryViewSelected.png"]];
-            [cell setAccessoryView:imgView];
-
-            cell.textLabel.text = @"Sort by";
-            cell.detailTextLabel.text = @"Any";
-            [cell.detailTextLabel setTextColor:[UIColor blackColor]];
-        }
-        
-        
-        return cell;
-    }
-    if (indexPath.section == 3) {
-        static NSString *CellIdentifier4 = @"CellStartUpJobsWithFilters";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier4];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier4];
-            [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
-            [cell.textLabel setTextColor:[UIColor whiteColor]];
-            [cell.detailTextLabel setTextColor:[UIColor blackColor]];
-            [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
-            [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-        }
-        
-        cell.textLabel.text = [filters objectAtIndex:indexPath.row];        
-        
-        return cell;
-    }
-    if (indexPath.section == 4) {
-//        static NSString *CellIdentifier5 = @"CellStartUpJobsWithSearchBar";
-//        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier5];
-//        if (cell == nil) {
-//            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier5];
-//            [cell setBackgroundColor:[UIColor clearColor]];
-//            UITextField *searchView = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 300, cCellHeight)];
-//            searchView.backgroundColor = [UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1];
-//            [searchView setPlaceholder:@"Search"];
-//            cell.backgroundView = [[UIView alloc]init];
-//            [cell addSubview:searchView];
-//        }
-        [self.CellWithSearchBar setBackgroundView:[[UIView alloc] init]];
-        return self.CellWithSearchBar;
-    }
-    
-    if (indexPath.section == 5 || indexPath.section == 6) {
-        static NSString *CellIdentifier6 = @"CellStartUpJobsWithButton";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier6];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier6];
-            UIView *backgroundView = [[UIView alloc]init];
-            //[backgroundView setBackgroundColor:[UIColor colorWithRed:90.0/255 green:80.0/255 blue:65.5/255 alpha:1]];
-            [cell setBackgroundView:backgroundView];
+            cell.textLabel.text = [mainFiles objectAtIndex:indexPath.row];
             
-            UIButton *searchBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 0, 300, cCellHeight)];
-            searchBtn.tag = 1;
-            [searchBtn setBackgroundImage:[UIImage imageNamed:@"btnHDBUnormal.png"] forState:UIControlStateNormal];
-            [cell addSubview:searchBtn];
+            
+            cell.detailTextLabel.text = [mainFilesValues objectAtIndex:indexPath.row];
+            [cell.detailTextLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
+            
+            
+            return cell;
         }
+        
+        if ([indexPath section] == 1) {
+            static NSString *CellIdentifier2 = @"CellStartUpJobsWithMoreOption";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier2];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier2];
+                [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
+                [cell.textLabel setTextColor:[UIColor whiteColor]];
+                
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                [cell setAccessoryType:UITableViewCellAccessoryNone];
+                UISwitch *switchBtn = [[UISwitch alloc]init];
+                [switchBtn addTarget:self action:@selector(moreOptionChangeValue:) forControlEvents:UIControlEventValueChanged];
+                [switchBtn sizeToFit];
+                CGRect frame = cell.frame;
+                CGRect framebtn = switchBtn.frame;
+                framebtn.origin.x = frame.size.width - framebtn.size.width - 20;
+                framebtn.origin.y = (cCellHeight - framebtn.size.height) / 2;
+                switchBtn.frame = framebtn;
+                [switchBtn setOnTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"leftPressed.png"] ]];
+                [cell addSubview:switchBtn];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+                cell.textLabel.text = @"More Options";
+            }
+            
+            
+            return cell;
+        }
+        if (indexPath.section == 2) {
+            //        static NSString *CellIdentifier5 = @"CellStartUpJobsWithSearchBar";
+            //        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier5];
+            //        if (cell == nil) {
+            //            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier5];
+            //            [cell setBackgroundColor:[UIColor clearColor]];
+            //            UITextField *searchView = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 300, cCellHeight)];
+            //            searchView.backgroundColor = [UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1];
+            //            [searchView setPlaceholder:@"Search"];
+            //            cell.backgroundView = [[UIView alloc]init];
+            //            [cell addSubview:searchView];
+            //        }
+            [self.CellWithSearchBar setBackgroundView:[[UIView alloc] init]];
+            return self.CellWithSearchBar;
+        }
+        
+        if (indexPath.section == 3 || indexPath.section == 4) {
+            static NSString *CellIdentifier6 = @"CellStartUpJobsWithButton";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier6];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier6];
+                UIView *backgroundView = [[UIView alloc]init];
+                //[backgroundView setBackgroundColor:[UIColor colorWithRed:90.0/255 green:80.0/255 blue:65.5/255 alpha:1]];
+                [cell setBackgroundView:backgroundView];
+                
+                UIButton *searchBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 0, 300, cCellHeight)];
+                searchBtn.tag = 1;
+                [searchBtn setBackgroundImage:[UIImage imageNamed:@"btnHDBUnormal.png"] forState:UIControlStateNormal];
+                [cell addSubview:searchBtn];
+            }
+            if (indexPath.section == 3) {
+                UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
+                [searchBtn setTitle:@"Search" forState:UIControlStateNormal];
+            }
+            if (indexPath.section == 4) {
+                UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
+                [searchBtn setTitle:@"Save & Search" forState:UIControlStateNormal];
+            }
+            
+            return cell;
+        }
+        
         if (indexPath.section == 5) {
-            UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
-            [searchBtn setTitle:@"Search" forState:UIControlStateNormal];
-        }
-        if (indexPath.section == 6) {
-            UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
-            [searchBtn setTitle:@"Save & Search" forState:UIControlStateNormal];
-        }
-        
-        return cell;
-    }
-    
-    if (indexPath.section == 7) {
-        static NSString *CellIdentifier7 = @"CellStartUpJobsWithButton";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier7];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier7];
-            UIView *backgroundView = [[UIView alloc]init];
-            //[backgroundView setBackgroundColor:[UIColor colorWithRed:43.0/255 green:145.0/255 blue:158.0/255 alpha:1]];
-            [cell setBackgroundView:backgroundView];
+            static NSString *CellIdentifier7 = @"CellStartUpJobsWithButton";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier7];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier7];
+                UIView *backgroundView = [[UIView alloc]init];
+                //[backgroundView setBackgroundColor:[UIColor colorWithRed:43.0/255 green:145.0/255 blue:158.0/255 alpha:1]];
+                [cell setBackgroundView:backgroundView];
+                
+                UIButton *searchBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 0, 300, cCellHeight)];
+                searchBtn.tag = 1;
+                [searchBtn setBackgroundImage:[UIImage imageNamed:@"btnResetHDBnormal.png"] forState:UIControlStateNormal];
+                [searchBtn setTitle:@"Reset" forState:UIControlStateNormal];
+                [cell addSubview:searchBtn];
+            }
             
-            UIButton *searchBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 0, 300, cCellHeight)];
-            searchBtn.tag = 1;
-            [searchBtn setBackgroundImage:[UIImage imageNamed:@"btnResetHDBnormal.png"] forState:UIControlStateNormal];
-            [searchBtn setTitle:@"Reset" forState:UIControlStateNormal];
-            [cell addSubview:searchBtn];
+            return cell;
+        }
+    }
+    if (internalItemID == 101) { //Sale on
+        if (indexPath.section == 0) {
+            static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier1];
+                [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
+                [cell.textLabel setTextColor:[UIColor whiteColor]];
+                [cell.detailTextLabel setTextColor:[UIColor blackColor]];
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"accessoryView.png"] highlightedImage:[UIImage imageNamed:@"accessoryViewSelected.png"]];
+                [cell setAccessoryView:imgView];
+            }
+            
+            cell.textLabel.text = [mainFiles objectAtIndex:indexPath.row];
+            
+            
+            cell.detailTextLabel.text = [mainFilesValues objectAtIndex:indexPath.row];
+            [cell.detailTextLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
+            
+            
+            return cell;
         }
         
-        return cell;
+        if ([indexPath section] == 1) {
+            static NSString *CellIdentifier2 = @"CellStartUpJobsWithMoreOption";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier2];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier2];
+                [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
+                [cell.textLabel setTextColor:[UIColor whiteColor]];
+                
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                [cell setAccessoryType:UITableViewCellAccessoryNone];
+                UISwitch *switchBtn = [[UISwitch alloc]init];
+                [switchBtn addTarget:self action:@selector(moreOptionChangeValue:) forControlEvents:UIControlEventValueChanged];
+                [switchBtn sizeToFit];
+                [switchBtn setOn:YES animated:YES];
+                CGRect frame = cell.frame;
+                CGRect framebtn = switchBtn.frame;
+                framebtn.origin.x = frame.size.width - framebtn.size.width - 20;
+                framebtn.origin.y = (cCellHeight - framebtn.size.height) / 2;
+                switchBtn.frame = framebtn;
+                [switchBtn setOnTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"leftPressed.png"] ]];
+                [cell addSubview:switchBtn];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+                cell.textLabel.text = @"More Options";
+            }
+            
+            
+            return cell;
+        }
+        if (indexPath.section == 2) {
+            static NSString *CellIdentifier3 = @"CellStartUpJobsWithSort";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier3];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier3];
+                [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
+                [cell.textLabel setTextColor:[UIColor whiteColor]];
+                
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"accessoryView.png"] highlightedImage:[UIImage imageNamed:@"accessoryViewSelected.png"]];
+                [cell setAccessoryView:imgView];
+                
+                cell.textLabel.text = @"Sort by";
+                cell.detailTextLabel.text = @"Any";
+                [cell.detailTextLabel setTextColor:[UIColor blackColor]];
+            }
+            
+            
+            return cell;
+        }
+        if (indexPath.section == 3) {
+            static NSString *CellIdentifier4 = @"CellStartUpJobsWithFilters";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier4];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier4];
+                [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
+                [cell.textLabel setTextColor:[UIColor whiteColor]];
+                [cell.detailTextLabel setTextColor:[UIColor blackColor]];
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+            }
+            
+            cell.textLabel.text = [filters objectAtIndex:indexPath.row];
+            
+            return cell;
+        }
+        if (indexPath.section == 4) {
+            //        static NSString *CellIdentifier5 = @"CellStartUpJobsWithSearchBar";
+            //        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier5];
+            //        if (cell == nil) {
+            //            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier5];
+            //            [cell setBackgroundColor:[UIColor clearColor]];
+            //            UITextField *searchView = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 300, cCellHeight)];
+            //            searchView.backgroundColor = [UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1];
+            //            [searchView setPlaceholder:@"Search"];
+            //            cell.backgroundView = [[UIView alloc]init];
+            //            [cell addSubview:searchView];
+            //        }
+            [self.CellWithSearchBar setBackgroundView:[[UIView alloc] init]];
+            return self.CellWithSearchBar;
+        }
+        
+        if (indexPath.section == 5 || indexPath.section == 6) {
+            static NSString *CellIdentifier6 = @"CellStartUpJobsWithButton";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier6];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier6];
+                UIView *backgroundView = [[UIView alloc]init];
+                //[backgroundView setBackgroundColor:[UIColor colorWithRed:90.0/255 green:80.0/255 blue:65.5/255 alpha:1]];
+                [cell setBackgroundView:backgroundView];
+                
+                UIButton *searchBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 0, 300, cCellHeight)];
+                searchBtn.tag = 1;
+                [searchBtn setBackgroundImage:[UIImage imageNamed:@"btnHDBUnormal.png"] forState:UIControlStateNormal];
+                [cell addSubview:searchBtn];
+            }
+            if (indexPath.section == 5) {
+                UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
+                [searchBtn setTitle:@"Search" forState:UIControlStateNormal];
+            }
+            if (indexPath.section == 6) {
+                UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
+                [searchBtn setTitle:@"Save & Search" forState:UIControlStateNormal];
+            }
+            
+            return cell;
+        }
+        
+        if (indexPath.section == 7) {
+            static NSString *CellIdentifier7 = @"CellStartUpJobsWithButton";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier7];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier7];
+                UIView *backgroundView = [[UIView alloc]init];
+                //[backgroundView setBackgroundColor:[UIColor colorWithRed:43.0/255 green:145.0/255 blue:158.0/255 alpha:1]];
+                [cell setBackgroundView:backgroundView];
+                
+                UIButton *searchBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 0, 300, cCellHeight)];
+                searchBtn.tag = 1;
+                [searchBtn setBackgroundImage:[UIImage imageNamed:@"btnResetHDBnormal.png"] forState:UIControlStateNormal];
+                [searchBtn setTitle:@"Reset" forState:UIControlStateNormal];
+                [cell addSubview:searchBtn];
+            }
+            
+            return cell;
+        }
     }
     return nil;
 }
@@ -451,14 +645,17 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section == 3) {
-        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        if (cell.accessoryType == UITableViewCellAccessoryCheckmark) {
-            cell.accessoryType = UITableViewCellAccessoryNone;
+    if (internalItemID == 101) {
+        if (indexPath.section == 3) {
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            if (cell.accessoryType == UITableViewCellAccessoryCheckmark) {
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
+            else
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
-        else
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
+    
     
     // Navigation logic may go here. Create and push another view controller.
     /*
@@ -475,5 +672,7 @@
 {
     [searchBar resignFirstResponder];
 }
+
+
 
 @end

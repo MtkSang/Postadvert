@@ -14,6 +14,35 @@
    [self setImageWithURL:url placeholderImage:nil];
 }
 
+- (void)setImageWithFullImageURL:(NSURL *)fullURL_ thumbURL:(NSURL *)url placeholderImage:(UIImage *)placeholder
+{
+    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+    // Remove in progress downloader from queue
+    [manager cancelForDelegate:self];
+    
+    UIImage *cachedImage = nil;
+    if (url) {
+        cachedImage = [manager imageWithURL:url];
+    }
+    
+    if (cachedImage) {
+        [self setThumbImage:cachedImage];
+        [self setImageWithURL:fullURL_];
+        //Here
+    }
+    else {
+        if (placeholder) {
+            [self setThumbImage:placeholder];
+        }
+        
+        if (url) {
+            [manager downloadWithURL:url delegate:self];
+            [manager downloadWithURL:fullURL_ delegate:self];
+        }
+    }
+
+}
+
 - (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder {
    SDWebImageManager *manager = [SDWebImageManager sharedManager];
    // Remove in progress downloader from queue

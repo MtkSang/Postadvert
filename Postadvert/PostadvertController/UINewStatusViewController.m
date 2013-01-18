@@ -100,6 +100,13 @@
 {
     [super viewDidAppear:animated];
     [activeControll becomeFirstResponder];
+    if ([[UserPAInfo sharedUserPAInfo] registrationID] != [userInfo registrationID]) {
+        for (UIButton *btn in self.botView.subviews) {
+            if (btn.tag != 1 && btn.tag != 5) {
+                btn.hidden = YES;
+            }
+        }
+    }
 }
 
 - (void) viewWillDisappear:(BOOL)animated

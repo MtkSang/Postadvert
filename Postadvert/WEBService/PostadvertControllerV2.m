@@ -641,7 +641,16 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
         NSLog(@"Kind %@", NSStringFromClass([images class]));
         if ([images isKindOfClass:[NSArray class]]) {
             for (NSDictionary *dictImages in images) {
-                [cellContent.listImages addObject:[NSArray arrayWithObjects:[dictImages objectForKey:@"full_image"],[dictImages objectForKey:@"thumb_image"], nil]];
+                NSNumber *numW = [dictImages objectForKey:@"width"];
+                NSNumber *numH = [dictImages objectForKey:@"height"];
+                if (numW.floatValue < 1) {
+                    numW = [NSNumber numberWithFloat:cImageWidth];
+                }
+                if (numH.floatValue < 1) {
+                    numH = [NSNumber numberWithFloat:cImageHeight];
+                }
+
+                [cellContent.listImages addObject:[NSArray arrayWithObjects:[dictImages objectForKey:@"full_image"],[dictImages objectForKey:@"thumb_image"], numW, numH,  nil]];
             }
             NSLog(@"List Image %@", cellContent.listImages);
         }
@@ -746,7 +755,16 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
             NSLog(@"Kind %@", NSStringFromClass([images class]));
             if ([images isKindOfClass:[NSArray class]]) {
                 for (NSDictionary *dictImages in images) {
-                    [cellContent.listImages addObject:[NSArray arrayWithObjects:[dictImages objectForKey:@"full_image"],[dictImages objectForKey:@"thumb_image"], nil]];
+                    NSNumber *numW = [dictImages objectForKey:@"width"];
+                    NSNumber *numH = [dictImages objectForKey:@"height"];
+                    if (numW.floatValue < 1) {
+                        numW = [NSNumber numberWithFloat:cImageWidth];
+                    }
+                    if (numH.floatValue < 1) {
+                        numH = [NSNumber numberWithFloat:cImageHeight];
+                    }
+
+                    [cellContent.listImages addObject:[NSArray arrayWithObjects:[dictImages objectForKey:@"full_image"],[dictImages objectForKey:@"thumb_image"], numW, numH, nil]];
                 }
                 NSLog(@"List Image %@", cellContent.listImages);
             }
@@ -958,7 +976,15 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
                 NSString *fullImage = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"image"] ];
                 NSString *thumbnail = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"photo_thumb_url"]];
                 if (fullImage.length || thumbnail.length) {
-                    [content.listImages addObject:[NSArray arrayWithObjects:fullImage, thumbnail, nil]];
+                    NSNumber *numW = [photo_info objectForKey:@"width"];
+                    NSNumber *numH = [photo_info objectForKey:@"height"];
+                    if (numW.floatValue < 1) {
+                        numW = [NSNumber numberWithFloat:cImageWidth];
+                    }
+                    if (numH.floatValue < 1) {
+                        numH = [NSNumber numberWithFloat:cImageHeight];
+                    }
+                    [content.listImages addObject:[NSArray arrayWithObjects:fullImage, thumbnail, numW, numH, nil]];
                 }
                 //video_info
                 content.video = [dict objectForKey:@"video_info"];
@@ -1072,8 +1098,17 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
             NSString *fullImage = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"image"] ];
             NSString *thumbnail = [NSData stringDecodeFromBase64String:[photo_info objectForKey:@"photo_thumb_url"]];
             if (fullImage.length || thumbnail.length) {
-                [content.listImages addObject:[NSArray arrayWithObjects:fullImage, thumbnail, nil]];
+                NSNumber *numW = [photo_info objectForKey:@"width"];
+                NSNumber *numH = [photo_info objectForKey:@"height"];
+                if (numW.floatValue < 1) {
+                    numW = [NSNumber numberWithFloat:cImageWidth];
+                }
+                if (numH.floatValue < 1) {
+                    numH = [NSNumber numberWithFloat:cImageHeight];
+                }
+                [content.listImages addObject:[NSArray arrayWithObjects:fullImage, thumbnail, numW, numH, nil]];
             }
+
             //video_info
             content.video = [dict objectForKey:@"video_info"];
             if ([content.video isKindOfClass:[NSDictionary class]]) {

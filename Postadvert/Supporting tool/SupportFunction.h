@@ -14,4 +14,6 @@
 + (NSInteger) GetCountryIdFromConutryName:(NSString*)countryName;
 
 + (NSInteger) getWallIdFromCountryID:(NSInteger)countryID andItemName:(NSString*)itemName;
+
++ (CGSize) sizeForScaleWithMaxWidth:(float) width fromWidth:(float)imageWidth andHeight:(float)imageHeight;
 @end

@@ -22,6 +22,7 @@
     NSMutableArray *searchBy;
     NSMutableArray *filters;
     NSInteger internalItemID;
+    BOOL    isMoreOptionOn;
 }
 @property (strong, nonatomic) NSString *itemName;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;

@@ -11,6 +11,7 @@
 #import "KTThumbView.h"
 #import "KTPhotoScrollViewController.h"
 #import "EnlargeImageViewControllerV2.h"
+#import "Constants.h"
 
 @interface KTThumbsViewController (Private)
 @end
@@ -29,7 +30,9 @@
 {
     self = [super init];
     if (self) {
+        frameForThumbSize_ = CGRectMake(0, 0, frame.size.width, frame.size.height);
         self.view.frame = frame;
+        
     }
     return self;
 }
@@ -38,7 +41,7 @@
    // will not display behind the status bar.
    //[self setWantsFullScreenLayout:YES];
 
-   KTThumbsView *scrollView = [[KTThumbsView alloc] initWithFrame:CGRectZero];
+   KTThumbsView *scrollView = [[KTThumbsView alloc] initWithFrame:frameForThumbSize_];
    [scrollView setDataSource:self];
    [scrollView setController:self];
    [scrollView setScrollsToTop:YES];
@@ -146,7 +149,9 @@
 {
    KTThumbView *thumbView = [thumbsView dequeueReusableThumbView];
    if (!thumbView) {
-      thumbView = [[[KTThumbView alloc] initWithFrame:CGRectZero] autorelease];
+       CGRect frame = thumbsView.frame;
+       frame.size.height = frame.size.height - (2* CELL_MARGIN_BETWEEN_IMAGE);
+      thumbView = [[[KTThumbView alloc] initWithFrame:frame] autorelease];
       [thumbView setController:self];
    }
 

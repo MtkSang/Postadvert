@@ -9,6 +9,7 @@
 #import "KTThumbView.h"
 #import "KTThumbsViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIImage+Resize.h"
 
 
 @implementation KTThumbView
@@ -46,6 +47,15 @@
 
 - (void)setThumbImage:(UIImage *)newImage 
 {
+    CGSize imageZise = newImage.size;
+    if ((imageZise.width < self.frame.size.width) && self.frame.size.width > 0) {
+        CGFloat horizontalRatio = imageZise.width / self.frame.size.width;
+        float newWidth = self.frame.size.width;
+        float newHeight = imageZise.height / horizontalRatio;
+        CGSize newSize = CGSizeMake(newWidth, newHeight);
+        newImage = [newImage resizedImage:newSize interpolationQuality:3];
+    }
+
   [self setImage:newImage forState:UIControlStateNormal];
 }
 

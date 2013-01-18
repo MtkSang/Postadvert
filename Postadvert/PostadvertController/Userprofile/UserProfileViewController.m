@@ -200,6 +200,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    UIActivityCell *cell = (UIActivityCell*)[tableView cellForRowAtIndexPath:indexPath];
+    [cell commentButtonClicked:nil];
     // Navigation logic may go here. Create and push another view controller.
     /*
      <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];

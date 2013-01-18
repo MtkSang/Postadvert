@@ -2,8 +2,8 @@
 #pragma mark - Mtk
 
 #define hostAddress                         @"http://www.google.com"
-#define cMaxLeftView                        275.0  //self.view.frame.size.width - cRemainView
-#define cRemainView                         45.0
+#define cMaxLeftView                        262.0  //self.view.frame.size.width - cRemainView = 275.0
+#define cRemainView                         58      // old verion = 45
 #define cStatusAndNavBar                    64.0
 #define cStatusBarHeight                    20.0
 #define cNavigationBarHeight                44.0
@@ -30,8 +30,8 @@
 #define CELL_MARGIN_BETWEEN_CONTROLL        3.0f
 #define cYoutubeWidth                       65.0
 #define cYoutubeHeight                      65.0
-#define cImageWidth                         65.0
-#define cImageHeight                        65.0
+#define cImageWidth                         290.0
+#define cImageHeight                        290.0
 #define cMinImageMove                       40.0
 #define cTimeCreatedLabelWidth              250.0
 #define REFRESH_HEADER_HEIGHT               52.0f

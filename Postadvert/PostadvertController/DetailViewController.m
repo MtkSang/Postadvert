@@ -81,7 +81,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterAddComment) name:@"enterAddComment" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openURL) name:@"openURL" object:nil];
     //Left Button Bar Item to sidebar
-    UIButton *abutton = [[UIButton alloc]initWithFrame:CGRectMake(0.0, 0.0, 35, 30)];
+    UIButton *abutton = [[UIButton alloc]initWithFrame:CGRectMake(0.0, 0.0, 48, 30)];
     [abutton setImage:[UIImage imageNamed:@"listBtn.png"] forState:UIControlStateNormal];
     [abutton addTarget:self action:@selector(showHideSidebar:) forControlEvents:UIControlEventTouchUpInside];
     [abutton setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin];

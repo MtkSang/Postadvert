@@ -395,4 +395,17 @@
     return -1;
 }
 
++ (CGSize) sizeForScaleWithMaxWidth:(float) width fromWidth:(float)imageWidth andHeight:(float)imageHeight
+{
+    CGSize returnSize = CGSizeZero;
+    CGFloat horizontalRatio = imageWidth / width;
+    float newWidth = width;
+    float newHeight = imageHeight / horizontalRatio;
+    if (newHeight > width) {
+        newHeight = width;
+    }
+    returnSize = CGSizeMake(newWidth, newHeight);
+    return returnSize;
+}
+
 @end

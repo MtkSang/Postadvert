@@ -21,6 +21,7 @@
 #import "NSAttributedString+Attributes.h"
 #import "PostadvertControllerV2.h"
 #import "UserPAInfo.h"
+#import "SupportFunction.h"
 
 #define CharacterLimit 200
 
@@ -216,10 +217,10 @@
         frame.origin.x = 0;
         frame.origin.y = 0;
         newController.view.frame = frame;
-        frame = videoFrame;
+        frame = thumbnailView.frame;
         frame.origin.y = cellHeight;
         thumbnailView.frame = frame;
-        cellHeight += cImageHeight + 2 * CELL_MARGIN_BETWEEN_IMAGE + CELL_MARGIN_BETWEEN_CONTROLL;
+        cellHeight += frame.size.height + 2 * CELL_MARGIN_BETWEEN_IMAGE + CELL_MARGIN_BETWEEN_CONTROLL;
     }
     //add link here
     if (_content.listLinks.count && optionView) {
@@ -352,10 +353,25 @@
             }
             //Add Image
             if (_content.listImages.count && optionView) {
-                frame = videoFrame;
+                CGSize imageSize;
+                if (_content.listImages.count == 1) {
+                    NSArray *photo_info = [_content.listImages objectAtIndex:0];
+                    if (photo_info.count >= 4) {
+                        NSNumber *numW = [photo_info objectAtIndex:2];
+                        NSNumber *numH = [photo_info objectAtIndex:3];
+                        imageSize = [SupportFunction sizeForScaleWithMaxWidth:videoFrame.size.width fromWidth:numW.floatValue andHeight:numH.floatValue];
+                    }
+                    else
+                        imageSize = CGSizeMake(imageSize.width, imageSize.height);
+                }else
+                {
+                    imageSize = CGSizeMake(videoFrame.size.width, videoFrame.size.width);
+                }
+                CGRect imagesFrame = CGRectMake(0, 0, imageSize.width, imageSize.height);
+                frame = imagesFrame;
                 frame.origin.x = 0;
                 frame.origin.y = 0;
-                frame.size.height = cImageHeight + 2 * CELL_MARGIN_BETWEEN_IMAGE ;
+                frame.size.height = frame.size.height + 2 * CELL_MARGIN_BETWEEN_IMAGE ;
                 //[thumbnailView CreateImagesViewWithFrame:frame];
                 //new version here
                 newController = [[SDWebImageRootViewController alloc] initWithFrame:frame andArray:_content.listImages];
@@ -364,10 +380,10 @@
                 newController.view.frame = frame;
                 [thumbnailView addSubview:newController.view];
                 thumbnailView.backgroundColor = self.backgroundColor;
-                frame = videoFrame;
+                frame.origin.x = leftMarginContent;
                 frame.origin.y = cellHeight;
                 thumbnailView.frame = frame;
-                cellHeight += cImageHeight + 2 * CELL_MARGIN_BETWEEN_IMAGE + CELL_MARGIN_BETWEEN_CONTROLL;
+                cellHeight += imagesFrame.size.height + 2 * CELL_MARGIN_BETWEEN_IMAGE + CELL_MARGIN_BETWEEN_CONTROLL;
                 thumbnailView.hidden = NO;
             }
         
@@ -480,11 +496,27 @@
             }
             //Add Image
             if (_content.listImages.count && optionView) {
-                frame = videoFrame;
+                CGSize imageZize;
+                if (_content.listImages.count == 1) {
+                    NSArray *photo_info = [_content.listImages objectAtIndex:0];
+                    if (photo_info.count >= 4) {
+                        NSNumber *numW = [photo_info objectAtIndex:2];
+                        NSNumber *numH = [photo_info objectAtIndex:3];
+                        imageZize = [SupportFunction sizeForScaleWithMaxWidth:videoFrame.size.width fromWidth:numW.floatValue andHeight:numH.floatValue];
+                    }
+                    else
+                        imageZize = CGSizeMake(videoFrame.size.width, videoFrame.size.width);
+                }else
+                {
+                    imageZize = CGSizeMake(videoFrame.size.width, videoFrame.size.width);
+                }
+                CGRect imagesFrame = CGRectMake(0, 0, imageZize.width, imageZize.height);
+                frame = imagesFrame;
                 frame.origin.x = 0;
                 frame.origin.y = 0;
+                frame.size.height = frame.size.height + 2 * CELL_MARGIN_BETWEEN_IMAGE ;
                 newController.view.frame = frame;
-                frame = videoFrame;
+                frame.origin.x = leftMarginContent;
                 frame.origin.y = cellHeight;
                 thumbnailView.frame = frame;
                 cellHeight += cImageHeight + 2 * CELL_MARGIN_BETWEEN_IMAGE + CELL_MARGIN_BETWEEN_CONTROLL;
@@ -603,7 +635,22 @@
     }
     //Add Image
     if (content.listImages.count && opt) {
-        cellHeight += cImageHeight + 2 * CELL_MARGIN_BETWEEN_IMAGE + CELL_MARGIN_BETWEEN_CONTROLL;
+        CGSize imageZize;
+        if (content.listImages.count == 1) {
+            NSArray *photo_info = [content.listImages objectAtIndex:0];
+            if (photo_info.count >= 4) {
+                NSNumber *numW = [photo_info objectAtIndex:2];
+                NSNumber *numH = [photo_info objectAtIndex:3];
+                imageZize = [SupportFunction sizeForScaleWithMaxWidth:videoFrame.size.width fromWidth:numW.floatValue andHeight:numH.floatValue];
+            }
+            else
+                imageZize = CGSizeMake(imageZize.width, imageZize.height);
+        }else
+        {
+            imageZize = CGSizeMake(videoFrame.size.width, videoFrame.size.width);
+        }
+        
+        cellHeight += imageZize.height + 2 * CELL_MARGIN_BETWEEN_IMAGE + CELL_MARGIN_BETWEEN_CONTROLL;
     }
     //add link here
     if (content.listLinks.count && opt) {

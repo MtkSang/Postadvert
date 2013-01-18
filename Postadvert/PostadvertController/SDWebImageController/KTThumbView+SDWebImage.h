@@ -12,5 +12,6 @@
 
 - (void)setImageWithURL:(NSURL *)url;
 - (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder;
+- (void)setImageWithFullImageURL:(NSURL *)fullURL_ thumbURL:(NSURL *)url placeholderImage:(UIImage *)placeholder;
 
 @end
