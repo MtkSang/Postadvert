@@ -18,6 +18,7 @@
 #define cAvartaComments                     40.0
 #define FONT_NAME                           @"Helvetica"
 #define FONT_NAME_BOLD                      @"Helvetica-Bold"
+#define FONT_SIZE_SMALL                     12.0f
 #define FONT_SIZE                           14.0f
 #define FONT_TITLE_SIZE                     16.0f
 #define CELL_CONTENT_MARGIN_LEFT            05.0

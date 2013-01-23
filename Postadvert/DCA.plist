@@ -81,6 +81,28 @@
 				<string>With Videos</string>
 			</array>
 		</dict>
+		<key>Price</key>
+		<array>
+			<string>S$500</string>
+			<string>S$1,000</string>
+			<string>S$1,500</string>
+			<string>S$2,000</string>
+			<string>S$3,000</string>
+			<string>S$3,500</string>
+			<string>S$4,000</string>
+			<string>S$5,000</string>
+			<string>S$6,000</string>
+			<string>S$7,000</string>
+			<string>S$8,000</string>
+			<string>S$9,000</string>
+			<string>S$10,000</string>
+			<string>S$12,000</string>
+			<string>S$15,000</string>
+			<string>S$20,000</string>
+			<string>S$30,000</string>
+			<string>S$40,000</string>
+			<string>S$50,000</string>
+		</array>
 	</dict>
 </dict>
 </plist>

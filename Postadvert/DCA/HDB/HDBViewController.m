@@ -9,7 +9,7 @@
 #import "HDBViewController.h"
 #import "UIImage+Resize.h"
 #import "Constants.h"
-#import "TDDatePickerController.h"
+#import "DCAPickerViewController.h"
 #import "TDSemiModal.h"
 //#import "MyModalViewController.h"
 //#import "UIViewController+MyModalView.h"
@@ -203,7 +203,7 @@
 
             mainFilesValues = [database objectForKey:@"Main Fields Values"];
             if (mainFilesValues == nil || mainFilesValues.count == 0 ) {
-                mainFilesValues = [[NSMutableArray alloc]initWithObjects:@"Any Type", @"Any Location", @"Any Price", @"Any Size", @"Any", nil];
+                mainFilesValues = [[NSMutableArray alloc]initWithObjects:@"Any Type", @"Any Location", @"Any", @"Any Size", @"Any", nil];
             }
             
             break; 
@@ -666,9 +666,42 @@
     if (internalItemID == 1 || internalItemID == 101) {
         if (indexPath.section == 0) {
             if (indexPath.row == 2) {
-                picker = [[TDDatePickerController alloc]init];
+                NSString *value = [mainFilesValues objectAtIndex:indexPath.row];
+                NSArray *array = [value componentsSeparatedByString:@" to "];
+                NSInteger start = 0;
+                NSInteger end = 0;
+                NSArray *listValues = [staticData objectForKey:@"Price"];
+                if (array.count == 1) {
+                    array = [value componentsSeparatedByString:@" and "];
+                    if (array.count == 1) {
+                        if ([[array objectAtIndex:0] isEqual:@"Any"]) {
+                            start = -1;
+                            end = -1;
+                        }
+                        else
+                        {
+                            end = [listValues indexOfObject:[array objectAtIndex:0] ];
+                            start = end;
+                        }
+                        
+                    }
+                    
+                }
+                if (array.count >=2) {
+                    start = [listValues indexOfObject:[array objectAtIndex:0] ];
+                    end = [listValues indexOfObject:[array objectAtIndex:1]];
+                    if ([[array objectAtIndex:1] isEqual:@"above"]) {
+                        end = -1;
+                    }
+                    if ([[array objectAtIndex:1] isEqual:@"below"]) {
+                        end = start;
+                        start = -1;
+                    }
+                }
+                
+                picker = [[DCAPickerViewController alloc]initWithArray: listValues andSourceType:pickerTypePrice startIndex:start endIndex:end];
+                picker.delegate = self;
                 [self presentSemiModalViewController:picker];
-                //[self performSelectorInBackground:@selector(testShowModal) withObject:nil];
             }
         }
     }
@@ -691,157 +724,36 @@
 #pragma mark -
 #pragma mark Date Picker Delegate
 
-
-//-(void)datePickerClearDate:(TDDatePickerController*)viewController {
-//	[self dismissSemiModalViewController:viewController];
-//    
-//}
-//
-//-(void)datePickerCancel:(TDDatePickerController*)viewController {
-//	[self dismissSemiModalViewController:viewController];
-//}
-
-
-- (void) showPopUpDialog:(UIView*) view :(CGPoint) point
+- (void) didPickerCloseWithControll:(DCAPickerViewController *)ctr
 {
-    if (overlay == nil) {
-        overlay = [[UIView alloc]init];
+    if (ctr.sourceType = pickerTypePrice ) {
+        NSString *vl1, *vl2, *value;
+        if (ctr.strartIndex == 0) {
+            if (ctr.endIndex == ctr.intSource.count) {
+                value = @"Any";
+            }else
+            {
+                vl2 = [ctr.intSource objectAtIndex:ctr.endIndex];
+                value = [vl2 stringByAppendingString:@" and below"];
+            }
+        }
+        if (ctr.strartIndex !=0) {
+            vl1 = [ctr.intSource objectAtIndex:ctr.strartIndex - 1];
+            if (ctr.endIndex == ctr.intSource.count) {
+                value = [vl1 stringByAppendingString:@" and above"];
+            }else
+            {
+                vl2 = [ctr.intSource objectAtIndex:ctr.endIndex];
+                value = [NSString stringWithFormat:@"%@ to %@", vl1, vl2];
+            }
+        }
+        if (ctr.strartIndex == ctr.endIndex + 1) {
+            value = [ctr.intSource objectAtIndex:ctr.endIndex];
+        }
+        NSUInteger index = [mainFiles indexOfObject:@"Price"];
+        [mainFilesValues replaceObjectAtIndex:index withObject:value];
+        [self dismissSemiModalViewController:ctr];
+        [self.tableView reloadData];
     }
-	[overlay addSubview:view];
-    
-    CGRect rc = [[UIScreen mainScreen] bounds];
-    overlay.frame = rc;
-    
-    rc = view.frame;
-	rc.origin = CGPointMake(0.0f, -rc.size.height);
-	view.frame = rc;
-    
-	// Show the overlay
-	if (!overlay.superview)
-        [self.view.window addSubview:overlay];
-    
-    //    UIViewController *modalViewController = [[UIViewController alloc] init];
-    //    modalViewController.view = overlay;
-    //    [self presentModalViewController:modalViewController animated:YES];
-    
-	overlay.alpha = 1.0;
-	
-	// Animate the message view into place
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3f];
-    [UIView setAnimationCurve:UIViewAnimationCurveLinear];
-	rc.origin = point; //CGPointMake(0.0f, 10.0f);
-	view.frame = rc;
-    [UIView commitAnimations];
-    
-    //    [modalViewController release];
-}
-
-- (void) hidePopUpDialog:(UIView*) view
-{
-    CGRect rc = view.frame;
-    rc.origin = CGPointMake(0.0f, -rc.size.height);
-    
-    // Animate the message view away
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3f];
-    [UIView setAnimationCurve:UIViewAnimationCurveLinear];
-	
-	view.frame = rc;
-    [UIView commitAnimations];
-    
-	// Hide the overlay
-	[overlay performSelector:@selector(setAlpha:) withObject:nil afterDelay:0.3f];
-    //[[self modalViewController] dismissModalViewControllerAnimated:NO];// version < 6.0
-    [[self presentedViewController] dismissViewControllerAnimated:NO completion:nil];
-    [view removeFromSuperview];
-}
-
-
--(void) showDialog:(UIView*) view
-{
-    /*    CGRect rc = [[UIScreen mainScreen] bounds];
-     overlay.frame = rc;
-     
-     rc.origin = CGPointMake(0.0f, -rc.size.height);
-     view.frame = rc;
-     
-     // Show the overlay
-     if (!overlay.superview)
-     [self.view.window addSubview:overlay];
-     
-     //    UIViewController *modalViewController = [[UIViewController alloc] init];
-     //    modalViewController.view = overlay;
-     //    [self presentModalViewController:modalViewController animated:YES];
-     
-     overlay.alpha = 1.0f;
-     
-     // Animate the message view into place
-     [UIView beginAnimations:nil context:NULL];
-     [UIView setAnimationDuration:0.3f];
-     [UIView setAnimationCurve:UIViewAnimationCurveLinear];
-     rc.origin = CGPointMake(0.0f, 90.0f);
-     view.frame = rc;
-     [UIView commitAnimations];
-     
-     //    [modalViewController release];*/
-    if (overlay == nil) {
-        overlay = [[UIView alloc]init];
-    }
-
-    [overlay addSubview:view];
-    
-    CGRect rc = [[UIScreen mainScreen] bounds];
-    overlay.frame = rc;
-    
-    rc = view.frame;
-	rc.origin = CGPointMake(0.0f, -rc.size.height);
-	view.frame = rc;
-    
-	// Show the overlay
-	if (!overlay.superview)
-    {
-        [self.view addSubview:overlay];
-    }
-    
-    //    UIViewController *modalViewController = [[UIViewController alloc] init];
-    //    modalViewController.view = overlay;
-    //    [self presentModalViewController:modalViewController animated:YES];
-    
-	overlay.alpha = 1.0;
-	
-	// Animate the message view into place
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3f];
-    [UIView setAnimationCurve:UIViewAnimationCurveLinear];
-	rc.origin = CGPointMake(0.0f, 90.0f);//point; //CGPointMake(0.0f, 10.0f);
-	view.frame = rc;
-    [UIView commitAnimations];
-    
-    //    [modalViewController release];
-}
-
--(void) hideDialog:(UIView*) view
-{
-    CGRect rc = view.frame;
-    rc.origin = CGPointMake(0.0f, -rc.size.height);
-    
-    // Animate the message view away
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3f];
-    [UIView setAnimationCurve:UIViewAnimationCurveLinear];
-	
-	view.frame = rc;
-    [UIView commitAnimations];
-    
-	// Hide the overlay
-	[overlay performSelector:@selector(setAlpha:) withObject:nil afterDelay:0.3f];
-    [overlay removeFromSuperview];
-    [[self modalViewController] dismissModalViewControllerAnimated:NO];
-}
-
-- (void)testShowModal
-{
-    
 }
 @end

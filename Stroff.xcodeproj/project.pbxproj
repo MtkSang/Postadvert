@@ -34,6 +34,8 @@
 		D45389F11678466500BC5612 /* FriendButtonViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D45389EF1678466500BC5612 /* FriendButtonViewController.xib */; };
 		D45389F516785AA100BC5612 /* UINewStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D45389F316785AA100BC5612 /* UINewStatusViewController.m */; };
 		D45389F616785AA100BC5612 /* UINewStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D45389F416785AA100BC5612 /* UINewStatusViewController.xib */; };
+		D4541A8816AF8B4A008E720E /* DCAPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4541A8616AF8B4A008E720E /* DCAPickerViewController.m */; };
+		D4541A8916AF8B4A008E720E /* DCAPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4541A8716AF8B4A008E720E /* DCAPickerViewController.xib */; };
 		D45BC8C3164A38E9008D3CBA /* UICommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D45BC8C2164A38E9008D3CBA /* UICommentCell.xib */; };
 		D46D705816819C9A004B90B0 /* icons-privacy-friend.png in Resources */ = {isa = PBXBuildFile; fileRef = D46D705416819C9A004B90B0 /* icons-privacy-friend.png */; };
 		D46D705916819C9A004B90B0 /* icons-privacy-only-me.png in Resources */ = {isa = PBXBuildFile; fileRef = D46D705516819C9A004B90B0 /* icons-privacy-only-me.png */; };
@@ -57,10 +59,6 @@
 		D48A463816ACE58C007FE890 /* TDDatePickerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D48A463116ACE58C007FE890 /* TDDatePickerController.xib */; };
 		D48A463916ACE58C007FE890 /* TDSemiModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D48A463416ACE58C007FE890 /* TDSemiModalViewController.m */; };
 		D48A463A16ACE58C007FE890 /* UIViewController+TDSemiModalExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = D48A463616ACE58C007FE890 /* UIViewController+TDSemiModalExtension.m */; };
-		D48A465016AD3122007FE890 /* MyModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D48A464E16AD3121007FE890 /* MyModalViewController.m */; };
-		D48A465116AD3122007FE890 /* MyModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D48A464F16AD3121007FE890 /* MyModalViewController.xib */; };
-		D48A465516AD42F3007FE890 /* MyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D48A465316AD42F2007FE890 /* MyViewController.m */; };
-		D48A465616AD42F3007FE890 /* MyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D48A465416AD42F3007FE890 /* MyViewController.xib */; };
 		D491EF4D16703D40006A2D49 /* UINotificationsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D491EF4C16703D40006A2D49 /* UINotificationsCell.m */; };
 		D491EF5316705938006A2D49 /* comment_notification_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D491EF5216705938006A2D49 /* comment_notification_icon.png */; };
 		D49A39971663238000E77B0A /* logo_2.png in Resources */ = {isa = PBXBuildFile; fileRef = D49A39961663238000E77B0A /* logo_2.png */; };
@@ -628,6 +626,9 @@
 		D45389F216785AA100BC5612 /* UINewStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UINewStatusViewController.h; sourceTree = "<group>"; };
 		D45389F316785AA100BC5612 /* UINewStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINewStatusViewController.m; sourceTree = "<group>"; };
 		D45389F416785AA100BC5612 /* UINewStatusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UINewStatusViewController.xib; sourceTree = "<group>"; };
+		D4541A8516AF8B4A008E720E /* DCAPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCAPickerViewController.h; sourceTree = "<group>"; };
+		D4541A8616AF8B4A008E720E /* DCAPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCAPickerViewController.m; sourceTree = "<group>"; };
+		D4541A8716AF8B4A008E720E /* DCAPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DCAPickerViewController.xib; sourceTree = "<group>"; };
 		D45BC8C2164A38E9008D3CBA /* UICommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICommentCell.xib; sourceTree = "<group>"; };
 		D46D705416819C9A004B90B0 /* icons-privacy-friend.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons-privacy-friend.png"; sourceTree = "<group>"; };
 		D46D705516819C9A004B90B0 /* icons-privacy-only-me.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons-privacy-only-me.png"; sourceTree = "<group>"; };
@@ -656,12 +657,6 @@
 		D48A463416ACE58C007FE890 /* TDSemiModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSemiModalViewController.m; sourceTree = "<group>"; };
 		D48A463516ACE58C007FE890 /* UIViewController+TDSemiModalExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+TDSemiModalExtension.h"; sourceTree = "<group>"; };
 		D48A463616ACE58C007FE890 /* UIViewController+TDSemiModalExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+TDSemiModalExtension.m"; sourceTree = "<group>"; };
-		D48A464D16AD3121007FE890 /* MyModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyModalViewController.h; sourceTree = "<group>"; };
-		D48A464E16AD3121007FE890 /* MyModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyModalViewController.m; sourceTree = "<group>"; };
-		D48A464F16AD3121007FE890 /* MyModalViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyModalViewController.xib; sourceTree = "<group>"; };
-		D48A465216AD42F2007FE890 /* MyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyViewController.h; sourceTree = "<group>"; };
-		D48A465316AD42F2007FE890 /* MyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyViewController.m; sourceTree = "<group>"; };
-		D48A465416AD42F3007FE890 /* MyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyViewController.xib; sourceTree = "<group>"; };
 		D491EF4B16703D40006A2D49 /* UINotificationsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UINotificationsCell.h; sourceTree = "<group>"; };
 		D491EF4C16703D40006A2D49 /* UINotificationsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINotificationsCell.m; sourceTree = "<group>"; };
 		D491EF5216705938006A2D49 /* comment_notification_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comment_notification_icon.png; sourceTree = "<group>"; };
@@ -1447,12 +1442,9 @@
 				D48A463416ACE58C007FE890 /* TDSemiModalViewController.m */,
 				D48A463516ACE58C007FE890 /* UIViewController+TDSemiModalExtension.h */,
 				D48A463616ACE58C007FE890 /* UIViewController+TDSemiModalExtension.m */,
-				D48A464D16AD3121007FE890 /* MyModalViewController.h */,
-				D48A464E16AD3121007FE890 /* MyModalViewController.m */,
-				D48A464F16AD3121007FE890 /* MyModalViewController.xib */,
-				D48A465216AD42F2007FE890 /* MyViewController.h */,
-				D48A465316AD42F2007FE890 /* MyViewController.m */,
-				D48A465416AD42F3007FE890 /* MyViewController.xib */,
+				D4541A8516AF8B4A008E720E /* DCAPickerViewController.h */,
+				D4541A8616AF8B4A008E720E /* DCAPickerViewController.m */,
+				D4541A8716AF8B4A008E720E /* DCAPickerViewController.xib */,
 			);
 			path = ModalViewCtr;
 			sourceTree = "<group>";
@@ -3118,8 +3110,7 @@
 				D475A56316A013DB007FBF0E /* btnResetHDBnormal@2x.png in Resources */,
 				D475A56516A0142D007FBF0E /* btnHDBUnormal@2x.png in Resources */,
 				D48A463816ACE58C007FE890 /* TDDatePickerController.xib in Resources */,
-				D48A465116AD3122007FE890 /* MyModalViewController.xib in Resources */,
-				D48A465616AD42F3007FE890 /* MyViewController.xib in Resources */,
+				D4541A8916AF8B4A008E720E /* DCAPickerViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3306,8 +3297,7 @@
 				D48A463716ACE58C007FE890 /* TDDatePickerController.m in Sources */,
 				D48A463916ACE58C007FE890 /* TDSemiModalViewController.m in Sources */,
 				D48A463A16ACE58C007FE890 /* UIViewController+TDSemiModalExtension.m in Sources */,
-				D48A465016AD3122007FE890 /* MyModalViewController.m in Sources */,
-				D48A465516AD42F3007FE890 /* MyViewController.m in Sources */,
+				D4541A8816AF8B4A008E720E /* DCAPickerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
