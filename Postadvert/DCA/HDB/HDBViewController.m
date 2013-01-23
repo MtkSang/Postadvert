@@ -9,6 +9,13 @@
 #import "HDBViewController.h"
 #import "UIImage+Resize.h"
 #import "Constants.h"
+#import "TDDatePickerController.h"
+#import "TDSemiModal.h"
+//#import "MyModalViewController.h"
+//#import "UIViewController+MyModalView.h"
+//#import "MyViewController.h"
+
+//#import "SideBarViewController.h"
 @interface HDBViewController ()
 - (NSInteger) getInternalItemIDWithItemName:(NSString*)itemName;
 - (IBAction) makeKeyBoardGoAway;
@@ -656,7 +663,15 @@
         }
     }
     
-    
+    if (internalItemID == 1 || internalItemID == 101) {
+        if (indexPath.section == 0) {
+            if (indexPath.row == 2) {
+                picker = [[TDDatePickerController alloc]init];
+                [self presentSemiModalViewController:picker];
+                //[self performSelectorInBackground:@selector(testShowModal) withObject:nil];
+            }
+        }
+    }
     // Navigation logic may go here. Create and push another view controller.
     /*
      <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
@@ -673,6 +688,160 @@
     [searchBar resignFirstResponder];
 }
 
+#pragma mark -
+#pragma mark Date Picker Delegate
 
 
+//-(void)datePickerClearDate:(TDDatePickerController*)viewController {
+//	[self dismissSemiModalViewController:viewController];
+//    
+//}
+//
+//-(void)datePickerCancel:(TDDatePickerController*)viewController {
+//	[self dismissSemiModalViewController:viewController];
+//}
+
+
+- (void) showPopUpDialog:(UIView*) view :(CGPoint) point
+{
+    if (overlay == nil) {
+        overlay = [[UIView alloc]init];
+    }
+	[overlay addSubview:view];
+    
+    CGRect rc = [[UIScreen mainScreen] bounds];
+    overlay.frame = rc;
+    
+    rc = view.frame;
+	rc.origin = CGPointMake(0.0f, -rc.size.height);
+	view.frame = rc;
+    
+	// Show the overlay
+	if (!overlay.superview)
+        [self.view.window addSubview:overlay];
+    
+    //    UIViewController *modalViewController = [[UIViewController alloc] init];
+    //    modalViewController.view = overlay;
+    //    [self presentModalViewController:modalViewController animated:YES];
+    
+	overlay.alpha = 1.0;
+	
+	// Animate the message view into place
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3f];
+    [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+	rc.origin = point; //CGPointMake(0.0f, 10.0f);
+	view.frame = rc;
+    [UIView commitAnimations];
+    
+    //    [modalViewController release];
+}
+
+- (void) hidePopUpDialog:(UIView*) view
+{
+    CGRect rc = view.frame;
+    rc.origin = CGPointMake(0.0f, -rc.size.height);
+    
+    // Animate the message view away
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3f];
+    [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+	
+	view.frame = rc;
+    [UIView commitAnimations];
+    
+	// Hide the overlay
+	[overlay performSelector:@selector(setAlpha:) withObject:nil afterDelay:0.3f];
+    //[[self modalViewController] dismissModalViewControllerAnimated:NO];// version < 6.0
+    [[self presentedViewController] dismissViewControllerAnimated:NO completion:nil];
+    [view removeFromSuperview];
+}
+
+
+-(void) showDialog:(UIView*) view
+{
+    /*    CGRect rc = [[UIScreen mainScreen] bounds];
+     overlay.frame = rc;
+     
+     rc.origin = CGPointMake(0.0f, -rc.size.height);
+     view.frame = rc;
+     
+     // Show the overlay
+     if (!overlay.superview)
+     [self.view.window addSubview:overlay];
+     
+     //    UIViewController *modalViewController = [[UIViewController alloc] init];
+     //    modalViewController.view = overlay;
+     //    [self presentModalViewController:modalViewController animated:YES];
+     
+     overlay.alpha = 1.0f;
+     
+     // Animate the message view into place
+     [UIView beginAnimations:nil context:NULL];
+     [UIView setAnimationDuration:0.3f];
+     [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+     rc.origin = CGPointMake(0.0f, 90.0f);
+     view.frame = rc;
+     [UIView commitAnimations];
+     
+     //    [modalViewController release];*/
+    if (overlay == nil) {
+        overlay = [[UIView alloc]init];
+    }
+
+    [overlay addSubview:view];
+    
+    CGRect rc = [[UIScreen mainScreen] bounds];
+    overlay.frame = rc;
+    
+    rc = view.frame;
+	rc.origin = CGPointMake(0.0f, -rc.size.height);
+	view.frame = rc;
+    
+	// Show the overlay
+	if (!overlay.superview)
+    {
+        [self.view addSubview:overlay];
+    }
+    
+    //    UIViewController *modalViewController = [[UIViewController alloc] init];
+    //    modalViewController.view = overlay;
+    //    [self presentModalViewController:modalViewController animated:YES];
+    
+	overlay.alpha = 1.0;
+	
+	// Animate the message view into place
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3f];
+    [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+	rc.origin = CGPointMake(0.0f, 90.0f);//point; //CGPointMake(0.0f, 10.0f);
+	view.frame = rc;
+    [UIView commitAnimations];
+    
+    //    [modalViewController release];
+}
+
+-(void) hideDialog:(UIView*) view
+{
+    CGRect rc = view.frame;
+    rc.origin = CGPointMake(0.0f, -rc.size.height);
+    
+    // Animate the message view away
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3f];
+    [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+	
+	view.frame = rc;
+    [UIView commitAnimations];
+    
+	// Hide the overlay
+	[overlay performSelector:@selector(setAlpha:) withObject:nil afterDelay:0.3f];
+    [overlay removeFromSuperview];
+    [[self modalViewController] dismissModalViewControllerAnimated:NO];
+}
+
+- (void)testShowModal
+{
+    
+}
 @end

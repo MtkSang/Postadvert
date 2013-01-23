@@ -46,7 +46,7 @@
 //     }
     //[UserPAInfo sharedUserPAInfo].registrationID = 97;
     [[PostadvertControllerV2 sharedPostadvertController]testFunction];
-    self.window = [[MyUIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
         _viewController =  [[SideBarViewController alloc] initWithNibName:@"SideBarViewController" bundle:nil];

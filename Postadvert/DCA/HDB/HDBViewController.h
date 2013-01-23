@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@class TDDatePickerController;
 
 @interface HDBViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 {
@@ -23,6 +24,8 @@
     NSMutableArray *filters;
     NSInteger internalItemID;
     BOOL    isMoreOptionOn;
+    UIView *overlay;
+    TDDatePickerController *picker;
 }
 @property (strong, nonatomic) NSString *itemName;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;

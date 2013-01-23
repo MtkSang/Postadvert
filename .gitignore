@@ -13,3 +13,7 @@ build/*
 xcuserdata
 profile
 *.moved-aside
+
+Postadvert/PostadvertController/SideBarViewController.m
+
+Postadvert/PostadvertController/SideBarViewController.h
