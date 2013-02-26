@@ -12,7 +12,12 @@
 enum pickerType {
     pickerTypeUnknow = 0,
     pickerTypePrice = 1,
-    pickerTypeSize = 2
+    pickerTypeSize = 2,
+    pickerTypeBedrooms = 3,
+    pickerTypeValnSize = 4,
+    pickerTypeWashrooms = 5,
+    pickerTypeConstructed = 6,
+    pickerTypePSF = 7
 };
 typedef NSUInteger UIDCAPickerControllerSourceType;
 

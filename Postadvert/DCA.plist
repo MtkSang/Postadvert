@@ -14,6 +14,22 @@
 				<string>Size</string>
 				<string>Bedrooms</string>
 			</array>
+			<key>DefaultValues</key>
+			<array>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Select One</string>
+				<string>Select One</string>
+				<string>Any</string>
+				<string>Any</string>
+			</array>
 			<key>More Options</key>
 			<array>
 				<string>PSF</string>
@@ -36,6 +52,17 @@
 				<string>PSF (low to high)</string>
 				<string>PSF (high to low)</string>
 			</array>
+			<key>Sort By V2</key>
+			<array>
+				<string>Date - Descending</string>
+				<string>Date - Ascending</string>
+				<string>Price - Ascending</string>
+				<string>Price - Descending</string>
+				<string>Size - Ascending</string>
+				<string>Size - Descending</string>
+				<string>PSF - Ascending</string>
+				<string>PSF - Descending</string>
+			</array>
 			<key>Filters</key>
 			<array>
 				<string>With Photos</string>
@@ -51,6 +78,23 @@
 				<string>Monthly Rental</string>
 				<string>Size</string>
 				<string>Bedrooms</string>
+			</array>
+			<key>DefaultValues</key>
+			<array>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Select One</string>
+				<string>Select One</string>
+				<string>Any</string>
+				<string>Any</string>
 			</array>
 			<key>More Options</key>
 			<array>
@@ -75,12 +119,68 @@
 				<string>PSF (low to high)</string>
 				<string>PSF (high to low)</string>
 			</array>
+			<key>Sort By V2</key>
+			<array>
+				<string>Date - Descending</string>
+				<string>Date - Ascending</string>
+				<string>Monthly Rental  - Ascending</string>
+				<string>Monthly Rental  - Descending</string>
+				<string>Size - Ascending</string>
+				<string>Size - Descending</string>
+				<string>PSF - Ascending</string>
+				<string>PSF - Descending</string>
+			</array>
 			<key>Filters</key>
 			<array>
 				<string>With Photos</string>
 				<string>With Videos</string>
 			</array>
 		</dict>
+		<key>PropertyType</key>
+		<array>
+			<string>Studio Apt</string>
+			<string>1-Room HDB</string>
+			<string>2-Room HDB</string>
+			<string>3-Room HDB</string>
+			<string>4-Room HDB</string>
+			<string>5-Room HDB</string>
+			<string>DBSS Flats</string>
+			<string>Exec Flats</string>
+			<string>Exec Condos</string>
+			<string>Jumbo/Maisonette</string>
+		</array>
+		<key>HDBEstate</key>
+		<array>
+			<string>Ang Mo Kio</string>
+			<string>Bedok</string>
+			<string>Bishan</string>
+			<string>Bukit Batok</string>
+			<string>Bukit Merah</string>
+			<string>Bukit Panjang</string>
+			<string> Bukit Timah</string>
+			<string>Central Area</string>
+			<string>Choa Chu Kang</string>
+			<string>Clementi</string>
+			<string>Geylang</string>
+			<string>Hougang</string>
+			<string>Jurong East</string>
+			<string>Jurong West</string>
+			<string>Kallang/Whampoa</string>
+			<string>Lim Chu Kang</string>
+			<string>Marine Parade</string>
+			<string>Pasir Ris</string>
+			<string>Punggol</string>
+			<string>Queenstown</string>
+			<string>Sembawang</string>
+			<string>Sengkang</string>
+			<string>Serangoon</string>
+			<string>Simei</string>
+			<string>Tampines</string>
+			<string>Toa Payoh</string>
+			<string>Woodlands</string>
+			<string>Yio Chu Kang</string>
+			<string>Yishun</string>
+		</array>
 		<key>Price</key>
 		<array>
 			<string>S$500</string>
@@ -102,6 +202,185 @@
 			<string>S$30,000</string>
 			<string>S$40,000</string>
 			<string>S$50,000</string>
+		</array>
+		<key>Bedrooms</key>
+		<array>
+			<string>1 Bedroom</string>
+			<string>2 Bedrooms</string>
+			<string>3 Bedrooms</string>
+			<string>4 Bedrooms</string>
+			<string>5 Bedrooms</string>
+			<string>6 Bedrooms</string>
+			<string>7 Bedrooms</string>
+			<string>8 Bedrooms</string>
+			<string>9 Bedrooms</string>
+			<string>10+ Bedrooms</string>
+		</array>
+		<key>PSF</key>
+		<array>
+			<string>S$300</string>
+			<string>S$400</string>
+			<string>S$500</string>
+			<string>S$600</string>
+			<string>S$700</string>
+			<string>S$800</string>
+			<string>S$900</string>
+			<string>S$1,000</string>
+			<string>S$1,250</string>
+			<string>S$1,750</string>
+			<string>S$2,000</string>
+			<string>S$2,500</string>
+			<string>S$3,000</string>
+			<string>S$3,500</string>
+			<string>S$4,000</string>
+			<string>S$4,500</string>
+			<string>S$5,000</string>
+		</array>
+		<key>Size</key>
+		<array>
+			<string>500 sqft (46 sqm)</string>
+			<string>750 sqft (70 sqm)</string>
+			<string>1,000 sqft (93 sqm)</string>
+			<string>1,200 sqft (112 sqm)</string>
+			<string>1,500 sqft (139 sqm)</string>
+			<string>2,000 sqft (186 sqm)</string>
+			<string>2,500 sqft (232 sqm)</string>
+			<string>3,000 sqft (279 sqm)</string>
+			<string>4,000 sqft (372 sqm)</string>
+			<string>5,000 sqft (465 sqm)</string>
+			<string>7,500 sqft (697 sqm)</string>
+			<string>10,000 sqft ( 929 sqm)</string>
+		</array>
+		<key>AdOwner</key>
+		<array>
+			<string>Property Agent</string>
+			<string>Direct Owner</string>
+		</array>
+		<key>UnitLevel</key>
+		<array>
+			<string>Ground Level</string>
+			<string>Low Floor</string>
+			<string>Mid Floor</string>
+			<string>Hight Floor</string>
+			<string>Penthouse</string>
+		</array>
+		<key>Furnishing</key>
+		<array>
+			<string>Patial Furnishing</string>
+			<string>Fully Furnished</string>
+			<string>Not Furnished</string>
+		</array>
+		<key>Condition</key>
+		<array>
+			<string>Brand New</string>
+			<string>Original</string>
+			<string>Renovated</string>
+			<string>Newly</string>
+		</array>
+		<key>Washrooms</key>
+		<array>
+			<string>1 Washroom</string>
+			<string>2 Washrooms</string>
+			<string>3 Washrooms</string>
+			<string>4 Washrooms</string>
+			<string>5 Washrooms</string>
+			<string>6 Washrooms</string>
+			<string>7 Washrooms</string>
+			<string>8 Washrooms</string>
+			<string>9 Washrooms</string>
+			<string>10+ Washrooms</string>
+		</array>
+		<key>Constructed</key>
+		<array>
+			<string>1960</string>
+			<string>1961</string>
+			<string>1962</string>
+			<string>1963</string>
+			<string>1964</string>
+			<string>1965</string>
+			<string>1966</string>
+			<string>1967</string>
+			<string>1968</string>
+			<string>1969</string>
+			<string>1970</string>
+			<string>1971</string>
+			<string>1972</string>
+			<string>1973</string>
+			<string>1974</string>
+			<string>1975</string>
+			<string>1976</string>
+			<string>1977</string>
+			<string>1978</string>
+			<string>1979</string>
+			<string>1980</string>
+			<string>1981</string>
+			<string>1982</string>
+			<string>1983</string>
+			<string>1984</string>
+			<string>1985</string>
+			<string>1986</string>
+			<string>1987</string>
+			<string>1988</string>
+			<string>1989</string>
+			<string>1990</string>
+			<string>1991</string>
+			<string>1992</string>
+			<string>1993</string>
+			<string>1994</string>
+			<string>1995</string>
+			<string>1996</string>
+			<string>1997</string>
+			<string>1998</string>
+			<string>1999</string>
+			<string>2000</string>
+			<string>2001</string>
+			<string>2002</string>
+			<string>2003</string>
+			<string>2004</string>
+			<string>2005</string>
+			<string>2006</string>
+			<string>2007</string>
+			<string>2008</string>
+			<string>2009</string>
+			<string>2010</string>
+			<string>2011</string>
+			<string>2012</string>
+			<string>2013</string>
+			<string>2014</string>
+			<string>2015</string>
+			<string>2016</string>
+			<string>2016</string>
+			<string>2018</string>
+			<string>2019</string>
+			<string>2020</string>
+			<string>2021</string>
+			<string>2022</string>
+			<string>2023</string>
+			<string>2024</string>
+			<string>2025</string>
+			<string>2026</string>
+			<string>2027</string>
+			<string>2028</string>
+			<string>2029</string>
+			<string>2030</string>
+			<string>2031</string>
+			<string>2032</string>
+			<string>2033</string>
+			<string>2034</string>
+			<string>2035</string>
+			<string>2036</string>
+			<string>2037</string>
+			<string>2038</string>
+			<string>2039</string>
+			<string>2040</string>
+		</array>
+		<key>LeaseTerm</key>
+		<array>
+			<string>One year</string>
+			<string>Two years</string>
+			<string>Three or more years</string>
+			<string>Flexible</string>
+			<string>Short Term</string>
 		</array>
 	</dict>
 </dict>

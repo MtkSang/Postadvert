@@ -67,6 +67,39 @@
     return self;
 }
 
+- (id) initWithDictionary:(NSDictionary *)dict
+{
+    self = [self init];
+//    [id] => 341
+//                        [name] => Ikeuchi Aya
+//                        [username] => Titanic
+//                        [email] => vick457@yahoo.com
+//                        [registerDate] => 2012-11-23 06:52:35
+//                        [lastvisitDate] => 2013-02-25 01:33:25
+//                        [thumb] => http://stroff.com/images/avatar/thumb_c615f93e05bac7c47e0a4ba2.png
+//                        [status] =>
+//                        [status_access] => 0
+//                        [view] => 25
+//                        [posted_on] => 0000-00-00 00:00:00
+//                        [friends] => 72
+//                        [date_of_birth] =>
+    @try {
+        self.registrationID = [[dict objectForKey:@"id"] integerValue];
+        self.usernamePU = [dict objectForKey:@"username"];
+        self.fullName = [dict objectForKey:@"name"];
+        self.email = [dict objectForKey:@"email"];
+        self.avatarUrl = [dict objectForKey:@"thumb"];
+        self.friendCount = [[dict objectForKey:@"friends"] integerValue];
+    }
+    @catch (NSException *exception) {
+        
+    }
+    @finally {
+        
+    }
+        return self;
+}
+
 -(id) initWithEmail:(NSString*) emailAddr password:(NSString*) pwd
 {
     if (self) {

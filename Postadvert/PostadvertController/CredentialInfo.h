@@ -105,6 +105,7 @@
 - (id) initWithEmail:(NSString*) emailAddr password:(NSString*) pwd;
 - (id) initWithEmail:(NSString*) emailAddr userName:(NSString*) usrName password:(NSString*) pwd;
 -(id) initWithFirstName:(NSString*)first_Name lastname:(NSString*)lastName email:(NSString*) emailAddr userName:(NSString*)usrName password:(NSString*) pwd countryID:(int) countryID;
+- (id) initWithDictionary:(NSDictionary *)dict;
 
 - (long) getRegistrationId;
 - (NSString*) getUserNamePU;

@@ -20,12 +20,15 @@
     NSMutableArray *mainFilesValues;
     NSMutableArray *moreOptions;
     NSString *keyWorlds;
-    NSMutableArray *searchBy;
+    NSMutableArray *sortByData;
+    NSMutableArray *sortByDataV2;
+    NSString *sortByValue;
     NSMutableArray *filters;
     NSInteger internalItemID;
     BOOL    isMoreOptionOn;
     UIView *overlay;
     DCAPickerViewController *picker;
+    UITapGestureRecognizer *tapGesture;
     
 }
 @property (strong, nonatomic) NSString *itemName;

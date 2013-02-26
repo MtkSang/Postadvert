@@ -19,7 +19,7 @@
     self = [super init];
     if (self) {
         self.sourceType = sourceType_;
-        if (sourceType_ == pickerTypePrice) {
+        if (sourceType_ == pickerTypePrice || sourceType_ == pickerTypeBedrooms || sourceType_ == pickerTypeSize || sourceType_ == pickerTypeValnSize || sourceType_ == pickerTypeWashrooms || sourceType_ == pickerTypeConstructed || sourceType_ == pickerTypePSF) {
             _intSource = [NSArray arrayWithArray:array];
         }
         start += 1;
@@ -130,6 +130,12 @@
         case pickerTypeUnknow:
             return 0;
             break;
+        case pickerTypePSF:
+        case pickerTypeConstructed:
+        case pickerTypeWashrooms:
+        case pickerTypeValnSize:
+        case pickerTypeSize:
+        case pickerTypeBedrooms:
         case pickerTypePrice:
             return 3;
             break;
@@ -142,9 +148,16 @@
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     switch (self.sourceType) {
+
         case pickerTypeUnknow:
             return 0;
             break;
+        case pickerTypePSF:
+        case pickerTypeConstructed:
+        case pickerTypeWashrooms:
+        case pickerTypeValnSize:
+        case pickerTypeSize:
+        case pickerTypeBedrooms:
         case pickerTypePrice:
             if (component == 0 || component == 2) {
                 return _intSource.count + 1;
@@ -163,13 +176,18 @@
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
 {
     switch (self.sourceType) {
+        case pickerTypePSF:
+        case pickerTypeConstructed:
+        case pickerTypeWashrooms:
+        case pickerTypeValnSize:
+        case pickerTypeSize:
+        case pickerTypeBedrooms:
         case pickerTypePrice:
             if (component == 1) {
                 return 30;
             }
             return (pickerView.frame.size.width - 30) / 2.0;
-            break;
-            
+            break;    
         default:
             break;
     }
@@ -222,6 +240,12 @@
     NSString *title;
     NSInteger index = 0;
     switch (self.sourceType) {
+        case pickerTypePSF:
+        case pickerTypeConstructed:
+        case pickerTypeWashrooms:
+        case pickerTypeValnSize:
+        case pickerTypeSize:
+        case pickerTypeBedrooms:
         case pickerTypePrice:
             if (component == 1) {
                 return @"to";
@@ -250,7 +274,11 @@
     UILabel *retval = (id)view;
     if (!retval || ![retval isKindOfClass:[UILabel class]]) {
         retval= [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [pickerView rowSizeForComponent:component].width - 15, [pickerView rowSizeForComponent:component].height)];
-        retval.font = [UIFont fontWithName:FONT_NAME size:FONT_SIZE];
+        
+        if (_sourceType == pickerTypeSize || _sourceType == pickerTypeValnSize)  {
+            retval.font = [UIFont fontWithName:FONT_NAME size:FONT_SIZE_SMALL];
+        }
+        retval.minimumFontSize = FONT_SIZE_SMALL;
         retval.backgroundColor = [UIColor clearColor];
     }
     
@@ -259,6 +287,12 @@
     NSString *title;
     NSInteger index = 0;
     switch (self.sourceType) {
+        case pickerTypePSF:
+        case pickerTypeConstructed:
+        case pickerTypeWashrooms:
+        case pickerTypeValnSize:
+        case pickerTypeSize:
+        case pickerTypeBedrooms:
         case pickerTypePrice:
             if (component == 1) {
                 title = @"to";

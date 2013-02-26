@@ -11,6 +11,9 @@
 #import "Constants.h"
 #import "DCAPickerViewController.h"
 #import "TDSemiModal.h"
+#import "DCAOptionsViewController.h"
+#import <QuartzCore/QuartzCore.h>
+#import "HDBListResultViewController.h"
 //#import "MyModalViewController.h"
 //#import "UIViewController+MyModalView.h"
 //#import "MyViewController.h"
@@ -82,6 +85,12 @@
             }
         }
     }
+    //TapGesture
+    
+    tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(accessoryClicked:)];
+    tapGesture.numberOfTapsRequired = 1;
+    tapGesture.numberOfTouchesRequired = 1;
+    
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillBeShown:)
@@ -154,6 +163,21 @@
         [leftButton setBackgroundImage:[UIImage imageNamed:@"leftUnPress.png"]  forState:UIControlStateNormal];
         [rightButton setBackgroundImage:[UIImage imageNamed:@"rightPressed.png"] forState:UIControlStateNormal];
     }
+    //Update value for sort by
+
+    NSArray *array = [sortByValue componentsSeparatedByString:@" ("];
+    NSString *string = [array objectAtIndex:0];
+    if ([string isEqualToString:@"Price"]) {
+        sortByValue = [sortByValue stringByReplacingOccurrencesOfString:@"Price" withString:@"Monthly Rental"];
+    }
+    if ([string isEqualToString:@"Monthly Rental"]) {
+        sortByValue = [sortByValue stringByReplacingOccurrencesOfString:@"Monthly Rental" withString:@"Price"];
+    }
+    
+    //Save data
+    [self initAndLoadDataForView];
+    //load data
+    [self.tableView reloadData];
 }
 
 #pragma implement
@@ -180,39 +204,136 @@
 
 - (void) initAndLoadDataForView
 {
+    [self saveCurrentValues];
     internalItemID = [self getInternalItemIDWithItemName:self.itemName];
     NSString *plistPathForStaticDCA = [[NSBundle mainBundle] pathForResource:@"DCA" ofType:@"plist"];
     staticData = [NSDictionary dictionaryWithContentsOfFile:plistPathForStaticDCA];
     staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"HDB Search"]];
     NSDictionary *dict;
-    NSUserDefaults *database = [[NSUserDefaults alloc]init];
+    //NSUserDefaults *database = [[NSUserDefaults alloc]init];
     
     if ((internalItemID % 2) == 1) {
         dict = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Sale"]];
     }else
         dict = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Rent"]];
-    switch (internalItemID) {
+    switch (internalItemID % 2) {
         case 1:
             //init
-            mainFiles = [dict objectForKey:@"Main Fields"];
+            mainFiles = [[NSMutableArray alloc] initWithArray:[dict objectForKey:@"Main Fields"]];
             moreOptions = [dict objectForKey:@"More Options"];
-            searchBy = [dict objectForKey:@"Sort By"];
+            sortByData = [dict objectForKey:@"Sort By"];
+            sortByDataV2 = [dict objectForKey:@"Sort By V2"];
             filters = [dict objectForKey:@"Filters"];
             
             //load
 
-            mainFilesValues = [database objectForKey:@"Main Fields Values"];
-            if (mainFilesValues == nil || mainFilesValues.count == 0 ) {
-                mainFilesValues = [[NSMutableArray alloc]initWithObjects:@"Any Type", @"Any Location", @"Any", @"Any Size", @"Any", nil];
-            }
+            
+            //if (mainFilesValues == nil || mainFilesValues.count == 0 ) {
+                mainFilesValues = [[NSMutableArray alloc] initWithArray:[dict objectForKey:@"DefaultValues"]];
+//                mainFilesValues = [database objectForKey:@"Main Fields Values"];
+//                mainFilesValues = [[NSMutableArray alloc]initWithObjects:@"Any", @"Any", @"Any", @"Any", @"Any",@"Any", @"Any", @"Any", @"Any", @"Any", @"Select One",@"Select One", @"Any", @"Any", @"Any", nil];
+                sortByValue = @"Any";
+            //}
             
             break; 
+        case 0:
+            //init
+            mainFiles = [[NSMutableArray alloc] initWithArray:[dict objectForKey:@"Main Fields"]];
+            moreOptions = [dict objectForKey:@"More Options"];
+            sortByData = [dict objectForKey:@"Sort By"];
+            sortByDataV2 = [dict objectForKey:@"Sort By V2"];
+            filters = [dict objectForKey:@"Filters"];
             
+            //load
+            
+            
+            //if (mainFilesValues == nil || mainFilesValues.count == 0 ) {
+                mainFilesValues = [[NSMutableArray alloc] initWithArray:[dict objectForKey:@"DefaultValues"]];
+//                mainFilesValues = [database objectForKey:@"Main Fields Values"];
+//                mainFilesValues = [[NSMutableArray alloc]initWithObjects:@"Any", @"Any", @"Any", @"Any", @"Any",@"Any", @"Any", @"Any", @"Any", @"Any", @"Select One",@"Select One", @"Any", @"Any", @"Any", nil];
+                sortByValue = @"Any";
+            //}
+
         default:
         
             break;
     }
+    //
+    if (! sortByValue && sortByValue.length) {
+        sortByValue =@"Any";
+    }
+    if (isMoreOptionOn) {
+        [mainFiles addObjectsFromArray:moreOptions];
+    }
+    [self loadValues];
 }
+
+- (void) resetBtnClicked:(id) sender
+{
+    internalItemID = [self getInternalItemIDWithItemName:self.itemName];
+    NSString *plistPathForStaticDCA = [[NSBundle mainBundle] pathForResource:@"DCA" ofType:@"plist"];
+    staticData = [NSDictionary dictionaryWithContentsOfFile:plistPathForStaticDCA];
+    staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"HDB Search"]];
+    NSDictionary *dict;
+    if ((internalItemID % 2) == 1) {
+        dict = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Sale"]];
+    }else
+        dict = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Rent"]];
+    switch (internalItemID % 2) {
+        case 1:
+            //init
+            mainFiles = [[NSMutableArray alloc] initWithArray:[dict objectForKey:@"Main Fields"]];
+            moreOptions = [dict objectForKey:@"More Options"];
+            sortByData = [dict objectForKey:@"Sort By"];
+            sortByDataV2 = [dict objectForKey:@"Sort By V2"];
+            filters = [dict objectForKey:@"Filters"];
+            
+            //load
+                mainFilesValues = [[NSMutableArray alloc] initWithArray:[dict objectForKey:@"DefaultValues"]];
+                sortByValue = @"Any";
+            
+            break;
+        case 0:
+            //init
+            mainFiles = [[NSMutableArray alloc] initWithArray:[dict objectForKey:@"Main Fields"]];
+            moreOptions = [dict objectForKey:@"More Options"];
+            sortByData = [dict objectForKey:@"Sort By"];
+            sortByDataV2 = [dict objectForKey:@"Sort By V2"];
+            filters = [dict objectForKey:@"Filters"];
+            
+            //load
+                mainFilesValues = [[NSMutableArray alloc] initWithArray:[dict objectForKey:@"DefaultValues"]];
+                sortByValue = @"Any";
+        default:
+            
+            break;
+    }
+    //
+    if (! sortByValue && sortByValue.length) {
+        sortByValue =@"Any";
+    }
+    if (isMoreOptionOn) {
+        [mainFiles addObjectsFromArray:moreOptions];
+    }
+//    else
+//    {
+//        //reset more option
+//        NSUserDefaults *database = [NSUserDefaults standardUserDefaults];
+//        NSUInteger index = mainFiles.count;
+//        NSString *key = @"";
+//        id value =@"";
+//        while (index < mainFiles.count + moreOptions.count) {
+//            key = [moreOptions objectAtIndex:index - mainFiles.count];
+//            value = [mainFilesValues objectAtIndex:index];
+//            [database setValue:value forKey:key];
+//            index ++;
+//        }
+//    }
+    [self saveCurrentValues];
+    
+    [self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.03];
+}
+
 - (void) keyboardWillBeShown:(NSNotification*) notification
 {
     NSDictionary *info = notification.userInfo;
@@ -257,21 +378,106 @@
     if ([sender isKindOfClass:[UISwitch class]]) {
         UISwitch *switchBtn = (UISwitch*)sender;
         isMoreOptionOn = [switchBtn isOn];
-        [self reloadInternalID];
+        [self initAndLoadDataForView];
+        //[self reloadInternalID];
         [self.tableView reloadData];
     }
 }
 - (void) reloadInternalID
 {
-    if (isMoreOptionOn) {
-        internalItemID += 100;
+    internalItemID = [self getInternalItemIDWithItemName:self.itemName];
+}
+
+- (void) saveCurrentValues
+{
+    //save
+    if (mainFilesValues && mainFilesValues.count) {
+        NSUserDefaults *database = [NSUserDefaults standardUserDefaults];
+        NSUInteger index = 0;
+        NSString *key = @"";
+        id value =@"";
+        while (index < mainFiles.count) {
+            key = [mainFiles objectAtIndex:index];
+            value = [mainFilesValues objectAtIndex:index];
+            [database setValue:value forKey:key];
+            index ++;
+        }
     }
-    else
-        internalItemID -= 100;
-    if (internalItemID < 0 || internalItemID > 200) {
-        internalItemID = [self getInternalItemIDWithItemName:self.itemName];
+    
+    if (!isMoreOptionOn && (mainFilesValues.count > mainFiles.count))
+    {
+        //reset more option
+        NSUserDefaults *database = [NSUserDefaults standardUserDefaults];
+        NSUInteger index = mainFiles.count;
+        NSString *key = @"";
+        id value = @"";
+        while (index < mainFiles.count + moreOptions.count) {
+            key = [moreOptions objectAtIndex:index - mainFiles.count];
+            value = [mainFilesValues objectAtIndex:index];
+            [database setValue:value forKey:key];
+            index ++;
+        }
+    }
+    // Sort by
+    [[NSUserDefaults standardUserDefaults] setValue:sortByValue forKey:@"Sort By"];
+    
+}
+- (void) loadValues
+{
+    while (mainFilesValues.count < mainFiles.count) {
+        [mainFilesValues addObject:@""];
+    }
+    if (mainFilesValues && mainFilesValues.count) {
+        NSUserDefaults *database = [NSUserDefaults standardUserDefaults];
+        NSUInteger index = 0;
+        NSString *key = @"";
+        id value =@"";
+        while (index < mainFiles.count) {
+            key = [mainFiles objectAtIndex:index];
+            value = [database valueForKey:key];
+            if (value) {
+                [mainFilesValues replaceObjectAtIndex:index withObject:value];
+            }else
+            {
+                NSDictionary *dict;
+                if ((internalItemID % 2) == 1) {
+                    dict = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Sale"]];
+                }else
+                    dict = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Rent"]];
+                NSArray *defaultValues = [dict objectForKey:@"DefaultValues"];
+                [mainFilesValues replaceObjectAtIndex:index withObject:[defaultValues objectAtIndex:index]];
+            }
+            index ++;
+        }
     }
 }
+- (NSInteger) getIndexForSortBy
+{
+    NSInteger index = 0;
+    NSArray *array = [sortByValue componentsSeparatedByString:@" "];
+    NSString *fristValue = [array objectAtIndex:0];
+    if ([fristValue isEqualToString:@"Date"]) {
+        
+    }
+    return index;
+}
+
+- (IBAction)searchBtnClicked:(id)sender
+{
+    HDBListResultViewController *resultVctr = [[HDBListResultViewController alloc]init];
+    if (currentButton == leftButton) {
+        [[NSUserDefaults standardUserDefaults] setValue:@"s" forKey:@"property_status"];
+    }else
+        [[NSUserDefaults standardUserDefaults] setValue:@"r" forKey:@"property_status"];
+    [self saveCurrentValues];
+    [self.navigationController pushViewController:resultVctr animated:YES];
+    
+    UIButton *btn = (UIButton*) sender;
+    if ( [btn.titleLabel.text isEqualToString:@"Search"]) {
+        
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -288,9 +494,7 @@
         }
     }else
     {
-        if (section == 2) {
-            return @"Keywords";
-        }
+        
     }
     
     return nil;
@@ -301,7 +505,7 @@
     if (isMoreOptionOn) {
         return 8;
     }
-    return 6;
+    return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -345,17 +549,182 @@
                 [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
                 [cell.textLabel setTextColor:[UIColor whiteColor]];
                 [cell.detailTextLabel setTextColor:[UIColor blackColor]];
+                [cell.detailTextLabel setNumberOfLines:2];
                 [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
                 [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
                 UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"accessoryView.png"] highlightedImage:[UIImage imageNamed:@"accessoryViewSelected.png"]];
+                imgView.tag = indexPath.row;
+                imgView.userInteractionEnabled = YES;
+                UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(accessoryClicked:)];;
+                gesture.numberOfTapsRequired = 1;
+                [imgView addGestureRecognizer:gesture];
+                [cell bringSubviewToFront:imgView];
+                [cell setAccessoryView:imgView];
+            }
+            
+            cell.textLabel.text = [mainFiles objectAtIndex:indexPath.row];            
+            cell.detailTextLabel.text = [mainFilesValues objectAtIndex:indexPath.row];
+            [cell.detailTextLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
+            if ([cell.detailTextLabel.text isEqualToString:@"Any"] || [cell.detailTextLabel.text isEqualToString:@"Select One"]) {
+                UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+                if (accessoryView) {
+                    accessoryView.image = [UIImage imageNamed:@"accessoryView.png"];
+                    accessoryView.highlightedImage = [UIImage imageNamed:@"accessoryView.png"];
+                    [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+                }
+                //cell.detailTextLabel.text = @"Any";
+            }
+            else
+            {
+                UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+                if (accessoryView) {
+                    accessoryView.image = [UIImage imageNamed:@"eraseIcon.png"];
+                    accessoryView.highlightedImage = [UIImage imageNamed:@"eraseIcon.png"];
+                    [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+                    [cell bringSubviewToFront:accessoryView];
+                }
+            }
+
+            
+            return cell;
+        }
+        
+        if ([indexPath section] == 1) {
+            static NSString *CellIdentifier2 = @"CellStartUpJobsWithMoreOption";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier2];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier2];
+                [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
+                [cell.textLabel setTextColor:[UIColor whiteColor]];
+                
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                [cell setAccessoryType:UITableViewCellAccessoryNone];
+                UISwitch *switchBtn = [[UISwitch alloc]init];
+                [switchBtn addTarget:self action:@selector(moreOptionChangeValue:) forControlEvents:UIControlEventValueChanged];
+                [switchBtn sizeToFit];
+                CGRect frame = cell.frame;
+                CGRect framebtn = switchBtn.frame;
+                framebtn.origin.x = frame.size.width - framebtn.size.width - 20;
+                framebtn.origin.y = (cCellHeight - framebtn.size.height) / 2;
+                switchBtn.frame = framebtn;
+                [switchBtn setOnTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"leftPressed.png"] ]];
+                [cell addSubview:switchBtn];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+                cell.textLabel.text = @"More Options";
+            }
+            
+            
+            return cell;
+        }
+//        if (indexPath.section == 2) {
+//            //        static NSString *CellIdentifier5 = @"CellStartUpJobsWithSearchBar";
+//            //        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier5];
+//            //        if (cell == nil) {
+//            //            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier5];
+//            //            [cell setBackgroundColor:[UIColor clearColor]];
+//            //            UITextField *searchView = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 300, cCellHeight)];
+//            //            searchView.backgroundColor = [UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1];
+//            //            [searchView setPlaceholder:@"Search"];
+//            //            cell.backgroundView = [[UIView alloc]init];
+//            //            [cell addSubview:searchView];
+//            //        }
+//            [self.CellWithSearchBar setBackgroundView:[[UIView alloc] init]];
+//            return self.CellWithSearchBar;
+//        }
+        
+        if (indexPath.section == 2 || indexPath.section == 3) {
+            static NSString *CellIdentifier6 = @"CellStartUpJobsWithButton";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier6];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier6];
+                UIView *backgroundView = [[UIView alloc]init];
+                //[backgroundView setBackgroundColor:[UIColor colorWithRed:90.0/255 green:80.0/255 blue:65.5/255 alpha:1]];
+                [cell setBackgroundView:backgroundView];
+                
+                UIButton *searchBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 0, 300, cCellHeight)];
+                searchBtn.tag = 1;
+                [searchBtn setBackgroundImage:[UIImage imageNamed:@"btnHDBUnormal.png"] forState:UIControlStateNormal];
+                [cell addSubview:searchBtn];
+            }
+            UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
+            if (indexPath.section == 2) {
+                [searchBtn setTitle:@"Search" forState:UIControlStateNormal];
+            }
+            if (indexPath.section == 3) {
+                
+                [searchBtn setTitle:@"Save & Search" forState:UIControlStateNormal];
+            }
+            [searchBtn addTarget:self action:@selector(searchBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+            return cell;
+        }
+        
+        if (indexPath.section == 4) {
+            static NSString *CellIdentifier7 = @"CellStartUpJobsWithButton";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier7];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier7];
+                UIView *backgroundView = [[UIView alloc]init];
+                //[backgroundView setBackgroundColor:[UIColor colorWithRed:43.0/255 green:145.0/255 blue:158.0/255 alpha:1]];
+                [cell setBackgroundView:backgroundView];
+                
+                UIButton *searchBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 0, 300, cCellHeight)];
+                searchBtn.tag = 1;
+                [searchBtn setBackgroundImage:[UIImage imageNamed:@"btnResetHDBnormal.png"] forState:UIControlStateNormal];
+                
+                [searchBtn addTarget:self action:@selector(resetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+                [cell addSubview:searchBtn];
+            }
+            UIButton *searchBtn = (UIButton*) [cell viewWithTag:1];
+            [searchBtn setTitle:@"Reset" forState:UIControlStateNormal];
+            return cell;
+        }
+    }
+//////////////////////////////////////////////////////////////////
+    
+    if (internalItemID == 2) {// RENT off
+        if (indexPath.section == 0) {
+            static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier1];
+                [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
+                [cell.textLabel setTextColor:[UIColor whiteColor]];
+                [cell.detailTextLabel setTextColor:[UIColor blackColor]];
+                [cell.detailTextLabel setNumberOfLines:2];
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"accessoryView.png"] highlightedImage:[UIImage imageNamed:@"accessoryViewSelected.png"]];
+                imgView.tag = indexPath.row;
+                imgView.userInteractionEnabled = YES;
+                UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(accessoryClicked:)];;
+                gesture.numberOfTapsRequired = 1;
+                [imgView addGestureRecognizer:gesture];
+                [cell bringSubviewToFront:imgView];
                 [cell setAccessoryView:imgView];
             }
             
             cell.textLabel.text = [mainFiles objectAtIndex:indexPath.row];
-            
-            
             cell.detailTextLabel.text = [mainFilesValues objectAtIndex:indexPath.row];
             [cell.detailTextLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
+            if ([cell.detailTextLabel.text isEqualToString:@"Any"] || [cell.detailTextLabel.text isEqualToString:@"Select One"]) {
+                UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+                if (accessoryView) {
+                    accessoryView.image = [UIImage imageNamed:@"accessoryView.png"];
+                    accessoryView.highlightedImage = [UIImage imageNamed:@"accessoryView.png"];
+                    [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+                }
+                //cell.detailTextLabel.text = @"Any";
+            }
+            else
+            {
+                UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+                if (accessoryView) {
+                    accessoryView.image = [UIImage imageNamed:@"eraseIcon.png"];
+                    accessoryView.highlightedImage = [UIImage imageNamed:@"eraseIcon.png"];
+                    [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+                    [cell bringSubviewToFront:accessoryView];
+                }
+            }
             
             
             return cell;
@@ -388,23 +757,23 @@
             
             return cell;
         }
-        if (indexPath.section == 2) {
-            //        static NSString *CellIdentifier5 = @"CellStartUpJobsWithSearchBar";
-            //        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier5];
-            //        if (cell == nil) {
-            //            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier5];
-            //            [cell setBackgroundColor:[UIColor clearColor]];
-            //            UITextField *searchView = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 300, cCellHeight)];
-            //            searchView.backgroundColor = [UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1];
-            //            [searchView setPlaceholder:@"Search"];
-            //            cell.backgroundView = [[UIView alloc]init];
-            //            [cell addSubview:searchView];
-            //        }
-            [self.CellWithSearchBar setBackgroundView:[[UIView alloc] init]];
-            return self.CellWithSearchBar;
-        }
+//        if (indexPath.section == 2) {
+//            //        static NSString *CellIdentifier5 = @"CellStartUpJobsWithSearchBar";
+//            //        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier5];
+//            //        if (cell == nil) {
+//            //            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier5];
+//            //            [cell setBackgroundColor:[UIColor clearColor]];
+//            //            UITextField *searchView = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 300, cCellHeight)];
+//            //            searchView.backgroundColor = [UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1];
+//            //            [searchView setPlaceholder:@"Search"];
+//            //            cell.backgroundView = [[UIView alloc]init];
+//            //            [cell addSubview:searchView];
+//            //        }
+//            [self.CellWithSearchBar setBackgroundView:[[UIView alloc] init]];
+//            return self.CellWithSearchBar;
+//        }
         
-        if (indexPath.section == 3 || indexPath.section == 4) {
+        if (indexPath.section == 2 || indexPath.section == 3) {
             static NSString *CellIdentifier6 = @"CellStartUpJobsWithButton";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier6];
             if (cell == nil) {
@@ -418,11 +787,11 @@
                 [searchBtn setBackgroundImage:[UIImage imageNamed:@"btnHDBUnormal.png"] forState:UIControlStateNormal];
                 [cell addSubview:searchBtn];
             }
-            if (indexPath.section == 3) {
+            if (indexPath.section == 2) {
                 UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
                 [searchBtn setTitle:@"Search" forState:UIControlStateNormal];
             }
-            if (indexPath.section == 4) {
+            if (indexPath.section == 3) {
                 UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
                 [searchBtn setTitle:@"Save & Search" forState:UIControlStateNormal];
             }
@@ -430,7 +799,7 @@
             return cell;
         }
         
-        if (indexPath.section == 5) {
+        if (indexPath.section == 4) {
             static NSString *CellIdentifier7 = @"CellStartUpJobsWithButton";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier7];
             if (cell == nil) {
@@ -442,13 +811,17 @@
                 UIButton *searchBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 0, 300, cCellHeight)];
                 searchBtn.tag = 1;
                 [searchBtn setBackgroundImage:[UIImage imageNamed:@"btnResetHDBnormal.png"] forState:UIControlStateNormal];
-                [searchBtn setTitle:@"Reset" forState:UIControlStateNormal];
+                [searchBtn addTarget:self action:@selector(resetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
                 [cell addSubview:searchBtn];
             }
-            
+            UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
+            [searchBtn setTitle:@"Reset" forState:UIControlStateNormal];
             return cell;
         }
     }
+    
+//  //////////////////////////////////////////////////////
+    
     if (internalItemID == 101) { //Sale on
         if (indexPath.section == 0) {
             static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
@@ -458,9 +831,16 @@
                 [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
                 [cell.textLabel setTextColor:[UIColor whiteColor]];
                 [cell.detailTextLabel setTextColor:[UIColor blackColor]];
+                [cell.detailTextLabel setNumberOfLines:2];
                 [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
                 [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
                 UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"accessoryView.png"] highlightedImage:[UIImage imageNamed:@"accessoryViewSelected.png"]];
+                imgView.tag = 1;
+                imgView.userInteractionEnabled = YES;
+                UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(accessoryClicked:)];;
+                gesture.numberOfTapsRequired = 1;
+                [imgView addGestureRecognizer:gesture];
+                [cell bringSubviewToFront:imgView];
                 [cell setAccessoryView:imgView];
             }
             
@@ -469,7 +849,24 @@
             
             cell.detailTextLabel.text = [mainFilesValues objectAtIndex:indexPath.row];
             [cell.detailTextLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
-            
+            if ([cell.detailTextLabel.text isEqualToString:@"Any"] || [cell.detailTextLabel.text isEqualToString:@"Select One"]) {
+                UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+                if (accessoryView) {
+                    accessoryView.image = [UIImage imageNamed:@"accessoryView.png"];
+                    accessoryView.highlightedImage = [UIImage imageNamed:@"accessoryView.png"];
+                    [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+                }
+            }
+            else
+            {
+                UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+                if (accessoryView) {
+                    accessoryView.image = [UIImage imageNamed:@"eraseIcon.png"];
+                    accessoryView.highlightedImage = [UIImage imageNamed:@"eraseIcon.png"];
+                    [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+                    [cell bringSubviewToFront:accessoryView];
+                }
+            }
             
             return cell;
         }
@@ -513,13 +910,39 @@
                 [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
                 [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
                 UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"accessoryView.png"] highlightedImage:[UIImage imageNamed:@"accessoryViewSelected.png"]];
+                imgView.tag = 1;
+                imgView.userInteractionEnabled = YES;
+                UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(accessoryClicked:)];;
+                gesture.numberOfTapsRequired = 1;
+                [imgView addGestureRecognizer:gesture];
                 [cell setAccessoryView:imgView];
                 
                 cell.textLabel.text = @"Sort by";
-                cell.detailTextLabel.text = @"Any";
+                [cell.detailTextLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
                 [cell.detailTextLabel setTextColor:[UIColor blackColor]];
             }
-            
+            if (![sortByValue isEqualToString:@"Any"] ) {
+                NSInteger index = 0;
+                index = [sortByData indexOfObject:sortByValue];
+                cell.detailTextLabel.text = [sortByDataV2 objectAtIndex:index];
+                // add delete icon here
+                UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+                if (accessoryView) {
+                    accessoryView.image = [UIImage imageNamed:@"eraseIcon.png"];
+                    accessoryView.highlightedImage = [UIImage imageNamed:@"eraseIcon.png"];
+                    [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+                }
+            }else
+            {
+                UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+                if (accessoryView) {
+                    accessoryView.image = [UIImage imageNamed:@"accessoryView.png"];
+                    accessoryView.highlightedImage = [UIImage imageNamed:@"accessoryView.png"];
+                    [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+                }
+                cell.detailTextLabel.text = @"Any";
+            }
+                
             
             return cell;
         }
@@ -532,7 +955,7 @@
                 [cell.textLabel setTextColor:[UIColor whiteColor]];
                 [cell.detailTextLabel setTextColor:[UIColor blackColor]];
                 [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
-                [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+                //[cell setAccessoryType:UITableViewCellAccessoryCheckmark];
             }
             
             cell.textLabel.text = [filters objectAtIndex:indexPath.row];
@@ -600,6 +1023,212 @@
             return cell;
         }
     }
+    
+    //  //////////////////////////////////////////////////////
+    
+    if (internalItemID == 102) { //Rent on
+        if (indexPath.section == 0) {
+            static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier1];
+                [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
+                [cell.textLabel setTextColor:[UIColor whiteColor]];
+                [cell.detailTextLabel setTextColor:[UIColor blackColor]];
+                [cell.detailTextLabel setNumberOfLines:2];
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"accessoryView.png"] highlightedImage:[UIImage imageNamed:@"accessoryViewSelected.png"]];
+                imgView.tag = 1;
+                imgView.userInteractionEnabled = YES;
+                UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(accessoryClicked:)];;
+                gesture.numberOfTapsRequired = 1;
+                [imgView addGestureRecognizer:gesture];
+                [cell bringSubviewToFront:imgView];
+                [cell setAccessoryView:imgView];
+            }
+            
+            cell.textLabel.text = [mainFiles objectAtIndex:indexPath.row];
+            
+            
+            cell.detailTextLabel.text = [mainFilesValues objectAtIndex:indexPath.row];
+            [cell.detailTextLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
+            if ([cell.detailTextLabel.text isEqualToString:@"Any"] || [cell.detailTextLabel.text isEqualToString:@"Select One"]) {
+                UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+                if (accessoryView) {
+                    accessoryView.image = [UIImage imageNamed:@"accessoryView.png"];
+                    accessoryView.highlightedImage = [UIImage imageNamed:@"accessoryView.png"];
+                    [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+                }
+            }
+            else
+            {
+                UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+                if (accessoryView) {
+                    accessoryView.image = [UIImage imageNamed:@"eraseIcon.png"];
+                    accessoryView.highlightedImage = [UIImage imageNamed:@"eraseIcon.png"];
+                    [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+                    [cell bringSubviewToFront:accessoryView];
+                }
+            }
+            
+            return cell;
+        }
+        
+        if ([indexPath section] == 1) {
+            static NSString *CellIdentifier2 = @"CellStartUpJobsWithMoreOption";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier2];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier2];
+                [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
+                [cell.textLabel setTextColor:[UIColor whiteColor]];
+                
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                [cell setAccessoryType:UITableViewCellAccessoryNone];
+                UISwitch *switchBtn = [[UISwitch alloc]init];
+                [switchBtn addTarget:self action:@selector(moreOptionChangeValue:) forControlEvents:UIControlEventValueChanged];
+                [switchBtn sizeToFit];
+                [switchBtn setOn:YES animated:YES];
+                CGRect frame = cell.frame;
+                CGRect framebtn = switchBtn.frame;
+                framebtn.origin.x = frame.size.width - framebtn.size.width - 20;
+                framebtn.origin.y = (cCellHeight - framebtn.size.height) / 2;
+                switchBtn.frame = framebtn;
+                [switchBtn setOnTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"leftPressed.png"] ]];
+                [cell addSubview:switchBtn];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+                cell.textLabel.text = @"More Options";
+            }
+            
+            
+            return cell;
+        }
+        if (indexPath.section == 2) {
+            static NSString *CellIdentifier3 = @"CellStartUpJobsWithSort";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier3];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier3];
+                [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
+                [cell.textLabel setTextColor:[UIColor whiteColor]];
+                
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"accessoryView.png"] highlightedImage:[UIImage imageNamed:@"accessoryViewSelected.png"]];
+                imgView.tag = 1;
+                imgView.userInteractionEnabled = YES;
+                UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(accessoryClicked:)];;
+                gesture.numberOfTapsRequired = 1;
+                [imgView addGestureRecognizer:gesture];
+                [cell setAccessoryView:imgView];
+                
+                cell.textLabel.text = @"Sort by";
+                [cell.detailTextLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
+                [cell.detailTextLabel setTextColor:[UIColor blackColor]];
+            }
+            if (![sortByValue isEqualToString:@"Any"] ) {
+                NSInteger index = 0;
+                index = [sortByData indexOfObject:sortByValue];
+                cell.detailTextLabel.text = [sortByDataV2 objectAtIndex:index];
+                // add delete icon here
+                UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+                if (accessoryView) {
+                    accessoryView.image = [UIImage imageNamed:@"eraseIcon.png"];
+                    accessoryView.highlightedImage = [UIImage imageNamed:@"eraseIcon.png"];
+                    [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+                }
+            }else
+            {
+                UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+                if (accessoryView) {
+                    accessoryView.image = [UIImage imageNamed:@"accessoryView.png"];
+                    accessoryView.highlightedImage = [UIImage imageNamed:@"accessoryView.png"];
+                    [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+                }
+                cell.detailTextLabel.text = @"Any";
+            }
+            
+            
+            return cell;
+        }
+        if (indexPath.section == 3) {
+            static NSString *CellIdentifier4 = @"CellStartUpJobsWithFilters";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier4];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier4];
+                [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
+                [cell.textLabel setTextColor:[UIColor whiteColor]];
+                [cell.detailTextLabel setTextColor:[UIColor blackColor]];
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                //[cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+            }
+            
+            cell.textLabel.text = [filters objectAtIndex:indexPath.row];
+            
+            return cell;
+        }
+        if (indexPath.section == 4) {
+            //        static NSString *CellIdentifier5 = @"CellStartUpJobsWithSearchBar";
+            //        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier5];
+            //        if (cell == nil) {
+            //            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier5];
+            //            [cell setBackgroundColor:[UIColor clearColor]];
+            //            UITextField *searchView = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 300, cCellHeight)];
+            //            searchView.backgroundColor = [UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1];
+            //            [searchView setPlaceholder:@"Search"];
+            //            cell.backgroundView = [[UIView alloc]init];
+            //            [cell addSubview:searchView];
+            //        }
+            [self.CellWithSearchBar setBackgroundView:[[UIView alloc] init]];
+            return self.CellWithSearchBar;
+        }
+        
+        if (indexPath.section == 5 || indexPath.section == 6) {
+            static NSString *CellIdentifier6 = @"CellStartUpJobsWithButton";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier6];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier6];
+                UIView *backgroundView = [[UIView alloc]init];
+                //[backgroundView setBackgroundColor:[UIColor colorWithRed:90.0/255 green:80.0/255 blue:65.5/255 alpha:1]];
+                [cell setBackgroundView:backgroundView];
+                
+                UIButton *searchBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 0, 300, cCellHeight)];
+                searchBtn.tag = 1;
+                [searchBtn setBackgroundImage:[UIImage imageNamed:@"btnHDBUnormal.png"] forState:UIControlStateNormal];
+                [cell addSubview:searchBtn];
+            }
+            if (indexPath.section == 5) {
+                UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
+                [searchBtn setTitle:@"Search" forState:UIControlStateNormal];
+            }
+            if (indexPath.section == 6) {
+                UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
+                [searchBtn setTitle:@"Save & Search" forState:UIControlStateNormal];
+            }
+            
+            return cell;
+        }
+        
+        if (indexPath.section == 7) {
+            static NSString *CellIdentifier7 = @"CellStartUpJobsWithButton";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier7];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier7];
+                UIView *backgroundView = [[UIView alloc]init];
+                //[backgroundView setBackgroundColor:[UIColor colorWithRed:43.0/255 green:145.0/255 blue:158.0/255 alpha:1]];
+                [cell setBackgroundView:backgroundView];
+                
+                UIButton *searchBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 0, 300, cCellHeight)];
+                searchBtn.tag = 1;
+                [searchBtn setBackgroundImage:[UIImage imageNamed:@"btnResetHDBnormal.png"] forState:UIControlStateNormal];
+                [searchBtn setTitle:@"Reset" forState:UIControlStateNormal];
+                [cell addSubview:searchBtn];
+            }
+            UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
+            [searchBtn setTitle:@"Reset" forState:UIControlStateNormal];
+            return cell;
+        }
+    }
+
     return nil;
 }
 
@@ -648,70 +1277,271 @@
  */
 
 #pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void) accessoryClicked:(UITapGestureRecognizer*) tapGesture_
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (internalItemID == 101) {
-        if (indexPath.section == 3) {
-            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            if (cell.accessoryType == UITableViewCellAccessoryCheckmark) {
-                cell.accessoryType = UITableViewCellAccessoryNone;
+    NSIndexPath *indexPath;
+    UIView *view = tapGesture_.view;
+    UITableViewCell *cell = (UITableViewCell*) view.superview;
+    if ([cell isKindOfClass:[UITableViewCell class]]) {
+        indexPath = [self.tableView indexPathForCell:cell];
+    }
+    
+    if (indexPath.section == 0 && (indexPath.row < mainFiles.count)) {
+        UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+        if (![cell.detailTextLabel.text isEqualToString:@"Any"] ) {
+            if (accessoryView) {
+                accessoryView.image = [UIImage imageNamed:@"accessoryView.png"];
+                accessoryView.highlightedImage = [UIImage imageNamed:@"accessoryView.png"];
+                CGRect frame = accessoryView.frame;
+                frame.size = CGSizeMake(30, 30);
+                [accessoryView setFrame:frame];
             }
-            else
-                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            cell.detailTextLabel.text = @"Any";
+            [mainFilesValues replaceObjectAtIndex:indexPath.row withObject:@"Any"];
+            if ([cell.textLabel.text isEqualToString:@"Furnishing"] || [cell.textLabel.text isEqualToString:@"Condition"]) {
+                cell.detailTextLabel.text = @"Select One";
+                [mainFilesValues replaceObjectAtIndex:indexPath.row withObject:@"Select One"];
+            }
+            
+        }else
+        {
+            [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
+        }
+    }
+    ////////
+    if (internalItemID == 101 || internalItemID == 102) {
+        if (indexPath.section == 2) {
+            UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+            if (![sortByValue isEqualToString:@"Any"] ) {
+                if (accessoryView) {
+                    accessoryView.image = [UIImage imageNamed:@"accessoryView.png"];
+                    accessoryView.highlightedImage = [UIImage imageNamed:@"accessoryView.png"];
+                    CGRect frame = accessoryView.frame;
+                    frame.size = CGSizeMake(30, 30);
+                    [accessoryView setFrame:frame];
+                }
+                cell.detailTextLabel.text = @"Any";
+                sortByValue = @"Any";
+            }else
+            {
+                [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
+            }
+            return;
         }
     }
     
-    if (internalItemID == 1 || internalItemID == 101) {
-        if (indexPath.section == 0) {
-            if (indexPath.row == 2) {
-                NSString *value = [mainFilesValues objectAtIndex:indexPath.row];
-                NSArray *array = [value componentsSeparatedByString:@" to "];
-                NSInteger start = 0;
-                NSInteger end = 0;
-                NSArray *listValues = [staticData objectForKey:@"Price"];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self makeKeyBoardGoAway];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    // HDB Type
+    if ([cell.textLabel.text isEqualToString:@"HDB Type"]) {
+        NSArray *hdbTypeData = [staticData objectForKey:@"PropertyType"];
+        NSInteger selectedIndex = -1;
+        NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
+        if (![hdbType isEqualToString:@"Any"]) {
+            selectedIndex = [hdbTypeData indexOfObject:hdbType];
+        }
+        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionsPropertyType selectedIndex:selectedIndex];
+        dcaOptionViewCtr.delegate = self;
+        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+        return;
+    }
+    //HDB Estate
+    if ([cell.textLabel.text isEqualToString:@"HDB Estate"]) {
+        NSArray *HDBEstateData = [staticData objectForKey:@"HDBEstate"];
+        NSString *hdbEstateString = [mainFilesValues objectAtIndex:1];
+        NSArray *array = [hdbEstateString componentsSeparatedByString:@", "];
+        if ([hdbEstateString isEqualToString:@"Any"]) {
+            array = nil;
+        }
+        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:HDBEstateData DCAOptionType:DCAOptionSHDBEstate selectedValues:array];
+        dcaOptionViewCtr.multiSelect = YES;
+        dcaOptionViewCtr.delegate = self;
+        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+        return;
+    }
+    
+    // Sort by
+    if ([cell.textLabel.text isEqualToString:@"Sort by"]) {
+        NSInteger selectedIndex = -1;
+        if (![sortByValue isEqualToString:@"Any"]) {
+            selectedIndex = [sortByData indexOfObject:sortByValue];
+        }
+        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:sortByData DCAOptionType:DCAOptionsSortBy selectedIndex:selectedIndex];
+        dcaOptionViewCtr.delegate = self;
+        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+    }
+    //Filters
+    if ([[self tableView:tableView titleForHeaderInSection:indexPath.section] isEqualToString:@"Filters"]) {
+        if (cell.accessoryType == UITableViewCellAccessoryCheckmark) {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+        else
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
+    
+    //if (internalItemID == 1 || internalItemID == 101) {
+    if (indexPath.section == 0) {
+        if ([cell.textLabel.text isEqualToString:@"Price"] || [cell.textLabel.text isEqualToString:@"Monthly Rental"] || [cell.textLabel.text isEqualToString:@"Size"] || [cell.textLabel.text isEqualToString:@"Bedrooms"] || [cell.textLabel.text isEqualToString:@"Val'n Price"] || [cell.textLabel.text isEqualToString:@"Washrooms"] || [cell.textLabel.text isEqualToString:@"Constructed"] || [cell.textLabel.text isEqualToString:@"PSF"]) {
+            NSString *value = [mainFilesValues objectAtIndex:indexPath.row];
+            value = [value stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+            NSArray *array = [value componentsSeparatedByString:@" to "];
+            NSInteger start = 0;
+            NSInteger end = 0;
+            UIDCAPickerControllerSourceType sourceType = pickerTypeUnknow;
+           
+            NSArray *listValues;
+            //Price
+            if ([cell.textLabel.text isEqualToString:@"Price"]) {
+               listValues = [staticData objectForKey:@"Price"];
+                sourceType = pickerTypePrice;
+            }
+            //Monthly Rental
+            if ([cell.textLabel.text isEqualToString:@"Monthly Rental"]) {
+                listValues = [staticData objectForKey:@"Price"];
+                sourceType = pickerTypePrice;
+            }
+            //Size
+            if ([cell.textLabel.text isEqualToString:@"Size"]) {
+                listValues = [staticData objectForKey:@"Size"];
+                sourceType = pickerTypeSize;
+            }
+            //Bedrooms
+            if ([cell.textLabel.text isEqualToString:@"Bedrooms"]) {
+                listValues = [staticData objectForKey:@"Bedrooms"];
+                sourceType = pickerTypeBedrooms;
+            }
+            // Val'n Price
+            if ([cell.textLabel.text isEqualToString:@"Val'n Price"]) {
+                listValues = [staticData objectForKey:@"Price"];
+                sourceType = pickerTypeValnSize;
+            }
+            //Washrooms
+            if ([cell.textLabel.text isEqualToString:@"Washrooms"]) {
+                listValues = [staticData objectForKey:@"Washrooms"];
+                sourceType = pickerTypeWashrooms;
+            }
+            //Constructed
+            if ([cell.textLabel.text isEqualToString:@"Constructed"]) {
+                listValues = [staticData objectForKey:@"Constructed"];
+                sourceType = pickerTypeConstructed;
+            }
+            //{SF
+            if ([cell.textLabel.text isEqualToString:@"PSF"]) {
+                listValues = [staticData objectForKey:@"PSF"];
+                sourceType = pickerTypePSF;
+            }
+            if (array.count == 1) {
+                array = [value componentsSeparatedByString:@" and "];
                 if (array.count == 1) {
-                    array = [value componentsSeparatedByString:@" and "];
-                    if (array.count == 1) {
-                        if ([[array objectAtIndex:0] isEqual:@"Any"]) {
-                            start = -1;
-                            end = -1;
-                        }
-                        else
-                        {
-                            end = [listValues indexOfObject:[array objectAtIndex:0] ];
-                            start = end;
-                        }
-                        
+                    if ([[array objectAtIndex:0] isEqual:@"Any"]) {
+                        start = -1;
+                        end = -1;
+                    }
+                    else
+                    {
+                        end = [listValues indexOfObject:[array objectAtIndex:0] ];
+                        start = end;
                     }
                     
                 }
-                if (array.count >=2) {
-                    start = [listValues indexOfObject:[array objectAtIndex:0] ];
-                    end = [listValues indexOfObject:[array objectAtIndex:1]];
-                    if ([[array objectAtIndex:1] isEqual:@"above"]) {
-                        end = -1;
-                    }
-                    if ([[array objectAtIndex:1] isEqual:@"below"]) {
-                        end = start;
-                        start = -1;
-                    }
-                }
                 
-                picker = [[DCAPickerViewController alloc]initWithArray: listValues andSourceType:pickerTypePrice startIndex:start endIndex:end];
-                picker.delegate = self;
-                [self presentSemiModalViewController:picker];
             }
+            if (array.count >=2) {
+                start = [listValues indexOfObject:[array objectAtIndex:0] ];
+                end = [listValues indexOfObject:[array objectAtIndex:1]];
+                if ([[array objectAtIndex:1] isEqual:@"above"]) {
+                    end = -1;
+                }
+                if ([[array objectAtIndex:1] isEqual:@"below"]) {
+                    end = start;
+                    start = -1;
+                }
+            }
+            
+            picker = [[DCAPickerViewController alloc]initWithArray: listValues andSourceType:sourceType startIndex:start endIndex:end];
+            picker.delegate = self;
+            [self presentSemiModalViewController:picker];
+            return;
         }
     }
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    //}
+    
+    
+    //Add Owner
+    if ([cell.textLabel.text isEqualToString:@"Ad Owner"]) {
+        NSArray *array = [staticData objectForKey:@"AdOwner"];
+        NSInteger selectedIndex = -1;
+        if (![cell.detailTextLabel.text isEqualToString:@"Any"]) {
+            selectedIndex = [array indexOfObject:cell.detailTextLabel.text];
+        }
+        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:array DCAOptionType:DCAOptionAdOwner selectedIndex:selectedIndex];
+        dcaOptionViewCtr.delegate = self;
+        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+        return;
+    }
+    //Add Owner
+    if ([cell.textLabel.text isEqualToString:@"Unit Level"]) {
+        NSArray *array = [staticData objectForKey:@"UnitLevel"];
+        NSInteger selectedIndex = -1;
+        if (![cell.detailTextLabel.text isEqualToString:@"Any"]) {
+            selectedIndex = [array indexOfObject:cell.detailTextLabel.text];
+        }
+        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:array DCAOptionType:DCAOptionUnitLevel selectedIndex:selectedIndex];
+        dcaOptionViewCtr.delegate = self;
+        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+        return;
+    }
+    
+    //Furnishing
+    if ([cell.textLabel.text isEqualToString:@"Furnishing"]) {
+        NSArray *array = [staticData objectForKey:@"Furnishing"];
+        NSInteger selectedIndex = -1;
+        if (![cell.detailTextLabel.text isEqualToString:@"Any"] && ![cell.detailTextLabel.text isEqualToString:@"Select One"]) {
+            selectedIndex = [array indexOfObject:cell.detailTextLabel.text];
+        }
+        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:array DCAOptionType:DCAOptionFurnishing selectedIndex:selectedIndex];
+        dcaOptionViewCtr.delegate = self;
+        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+        return;
+    }
+    
+    //Furnishing
+    if ([cell.textLabel.text isEqualToString:@"Condition"]) {
+        NSArray *array = [staticData objectForKey:@"Condition"];
+        NSInteger selectedIndex = -1;
+        if (![cell.detailTextLabel.text isEqualToString:@"Any"] && ![cell.detailTextLabel.text isEqualToString:@"Select One"]) {
+            selectedIndex = [array indexOfObject:cell.detailTextLabel.text];
+        }
+        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:array DCAOptionType:DCAOptionCondition selectedIndex:selectedIndex];
+        dcaOptionViewCtr.delegate = self;
+        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+        return;
+    }
+    
+    // Lease Term
+    if ([cell.textLabel.text isEqualToString:@"Lease Term"]) {
+        NSArray *hdbTypeData = [staticData objectForKey:@"LeaseTerm"];
+        NSInteger selectedIndex = -1;
+        NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
+        if (![hdbType isEqualToString:@"Any"]) {
+            selectedIndex = [hdbTypeData indexOfObject:hdbType];
+        }
+        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionLeaseTerm selectedIndex:selectedIndex];
+        dcaOptionViewCtr.delegate = self;
+        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+        return;
+    }
+    
+    //Reset
+    if ([cell.textLabel.text isEqualToString:@"Reset"]) {
+        [self resetBtnClicked:nil];
+    }
+
 }
 
 #pragma mark - UISearchBar Delegate
@@ -721,12 +1551,16 @@
     [searchBar resignFirstResponder];
 }
 
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [[NSUserDefaults standardUserDefaults] setValue:searchText forKey:@"keyWorlds"];
+}
 #pragma mark -
-#pragma mark Date Picker Delegate
+#pragma mark DCAPickerViewController Delegate
 
 - (void) didPickerCloseWithControll:(DCAPickerViewController *)ctr
 {
-    if (ctr.sourceType = pickerTypePrice ) {
+    if (ctr.sourceType == pickerTypePrice || ctr.sourceType == pickerTypeBedrooms || ctr.sourceType == pickerTypeSize || ctr.sourceType == pickerTypeValnSize || ctr.sourceType == pickerTypeWashrooms || ctr.sourceType == pickerTypeConstructed || ctr.sourceType == pickerTypePSF) {
         NSString *vl1, *vl2, *value;
         if (ctr.strartIndex == 0) {
             if (ctr.endIndex == ctr.intSource.count) {
@@ -734,26 +1568,133 @@
             }else
             {
                 vl2 = [ctr.intSource objectAtIndex:ctr.endIndex];
-                value = [vl2 stringByAppendingString:@" and below"];
+                if (ctr.sourceType == pickerTypeSize || ctr.sourceType == pickerTypeValnSize) {
+                    value = [vl2 stringByAppendingString:@"\nand below"];
+                }else
+                    value = [vl2 stringByAppendingString:@" and below"];
             }
         }
         if (ctr.strartIndex !=0) {
             vl1 = [ctr.intSource objectAtIndex:ctr.strartIndex - 1];
             if (ctr.endIndex == ctr.intSource.count) {
-                value = [vl1 stringByAppendingString:@" and above"];
+                if (ctr.sourceType == pickerTypeSize || ctr.sourceType == pickerTypeValnSize || ctr.sourceType == pickerTypeBedrooms || ctr.sourceType == pickerTypeWashrooms) {
+                    value = [vl1 stringByAppendingString:@"\nand above"];
+                }else
+                    value = [vl1 stringByAppendingString:@" and above"];
             }else
             {
                 vl2 = [ctr.intSource objectAtIndex:ctr.endIndex];
-                value = [NSString stringWithFormat:@"%@ to %@", vl1, vl2];
+                if (ctr.sourceType == pickerTypeSize || ctr.sourceType == pickerTypeValnSize || ctr.sourceType == pickerTypeBedrooms || ctr.sourceType == pickerTypeWashrooms) {
+                    value = [NSString stringWithFormat:@"%@\nto %@", vl1, vl2];
+                }else
+                    value = [NSString stringWithFormat:@"%@ to %@", vl1, vl2];
+                
             }
         }
         if (ctr.strartIndex == ctr.endIndex + 1) {
             value = [ctr.intSource objectAtIndex:ctr.endIndex];
         }
-        NSUInteger index = [mainFiles indexOfObject:@"Price"];
+        NSUInteger index = 0;
+        switch (ctr.sourceType) {
+            case pickerTypePrice:
+                index = [mainFiles indexOfObject:@"Price"];
+                if (index == NSNotFound) {
+                    index = [mainFiles indexOfObject:@"Monthly Rental"];
+                }
+                break;
+            case pickerTypeSize:
+                index = [mainFiles indexOfObject:@"Size"];
+                break;
+            case pickerTypeBedrooms:
+                index = [mainFiles indexOfObject:@"Bedrooms"];
+                break;
+            case pickerTypeValnSize:
+                index = [mainFiles indexOfObject:@"Val'n Price"];
+                break;
+            case pickerTypeWashrooms:
+                index = [mainFiles indexOfObject:@"Washrooms"];
+                break;
+            case pickerTypeConstructed:
+                index = [mainFiles indexOfObject:@"Constructed"];
+                break;
+            case pickerTypePSF:
+                index = [mainFiles indexOfObject:@"PSF"];
+                break;
+            default:
+                break;
+        }
+        
         [mainFilesValues replaceObjectAtIndex:index withObject:value];
         [self dismissSemiModalViewController:ctr];
         [self.tableView reloadData];
     }
+}
+
+#pragma mark -
+#pragma mark DCAPOptionViewController Delegate
+- (void) didSelectRowOfDCAOptionViewController:(DCAOptionsViewController *)dcaViewCtr
+{
+    if (dcaViewCtr.sourceType == DCAOptionsSortBy) {
+        sortByValue = [sortByData objectAtIndex:dcaViewCtr.selectedIndex];
+    }
+    if (dcaViewCtr.sourceType == DCAOptionsPropertyType) {
+        NSString *value = [dcaViewCtr.intSource objectAtIndex:dcaViewCtr.selectedIndex];
+        [mainFilesValues replaceObjectAtIndex:0 withObject:value];
+    }
+    if (dcaViewCtr.sourceType == DCAOptionSHDBEstate) {
+        NSString *value = @"";
+        if (dcaViewCtr.selectedValues.count >= 1) {
+            value = [dcaViewCtr.selectedValues objectAtIndex:0];
+            [dcaViewCtr.selectedValues removeObjectAtIndex:0];
+            for (NSString *str in dcaViewCtr.selectedValues) {
+                value = [value stringByAppendingFormat:@", %@", str];
+            }
+        }else
+            value = @"Any";
+        
+        [mainFilesValues replaceObjectAtIndex:1 withObject:value];
+    }
+    
+    if (dcaViewCtr.sourceType == DCAOptionAdOwner) {
+        NSString *value = [dcaViewCtr.intSource objectAtIndex:dcaViewCtr.selectedIndex];
+        NSUInteger index = [mainFiles indexOfObject:@"Ad Owner"];
+        if (index != NSNotFound) {
+            [mainFilesValues replaceObjectAtIndex:index withObject:value];
+        }
+    }
+    if (dcaViewCtr.sourceType == DCAOptionUnitLevel) {
+        NSString *value = [dcaViewCtr.intSource objectAtIndex:dcaViewCtr.selectedIndex];
+        NSUInteger index = [mainFiles indexOfObject:@"Unit Level"];
+        if (index != NSNotFound) {
+            [mainFilesValues replaceObjectAtIndex:index withObject:value];
+        }
+    }
+    if (dcaViewCtr.sourceType == DCAOptionFurnishing) {
+        NSString *value = [dcaViewCtr.intSource objectAtIndex:dcaViewCtr.selectedIndex];
+        NSUInteger index = [mainFiles indexOfObject:@"Furnishing"];
+        if (index != NSNotFound) {
+            [mainFilesValues replaceObjectAtIndex:index withObject:value];
+        }
+    }
+    //Condition
+    if (dcaViewCtr.sourceType == DCAOptionCondition) {
+        NSString *value = [dcaViewCtr.intSource objectAtIndex:dcaViewCtr.selectedIndex];
+        NSUInteger index = [mainFiles indexOfObject:@"Condition"];
+        if (index != NSNotFound) {
+            [mainFilesValues replaceObjectAtIndex:index withObject:value];
+        }
+    }
+    //Lease Term
+    if (dcaViewCtr.sourceType == DCAOptionLeaseTerm) {
+        NSString *value = [dcaViewCtr.intSource objectAtIndex:dcaViewCtr.selectedIndex];
+        NSUInteger index = [mainFiles indexOfObject:@"Lease Term"];
+        if (index != NSNotFound) {
+            [mainFilesValues replaceObjectAtIndex:index withObject:value];
+        }
+    }
+
+    [dcaViewCtr.navigationController popViewControllerAnimated:YES];
+    
+    [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 }
 @end
