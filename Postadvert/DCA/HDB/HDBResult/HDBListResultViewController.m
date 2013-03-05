@@ -90,7 +90,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    HBBResultCellData *cellData = [currentListResult objectAtIndex:indexPath.section];
     if (indexPath.row == 0) {
         static NSString *CellIdentifier1 = @"HDBListResultCell1";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
@@ -101,12 +101,10 @@
             topLevelObjects = nil;
             [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
             cell.backgroundView = [[UIView alloc] init];
-            [cell setSelectionStyle:UITableViewCellEditingStyleNone];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         }
         NSInteger index = 0;
         NSString *value =@"";
-        
-        HBBResultCellData *cellData = [currentListResult objectAtIndex:indexPath.section];
         //Property Status
         UILabel *status = (UILabel*)[cell viewWithTag:1];
         if ([property_status isEqualToString:@"r"]) {
@@ -131,9 +129,79 @@
         value = [cellData.paraValues objectAtIndex:index];
         
         index = [cellData.paraNames indexOfObject:@"street_name"];
-        value = [value stringByAppendingString:[cellData.paraValues objectAtIndex:index]];
+        value = [NSString stringWithFormat:@"%@ %@",value, [cellData.paraValues objectAtIndex:index]];
         [titleHDB setText:value];
-    
+        //price
+        UILabel *price = (UILabel*) [cell viewWithTag:12];
+        if ([property_status isEqualToString:@"s"]) {
+            index = [cellData.paraNames indexOfObject:@"price"];
+        }else
+        {
+            index = [cellData.paraNames indexOfObject:@"monthly_rental"];
+        }
+        
+        value = [cellData.paraValues objectAtIndex:index];
+        [price setText:[NSString stringWithFormat:@"S$ %@", value]];
+        //psf
+        index = [cellData.paraNames indexOfObject:@"psf"];
+        value = [cellData.paraValues objectAtIndex:index];
+        
+        [price setText:[NSString stringWithFormat:@"%@ (S$ %@ psf)",price.text, value]];
+        
+        
+        //lease_term_valuation_price (unit_level)
+        UILabel *lease_term_valuation_price = (UILabel*) [cell viewWithTag:5];
+        if ([property_status isEqualToString:@"s"]) {
+            index = [cellData.paraNames indexOfObject:@"valuation_price"];
+            value = [NSString stringWithFormat:@"S$ %@ valuation", [cellData.paraValues objectAtIndex:index]];
+        }else
+        {
+            index = [cellData.paraNames indexOfObject:@"lease_term"];
+            value = [cellData.paraValues objectAtIndex:index];
+        }
+        
+        //unit_level
+        index = [cellData.paraNames indexOfObject:@"unit_level"];
+        NSString *unit_level = [cellData.paraValues objectAtIndex:index];
+        if (unit_level.length > 0) {
+            value = [NSString stringWithFormat:@"%@ ( %@ )", value, unit_level];
+        }
+        [lease_term_valuation_price setText:value];
+        //hdb_estate
+        UILabel *hdb_estate = (UILabel*) [cell viewWithTag:6];
+        index = [cellData.paraNames indexOfObject:@"hdb_estate"];
+        value = [cellData.paraValues objectAtIndex:index];
+        
+        //furnishing
+        index = [cellData.paraNames indexOfObject:@"furnishing"];
+        NSString *furnishing = [cellData.paraValues objectAtIndex:index];
+        if (! [furnishing isEqualToString:@""] ) {
+            value = [value stringByAppendingFormat:@" ( %@ )", furnishing];
+        }
+        [hdb_estate setText:value];
+        //size
+        UILabel *size = (UILabel*) [cell viewWithTag:7];
+        index = [cellData.paraNames indexOfObject:@"size"];
+        value = [cellData.paraValues objectAtIndex:index];
+        [size setText:[NSString stringWithFormat:@"%@ sqft",value]];
+        float sqft = [value floatValue];
+        float sqm = sqft * 0.092903;
+        [size setText:[NSString stringWithFormat:@"%@ sqft / %0.02f sqm",value, sqm]];
+        //building_completion
+        UILabel *building_completion = (UILabel*) [cell viewWithTag:11];
+        index = [cellData.paraNames indexOfObject:@"building_completion"];
+        value = [cellData.paraValues objectAtIndex:index];
+        [building_completion setText:[NSString stringWithFormat:@"%@ Completed", value]];
+        //bedrooms
+        UILabel *bedrooms = (UILabel*) [cell viewWithTag:8];
+        index = [cellData.paraNames indexOfObject:@"bedrooms"];
+        value = [cellData.paraValues objectAtIndex:index];
+        [bedrooms setText:value];
+        //washroom
+        UILabel *washroom = (UILabel*) [cell viewWithTag:9];
+        index = [cellData.paraNames indexOfObject:@"washroom"];
+        value = [cellData.paraValues objectAtIndex:index];
+        [washroom setText:value];
         
         
         return cell;
@@ -150,9 +218,25 @@
             topLevelObjects = nil;
             [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
             cell.backgroundView = [[UIView alloc] init];
-            [cell setSelectionStyle:UITableViewCellEditingStyleNone];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         }
+        NSInteger index;
+        NSString *value;
+        //avartar
+        UIImageView *avatar = (UIImageView*)[cell viewWithTag:3];
+        [avatar setImageWithURL:[NSURL URLWithString:cellData.userInfo.avatarUrl]];
+        // posted user
+        UILabel *user_posted = (UILabel*)[cell viewWithTag:4];
+        [user_posted setText:cellData.userInfo.fullName];
         
+        
+        //ad_owner
+        UILabel *ad_owner = (UILabel*)[cell viewWithTag:5];
+        index = [cellData.paraNames indexOfObject:@"ad_owner"];
+        value = [cellData.paraValues objectAtIndex:index];
+        [ad_owner setText:value];
+        
+        [self setClapCommentForCell:cell andData:cellData];
         return cell;
     }
     return nil;
@@ -164,10 +248,10 @@
 - (float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
-        return 220;
+        return 141;
     }
     if (indexPath.row == 1) {
-        return 80;
+        return 82;
     }
     return 44;
 }
@@ -198,14 +282,14 @@
 
 - (void) getData
 {
-    //function searchHDB($property_status, $keywords, $property_type, $hdb_owner, $hdb_estate, $bedrooms_from, $bedrooms_to, $washrooms_from, $washrooms_to, $price_from, $price_to, $size_from, $size_to, $valuation_from, $valuation_to, $lease_term_from, $lease_term_to, $completion_from, $completion_to, $unit_level, $furnishing, $condition, $limit, $hdb_id = 0, $base64_image = false) {
+    //getSearchHDBCount($property_status, $keywords, $property_type, $hdb_owner, $hdb_estate, $bedrooms_from, $bedrooms_to, $washrooms_from, $washrooms_to, $price_from, $price_to, $size_from, $size_to, $valuation_from, $valuation_to, $lease_term_from, $lease_term_to, $completion_from, $completion_to, $unit_level, $furnishing, $condition, $limit, $hdb_id = 0,  $psf_from, $psf_to, $base64_image = false) {
 
     id data;
     NSString *functionName;
     NSArray *paraNames;
     NSMutableArray *paraValues = [[NSMutableArray alloc]init];
     functionName = @"searchHDB";
-    paraNames = [NSArray arrayWithObjects:@"property_status", @"keywords", @"property_type", @"hdb_owner", @"hdb_estate", @"bedrooms_from", @"bedrooms_to", @"washrooms_from", @"washrooms_to", @"price_from", @"price_to", @"size_from", @"size_to", @"valuation_from", @"valuation_to", @"lease_term_from", @"lease_term_to", @"completion_from", @"completion_to", @"unit_level", @"furnishing", @"condition", @"limit", @"hdb_id", nil];
+    paraNames = [NSArray arrayWithObjects:@"property_status", @"keywords", @"property_type", @"hdb_owner", @"hdb_estate", @"bedrooms_from", @"bedrooms_to", @"washrooms_from", @"washrooms_to", @"price_from", @"price_to", @"size_from", @"size_to", @"valuation_from", @"valuation_to", @"lease_term_from", @"lease_term_to", @"completion_from", @"completion_to", @"unit_level", @"furnishing", @"condition", @"limit", @"hdb_id",@"psf_from",@"psf_to", nil];
     //paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], [NSString stringWithFormat:@"%d",self.infoChatting.parent_id],self.message.text, @"5", nil];
     
     //property_status
@@ -333,7 +417,17 @@
     //hdb_id
     value = @"0";
     [paraValues addObject:value];
-    
+    //psf from
+    index = [mainFiles indexOfObject:@"PSF"];
+    value = [mainFilesValues objectAtIndex:index];
+    from_to = [value componentsSeparatedByString:@"____"];
+    //psf to
+    if (from_to.count == 2) {
+        [paraValues addObjectsFromArray:from_to];
+    }else{
+        [paraValues addObject:@"0"];
+        [paraValues addObject:@"0"];
+    }
     // replace "Any" - > ""
     for (int i = 0; i < paraValues.count; i++) {
         NSString *myValue = [paraValues objectAtIndex:i];
@@ -361,7 +455,7 @@
         NSDictionary *authorDict = [dict objectForKey:@"author"];
         cellData.userInfo = [[CredentialInfo alloc]init];
         if ([authorDict isKindOfClass:[NSDictionary class]]) {
-            cellData.userInfo = [[CredentialInfo alloc]initWithDictionary:dict];
+            cellData.userInfo = [[CredentialInfo alloc]initWithDictionary:authorDict];
         }
         
         for (NSString *key in cellData.paraNames) {
@@ -572,6 +666,110 @@
         
         
         // Lease Term
+    }
+    
+}
+
+- (void) setClapCommentForCell:(UITableViewCell*)cell andData:(HBBResultCellData*)cellData
+{
+    UILabel *numClap = (UILabel*)[cell viewWithTag:12];
+    UIButton *clapBtn = (UIButton*)[cell viewWithTag:8];
+    UILabel *_numComment = (UILabel*)[cell viewWithTag:14];
+    UIButton *commentBtn = (UIButton*)[cell viewWithTag:10];
+    UIButton *_dotBtn = (UIButton*)[cell viewWithTag:9];
+    UIImageView *_commentIcon = (UIImageView*)[cell viewWithTag:13];
+    UIImageView *_clapIcon = (UIImageView*)[cell viewWithTag:11];
+    NSInteger totalClap = 0, totalComment = 0, totalView = 0, index;
+    BOOL isClap = NO;
+    NSString *value = @"";
+    //clap_info
+    NSDictionary *clap_info;
+    index = [cellData.paraNames indexOfObject:@"clap_info"];
+    clap_info = [cellData.paraValues objectAtIndex:index];
+    isClap = [[clap_info objectForKey:@"is_liked"]boolValue];
+        //total_claps
+    totalClap = [[clap_info objectForKey:@"total_likes"]integerValue];
+    //total_comments
+    index = [cellData.paraNames indexOfObject:@"total_comments"];
+    value = [cellData.paraValues objectAtIndex:index];
+    totalComment = [value integerValue];
+    //total_views
+    index = [cellData.paraNames indexOfObject:@"total_views"];
+    value = [cellData.paraValues objectAtIndex:index];
+    totalView = [value integerValue];
+    
+    numClap.text = [NSString stringWithFormat:@"%d", totalClap];
+    NSString *clapBtTitle = isClap ? @"Unclap" : @"Clap";
+    [clapBtn setTitle:clapBtTitle forState:UIControlStateNormal];
+    [clapBtn setTitle:clapBtTitle forState:UIControlStateHighlighted];
+    _numComment.text = [NSString stringWithFormat:@"%d", totalComment];
+    //Update location
+    float y = 3;
+    [clapBtn sizeToFit];
+    [commentBtn sizeToFit];
+    [_dotBtn sizeToFit];
+    CGRect frame = clapBtn.frame;
+    frame.origin.x = CELL_CONTENT_MARGIN_LEFT;
+    frame.origin.y = y;
+    clapBtn.frame = frame;
+    
+    frame = _dotBtn.frame;
+    frame.origin.x = clapBtn.frame.origin.x + clapBtn.frame.size.width + 3;
+    frame.origin.y = -y;
+    _dotBtn.frame = frame;
+    
+    frame = commentBtn.frame;
+    frame.origin.x = _dotBtn.frame.origin.x + _dotBtn.frame.size.width + 3;
+    frame.origin.y = y;
+    commentBtn.frame = frame;
+    
+    float width = 288 - CELL_CONTENT_MARGIN_RIGHT;
+    if (totalComment) {
+        [_numComment sizeToFit];
+        width -= _numComment.frame.size.width;
+        frame = _numComment.frame;
+        //width -= frame.size.width;
+        frame.origin.x = width;
+        frame.origin.y = y;
+        _numComment.frame = frame;
+        
+        //[_commentIcon sizeToFit];
+        width -= (_commentIcon.frame.size.width + 3);
+        frame =_commentIcon.frame;
+        frame.origin.x = width;
+        frame.origin.y = y;
+        _commentIcon.frame = frame;
+        
+        _commentIcon.hidden = NO;
+        _numComment.hidden = NO;
+        width -= 5;
+    }else{
+        _numComment.hidden = YES;
+        _commentIcon.hidden = YES;
+    }
+    
+    if (totalClap) {
+        numClap.hidden = NO;
+        _clapIcon.hidden = NO;
+        
+        [numClap sizeToFit];
+        width -= numClap.frame.size.width;
+        frame = numClap.frame;
+        //width -= frame.size.width;
+        frame.origin.x = width;
+        frame.origin.y = y;
+        numClap.frame = frame;
+        
+        //[_clapIcon sizeToFit];
+        width -= (_clapIcon.frame.size.width + 3);
+        frame =_clapIcon.frame;
+        frame.origin.x = width;
+        frame.origin.y = y;
+        _clapIcon.frame = frame;
+    }else
+    {
+        numClap.hidden = YES;
+        _clapIcon.hidden = YES;
     }
     
 }

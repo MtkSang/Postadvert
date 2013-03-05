@@ -77,6 +77,8 @@
 		D49F504316969596002B67D9 /* logout.png in Resources */ = {isa = PBXBuildFile; fileRef = D49F504216969595002B67D9 /* logout.png */; };
 		D4A6FC6D165C820A0071D2CE /* AccountSetting.plist in Resources */ = {isa = PBXBuildFile; fileRef = D4A6FC6C165C820A0071D2CE /* AccountSetting.plist */; };
 		D4A6FC71165CBAAA0071D2CE /* account_setting_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A6FC6F165CBAAA0071D2CE /* account_setting_icon.png */; };
+		D4A99DE116DE077E002D0B81 /* bedroom.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A99DDF16DE077D002D0B81 /* bedroom.png */; };
+		D4A99DE216DE077E002D0B81 /* washroom.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A99DE016DE077E002D0B81 /* washroom.png */; };
 		D4B20913166467270024EBF3 /* clap_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4B20911166467270024EBF3 /* clap_icon.png */; };
 		D4B20914166467270024EBF3 /* comment_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4B20912166467270024EBF3 /* comment_icon.png */; };
 		D4DBF7EB16941F3200F882C6 /* notification_1.png in Resources */ = {isa = PBXBuildFile; fileRef = D4DBF7E816941F3200F882C6 /* notification_1.png */; };
@@ -688,6 +690,8 @@
 		D49F504216969595002B67D9 /* logout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logout.png; sourceTree = "<group>"; };
 		D4A6FC6C165C820A0071D2CE /* AccountSetting.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AccountSetting.plist; sourceTree = "<group>"; };
 		D4A6FC6F165CBAAA0071D2CE /* account_setting_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account_setting_icon.png; sourceTree = "<group>"; };
+		D4A99DDF16DE077D002D0B81 /* bedroom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bedroom.png; sourceTree = "<group>"; };
+		D4A99DE016DE077E002D0B81 /* washroom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = washroom.png; sourceTree = "<group>"; };
 		D4B20911166467270024EBF3 /* clap_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clap_icon.png; sourceTree = "<group>"; };
 		D4B20912166467270024EBF3 /* comment_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comment_icon.png; sourceTree = "<group>"; };
 		D4DBF7E816941F3200F882C6 /* notification_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification_1.png; sourceTree = "<group>"; };
@@ -1397,6 +1401,8 @@
 		D41B79AA16BF88CA002EA427 /* HDBResult */ = {
 			isa = PBXGroup;
 			children = (
+				D4A99DDF16DE077D002D0B81 /* bedroom.png */,
+				D4A99DE016DE077E002D0B81 /* washroom.png */,
 				D41B79B816BFAA2F002EA427 /* TitleForEachResult.png */,
 				D41B79B116BF947D002EA427 /* HDBListResultViewController.h */,
 				D41B79B216BF947D002EA427 /* HDBListResultViewController.m */,
@@ -2732,7 +2738,7 @@
 		FA03215815772BEB002EB93D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Futureworkz;
 			};
 			buildConfigurationList = FA03215B15772BEB002EB93D /* Build configuration list for PBXProject "Stroff" */;
@@ -3166,6 +3172,8 @@
 				D41B79B716BFA6F7002EA427 /* HDBListResultCell1.xib in Resources */,
 				D41B79B916BFAA2F002EA427 /* TitleForEachResult.png in Resources */,
 				D424DC4C16C0EAFC00804879 /* HDBListResultCell2.xib in Resources */,
+				D4A99DE116DE077E002D0B81 /* bedroom.png in Resources */,
+				D4A99DE216DE077E002D0B81 /* washroom.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3404,6 +3412,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -3436,6 +3448,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;

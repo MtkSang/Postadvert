@@ -1140,6 +1140,8 @@
     
     if ([itemName isEqualToString:@"HDB"]) {
         HDBViewController *hdbSearch = [[HDBViewController alloc]init];
+        hdbSearch.navigationController = self.navigationController;
+        hdbSearch.navagationBarItem = self.navigationItem;
         viewCtr = hdbSearch;
     }
     if (!viewCtr) {

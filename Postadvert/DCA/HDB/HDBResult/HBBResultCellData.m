@@ -32,6 +32,11 @@
                           @"monthly_rental",
                           @"lease_term",
                           @"thumb",
+                          @"psf",
+                          @"ad_owner",
+                          @"total_comments",
+                          @"clap_info",
+                          @"total_views",
                           nil];
                           
         self.paraValues = [[NSMutableArray alloc]init];

@@ -14,6 +14,7 @@
     UIButton *leftButton;
     UIButton *rightButton;
     UIButton *currentButton;
+    UIBarButtonItem *rightNavBtn;
     
     NSDictionary *staticData;
     NSMutableArray *mainFiles;
@@ -29,8 +30,11 @@
     UIView *overlay;
     DCAPickerViewController *picker;
     UITapGestureRecognizer *tapGesture;
+    NSInteger appCounting;
     
 }
+@property (nonatomic, weak) UINavigationItem *navagationBarItem;
+@property (nonatomic, strong) UINavigationController *navigationController;
 @property (strong, nonatomic) NSString *itemName;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *lbTitle;

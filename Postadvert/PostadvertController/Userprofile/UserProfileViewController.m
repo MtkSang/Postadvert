@@ -515,7 +515,7 @@
     [cell loadNibFile];
     cell.navigationController = self.navigationController;
     [cell updateCellWithContent:[listContent objectAtIndex:index]];
-    [cell setSelectionStyle:UITableViewCellEditingStyleNone];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     [cell setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [listActivityCell replaceObjectAtIndex:index withObject:cell];
     cell.backgroundView = [[UIView alloc]initWithFrame:cell.bounds];

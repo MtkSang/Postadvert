@@ -102,9 +102,22 @@
                                              selector:@selector(hideKeyboardWhenSwitchViews)
                                                  name:@"sideBarUpdate"
                                                object:nil];
+    
+    rightNavBtn = self.navigationItem.rightBarButtonItem;
+    UIButton *postBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
+    [postBtn setTitle:@"Post" forState:UIControlStateNormal];
+    UIBarButtonItem *postBBtn = [[UIBarButtonItem alloc]initWithTitle:@"Post" style:UIBarButtonItemStyleDone target:self action:nil];
+    id muID = self.navigationController;
+    muID = self.navigationController.navigationController;
+    self.navigationController.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:postBBtn, nil];
+    self.navagationBarItem.rightBarButtonItem = postBBtn;
+    
+    appCounting = 0;
+    
 }
 - (void) viewDidAppear:(BOOL)animated
 {
+    appCounting ++;
     [super viewDidAppear:animated];
     @try {
         return;
@@ -129,7 +142,15 @@
     @catch (NSException *exception) {
         
     }
-    
+}
+
+- (void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    appCounting --;
+    if (appCounting <= 0) {
+        self.navagationBarItem.rightBarButtonItem = rightNavBtn;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -138,12 +159,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+
 - (void)viewDidUnload {
     [self setLbTitle:nil];
     [self setTableView:nil];
     [self setCellWithSearchBar:nil];
     [self setSearchBar:nil];
+    
     [super viewDidUnload];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
