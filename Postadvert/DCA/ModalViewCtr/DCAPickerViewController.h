@@ -17,7 +17,8 @@ enum pickerType {
     pickerTypeValnSize = 4,
     pickerTypeWashrooms = 5,
     pickerTypeConstructed = 6,
-    pickerTypePSF = 7
+    pickerTypePSF = 7,
+    pickerTypeLeaseTerm = 8
 };
 typedef NSUInteger UIDCAPickerControllerSourceType;
 
@@ -33,7 +34,7 @@ typedef NSUInteger UIDCAPickerControllerSourceType;
 @property (weak, nonatomic) IBOutlet id delegate;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *closeVtn;
 @property (weak, nonatomic) IBOutlet UIPickerView *picker;
-
+- (id) initWithSourceType:(UIDCAPickerControllerSourceType) sourceType_;
 - (id) initWithDictionary:(NSDictionary*)dict andSourceType:(UIDCAPickerControllerSourceType) sourceType_;
 - (id) initWithDictionary:(NSDictionary*)dict andSourceType:(UIDCAPickerControllerSourceType) sourceType_ startIndex:(NSInteger) strart endIndex:(NSInteger) endIndex;
 - (id) initWithArray:(NSArray*)array andSourceType:(UIDCAPickerControllerSourceType) sourceType_ startIndex:(NSInteger) start endIndex:(NSInteger) endIndex;

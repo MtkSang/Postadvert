@@ -57,7 +57,7 @@
         [actiCell loadNibFile];
         actiCell.navigationController = self.navigationController;
         [actiCell updateCellWithContent:cell._content];
-        [actiCell setSelectionStyle:UITableViewCellEditingStyleNone];
+        [actiCell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [actiCell setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 //        cell.backgroundView = [[UIView alloc]initWithFrame:cell.bounds];
 //        cell.backgroundView.backgroundColor = [UIColor whiteColor];

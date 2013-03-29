@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PullRefreshTableViewController.h"
 @class MBProgressHUD;
-@interface HDBListResultViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface HDBListResultViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, PullRefreshTableViewControllerDelegate>
 {
     MBProgressHUD *hud;
     NSMutableArray *currentListResult;
@@ -21,7 +22,13 @@
     NSMutableArray *moreOptions;
     NSString *sortByValue;
     NSString *property_status;
+    
+    MBProgressHUD *footerLoading;
+    MBProgressHUD *loadingHideView;
+    BOOL isLoadData;
 }
+- (IBAction) refresh;
+@property (strong, nonatomic) IBOutlet PullRefreshTableViewController *pullTableViewCtrl;
 @property (weak, nonatomic) IBOutlet UILabel *lbTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lbNumFound;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;

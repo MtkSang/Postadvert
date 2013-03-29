@@ -159,7 +159,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-
 - (void)viewDidUnload {
     [self setLbTitle:nil];
     [self setTableView:nil];
@@ -489,11 +488,14 @@
 - (IBAction)searchBtnClicked:(id)sender
 {
     HDBListResultViewController *resultVctr = [[HDBListResultViewController alloc]init];
+    [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"start"];
     if (currentButton == leftButton) {
         [[NSUserDefaults standardUserDefaults] setValue:@"s" forKey:@"property_status"];
     }else
         [[NSUserDefaults standardUserDefaults] setValue:@"r" forKey:@"property_status"];
     [self saveCurrentValues];
+    [[NSUserDefaults standardUserDefaults] setValue:@"up" forKey:@"scroll"];
+    
     [self.navigationController pushViewController:resultVctr animated:YES];
     
     UIButton *btn = (UIButton*) sender;
@@ -1549,15 +1551,20 @@
     
     // Lease Term
     if ([cell.textLabel.text isEqualToString:@"Lease Term"]) {
-        NSArray *hdbTypeData = [staticData objectForKey:@"LeaseTerm"];
-        NSInteger selectedIndex = -1;
-        NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
-        if (![hdbType isEqualToString:@"Any"]) {
-            selectedIndex = [hdbTypeData indexOfObject:hdbType];
-        }
-        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionLeaseTerm selectedIndex:selectedIndex];
-        dcaOptionViewCtr.delegate = self;
-        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+//        NSArray *hdbTypeData = [staticData objectForKey:@"LeaseTerm"];
+//        NSInteger selectedIndex = -1;
+//        NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
+//        if (![hdbType isEqualToString:@"Any"]) {
+//            selectedIndex = [hdbTypeData indexOfObject:hdbType];
+//        }
+//        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionLeaseTerm selectedIndex:selectedIndex];
+//        dcaOptionViewCtr.delegate = self;
+//        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+        
+        picker = [[DCAPickerViewController alloc]initWithSourceType:pickerTypeLeaseTerm];
+        picker.delegate = self;
+        [self presentSemiModalViewController:picker];
+
         return;
     }
     

@@ -29,7 +29,7 @@
 
 #import <UIKit/UIKit.h>
 
-
+@protocol PullRefreshTableViewControllerDelegate;
 @interface PullRefreshTableViewController : UITableViewController {
     UIView *refreshHeaderView;
     UILabel *refreshLabel;
@@ -50,11 +50,18 @@
 @property (nonatomic, copy) NSString *textPull;
 @property (nonatomic, copy) NSString *textRelease;
 @property (nonatomic, copy) NSString *textLoading;
+@property (nonatomic, weak) IBOutlet id <PullRefreshTableViewControllerDelegate> delegate;
 
 - (void)setupStrings;
 - (void)addPullToRefreshHeader;
 - (void)startLoading;
 - (void)stopLoading;
-- (void)refresh;
+- (IBAction)refresh;
+
+@end
+
+@protocol PullRefreshTableViewControllerDelegate<NSObject>
+
+- (void) pullToUpdate;
 
 @end

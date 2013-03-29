@@ -16,6 +16,8 @@
 #import "NSData+Base64.h"
 #import "CredentialInfo.h"
 #import "UIImageView+URL.h"
+#import "UserPAInfo.h"
+#import "HDBResultDetailViewController.h"
 @interface HDBListResultViewController ()
 
 @end
@@ -38,12 +40,27 @@
     UIImage *image = [UIImage imageNamed:@"titleHDB.png"];
     image = [image resizedImage:self.lbTitle.frame.size interpolationQuality:0];
     [self.lbTitle setBackgroundColor:[UIColor colorWithPatternImage:image]];
-    [self.lbNumFound setText:@"   1,230 properties found"];
+    [self.lbNumFound setText:@"   0 propertie found"];
     [self.lbNumFound setBackgroundColor:[UIColor colorWithRed:90.0/255 green:85.0/255 blue:73.0/255 alpha:1]];
     [self.lbNumFound setTextColor:[UIColor whiteColor]];
     resultType = @"For Sale";
-    [self loadDataInBackground];
 
+    
+    //setup footview
+    UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44)];
+    [footerView setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth];
+    footerView.autoresizesSubviews = YES;
+    self.view.frame =[[UIScreen mainScreen] bounds];
+    //self.tableView.frame = [[UIScreen mainScreen] bounds];
+    [self.tableView setTableFooterView: footerView];
+    // = [UIColor colorWithRed:235/255.0 green:247/255.0 blue:247/255.0 alpha:1];
+    footerLoading = [[MBProgressHUD alloc]initWithView:self.tableView.tableFooterView];
+    footerLoading.hasBackground = NO;
+    footerLoading.mode = MBProgressHUDModeIndeterminate;
+    footerLoading.autoresizingMask = footerView.autoresizingMask;
+    footerLoading.autoresizesSubviews = YES;
+    footerView = nil;
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -56,6 +73,8 @@
     [self setLbTitle:nil];
     [self setTableView:nil];
     [self setLbNumFound:nil];
+    [self setPullTableViewCtrl:nil];
+    [self setPullTableViewCtrl:nil];
     [super viewDidUnload];
 }
 
@@ -70,11 +89,22 @@
     }else
     {
         //the first time
-        hud = [[MBProgressHUD alloc]init];
+        hud = [[MBProgressHUD alloc]initWithView:self.view];
+        [self.view addSubview:hud];
+        [hud showWhileExecuting:@selector(loadDataInBackground) onTarget:self withObject:nil animated:YES];
         
     }
 }
 
+- (void) viewDidDisappear:(BOOL)animated
+{
+    if (hud) {
+        if (hud.superview) {
+            [hud removeFromSuperview];
+        }
+        hud = nil;
+    }
+}
 
 #pragma mark - Table view data source
 
@@ -202,8 +232,7 @@
         index = [cellData.paraNames indexOfObject:@"washroom"];
         value = [cellData.paraValues objectAtIndex:index];
         [washroom setText:value];
-        
-        
+
         return cell;
         
     }
@@ -222,19 +251,24 @@
         }
         NSInteger index;
         NSString *value;
-        //avartar
-        UIImageView *avatar = (UIImageView*)[cell viewWithTag:3];
-        [avatar setImageWithURL:[NSURL URLWithString:cellData.userInfo.avatarUrl]];
-        // posted user
-        UILabel *user_posted = (UILabel*)[cell viewWithTag:4];
-        [user_posted setText:cellData.userInfo.fullName];
-        
-        
-        //ad_owner
-        UILabel *ad_owner = (UILabel*)[cell viewWithTag:5];
-        index = [cellData.paraNames indexOfObject:@"ad_owner"];
-        value = [cellData.paraValues objectAtIndex:index];
-        [ad_owner setText:value];
+        @try {
+            //avartar
+            UIImageView *avatar = (UIImageView*)[cell viewWithTag:3];
+            [avatar setImageWithURL:[NSURL URLWithString:cellData.userInfo.avatarUrl]];
+            // posted user
+            UILabel *user_posted = (UILabel*)[cell viewWithTag:4];
+            [user_posted setText:cellData.userInfo.fullName];
+            
+            
+            //ad_owner
+            UILabel *ad_owner = (UILabel*)[cell viewWithTag:5];
+            index = [cellData.paraNames indexOfObject:@"ad_owner"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [ad_owner setText:value];
+        }
+        @catch (NSException *exception) {
+            
+        }
         
         [self setClapCommentForCell:cell andData:cellData];
         return cell;
@@ -258,7 +292,56 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    HBBResultCellData *cellData = [currentListResult objectAtIndex:indexPath.section];
+    HDBResultDetailViewController *detailViewCtr = [[HDBResultDetailViewController alloc]initWithHDBID:cellData.hdbID userID:[[UserPAInfo sharedUserPAInfo]registrationID]];
     
+    detailViewCtr.property_status = property_status;
+    [self.navigationController pushViewController:detailViewCtr animated:YES];
+}
+
+#pragma mark PullTableView
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    
+    [_pullTableViewCtrl scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (isLoadData) {
+        return;
+    }
+    
+    [self.pullTableViewCtrl scrollViewDidScroll:scrollView];
+	if (([scrollView contentOffset].y + scrollView.frame.size.height) + self.tableView.tableFooterView.frame.size.height >= [scrollView contentSize].height - cCellHeight - 100) {
+        NSLog(@"scrolled to bottom");
+        
+        if (! isLoadData) {
+            if (! footerLoading.superview) {
+                [self.tableView.tableFooterView addSubview:footerLoading];
+            }
+            [footerLoading showWhileExecuting:@selector(loadMoreData) onTarget:self withObject:nil animated:YES];
+        }
+        return;
+	}
+	if ([scrollView contentOffset].y == scrollView.frame.origin.y) {
+        NSLog(@"scrolled to top ");
+        
+	}
+    
+    
+}
+
+- (void) pullToUpdate
+{
+    if (!loadingHideView) {
+        loadingHideView = [[MBProgressHUD alloc]init];
+        loadingHideView.hasBackground = NO;
+        loadingHideView.mode = MBProgressHUDModeIndeterminate;
+    }
+    
+    isLoadData = YES;
+    [loadingHideView showWhileExecuting:@selector(addNewData) onTarget:self withObject:nil animated:YES];
 }
 
 #pragma mark - background function
@@ -272,24 +355,32 @@
     [self parseData];
     [self getData];
     //[self demoData];
-    
-    
-    
-    
     [self.tableView reloadData];
     
 }
 
+- (void) setNumFound:(NSNumber*) num
+{
+    NSInteger numFound = num.integerValue;
+    if (numFound > 1) {
+        [self.lbNumFound setText:[NSString stringWithFormat:@"   %d properties found", numFound]];
+    }
+    else
+    {
+            [self.lbNumFound setText:[NSString stringWithFormat:@"   %d propertie found", numFound]];
+    }
+
+}
 - (void) getData
 {
-    //getSearchHDBCount($property_status, $keywords, $property_type, $hdb_owner, $hdb_estate, $bedrooms_from, $bedrooms_to, $washrooms_from, $washrooms_to, $price_from, $price_to, $size_from, $size_to, $valuation_from, $valuation_to, $lease_term_from, $lease_term_to, $completion_from, $completion_to, $unit_level, $furnishing, $condition, $limit, $hdb_id = 0,  $psf_from, $psf_to, $base64_image = false) {
+    //function searchHDB($property_status, $keywords, $property_type, $hdb_owner, $hdb_estate, $bedrooms_from, $bedrooms_to, $washrooms_from, $washrooms_to, $price_from, $price_to, $size_from, $size_to, $valuation_from, $valuation_to, $lease_term_from, $lease_term_to, $completion_from, $completion_to, $unit_level, $furnishing, $condition, $limit, $hdb_id = 0, $psf_from, $psf_to, $user_id, $sort_type, $start, $scroll = 'down', $is_save = 0, $base64_image = false) 
 
     id data;
     NSString *functionName;
     NSArray *paraNames;
     NSMutableArray *paraValues = [[NSMutableArray alloc]init];
     functionName = @"searchHDB";
-    paraNames = [NSArray arrayWithObjects:@"property_status", @"keywords", @"property_type", @"hdb_owner", @"hdb_estate", @"bedrooms_from", @"bedrooms_to", @"washrooms_from", @"washrooms_to", @"price_from", @"price_to", @"size_from", @"size_to", @"valuation_from", @"valuation_to", @"lease_term_from", @"lease_term_to", @"completion_from", @"completion_to", @"unit_level", @"furnishing", @"condition", @"limit", @"hdb_id",@"psf_from",@"psf_to", nil];
+    paraNames = [NSArray arrayWithObjects:@"property_status", @"keywords", @"property_type", @"hdb_owner", @"hdb_estate", @"bedrooms_from", @"bedrooms_to", @"washrooms_from", @"washrooms_to", @"price_from", @"price_to", @"size_from", @"size_to", @"valuation_from", @"valuation_to", @"lease_term_from", @"lease_term_to", @"completion_from", @"completion_to", @"unit_level", @"furnishing", @"condition", @"limit", @"hdb_id",@"psf_from",@"psf_to", @"user_id", @"sort_type", @"start", @"scroll", @"is_save",  nil];
     //paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], [NSString stringWithFormat:@"%d",self.infoChatting.parent_id],self.message.text, @"5", nil];
     
     //property_status
@@ -428,6 +519,21 @@
         [paraValues addObject:@"0"];
         [paraValues addObject:@"0"];
     }
+    
+    //user_id
+    [paraValues addObject:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID]];
+    //sort_type
+    [paraValues addObject:sortByValue];
+    //start
+    value = [[NSUserDefaults standardUserDefaults] objectForKey:@"start"];
+    [paraValues addObject:value];
+    //scroll
+    value = [[NSUserDefaults standardUserDefaults] objectForKey:@"scroll"];
+    [paraValues addObject:value];
+    //is_save
+    value = @"0";
+    [paraValues addObject:value];
+
     // replace "Any" - > ""
     for (int i = 0; i < paraValues.count; i++) {
         NSString *myValue = [paraValues objectAtIndex:i];
@@ -444,6 +550,11 @@
         if (![dict isKindOfClass:[NSDictionary class]]) {
             continue;
         }
+        
+        NSString *count = [dict objectForKey:@"count"];
+        NSNumber *num = [NSNumber numberWithInteger:count.integerValue];
+        [self performSelectorOnMainThread:@selector(setNumFound:) withObject:num waitUntilDone:NO];
+        
         HBBResultCellData *cellData = [[HBBResultCellData alloc]init];
         cellData.hdbID = [[dict objectForKey:@"id"] integerValue];
         cellData.timeCreated = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
@@ -459,12 +570,38 @@
         }
         
         for (NSString *key in cellData.paraNames) {
-            [cellData.paraValues addObject:[dict objectForKey:key]];
+            id object = [dict objectForKey:key];
+            if (object != nil) {
+                [cellData.paraValues addObject: object];
+            }
         }
         
         [currentListResult addObject:cellData];
     }
-    
+    isLoadData = NO;
+}
+
+- (void) addNewData
+{
+    isLoadData = YES;
+    NSUserDefaults *database = [NSUserDefaults standardUserDefaults];
+    NSString *start = [NSString stringWithFormat:@"%d", currentListResult.count];
+    [database setValue:start forKey:@"start"];
+    [database setValue:@"up" forKey:@"scroll"];
+    [self getData];
+    [self.tableView reloadData];
+    [self.pullTableViewCtrl performSelector:@selector(stopLoading)];
+}
+
+- (void) loadMoreData
+{
+    isLoadData = YES;
+    NSUserDefaults *database = [NSUserDefaults standardUserDefaults];
+    NSString *start = [NSString stringWithFormat:@"%d", currentListResult.count];
+    [database setValue:start forKey:@"start"];
+    [database setValue:@"down" forKey:@"scroll"];
+    [self getData];
+    [self.tableView reloadData];
 }
 
 - (void) demoData
@@ -686,9 +823,9 @@
     NSDictionary *clap_info;
     index = [cellData.paraNames indexOfObject:@"clap_info"];
     clap_info = [cellData.paraValues objectAtIndex:index];
-    isClap = [[clap_info objectForKey:@"is_liked"]boolValue];
+    isClap = [[clap_info objectForKey:@"is_clap"]boolValue];
         //total_claps
-    totalClap = [[clap_info objectForKey:@"total_likes"]integerValue];
+    totalClap = [[clap_info objectForKey:@"total_claps"]integerValue];
     //total_comments
     index = [cellData.paraNames indexOfObject:@"total_comments"];
     value = [cellData.paraValues objectAtIndex:index];
@@ -703,6 +840,13 @@
     [clapBtn setTitle:clapBtTitle forState:UIControlStateNormal];
     [clapBtn setTitle:clapBtTitle forState:UIControlStateHighlighted];
     _numComment.text = [NSString stringWithFormat:@"%d", totalComment];
+    
+    //set action
+    index = [currentListResult indexOfObject:cellData];
+    NSNumber *num = [NSNumber numberWithInteger:index];
+    [[NSUserDefaults standardUserDefaults] setValue:num forKey:@"cellData"];
+    [clapBtn addTarget:self action:@selector(insertClap) forControlEvents:UIControlEventTouchUpInside];
+    [commentBtn addTarget:self action:@selector(commentBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     //Update location
     float y = 3;
     [clapBtn sizeToFit];
@@ -774,4 +918,49 @@
     
 }
 
+- (void) insertClap
+{
+    // hdbClap($user_id, $hdb_id)
+    
+    id data;
+    NSString *functionName;
+    NSArray *paraNames;
+    NSArray *paraValues;
+    HBBResultCellData *cellData;
+    NSNumber *num = [[NSUserDefaults standardUserDefaults] objectForKey:@"cellData"];
+    cellData = [currentListResult objectAtIndex:num.integerValue];
+    functionName = @"hdbClap";
+    paraNames = [NSArray arrayWithObjects:@"user_id", @"hdb_id", nil];
+    paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], [NSString stringWithFormat:@"%d", cellData.hdbID], nil];
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName:functionName parametterName:paraNames parametterValue:paraValues];
+    
+    @try {
+        NSInteger isClap = [[data objectForKey:@"clap"] integerValue];
+        NSInteger totalClap = [[data objectForKey:@"total_clap"] integerValue];
+        //Update clap
+        
+        NSInteger index = [cellData.paraNames indexOfObject:@"clap_info"];
+        NSDictionary *clapInfo = [cellData.paraValues objectAtIndex:index];
+        [clapInfo setValue:[NSString stringWithFormat:@"%d", totalClap] forKey:@"total_claps"];
+        [clapInfo setValue:[NSString stringWithFormat:@"%d", isClap] forKey:@"is_clap"];
+        [cellData.paraValues replaceObjectAtIndex:index withObject:clapInfo];
+        
+        [self.tableView reloadData];
+        
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    }
+}
+
+- (void) commentBtnClicked:(id)sender
+{
+    NSNumber *num = [[NSUserDefaults standardUserDefaults] objectForKey:@"cellData"];
+    
+    HBBResultCellData *cellData = [currentListResult objectAtIndex:num.integerValue];
+    HDBResultDetailViewController *detailViewCtr = [[HDBResultDetailViewController alloc]initWithHDBID:cellData.hdbID userID:[[UserPAInfo sharedUserPAInfo]registrationID]];
+    detailViewCtr.showKeyboard = YES;
+    detailViewCtr.property_status = property_status;
+    [self.navigationController pushViewController:detailViewCtr animated:YES];
+}
 @end
