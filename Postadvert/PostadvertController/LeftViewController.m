@@ -656,7 +656,7 @@
             [subItem addObject:@"Landed Property"];
             [subItem addObject:@"Rooms For Rent"];
             [subItem addObject:@"Co-Broke Xpress"];
-            [subItem addObject:@"Property Xchange"];
+            //[subItem addObject:@"Property Xchange"];
             break;
         case 2:
             [subItem addObject:@"Mobile Xpress"];
@@ -706,7 +706,7 @@
             [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
             [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
             [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
+            //[subItem addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
             break;
         case 2:
             [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];

@@ -40,6 +40,7 @@
 //DCA
 #import "StartUpJobsViewController.h"
 #import "HDBViewController.h"
+#import "HDBPostViewController.h"
 @interface DetailViewController ()
 - (void) showDetailFromSubView:(NSNotification*)notifi;
 - (IBAction)showHideSidebar:(id)sender;
@@ -80,6 +81,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showDetailFromLeftView:) name:@"showDetailFromLeftView" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterAddComment) name:@"enterAddComment" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openURL) name:@"openURL" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(overlayDidAddSubview:) name:@"didAddSubview" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(overlayWillRemoveSubview:) name:@"willRemoveSubview" object:nil];
     //Left Button Bar Item to sidebar
     UIButton *abutton = [[UIButton alloc]initWithFrame:CGRectMake(0.0, 0.0, 48, 30)];
     [abutton setImage:[UIImage imageNamed:@"listBtn.png"] forState:UIControlStateNormal];
@@ -234,7 +237,7 @@
     }
     //Setting for Overlay
     if (self.overlay == nil) {
-        self.overlay = [[UIView alloc] init];
+        self.overlay = [[UICustomView alloc] init];
     }
     self.overlay.frame = CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height - navFrame.size.height);
     //[self.view addSubview:self.overlay];
@@ -498,7 +501,7 @@
 - (void) showPopUpDialog:(UIView*) view :(CGPoint) point
 {
     if (overlay == nil) {
-        overlay = [[UIView alloc]init];
+        overlay = [[UICustomView alloc]init];
     }
 	[overlay addSubview:view];
     
@@ -972,8 +975,41 @@
         [self.myTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
 }
+- (void) newHDBPostClicked:(id)sender
+{
+    HDBPostViewController *newPostViewCtr = [[HDBPostViewController alloc]init];
+    [self.navigationController pushViewController:newPostViewCtr animated:YES];
+}
 
 #pragma mark - Listenner
+- (void) overlayDidAddSubview:(NSNotification*)notifi
+{
+    NSDictionary *dict = notifi.userInfo;
+    UIView *aView = [dict objectForKey:@"subview"];
+    if (aView) {
+        if (aView.tag == 1) {
+            rightNavBtn = self.navigationItem.rightBarButtonItem;
+            UIButton *postBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
+            [postBtn setTitle:@"Post" forState:UIControlStateNormal];
+            UIBarButtonItem *postBBtn = [[UIBarButtonItem alloc]initWithTitle:@"Post" style:UIBarButtonItemStyleDone target:self action:@selector(newHDBPostClicked:)];
+//            id muID = self.navigationController;
+//            muID = self.navigationController.navigationController;
+            //self.navigationController.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:postBBtn, nil];
+            self.navigationItem.rightBarButtonItem = postBBtn;
+        }
+
+    }
+}
+- (void) overlayWillRemoveSubview:(NSNotification*)notifi
+{
+    NSDictionary *dict = notifi.userInfo;
+    UIView *aView = [dict objectForKey:@"subview"];
+    if (aView) {
+        if (aView.tag == 1) {
+            self.navigationItem.rightBarButtonItem = rightNavBtn;
+        }
+    }
+}
 - (void) addDetailMessageListenner:(id)listenner
 {
     [[NSNotificationCenter defaultCenter] addObserver:listenner selector:@selector(showDetailMessageListenner:) name:@"DetailMessageListenner" object:nil];
@@ -1051,7 +1087,7 @@
     [self.navigationController popToViewController:self animated:NO];
     //Add to overlay to Show
     if (overlay == nil) {
-        self.overlay = [[UIView alloc] initWithFrame:CGRectMake(0.0, cStatusAndNavBar, self.view.frame.size.width, self.view.frame.size.height - cStatusAndNavBar)];
+        self.overlay = [[UICustomView alloc] initWithFrame:CGRectMake(0.0, cStatusAndNavBar, self.view.frame.size.width, self.view.frame.size.height - cStatusAndNavBar)];
         [self.view addSubview:self.overlay];
     }
     if (self.overlay.superview == nil) {
@@ -1151,6 +1187,7 @@
     
     CGRect frame = self.overlay.frame;
     viewCtr.view.frame = frame;
+    viewCtr.view.tag = 1;
     [self.overlay addSubview: viewCtr.view];
     [self addChildViewController:viewCtr];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"showDetailFromSubView_SideBar" object:nil];
@@ -1190,7 +1227,7 @@
         case 0://status update
         {
             if (overlay == nil) {
-                self.overlay = [[UIView alloc] initWithFrame:CGRectMake(0.0, cStatusAndNavBar, self.view.frame.size.width, self.view.frame.size.height - cStatusAndNavBar)];
+                self.overlay = [[UICustomView alloc] initWithFrame:CGRectMake(0.0, cStatusAndNavBar, self.view.frame.size.width, self.view.frame.size.height - cStatusAndNavBar)];
                 [self.view addSubview:self.overlay];
             }
             if (overlay.superview == nil) {
@@ -1238,7 +1275,7 @@
         {
             
             if (overlay == nil) {
-                self.overlay = [[UIView alloc] initWithFrame:CGRectMake(0.0, cStatusAndNavBar, self.view.frame.size.width, self.view.frame.size.height - cStatusAndNavBar)];
+                self.overlay = [[UICustomView alloc] initWithFrame:CGRectMake(0.0, cStatusAndNavBar, self.view.frame.size.width, self.view.frame.size.height - cStatusAndNavBar)];
                 [self.view addSubview:self.overlay];
             }
             if (overlay.superview == nil) {
@@ -1270,7 +1307,7 @@
             break;
         case 2://Events
             if (overlay == nil) {
-                self.overlay = [[UIView alloc] initWithFrame:CGRectMake(0.0, cStatusAndNavBar, self.view.frame.size.width, self.view.frame.size.height - cStatusAndNavBar)];
+                self.overlay = [[UICustomView alloc] initWithFrame:CGRectMake(0.0, cStatusAndNavBar, self.view.frame.size.width, self.view.frame.size.height - cStatusAndNavBar)];
                 [self.view addSubview:self.overlay];
             }
             if (overlay.superview == nil) {
@@ -1298,7 +1335,7 @@
         case 3://Friends
         {
             if (overlay == nil) {
-                self.overlay = [[UIView alloc] initWithFrame:CGRectMake(0.0, cStatusAndNavBar, self.view.frame.size.width, self.view.frame.size.height - cStatusAndNavBar)];
+                self.overlay = [[UICustomView alloc] initWithFrame:CGRectMake(0.0, cStatusAndNavBar, self.view.frame.size.width, self.view.frame.size.height - cStatusAndNavBar)];
                 [self.view addSubview:self.overlay];
             }
             if (overlay.superview == nil) {

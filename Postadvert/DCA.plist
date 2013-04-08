@@ -183,25 +183,25 @@
 		</array>
 		<key>Price</key>
 		<array>
-			<string>S$500</string>
-			<string>S$1,000</string>
-			<string>S$1,500</string>
-			<string>S$2,000</string>
-			<string>S$3,000</string>
-			<string>S$3,500</string>
-			<string>S$4,000</string>
-			<string>S$5,000</string>
-			<string>S$6,000</string>
-			<string>S$7,000</string>
-			<string>S$8,000</string>
-			<string>S$9,000</string>
-			<string>S$10,000</string>
-			<string>S$12,000</string>
-			<string>S$15,000</string>
-			<string>S$20,000</string>
-			<string>S$30,000</string>
-			<string>S$40,000</string>
-			<string>S$50,000</string>
+			<string>S$ 200,000</string>
+			<string>S$ 300,000</string>
+			<string>S$ 400,000</string>
+			<string>S$ 500,000</string>
+			<string>S$ 600,000</string>
+			<string>S$ 700,000</string>
+			<string>S$ 800,000</string>
+			<string>S$ 900,000</string>
+			<string>S$ 1,000,000</string>
+			<string>S$ 1,250,000</string>
+			<string>S$1,500,000</string>
+			<string>S$ 2,000,000</string>
+			<string>S$ 2,500,000</string>
+			<string>S$ 3,000,000</string>
+			<string>S$ 4,000,000</string>
+			<string>S$ 5,000,000</string>
+			<string>S$ 6,000,000</string>
+			<string>S$ 8,000,000</string>
+			<string>S$ 9,000,000</string>
 		</array>
 		<key>Bedrooms</key>
 		<array>
@@ -381,6 +381,58 @@
 			<string>Three or more years</string>
 			<string>Flexible</string>
 			<string>Short Term</string>
+		</array>
+	</dict>
+	<key>HDB Post</key>
+	<dict>
+		<key>Property Details</key>
+		<array>
+			<string>Property Status *</string>
+			<string>Ad Owner *</string>
+			<string>HDB Type *</string>
+			<string>HDB Estate *</string>
+			<string>No. of Bedrooms *</string>
+			<string>No. of Washrooms *</string>
+			<string>Price (S$)</string>
+			<string>Size (sq ft)</string>
+			<string>Size (sqm)</string>
+			<string>Valuation Price (S$)</string>
+			<string>Building Completion</string>
+		</array>
+		<key>Address of Property</key>
+		<array>
+			<string>Block No. *</string>
+			<string>Street Name *</string>
+		</array>
+		<key>Description of Property</key>
+		<array>
+			<string>Description</string>
+		</array>
+		<key>Pictures, URLs &amp; Videos</key>
+		<array>
+			<string>Upload Images</string>
+			<string>Insert URLs</string>
+			<string>Insert Videos</string>
+		</array>
+		<key>Special Features</key>
+		<array>
+			<string>Unit Level</string>
+			<string>Furnishing</string>
+			<string>Condition </string>
+			<string>Others</string>
+		</array>
+		<key>Home Interior</key>
+		<array>
+			<string>Air Conditioning</string>
+			<string>Cooker Hob / Hood</string>
+			<string>Balcony</string>
+			<string>Walk-in Wardrobe</string>
+			<string>Child Safety Grilles</string>
+			<string>Flooring</string>
+			<string>Water Heater</string>
+			<string>Ceiling Fan</string>
+			<string>Storeroom</string>
+			<string>Window Grilles</string>
 		</array>
 	</dict>
 </dict>

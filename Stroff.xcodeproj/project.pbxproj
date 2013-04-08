@@ -18,6 +18,7 @@
 		D42399D317018E8A00331B7F /* HDBPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D42399D117018E8A00331B7F /* HDBPostViewController.xib */; };
 		D424DC4C16C0EAFC00804879 /* HDBListResultCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = D424DC4B16C0EAFC00804879 /* HDBListResultCell2.xib */; };
 		D42E9265169ABBDB00B148D0 /* DCA.plist in Resources */ = {isa = PBXBuildFile; fileRef = D42E9264169ABBDB00B148D0 /* DCA.plist */; };
+		D42F7AD7170FD7D800631B8C /* UICustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = D42F7AD6170FD7D800631B8C /* UICustomView.m */; };
 		D4348059168C7FAF009027AC /* StartUpJobsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4348057168C7FAF009027AC /* StartUpJobsViewController.m */; };
 		D434805A168C7FAF009027AC /* StartUpJobsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4348058168C7FAF009027AC /* StartUpJobsViewController.xib */; };
 		D439AE51169530C900932577 /* HDBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D439AE4F169530C900932577 /* HDBViewController.m */; };
@@ -56,6 +57,12 @@
 		D4541A8916AF8B4A008E720E /* DCAPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4541A8716AF8B4A008E720E /* DCAPickerViewController.xib */; };
 		D45BC8C3164A38E9008D3CBA /* UICommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D45BC8C2164A38E9008D3CBA /* UICommentCell.xib */; };
 		D45EE37E16C3940E0092E6BF /* HBBResultCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = D45EE37D16C3940E0092E6BF /* HBBResultCellData.m */; };
+		D4679141171267F800D75C76 /* leftPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D467913D171267F700D75C76 /* leftPressed@2x.png */; };
+		D4679142171267F800D75C76 /* leftUnPress@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D467913E171267F800D75C76 /* leftUnPress@2x.png */; };
+		D4679143171267F800D75C76 /* rightPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D467913F171267F800D75C76 /* rightPressed@2x.png */; };
+		D4679144171267F800D75C76 /* rightUnPress@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4679140171267F800D75C76 /* rightUnPress@2x.png */; };
+		D467914D1712BEC400D75C76 /* OptionTableHDBPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D467914B1712BEC400D75C76 /* OptionTableHDBPostViewController.m */; };
+		D467914E1712BEC400D75C76 /* OptionTableHDBPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D467914C1712BEC400D75C76 /* OptionTableHDBPostViewController.xib */; };
 		D46D705816819C9A004B90B0 /* icons-privacy-friend.png in Resources */ = {isa = PBXBuildFile; fileRef = D46D705416819C9A004B90B0 /* icons-privacy-friend.png */; };
 		D46D705916819C9A004B90B0 /* icons-privacy-only-me.png in Resources */ = {isa = PBXBuildFile; fileRef = D46D705516819C9A004B90B0 /* icons-privacy-only-me.png */; };
 		D46D705A16819C9A004B90B0 /* icons-privacy-public.png in Resources */ = {isa = PBXBuildFile; fileRef = D46D705616819C9A004B90B0 /* icons-privacy-public.png */; };
@@ -95,6 +102,8 @@
 		D4A99DE216DE077E002D0B81 /* washroom.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A99DE016DE077E002D0B81 /* washroom.png */; };
 		D4B20913166467270024EBF3 /* clap_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4B20911166467270024EBF3 /* clap_icon.png */; };
 		D4B20914166467270024EBF3 /* comment_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4B20912166467270024EBF3 /* comment_icon.png */; };
+		D4C49A75170ABD3900703D76 /* btnHDBPost.png in Resources */ = {isa = PBXBuildFile; fileRef = D4C49A74170ABD3900703D76 /* btnHDBPost.png */; };
+		D4C49A77170ABDF400703D76 /* btnHDBPost@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4C49A76170ABDF400703D76 /* btnHDBPost@2x.png */; };
 		D4DBF7EB16941F3200F882C6 /* notification_1.png in Resources */ = {isa = PBXBuildFile; fileRef = D4DBF7E816941F3200F882C6 /* notification_1.png */; };
 		D4DBF7EC16941F3200F882C6 /* notification_2.png in Resources */ = {isa = PBXBuildFile; fileRef = D4DBF7E916941F3200F882C6 /* notification_2.png */; };
 		D4DBF7ED16941F3200F882C6 /* notification_3.png in Resources */ = {isa = PBXBuildFile; fileRef = D4DBF7EA16941F3200F882C6 /* notification_3.png */; };
@@ -632,6 +641,8 @@
 		D42399D117018E8A00331B7F /* HDBPostViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HDBPostViewController.xib; sourceTree = "<group>"; };
 		D424DC4B16C0EAFC00804879 /* HDBListResultCell2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HDBListResultCell2.xib; sourceTree = "<group>"; };
 		D42E9264169ABBDB00B148D0 /* DCA.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DCA.plist; sourceTree = "<group>"; };
+		D42F7AD5170FD7D800631B8C /* UICustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICustomView.h; sourceTree = "<group>"; };
+		D42F7AD6170FD7D800631B8C /* UICustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICustomView.m; sourceTree = "<group>"; };
 		D4348056168C7FAF009027AC /* StartUpJobsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartUpJobsViewController.h; sourceTree = "<group>"; };
 		D4348057168C7FAF009027AC /* StartUpJobsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartUpJobsViewController.m; sourceTree = "<group>"; };
 		D4348058168C7FAF009027AC /* StartUpJobsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StartUpJobsViewController.xib; sourceTree = "<group>"; };
@@ -678,6 +689,13 @@
 		D45BC8C2164A38E9008D3CBA /* UICommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICommentCell.xib; sourceTree = "<group>"; };
 		D45EE37C16C3940E0092E6BF /* HBBResultCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBBResultCellData.h; sourceTree = "<group>"; };
 		D45EE37D16C3940E0092E6BF /* HBBResultCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HBBResultCellData.m; sourceTree = "<group>"; };
+		D467913D171267F700D75C76 /* leftPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leftPressed@2x.png"; sourceTree = "<group>"; };
+		D467913E171267F800D75C76 /* leftUnPress@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leftUnPress@2x.png"; sourceTree = "<group>"; };
+		D467913F171267F800D75C76 /* rightPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rightPressed@2x.png"; sourceTree = "<group>"; };
+		D4679140171267F800D75C76 /* rightUnPress@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rightUnPress@2x.png"; sourceTree = "<group>"; };
+		D467914A1712BEC400D75C76 /* OptionTableHDBPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionTableHDBPostViewController.h; sourceTree = "<group>"; };
+		D467914B1712BEC400D75C76 /* OptionTableHDBPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionTableHDBPostViewController.m; sourceTree = "<group>"; };
+		D467914C1712BEC400D75C76 /* OptionTableHDBPostViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OptionTableHDBPostViewController.xib; sourceTree = "<group>"; };
 		D46D705416819C9A004B90B0 /* icons-privacy-friend.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons-privacy-friend.png"; sourceTree = "<group>"; };
 		D46D705516819C9A004B90B0 /* icons-privacy-only-me.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons-privacy-only-me.png"; sourceTree = "<group>"; };
 		D46D705616819C9A004B90B0 /* icons-privacy-public.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons-privacy-public.png"; sourceTree = "<group>"; };
@@ -724,6 +742,8 @@
 		D4A99DE016DE077E002D0B81 /* washroom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = washroom.png; sourceTree = "<group>"; };
 		D4B20911166467270024EBF3 /* clap_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clap_icon.png; sourceTree = "<group>"; };
 		D4B20912166467270024EBF3 /* comment_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comment_icon.png; sourceTree = "<group>"; };
+		D4C49A74170ABD3900703D76 /* btnHDBPost.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btnHDBPost.png; sourceTree = "<group>"; };
+		D4C49A76170ABDF400703D76 /* btnHDBPost@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btnHDBPost@2x.png"; sourceTree = "<group>"; };
 		D4DBF7E816941F3200F882C6 /* notification_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification_1.png; sourceTree = "<group>"; };
 		D4DBF7E916941F3200F882C6 /* notification_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification_2.png; sourceTree = "<group>"; };
 		D4DBF7EA16941F3200F882C6 /* notification_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification_3.png; sourceTree = "<group>"; };
@@ -1456,6 +1476,9 @@
 				D42399CF17018E8A00331B7F /* HDBPostViewController.h */,
 				D42399D017018E8A00331B7F /* HDBPostViewController.m */,
 				D42399D117018E8A00331B7F /* HDBPostViewController.xib */,
+				D467914A1712BEC400D75C76 /* OptionTableHDBPostViewController.h */,
+				D467914B1712BEC400D75C76 /* OptionTableHDBPostViewController.m */,
+				D467914C1712BEC400D75C76 /* OptionTableHDBPostViewController.xib */,
 			);
 			path = HDBPost;
 			sourceTree = "<group>";
@@ -1503,6 +1526,8 @@
 		D447862F16F9A8050084946C /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D4C49A76170ABDF400703D76 /* btnHDBPost@2x.png */,
+				D4C49A74170ABD3900703D76 /* btnHDBPost.png */,
 				D447863016F9A81F0084946C /* listview_active.png */,
 				D447863116F9A81F0084946C /* listview_inactive.png */,
 				D447863216F9A81F0084946C /* map_active.png */,
@@ -2479,6 +2504,10 @@
 				D439AE661695940800932577 /* leftUnPress.png */,
 				D439AE671695940800932577 /* rightPressed.png */,
 				D439AE681695940800932577 /* rightUnPress.png */,
+				D467913D171267F700D75C76 /* leftPressed@2x.png */,
+				D467913E171267F800D75C76 /* leftUnPress@2x.png */,
+				D467913F171267F800D75C76 /* rightPressed@2x.png */,
+				D4679140171267F800D75C76 /* rightUnPress@2x.png */,
 				D439AE531695344F00932577 /* titleHDB.png */,
 				D40DFD6B1688557D002FF3F9 /* allDay_icon_uncheck.png */,
 				D40DFD6C1688557D002FF3F9 /* allDay_icon.png */,
@@ -2751,6 +2780,8 @@
 				FAB671C815C237B3009459CD /* UITablePostViewController.m */,
 				FAB671C915C237B3009459CD /* UITablePostViewController.xib */,
 				FA549A3415DCCBB4006BEBBA /* UITablePostViewController_IPad.xib */,
+				D42F7AD5170FD7D800631B8C /* UICustomView.h */,
+				D42F7AD6170FD7D800631B8C /* UICustomView.m */,
 			);
 			path = PostController;
 			sourceTree = "<group>";
@@ -3248,6 +3279,13 @@
 				D447863E16F9A81F0084946C /* sort_active.png in Resources */,
 				D447863F16F9A81F0084946C /* sort_inactive.png in Resources */,
 				D42399D317018E8A00331B7F /* HDBPostViewController.xib in Resources */,
+				D4C49A75170ABD3900703D76 /* btnHDBPost.png in Resources */,
+				D4C49A77170ABDF400703D76 /* btnHDBPost@2x.png in Resources */,
+				D4679141171267F800D75C76 /* leftPressed@2x.png in Resources */,
+				D4679142171267F800D75C76 /* leftUnPress@2x.png in Resources */,
+				D4679143171267F800D75C76 /* rightPressed@2x.png in Resources */,
+				D4679144171267F800D75C76 /* rightUnPress@2x.png in Resources */,
+				D467914E1712BEC400D75C76 /* OptionTableHDBPostViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3440,6 +3478,8 @@
 				D45EE37E16C3940E0092E6BF /* HBBResultCellData.m in Sources */,
 				D47B7A7C16E7215A009C9337 /* HDBResultDetailViewController.m in Sources */,
 				D42399D217018E8A00331B7F /* HDBPostViewController.m in Sources */,
+				D42F7AD7170FD7D800631B8C /* UICustomView.m in Sources */,
+				D467914D1712BEC400D75C76 /* OptionTableHDBPostViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

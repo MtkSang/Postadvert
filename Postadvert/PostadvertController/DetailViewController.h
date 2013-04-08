@@ -18,7 +18,7 @@
 #import "GlobalAlertViewController.h"
 #import "MessageViewController.h"
 #import "PostViewController.h"
-
+#import "UICustomView.h"
 @class DetailViewController;
 @class ChatViewController;
 @class UploadImagesViewController;
@@ -31,7 +31,7 @@
 #if EXPERIEMENTAL_ORIENTATION_SUPPORT
     CGPoint _containerOrigin;
 #endif
-    IBOutlet UIView * overlay;
+    IBOutlet UICustomView * overlay;
     UIView *topMenu;
     UIView *topView;
     UIButton *btnPost;
@@ -49,6 +49,7 @@
     //Message
     BOOL isMessage;//Chatting
     UploadImagesViewController *uploadImagesView;
+    UIBarButtonItem *rightNavBtn;
     
 }
 
@@ -60,7 +61,7 @@
 
 
 
-@property (nonatomic, strong) UIView             *overlay;
+@property (nonatomic, strong) UICustomView             *overlay;
 - (void)showPopUpDialog:(UIView*) view :(CGPoint) point;
 - (void) hidePopUpDialog:(UIView*) view;
 - (UIView*) createLoginListView;

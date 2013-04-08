@@ -54,14 +54,15 @@
     headerView.backgroundColor = [UIColor colorWithRed:57.0/255 green:60.0/255.0 blue:38.0/255 alpha:1];
     
     leftButton = [[UIButton alloc]initWithFrame:CGRectMake(10, 5, 149, 30)];
-    [leftButton setBackgroundImage:[UIImage imageNamed:@"leftPressed.png"]  forState:UIControlStateNormal];
+//    [leftButton setBackgroundImage:[UIImage imageNamed:@"leftPressed.png"]  forState:UIControlStateNormal];
     [leftButton addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [leftButton setTitle:@"Sale" forState:UIControlStateNormal];
     rightButton = [[UIButton alloc]initWithFrame:CGRectMake(161, 5, 149, 30)];
-    [rightButton setBackgroundImage:[UIImage imageNamed:@"rightUnPress.png"] forState:UIControlStateNormal];
+//    [rightButton setBackgroundImage:[UIImage imageNamed:@"rightUnPress.png"] forState:UIControlStateNormal];
     [rightButton addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [rightButton setTitle:@"Rent" forState:UIControlStateNormal];
     currentButton = leftButton;
+    [self updateButtonSelected];
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(20, 5, 280, 30)];
     view.backgroundColor = [UIColor colorWithRed:183.0/255 green:220.0/255 blue:223.0/255 alpha:1];
     [headerView addSubview:view];
@@ -103,21 +104,9 @@
                                                  name:@"sideBarUpdate"
                                                object:nil];
     
-    rightNavBtn = self.navigationItem.rightBarButtonItem;
-    UIButton *postBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
-    [postBtn setTitle:@"Post" forState:UIControlStateNormal];
-    UIBarButtonItem *postBBtn = [[UIBarButtonItem alloc]initWithTitle:@"Post" style:UIBarButtonItemStyleDone target:self action:nil];
-    id muID = self.navigationController;
-    muID = self.navigationController.navigationController;
-    self.navigationController.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:postBBtn, nil];
-    self.navagationBarItem.rightBarButtonItem = postBBtn;
-    
-    appCounting = 0;
-    
 }
 - (void) viewDidAppear:(BOOL)animated
 {
-    appCounting ++;
     [super viewDidAppear:animated];
     @try {
         return;
@@ -147,10 +136,6 @@
 - (void) viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    appCounting --;
-    if (appCounting <= 0) {
-        self.navagationBarItem.rightBarButtonItem = rightNavBtn;
-    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -171,12 +156,8 @@
 }
 
 #pragma button
-- (void) btnClicked:(id) sender
+- (void) updateButtonSelected
 {
-    if (sender == currentButton) {
-        return;
-    }else
-        currentButton = sender;
     if (currentButton == leftButton) {
         [leftButton setBackgroundImage:[UIImage imageNamed:@"leftPressed.png"]  forState:UIControlStateNormal];
         [rightButton setBackgroundImage:[UIImage imageNamed:@"rightUnPress.png"] forState:UIControlStateNormal];
@@ -186,6 +167,14 @@
         [leftButton setBackgroundImage:[UIImage imageNamed:@"leftUnPress.png"]  forState:UIControlStateNormal];
         [rightButton setBackgroundImage:[UIImage imageNamed:@"rightPressed.png"] forState:UIControlStateNormal];
     }
+}
+- (void) btnClicked:(id) sender
+{
+    if (sender == currentButton) {
+        return;
+    }else
+        currentButton = sender;
+    [self performSelectorOnMainThread:@selector(updateButtonSelected) withObject:nil waitUntilDone:NO];
     //Update value for sort by
 
     NSArray *array = [sortByValue componentsSeparatedByString:@" ("];
@@ -503,6 +492,7 @@
         
     }
 }
+
 
 #pragma mark - Table view data source
 

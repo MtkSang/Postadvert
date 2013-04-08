@@ -14,7 +14,6 @@
     UIButton *leftButton;
     UIButton *rightButton;
     UIButton *currentButton;
-    UIBarButtonItem *rightNavBtn;
     
     NSDictionary *staticData;
     NSMutableArray *mainFiles;
@@ -30,7 +29,6 @@
     UIView *overlay;
     DCAPickerViewController *picker;
     UITapGestureRecognizer *tapGesture;
-    NSInteger appCounting;
     
 }
 @property (nonatomic, weak) UINavigationItem *navagationBarItem;
