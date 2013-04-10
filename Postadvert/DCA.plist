@@ -63,6 +63,17 @@
 				<string>PSF - Ascending</string>
 				<string>PSF - Descending</string>
 			</array>
+			<key>Sort By V3</key>
+			<array>
+				<string>date_new</string>
+				<string>date_old</string>
+				<string>price_high</string>
+				<string>price_low</string>
+				<string>size_high</string>
+				<string>size_low</string>
+				<string>psf_high</string>
+				<string>psf_low</string>
+			</array>
 			<key>Filters</key>
 			<array>
 				<string>With Photos</string>
@@ -129,6 +140,17 @@
 				<string>Size - Descending</string>
 				<string>PSF - Ascending</string>
 				<string>PSF - Descending</string>
+			</array>
+			<key>Sort By V3</key>
+			<array>
+				<string>date_new</string>
+				<string>date_old</string>
+				<string>price_high</string>
+				<string>price_low</string>
+				<string>size_high</string>
+				<string>size_low</string>
+				<string>psf_high</string>
+				<string>psf_low</string>
 			</array>
 			<key>Filters</key>
 			<array>
@@ -376,11 +398,41 @@
 		</array>
 		<key>LeaseTerm</key>
 		<array>
-			<string>One year</string>
-			<string>Two years</string>
-			<string>Three or more years</string>
-			<string>Flexible</string>
-			<string>Short Term</string>
+			<string>1 Month</string>
+			<string>2 Months</string>
+			<string>3 Months</string>
+			<string>4 Months</string>
+			<string>5 Months</string>
+			<string>6 Months</string>
+			<string>8 Months</string>
+			<string>10 Months</string>
+			<string>1 Year</string>
+			<string>1.5 Years</string>
+			<string>2 Years</string>
+			<string>2.5 Years</string>
+			<string>3 Years</string>
+			<string>3.5 Years</string>
+			<string>4 Years</string>
+			<string>4.5 Years</string>
+			<string>5 Years</string>
+		</array>
+		<key>OthersFeatures</key>
+		<array>
+			<string>Near Hawker Centre</string>
+			<string>Sea View</string>
+			<string>Breezy/Windy</string>
+			<string>Good Views</string>
+			<string>Near Bus Interchange</string>
+			<string>Near Good Schools</string>
+			<string>Near Market / Supermarket</string>
+			<string>Near Park / Resevoir</string>
+			<string>Greenery View</string>
+			<string>No Afternoon Sun</string>
+			<string>Near Shopping Mall</string>
+			<string>Near MRT</string>
+			<string>Corner Unit</string>
+			<string>Unblocked View</string>
+			<string>Morning Sun</string>
 		</array>
 	</dict>
 	<key>HDB Post</key>

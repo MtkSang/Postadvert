@@ -204,7 +204,15 @@
     if (topView == nil) {
         topView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0,self.view.frame.size.width , self.view.frame.size.height)];
     }else
-        topView.frame = CGRectMake(0.0, 0.0,self.view.frame.size.width , self.view.frame.size.height);
+    {
+        @try {
+            [topView setFrame: CGRectMake(0.0, 0.0,self.view.frame.size.width , self.view.frame.size.height)];
+        }
+        @catch (NSException *exception) {
+            
+        }
+    }
+        
     
     topView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"title_bg_right.png"]];
     [topView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];

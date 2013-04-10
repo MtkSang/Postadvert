@@ -11,6 +11,7 @@
 #import "Constants.h"
 #import "UIPlaceHolderTextView.h"
 #import "OptionTableHDBPostViewController.h"
+#import "DCAOptionsViewController.h"
 
 @interface HDBPostViewController ()
 
@@ -31,6 +32,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    //Load plist
+    NSString *plistPathForStaticDCA = [[NSBundle mainBundle] pathForResource:@"DCA" ofType:@"plist"];
+    staticData = [NSDictionary dictionaryWithContentsOfFile:plistPathForStaticDCA];
+    staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"HDB Search"]];
+    
+    
     UIImage *image = [UIImage imageNamed:@"titleHDB.png"];
     image = [image resizedImage:self.lbTitle.frame.size interpolationQuality:0];
     [self.lbTitle setBackgroundColor:[UIColor colorWithPatternImage:image]];
@@ -42,8 +49,8 @@
     
     //
     NSString *plistPathForStaticHDBPost = [[NSBundle mainBundle] pathForResource:@"DCA" ofType:@"plist"];
-    NSDictionary *staticData = [NSDictionary dictionaryWithContentsOfFile:plistPathForStaticHDBPost];
-    sourceData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"HDB Post"]];
+    NSDictionary *staticData2 = [NSDictionary dictionaryWithContentsOfFile:plistPathForStaticHDBPost];
+    sourceData = [NSDictionary dictionaryWithDictionary: [staticData2 objectForKey:@"HDB Post"]];
     allKeys = [[NSMutableArray alloc]initWithObjects:
                @"Property Details",
                @"Address of Property",
@@ -460,6 +467,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    currentIndexPath = indexPath;
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     NSString *headerStr = [allKeys objectAtIndex:indexPath.section];
     NSArray *array = [sourceData objectForKey:headerStr];
@@ -479,7 +487,6 @@
             [self showDialog:optionTableViewCtr.view];
         }
         else{
-            currentIndexPath = indexPath;
             [self.textField setKeyboardType:UIKeyboardTypeDecimalPad];
             [self.textField setReturnKeyType:UIReturnKeyDone];
             [self.textField becomeFirstResponder];
@@ -488,9 +495,61 @@
             [self showDialog:self.inputForm];
         }
     }
+    if ([headerStr isEqualToString:@"Special Features"]) {
+        if ([cell.textLabel.text isEqualToString:@"Unit Level"]) {
+            NSArray *hdbTypeData = [staticData objectForKey:@"UnitLevel"];
+            NSInteger selectedIndex = -1;
+            NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
+            if (![hdbType isEqualToString:@"Any"]) {
+                selectedIndex = [hdbTypeData indexOfObject:hdbType];
+            }
+            DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionUnitLevel selectedIndex:selectedIndex];
+            dcaOptionViewCtr.delegate = self;
+            [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+            return;
+        }
+        if ([cell.textLabel.text isEqualToString:@"Furnishing"]) {
+            NSArray *hdbTypeData = [staticData objectForKey:@"Furnishing"];
+            NSInteger selectedIndex = -1;
+            NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
+            if (![hdbType isEqualToString:@"Any"]) {
+                selectedIndex = [hdbTypeData indexOfObject:hdbType];
+            }
+            DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionFurnishing selectedIndex:selectedIndex];
+            dcaOptionViewCtr.delegate = self;
+            [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+            return;
+        }
+        if ([cell.textLabel.text isEqualToString:@"Condition "]) {
+            NSArray *hdbTypeData = [staticData objectForKey:@"Condition"];
+            NSInteger selectedIndex = -1;
+            NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
+            if (![hdbType isEqualToString:@"Any"]) {
+                selectedIndex = [hdbTypeData indexOfObject:hdbType];
+            }
+            DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionFurnishing selectedIndex:selectedIndex];
+            dcaOptionViewCtr.delegate = self;
+            [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+            return;
+        }
+        if ([cell.textLabel.text isEqualToString:@"Others"]) {
+            NSArray *HDBEstateData = [staticData objectForKey:@"OthersFeatures"];
+            NSString *hdbEstateString = cell.detailTextLabel.text;
+                NSArray *array = [hdbEstateString componentsSeparatedByString:@", "];
+                if ([hdbEstateString isEqualToString:@"Any"] || [hdbEstateString isEqualToString:@"Others Features"]) {
+                    array = nil;
+                }
+                DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:HDBEstateData DCAOptionType:DCAOptionOthersFeatures selectedValues:array];
+                dcaOptionViewCtr.multiSelect = YES;
+                dcaOptionViewCtr.delegate = self;
+                [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+                return;
+            }
+
+    }
+    
     //               @"Address of Property",
     if ([headerStr isEqualToString:@"Address of Property"]) {
-        currentIndexPath = indexPath;
         [self.phTextView becomeFirstResponder];
         [self.phTextView setText:cell.detailTextLabel.text];
         [self.titleInputTextForm setText:[NSString stringWithFormat:@"%@", [array objectAtIndex:indexPath.row]]];
@@ -499,7 +558,6 @@
     }
     //               @"Description of Property",
     if ([headerStr isEqualToString:@"Description of Property"]) {
-        currentIndexPath = indexPath;
         [self.phTextView becomeFirstResponder];
         [self.phTextView setText:cell.textLabel.text];
         [self.titleInputTextForm setText:[NSString stringWithFormat:@"%@", headerStr]];
@@ -521,6 +579,41 @@
     }
     
 }
+#pragma mark DCAPOptionViewController Delegate
+- (void) didSelectRowOfDCAOptionViewController:(DCAOptionsViewController *)dcaViewCtr
+{
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:currentIndexPath];
+    NSString *value = @"";
+    if (dcaViewCtr.sourceType == DCAOptionOthersFeatures) {
+        
+        if (dcaViewCtr.selectedValues.count >= 1) {
+            value = [dcaViewCtr.selectedValues objectAtIndex:0];
+            [dcaViewCtr.selectedValues removeObjectAtIndex:0];
+            for (NSString *str in dcaViewCtr.selectedValues) {
+                value = [value stringByAppendingFormat:@", %@", str];
+            }
+        }else
+            value = @"Others Features";
+    }
+    
+    if (dcaViewCtr.sourceType == DCAOptionUnitLevel) {
+        value = [dcaViewCtr.intSource objectAtIndex:dcaViewCtr.selectedIndex];
+    }
+    if (dcaViewCtr.sourceType == DCAOptionFurnishing) {
+        value = [dcaViewCtr.intSource objectAtIndex:dcaViewCtr.selectedIndex];
+    }
+    //Condition
+
+    //Lease Term
+    
+    [[NSUserDefaults standardUserDefaults] setValue:value forKey:cell.textLabel.text];
+    
+    [dcaViewCtr.navigationController popViewControllerAnimated:YES];
+    
+    [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+}
+
+
 #pragma mark implement action
 
 - (IBAction)clickedOnInputForm:(id)sender {

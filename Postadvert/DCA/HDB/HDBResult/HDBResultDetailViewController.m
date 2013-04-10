@@ -85,17 +85,25 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (cellData) {
-        return 2;
+        return 3;
+        // 0-Detail Ad  1-contact Ad Owner  2- comments
     }
     return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 1) {
+    if (section == 0) {
+        return 1;
+    }
+    if (section == 01) {
+        return 2;
+    }
+    if (section == 2) {//comments
         return listComments.count;
     }
-    return 2;
+    
+    return 0;
 }
 
 - (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -266,7 +274,7 @@
         UILabel *lease_term_valuation_price = (UILabel*) [cell viewWithTag:5];
         if ([_property_status isEqualToString:@"s"]) {
             index = [cellData.paraNames indexOfObject:@"valuation_price"];
-            value = [NSString stringWithFormat:@"S$ %@ valuation", [cellData.paraValues objectAtIndex:index]];
+            value = [NSString stringWithFormat:@"S$ %@ valn", [cellData.paraValues objectAtIndex:index]];
         }else
         {
             index = [cellData.paraNames indexOfObject:@"lease_term"];
@@ -320,42 +328,74 @@
         index = [cellData.paraNames indexOfObject:@"total_views"];
         value = [cellData.paraValues objectAtIndex:index];
         [total_views setText:[NSString stringWithFormat:@"Total Views: %@", value]];
+        //HDB Type
+        UILabel *HDBType = (UILabel*) [cell viewWithTag:14];
+        index = [cellData.paraNames indexOfObject:@"property_type"];
+        value = [cellData.paraValues objectAtIndex:index];
+        [HDBType setText:value];
         return cell;
         
     }
     
-    if ((indexPath.section == 0) && ( indexPath.row > 0)) {
-        static NSString *CellIdentifier2 = @"HDBResultDetailCell2";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier2];
-        if (cell == nil) {
+    if ((indexPath.section == 1)) {
+        if ( ( indexPath.row == 0) ) {
+            static NSString *CellIdentifier2 = @"HDBResultDetailCell2";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier2];
+            if (cell == nil) {
+                
+                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier2 owner:self options:nil];
+                cell = [topLevelObjects objectAtIndex:0];
+                topLevelObjects = nil;
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                cell.backgroundView = [[UIView alloc] init];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            }
+            NSInteger index;
+            NSString *value;
+            //avartar
+            UIImageView *avatar = (UIImageView*)[cell viewWithTag:3];
+            [avatar setImageWithURL:[NSURL URLWithString:cellData.userInfo.avatarUrl]];
+            // posted user
+            UILabel *user_posted = (UILabel*)[cell viewWithTag:4];
+            [user_posted setText:cellData.userInfo.fullName];
             
-            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier2 owner:self options:nil];
-            cell = [topLevelObjects objectAtIndex:0];
-            topLevelObjects = nil;
-            [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
-            cell.backgroundView = [[UIView alloc] init];
-            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            
+            //ad_owner
+            UILabel *ad_owner = (UILabel*)[cell viewWithTag:5];
+            index = [cellData.paraNames indexOfObject:@"ad_owner"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [ad_owner setText:value];
+            
+            //[self setClapCommentForCell:cell andData:cellData];
+            return cell;
         }
-        NSInteger index;
-        NSString *value;
-        //avartar
-        UIImageView *avatar = (UIImageView*)[cell viewWithTag:3];
-        [avatar setImageWithURL:[NSURL URLWithString:cellData.userInfo.avatarUrl]];
-        // posted user
-        UILabel *user_posted = (UILabel*)[cell viewWithTag:4];
-        [user_posted setText:cellData.userInfo.fullName];
+        if (indexPath.row == 1) {
+            //descritption
+            //HDBResultDetailCell3
+            static NSString *CellIdentifier3 = @"HDBResultDetailCell3";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier3];
+            if (cell == nil) {
+                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier3 owner:self options:nil];
+                cell = [topLevelObjects objectAtIndex:0];
+                topLevelObjects = nil;
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                cell.backgroundView = [[UIView alloc] init];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            }
+            
+            NSInteger index;
+            NSString *value;
+            index = [cellData.paraNames indexOfObject:@"description"];
+            value = [cellData.paraValues objectAtIndex:index];
+            value = [NSData stringDecodeFromBase64String:value];
+            UILabel *description = (UILabel*)[cell viewWithTag:2];
+            [description setText:value];
+            
+            return cell;
+        }
         
-        
-        //ad_owner
-        UILabel *ad_owner = (UILabel*)[cell viewWithTag:5];
-        index = [cellData.paraNames indexOfObject:@"ad_owner"];
-        value = [cellData.paraValues objectAtIndex:index];
-        [ad_owner setText:value];
-        
-        //[self setClapCommentForCell:cell andData:cellData];
-        return cell;
     }
-    if (indexPath.section == 1) {
+    if (indexPath.section == 2) {
         static NSString *CellIdentifier = @"UICommentCell";
         
         UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -402,10 +442,22 @@
 {
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            return 183;
+            return 201;
         }
-        if (indexPath.row == 1) {
+    }
+    if (indexPath.section == 01) {
+        if (indexPath.row == 0) {
             return 120;
+        }
+        if (indexPath.row == 1) {//description
+            NSInteger index;
+            NSString *value;
+            index = [cellData.paraNames indexOfObject:@"description"];
+            value = [cellData.paraValues objectAtIndex:index];
+            value = [NSData stringDecodeFromBase64String:value];
+            CGSize constraint = CGSizeMake(320 - 26, 20000.0f);
+            CGSize size = [value sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE_SMALL] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+            return size.height + 25;
         }
     }
     //commment size
@@ -624,7 +676,7 @@
 - (IBAction)commentBtnClicked:(id)sender {
     @try {
         if (listComments.count) {
-            [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count - 1 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+            [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count - 1 inSection:2] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         }
         [self performSelectorInBackground:@selector(loadCommentsInBackground) withObject:nil];
     }

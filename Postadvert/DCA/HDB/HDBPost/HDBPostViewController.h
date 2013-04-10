@@ -18,6 +18,7 @@
     NSIndexPath *currentIndexPath;
     UIView *activeForm;
     OptionTableHDBPostViewController *optionTableViewCtr;
+    NSDictionary *staticData;
 }
 @property (weak, nonatomic) IBOutlet UILabel *inputTitle;
 - (IBAction)clickedOnInputForm:(id)sender;

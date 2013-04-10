@@ -235,6 +235,8 @@
             moreOptions = [dict objectForKey:@"More Options"];
             sortByData = [dict objectForKey:@"Sort By"];
             sortByDataV2 = [dict objectForKey:@"Sort By V2"];
+            sortByDataV3 = [dict objectForKey:@"Sort By V3"];
+            
             filters = [dict objectForKey:@"Filters"];
             
             //load
@@ -254,6 +256,7 @@
             moreOptions = [dict objectForKey:@"More Options"];
             sortByData = [dict objectForKey:@"Sort By"];
             sortByDataV2 = [dict objectForKey:@"Sort By V2"];
+            sortByDataV3 = [dict objectForKey:@"Sort By V3"];
             filters = [dict objectForKey:@"Filters"];
             
             //load
@@ -298,6 +301,7 @@
             moreOptions = [dict objectForKey:@"More Options"];
             sortByData = [dict objectForKey:@"Sort By"];
             sortByDataV2 = [dict objectForKey:@"Sort By V2"];
+            sortByDataV3 = [dict objectForKey:@"Sort By V3"];
             filters = [dict objectForKey:@"Filters"];
             
             //load
@@ -311,6 +315,7 @@
             moreOptions = [dict objectForKey:@"More Options"];
             sortByData = [dict objectForKey:@"Sort By"];
             sortByDataV2 = [dict objectForKey:@"Sort By V2"];
+            sortByDataV3 = [dict objectForKey:@"Sort By V3"];
             filters = [dict objectForKey:@"Filters"];
             
             //load
@@ -431,7 +436,17 @@
         }
     }
     // Sort by
+    if ([sortByValue isEqualToString:@"Any"]) {
+        [[NSUserDefaults standardUserDefaults] setValue:@"Any" forKey:@"Sort By V3"];
+    }else
+    {
+        NSInteger index = [sortByData indexOfObject:sortByValue];
+        NSString *value = [sortByDataV3 objectAtIndex:index];
+        [[NSUserDefaults standardUserDefaults] setValue:value forKey:@"Sort By V3"];
+    }
+    
     [[NSUserDefaults standardUserDefaults] setValue:sortByValue forKey:@"Sort By"];
+    
     
 }
 - (void) loadValues
@@ -1402,7 +1417,7 @@
     
     //if (internalItemID == 1 || internalItemID == 101) {
     if (indexPath.section == 0) {
-        if ([cell.textLabel.text isEqualToString:@"Price"] || [cell.textLabel.text isEqualToString:@"Monthly Rental"] || [cell.textLabel.text isEqualToString:@"Size"] || [cell.textLabel.text isEqualToString:@"Bedrooms"] || [cell.textLabel.text isEqualToString:@"Val'n Price"] || [cell.textLabel.text isEqualToString:@"Washrooms"] || [cell.textLabel.text isEqualToString:@"Constructed"] || [cell.textLabel.text isEqualToString:@"PSF"]) {
+        if ([cell.textLabel.text isEqualToString:@"Price"] || [cell.textLabel.text isEqualToString:@"Monthly Rental"] || [cell.textLabel.text isEqualToString:@"Size"] || [cell.textLabel.text isEqualToString:@"Bedrooms"] || [cell.textLabel.text isEqualToString:@"Val'n Price"] || [cell.textLabel.text isEqualToString:@"Washrooms"] || [cell.textLabel.text isEqualToString:@"Constructed"] || [cell.textLabel.text isEqualToString:@"PSF"] || [cell.textLabel.text isEqualToString:@"Lease Term"]) {
             NSString *value = [mainFilesValues objectAtIndex:indexPath.row];
             value = [value stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
             NSArray *array = [value componentsSeparatedByString:@" to "];
@@ -1446,10 +1461,15 @@
                 listValues = [staticData objectForKey:@"Constructed"];
                 sourceType = pickerTypeConstructed;
             }
-            //{SF
+            //PSF
             if ([cell.textLabel.text isEqualToString:@"PSF"]) {
                 listValues = [staticData objectForKey:@"PSF"];
                 sourceType = pickerTypePSF;
+            }
+            //Lease Term
+            if ([cell.textLabel.text isEqualToString:@"Lease Term"]) {
+                listValues = [staticData objectForKey:@"LeaseTerm"];
+                sourceType = pickerTypeLeaseTerm;
             }
             if (array.count == 1) {
                 array = [value componentsSeparatedByString:@" and "];
@@ -1540,23 +1560,23 @@
     }
     
     // Lease Term
-    if ([cell.textLabel.text isEqualToString:@"Lease Term"]) {
+//    if ([cell.textLabel.text isEqualToString:@"Lease Term"]) {
 //        NSArray *hdbTypeData = [staticData objectForKey:@"LeaseTerm"];
 //        NSInteger selectedIndex = -1;
 //        NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
 //        if (![hdbType isEqualToString:@"Any"]) {
 //            selectedIndex = [hdbTypeData indexOfObject:hdbType];
 //        }
-//        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionLeaseTerm selectedIndex:selectedIndex];
-//        dcaOptionViewCtr.delegate = self;
-//        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
-        
-        picker = [[DCAPickerViewController alloc]initWithSourceType:pickerTypeLeaseTerm];
-        picker.delegate = self;
-        [self presentSemiModalViewController:picker];
-
-        return;
-    }
+////        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionLeaseTerm selectedIndex:selectedIndex];
+////        dcaOptionViewCtr.delegate = self;
+////        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+//        
+//        picker = [[DCAPickerViewController alloc]initWithSourceType:pickerTypeLeaseTerm];
+//        picker.delegate = self;
+//        [self presentSemiModalViewController:picker];
+//
+//        return;
+//    }
     
     //Reset
     if ([cell.textLabel.text isEqualToString:@"Reset"]) {
@@ -1581,7 +1601,7 @@
 
 - (void) didPickerCloseWithControll:(DCAPickerViewController *)ctr
 {
-    if (ctr.sourceType == pickerTypePrice || ctr.sourceType == pickerTypeBedrooms || ctr.sourceType == pickerTypeSize || ctr.sourceType == pickerTypeValnSize || ctr.sourceType == pickerTypeWashrooms || ctr.sourceType == pickerTypeConstructed || ctr.sourceType == pickerTypePSF) {
+    if (ctr.sourceType == pickerTypePrice || ctr.sourceType == pickerTypeBedrooms || ctr.sourceType == pickerTypeSize || ctr.sourceType == pickerTypeValnSize || ctr.sourceType == pickerTypeWashrooms || ctr.sourceType == pickerTypeConstructed || ctr.sourceType == pickerTypePSF || ctr.sourceType == pickerTypeLeaseTerm) {
         NSString *vl1, *vl2, *value;
         if (ctr.strartIndex == 0) {
             if (ctr.endIndex == ctr.intSource.count) {
@@ -1641,6 +1661,8 @@
             case pickerTypePSF:
                 index = [mainFiles indexOfObject:@"PSF"];
                 break;
+            case pickerTypeLeaseTerm:
+                index = [mainFiles indexOfObject:@"Lease Term"];
             default:
                 break;
         }

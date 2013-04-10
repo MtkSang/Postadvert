@@ -22,6 +22,7 @@
     NSString *keyWorlds;
     NSMutableArray *sortByData;
     NSMutableArray *sortByDataV2;
+    NSMutableArray *sortByDataV3;
     NSString *sortByValue;
     NSMutableArray *filters;
     NSInteger internalItemID;

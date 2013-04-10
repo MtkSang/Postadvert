@@ -131,6 +131,8 @@
         case DCAOptionCondition:
             return @"Condition";
             break;
+        case DCAOptionOthersFeatures:
+            return @"Others Features";
         default:
             return @"";
             break;

@@ -27,7 +27,6 @@
     MBProgressHUD *loadingHideView;
     BOOL isLoadData;
 }
-- (IBAction) refresh;
 @property (strong, nonatomic) IBOutlet PullRefreshTableViewController *pullTableViewCtrl;
 @property (weak, nonatomic) IBOutlet UILabel *lbTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lbNumFound;

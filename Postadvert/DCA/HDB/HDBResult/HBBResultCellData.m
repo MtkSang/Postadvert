@@ -19,6 +19,7 @@
                           @"block_no",
                           @"street_name",
                           @"property_type",
+                          @"description",
                           @"unit_level",
                           @"hdb_estate",
                           @"size",

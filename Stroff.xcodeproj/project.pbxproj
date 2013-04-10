@@ -55,6 +55,7 @@
 		D45389F616785AA100BC5612 /* UINewStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D45389F416785AA100BC5612 /* UINewStatusViewController.xib */; };
 		D4541A8816AF8B4A008E720E /* DCAPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4541A8616AF8B4A008E720E /* DCAPickerViewController.m */; };
 		D4541A8916AF8B4A008E720E /* DCAPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4541A8716AF8B4A008E720E /* DCAPickerViewController.xib */; };
+		D455E41B171518EB004F5EDD /* HDBResultDetailCell3.xib in Resources */ = {isa = PBXBuildFile; fileRef = D455E41A171518EB004F5EDD /* HDBResultDetailCell3.xib */; };
 		D45BC8C3164A38E9008D3CBA /* UICommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D45BC8C2164A38E9008D3CBA /* UICommentCell.xib */; };
 		D45EE37E16C3940E0092E6BF /* HBBResultCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = D45EE37D16C3940E0092E6BF /* HBBResultCellData.m */; };
 		D4679141171267F800D75C76 /* leftPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D467913D171267F700D75C76 /* leftPressed@2x.png */; };
@@ -686,6 +687,7 @@
 		D4541A8516AF8B4A008E720E /* DCAPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCAPickerViewController.h; sourceTree = "<group>"; };
 		D4541A8616AF8B4A008E720E /* DCAPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCAPickerViewController.m; sourceTree = "<group>"; };
 		D4541A8716AF8B4A008E720E /* DCAPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DCAPickerViewController.xib; sourceTree = "<group>"; };
+		D455E41A171518EB004F5EDD /* HDBResultDetailCell3.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HDBResultDetailCell3.xib; sourceTree = "<group>"; };
 		D45BC8C2164A38E9008D3CBA /* UICommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICommentCell.xib; sourceTree = "<group>"; };
 		D45EE37C16C3940E0092E6BF /* HBBResultCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBBResultCellData.h; sourceTree = "<group>"; };
 		D45EE37D16C3940E0092E6BF /* HBBResultCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HBBResultCellData.m; sourceTree = "<group>"; };
@@ -1464,6 +1466,7 @@
 				D47B7A7E16E722BF009C9337 /* HDBResultDetailCell1.xib */,
 				D424DC4B16C0EAFC00804879 /* HDBListResultCell2.xib */,
 				D4A1B1FC16E898A80095F1E0 /* HDBResultDetailCell2.xib */,
+				D455E41A171518EB004F5EDD /* HDBResultDetailCell3.xib */,
 				D45EE37C16C3940E0092E6BF /* HBBResultCellData.h */,
 				D45EE37D16C3940E0092E6BF /* HBBResultCellData.m */,
 			);
@@ -3286,6 +3289,7 @@
 				D4679143171267F800D75C76 /* rightPressed@2x.png in Resources */,
 				D4679144171267F800D75C76 /* rightUnPress@2x.png in Resources */,
 				D467914E1712BEC400D75C76 /* OptionTableHDBPostViewController.xib in Resources */,
+				D455E41B171518EB004F5EDD /* HDBResultDetailCell3.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

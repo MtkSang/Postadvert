@@ -40,7 +40,7 @@
     UIImage *image = [UIImage imageNamed:@"titleHDB.png"];
     image = [image resizedImage:self.lbTitle.frame.size interpolationQuality:0];
     [self.lbTitle setBackgroundColor:[UIColor colorWithPatternImage:image]];
-    [self.lbNumFound setText:@"   0 propertie found"];
+    [self.lbNumFound setText:@"   No properties found"];
     [self.lbNumFound setBackgroundColor:[UIColor colorWithRed:90.0/255 green:85.0/255 blue:73.0/255 alpha:1]];
     [self.lbNumFound setTextColor:[UIColor whiteColor]];
     resultType = @"For Sale";
@@ -91,6 +91,10 @@
         //the first time
         hud = [[MBProgressHUD alloc]initWithView:self.view];
         [self.view addSubview:hud];
+        NSUserDefaults *database = [NSUserDefaults standardUserDefaults];
+        NSString *start = [NSString stringWithFormat:@"%d", 0];
+        [database setValue:start forKey:@"start"];
+        [database setValue:@"up" forKey:@"scroll"];
         [hud showWhileExecuting:@selector(loadDataInBackground) onTarget:self withObject:nil animated:YES];
         
     }
@@ -183,7 +187,7 @@
         UILabel *lease_term_valuation_price = (UILabel*) [cell viewWithTag:5];
         if ([property_status isEqualToString:@"s"]) {
             index = [cellData.paraNames indexOfObject:@"valuation_price"];
-            value = [NSString stringWithFormat:@"S$ %@ valuation", [cellData.paraValues objectAtIndex:index]];
+            value = [NSString stringWithFormat:@"S$ %@ valn", [cellData.paraValues objectAtIndex:index]];
         }else
         {
             index = [cellData.paraNames indexOfObject:@"lease_term"];
@@ -232,7 +236,11 @@
         index = [cellData.paraNames indexOfObject:@"washroom"];
         value = [cellData.paraValues objectAtIndex:index];
         [washroom setText:value];
-
+        //HDB Type
+        UILabel *HDBType = (UILabel*) [cell viewWithTag:14];
+        index = [cellData.paraNames indexOfObject:@"property_type"];
+        value = [cellData.paraValues objectAtIndex:index];
+        [HDBType setText:value];
         return cell;
         
     }
@@ -282,7 +290,7 @@
 - (float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
-        return 141;
+        return 159;
     }
     if (indexPath.row == 1) {
         return 82;
@@ -367,7 +375,10 @@
     }
     else
     {
-            [self.lbNumFound setText:[NSString stringWithFormat:@"   %d propertie found", numFound]];
+        if (numFound == 1) {
+            [self.lbNumFound setText:[NSString stringWithFormat:@"   1 properties found"]];
+        }else
+            [self.lbNumFound setText:[NSString stringWithFormat:@"   No properties found"]];
     }
 
 }
@@ -473,9 +484,14 @@
         [paraValues addObject:@"0"];
     }else
     {
-#warning waiting for wb
-        [paraValues addObject:@"0"];
-        [paraValues addObject:@"0"];
+        value = [mainFilesValues objectAtIndex:index];
+        from_to = [value componentsSeparatedByString:@"____"];
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
     }
     
     //lease_term_to
@@ -523,7 +539,9 @@
     //user_id
     [paraValues addObject:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID]];
     //sort_type
-    [paraValues addObject:sortByValue];
+    value = [[NSUserDefaults standardUserDefaults] objectForKey:@"Sort By V3"];
+
+    [paraValues addObject:value];
     //start
     value = [[NSUserDefaults standardUserDefaults] objectForKey:@"start"];
     [paraValues addObject:value];
@@ -531,6 +549,7 @@
     value = [[NSUserDefaults standardUserDefaults] objectForKey:@"scroll"];
     [paraValues addObject:value];
     //is_save
+    //value = [[NSUserDefaults standardUserDefaults] objectForKey:@"is_save"];
     value = @"0";
     [paraValues addObject:value];
 
@@ -545,7 +564,6 @@
         }
     }
     data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
-    
     for (NSDictionary *dict in data) {
         if (![dict isKindOfClass:[NSDictionary class]]) {
             continue;
@@ -687,7 +705,7 @@
 //        }
         
         {
-            if ([key isEqualToString:@"Price"] || [key isEqualToString:@"Monthly Rental"] || [key isEqualToString:@"Size"] || [key isEqualToString:@"Bedrooms"] || [key isEqualToString:@"Val'n Price"] || [key isEqualToString:@"Washrooms"] || [key isEqualToString:@"Constructed"] || [key isEqualToString:@"PSF"]) {
+            if ([key isEqualToString:@"Price"] || [key isEqualToString:@"Monthly Rental"] || [key isEqualToString:@"Size"] || [key isEqualToString:@"Bedrooms"] || [key isEqualToString:@"Val'n Price"] || [key isEqualToString:@"Washrooms"] || [key isEqualToString:@"Constructed"] || [key isEqualToString:@"PSF"] || [key isEqualToString:@"Lease Term"]) {
                 NSString *value = [mainFilesValues objectAtIndex:i];
                 value = [value stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
                 NSArray *array = [value componentsSeparatedByString:@" to "];
@@ -736,6 +754,11 @@
                     listValues = [staticData objectForKey:@"PSF"];
                     sourceType = pickerTypePSF;
                 }
+                //Lease Term
+                if ([key isEqualToString:@"Lease Term"]) {
+                    listValues = [staticData objectForKey:@"LeaseTerm"];
+                    sourceType = pickerTypeLeaseTerm;
+                }
                 if (array.count == 1) {
                     array = [value componentsSeparatedByString:@" and "];
                     if (array.count == 1) {
@@ -778,6 +801,34 @@
                     startValue = [values objectAtIndex:0];
                     values = [endValue componentsSeparatedByString:@" ("];
                     endValue = [values objectAtIndex:0];
+                }
+                
+                if (sourceType == pickerTypeLeaseTerm) {
+                    NSRange rang = [startValue rangeOfString:@"Year"];
+                    if (rang.length) {
+                        startValue = [startValue substringToIndex:rang.location - 1];
+                        NSInteger yearNum = [startValue integerValue];
+                        startValue = [NSString stringWithFormat:@"%d", yearNum * 12];
+                    }else
+                        {
+                            if ([startValue isEqualToString:@"Any"]) {
+                                
+                            }else
+                                startValue = [startValue substringToIndex:[startValue rangeOfString:@"Month"].location];
+                        }
+                    rang = [endValue rangeOfString:@"Year"];
+                    if (rang.length) {
+                        endValue = [endValue substringToIndex:rang.location - 1];
+                        NSInteger yearNum = [endValue integerValue];
+                        endValue = [NSString stringWithFormat:@"%d", yearNum * 12];
+                    }else
+                    {
+                        if ([endValue isEqualToString:@"Any"]) {
+                            
+                        }else
+                            endValue = [endValue substringToIndex:[endValue rangeOfString:@"Month"].location];
+                    }
+
                 }
                 
                 NSArray *needToDeletes = [NSArray arrayWithObjects:@" sqft", @" Bedrooms", @" Bedroom", @" Washrooms", @" Washroom", @"S$", nil];

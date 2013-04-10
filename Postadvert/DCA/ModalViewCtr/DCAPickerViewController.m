@@ -27,7 +27,7 @@
     self = [super init];
     if (self) {
         self.sourceType = sourceType_;
-        if (sourceType_ == pickerTypePrice || sourceType_ == pickerTypeBedrooms || sourceType_ == pickerTypeSize || sourceType_ == pickerTypeValnSize || sourceType_ == pickerTypeWashrooms || sourceType_ == pickerTypeConstructed || sourceType_ == pickerTypePSF) {
+        if (sourceType_ == pickerTypePrice || sourceType_ == pickerTypeBedrooms || sourceType_ == pickerTypeSize || sourceType_ == pickerTypeValnSize || sourceType_ == pickerTypeWashrooms || sourceType_ == pickerTypeConstructed || sourceType_ == pickerTypePSF || sourceType_ == pickerTypeLeaseTerm) {
             _intSource = [NSArray arrayWithArray:array];
         }
         start += 1;
@@ -93,6 +93,7 @@
     
     [self.picker selectRow:self.strartIndex inComponent:0 animated:NO];
     [self.picker selectRow:self.endIndex inComponent:2 animated:NO];
+    self.picker.showsSelectionIndicator = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -148,7 +149,7 @@
             return 3;
             break;
         case pickerTypeLeaseTerm:
-            return 5;
+            return 3;
             break;
         default:
             break;
@@ -170,20 +171,21 @@
         case pickerTypeSize:
         case pickerTypeBedrooms:
         case pickerTypePrice:
+        case pickerTypeLeaseTerm:
             if (component == 0 || component == 2) {
                 return _intSource.count + 1;
             }
             
             return 1;
             break;
-        case pickerTypeLeaseTerm:
-            if (component == 0 || component == 3) {
-                return 10;
-            }
-            if (component == 1 || component == 4) {
-                return 12;
-            }
-            return 1;
+//        case pickerTypeLeaseTerm:
+//            if (component == 0 || component == 3) {
+//                return 10;
+//            }
+//            if (component == 1 || component == 4) {
+//                return 12;
+//            }
+//            return 1;
         default:
             break;
     }
@@ -202,16 +204,17 @@
         case pickerTypeSize:
         case pickerTypeBedrooms:
         case pickerTypePrice:
+        case pickerTypeLeaseTerm:
             if (component == 1) {
                 return 30;
             }
-            return (pickerView.frame.size.width - 30) / 2.0;
+            return (pickerView.frame.size.width - 40) / 2.0;
             break;
-        case pickerTypeLeaseTerm:
-            if (component == 2) {
-                return 30;
-            }
-            return (pickerView.frame.size.width - 30) / 4.0;
+//        case pickerTypeLeaseTerm:
+//            if (component == 2) {
+//                return 30;
+//            }
+//            return (pickerView.frame.size.width - 30) / 4.0;
             
         default:
             break;
@@ -222,60 +225,60 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     NSInteger otherSelectedRow = 0;
-    if (self.sourceType == pickerTypeLeaseTerm) {
-        if (component == 0 || component == 3) {
-            if (component == 0) {
-                otherSelectedRow = [pickerView selectedRowInComponent:3];
-            }
-            if (component == 3) {
-                otherSelectedRow = [pickerView selectedRowInComponent:0];
-            }
-            switch (component) {
-                case 0:
-                    self.strartIndex = row;
-                    if (row > otherSelectedRow ) {
-                        [pickerView selectRow:row inComponent:3 animated:YES];
-                        self.endIndex = row;
-                    }else
-                        self.endIndex = otherSelectedRow;
-                    
-                    
-                    break;
-                case 1:
-                    
-                    break;
-                    
-                case 2:
-                    self.strartIndex = otherSelectedRow;
-                    if (otherSelectedRow >  row ) {
-                        [pickerView selectRow:otherSelectedRow inComponent:3 animated:YES];
-                        self.endIndex = otherSelectedRow ;
-                    }else
-                        self.endIndex = row;
-                    
-                    
-                    break;
-                    
-                default:
-                    break;
-            }
-        }
-        if (component == 1 || component == 4) {
-            NSInteger selectedYear1, selectedYear2;
-            selectedYear1 = [pickerView selectedRowInComponent:0];
-            selectedYear2 = [pickerView selectedRowInComponent:3];
-            if (selectedYear1 == selectedYear2) {
-                if ((row > otherSelectedRow) && component == 1) {
-                    [pickerView selectRow:row inComponent:4 animated:YES];
-                }
-                if ((row < otherSelectedRow) && component == 4) {
-                    [pickerView selectRow:otherSelectedRow inComponent:4 animated:YES];
-                }
-            }
-        }
-        
-    }
-    else
+//    if (self.sourceType == pickerTypeLeaseTerm) {
+//        if (component == 0 || component == 3) {
+//            if (component == 0) {
+//                otherSelectedRow = [pickerView selectedRowInComponent:3];
+//            }
+//            if (component == 3) {
+//                otherSelectedRow = [pickerView selectedRowInComponent:0];
+//            }
+//            switch (component) {
+//                case 0:
+//                    self.strartIndex = row;
+//                    if (row > otherSelectedRow ) {
+//                        [pickerView selectRow:row inComponent:3 animated:YES];
+//                        self.endIndex = row;
+//                    }else
+//                        self.endIndex = otherSelectedRow;
+//                    
+//                    
+//                    break;
+//                case 1:
+//                    
+//                    break;
+//                    
+//                case 2:
+//                    self.strartIndex = otherSelectedRow;
+//                    if (otherSelectedRow >  row ) {
+//                        [pickerView selectRow:otherSelectedRow inComponent:3 animated:YES];
+//                        self.endIndex = otherSelectedRow ;
+//                    }else
+//                        self.endIndex = row;
+//                    
+//                    
+//                    break;
+//                    
+//                default:
+//                    break;
+//            }
+//        }
+//        if (component == 1 || component == 4) {
+//            NSInteger selectedYear1, selectedYear2;
+//            selectedYear1 = [pickerView selectedRowInComponent:0];
+//            selectedYear2 = [pickerView selectedRowInComponent:3];
+//            if (selectedYear1 == selectedYear2) {
+//                if ((row > otherSelectedRow) && component == 1) {
+//                    [pickerView selectRow:row inComponent:4 animated:YES];
+//                }
+//                if ((row < otherSelectedRow) && component == 4) {
+//                    [pickerView selectRow:otherSelectedRow inComponent:4 animated:YES];
+//                }
+//            }
+//        }
+//        
+//    }
+ //   else
     {
         if (component == 0) {
             otherSelectedRow = [pickerView selectedRowInComponent:2];
@@ -358,10 +361,10 @@
         if (_sourceType == pickerTypeSize || _sourceType == pickerTypeValnSize)  {
             retval.font = [UIFont fontWithName:FONT_NAME size:FONT_SIZE_SMALL];
         }
-        retval.minimumFontSize = FONT_SIZE_SMALL;
+        retval.minimumFontSize = FONT_SIZE_SMALL - 2;
         retval.backgroundColor = [UIColor clearColor];
     }
-    
+    [retval setTextColor:[UIColor blackColor]];
     //retval.font = [UIFont fontWithName:FONT_NAME size:FONT_SIZE_SMALL];
     //set Title
     NSString *title;
@@ -374,6 +377,7 @@
         case pickerTypeSize:
         case pickerTypeBedrooms:
         case pickerTypePrice:
+        case pickerTypeLeaseTerm:
             if (component == 1) {
                 title = @"to";
                 [retval sizeToFit];
@@ -388,23 +392,24 @@
             
             if (index < 0 || index >= _intSource.count) {
                 title = @"Any";
+                [retval setTextColor:[UIColor blueColor]];
             }else
                 title = [_intSource objectAtIndex:index];
             break;
-        case pickerTypeLeaseTerm:
-            if (component == 2) {
-                title = @"to";
-                [retval sizeToFit];
-                retval.textAlignment = UITextAlignmentCenter;
-                break;
-            }
-            retval.textAlignment = UITextAlignmentLeft;
-            if (row - 1 <0) {
-                title = @"Any";
-            }else
-                title = [NSString stringWithFormat:@"%d", row -1];
-            break;
-            
+//        case pickerTypeLeaseTerm:
+//            if (component == 2) {
+//                title = @"to";
+//                [retval sizeToFit];
+//                retval.textAlignment = UITextAlignmentCenter;
+//                break;
+//            }
+//            retval.textAlignment = UITextAlignmentLeft;
+//            if (row - 1 <0) {
+//                title = @"Any";
+//            }else
+//                title = [NSString stringWithFormat:@"%d", row -1];
+//            break;
+//            
         default:
             title =@"";
             break;
