@@ -12,6 +12,7 @@
 #import "UIPlaceHolderTextView.h"
 #import "OptionTableHDBPostViewController.h"
 #import "DCAOptionsViewController.h"
+#import "InsertPictureViewController.h"
 
 @interface HDBPostViewController ()
 
@@ -242,8 +243,8 @@
         }
         cell.detailTextLabel.text = detailText;
         [cell.detailTextLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
-        if (indexPath.row == array.count - 1 || indexPath.row < 6) {
-            if ([cell.detailTextLabel.text isEqualToString:@"Any"] || [cell.detailTextLabel.text isEqualToString:@"Select One"]) {
+        //if (indexPath.row == array.count - 1 || indexPath.row < 6) {
+            if ([cell.detailTextLabel.text isEqualToString:@"0"] || [cell.detailTextLabel.text isEqualToString:@"Select One"] || [cell.detailTextLabel.text isEqualToString:@""]) {
                 UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
                 if (accessoryView) {
                     accessoryView.image = [UIImage imageNamed:@"accessoryView.png"];
@@ -262,10 +263,10 @@
                     [cell bringSubviewToFront:accessoryView];
                 }
             }
-        }else
-        {
-            
-        }
+//        }else
+//        {
+//            
+//        }
     }
     //Address of Property
     if ([headerStr isEqualToString:@"Address of Property"]) {
@@ -299,7 +300,25 @@
         }
         cell.detailTextLabel.text = detailText;
         [cell.detailTextLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
-        
+        if ([cell.detailTextLabel.text isEqualToString:@"0"] || [cell.detailTextLabel.text isEqualToString:@"Select One"] || [cell.detailTextLabel.text isEqualToString:@""]) {
+            UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+            if (accessoryView) {
+                accessoryView.image = [UIImage imageNamed:@"accessoryView.png"];
+                accessoryView.highlightedImage = [UIImage imageNamed:@"accessoryView.png"];
+                [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+            }
+            //cell.detailTextLabel.text = @"Any";
+        }
+        else
+        {
+            UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+            if (accessoryView) {
+                accessoryView.image = [UIImage imageNamed:@"eraseIcon.png"];
+                accessoryView.highlightedImage = [UIImage imageNamed:@"eraseIcon.png"];
+                [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+                [cell bringSubviewToFront:accessoryView];
+            }
+        }
     }
     //Description of Property
     if ([headerStr isEqualToString:@"Description of Property"]) {
@@ -307,7 +326,7 @@
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier3];
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier3];
-            [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
+            [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
             [cell.textLabel setTextColor:[UIColor blackColor]];
             [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
             [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
@@ -330,8 +349,27 @@
             detailText = @"";
         }
         cell.textLabel.text = detailText;
-        [cell.textLabel setNumberOfLines:2];
+        [cell.textLabel setNumberOfLines:15];
         [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
+        
+        if ([cell.textLabel.text isEqualToString:@""]) {
+            UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+            if (accessoryView) {
+                accessoryView.image = [UIImage imageNamed:@"accessoryView.png"];
+                accessoryView.highlightedImage = [UIImage imageNamed:@"accessoryView.png"];
+                [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+            }
+        }
+        else
+        {
+            UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+            if (accessoryView) {
+                accessoryView.image = [UIImage imageNamed:@"eraseIcon.png"];
+                accessoryView.highlightedImage = [UIImage imageNamed:@"eraseIcon.png"];
+                [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+                [cell bringSubviewToFront:accessoryView];
+            }
+        }
         
     }
     //Pictures, URLs & Videos
@@ -366,6 +404,25 @@
         }
         cell.detailTextLabel.text = detailText;
         [cell.detailTextLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
+        if ([cell.detailTextLabel.text isEqualToString:@"0"] || [cell.detailTextLabel.text isEqualToString:@"Select One"] || [cell.detailTextLabel.text isEqualToString:@""]) {
+            UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+            if (accessoryView) {
+                accessoryView.image = [UIImage imageNamed:@"accessoryView.png"];
+                accessoryView.highlightedImage = [UIImage imageNamed:@"accessoryView.png"];
+                [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+            }
+            //cell.detailTextLabel.text = @"Any";
+        }
+        else
+        {
+            UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+            if (accessoryView) {
+                accessoryView.image = [UIImage imageNamed:@"eraseIcon.png"];
+                accessoryView.highlightedImage = [UIImage imageNamed:@"eraseIcon.png"];
+                [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+                [cell bringSubviewToFront:accessoryView];
+            }
+        }
         
     }
     //Special Features
@@ -403,29 +460,23 @@
         }
         cell.detailTextLabel.text = detailText;
         [cell.detailTextLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
-        if (indexPath.row == array.count - 1) {
-            if ([cell.detailTextLabel.text isEqualToString:@"Others Features"] || [cell.detailTextLabel.text isEqualToString:@"Select One"]) {
-                UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
-                if (accessoryView) {
-                    accessoryView.image = [UIImage imageNamed:@"accessoryView.png"];
-                    accessoryView.highlightedImage = [UIImage imageNamed:@"accessoryView.png"];
-                    [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
-                }
-                //cell.detailTextLabel.text = @"Any";
+        if ([cell.detailTextLabel.text isEqualToString:@"Others Features"] || [cell.detailTextLabel.text isEqualToString:@"Select One"] || [cell.detailTextLabel.text isEqualToString:@""]) {
+            UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+            if (accessoryView) {
+                accessoryView.image = [UIImage imageNamed:@"accessoryView.png"];
+                accessoryView.highlightedImage = [UIImage imageNamed:@"accessoryView.png"];
+                [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
             }
-            else
-            {
-                UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
-                if (accessoryView) {
-                    accessoryView.image = [UIImage imageNamed:@"eraseIcon.png"];
-                    accessoryView.highlightedImage = [UIImage imageNamed:@"eraseIcon.png"];
-                    [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
-                    [cell bringSubviewToFront:accessoryView];
-                }
-            }
-        }else
+        }
+        else
         {
-            
+            UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+            if (accessoryView) {
+                accessoryView.image = [UIImage imageNamed:@"eraseIcon.png"];
+                accessoryView.highlightedImage = [UIImage imageNamed:@"eraseIcon.png"];
+                [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+                [cell bringSubviewToFront:accessoryView];
+            }
         }
     }
     //Home Interior
@@ -458,10 +509,106 @@
     }
     return cell;
 }
+- (float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section < allKeys.count) {
+        NSString *headerStr = [allKeys objectAtIndex:indexPath.section];
+        NSRange rang = [headerStr rangeOfString:@"Description"];
+        if (rang.length) {
+            NSString *text = [[NSUserDefaults standardUserDefaults]objectForKey:headerStr];
+            CGSize constraint, size;
+            if (text.length) {
+                constraint = CGSizeMake(237.f, 300.f);
+                size = [text sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+                if (size.height < cCellHeight) {
+                    size.height = cCellHeight;
+                }
+            }else
+                size.height = 2.0 * cCellHeight;
+            return size.height + 5;
+        }
+    }
+    return cCellHeight;
+}
 
 #pragma mark - Table view delegate
 - (void) accessoryClicked:(UITapGestureRecognizer*) tapGesture_
 {
+    NSIndexPath *indexPath;
+    UIView *view = tapGesture_.view;
+    UITableViewCell *cell = (UITableViewCell*) view.superview;
+    if ([cell isKindOfClass:[UITableViewCell class]]) {
+        indexPath = [self.tableView indexPathForCell:cell];
+    }
+    NSString *headerStr = [allKeys objectAtIndex:indexPath.section];
+    NSArray *array = [sourceData objectForKey:headerStr];
+    NSRange rang = [headerStr rangeOfString:@"Description"];
+    if (rang.length) {
+        UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+        if (![cell.textLabel.text isEqualToString:@""] ) {
+            if (accessoryView) {
+                accessoryView.image = [UIImage imageNamed:@"accessoryView.png"];
+                accessoryView.highlightedImage = [UIImage imageNamed:@"accessoryView.png"];
+                CGRect frame = accessoryView.frame;
+                frame.size = CGSizeMake(30, 30);
+                [accessoryView setFrame:frame];
+            }
+            cell.textLabel.text = @"";
+            [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:headerStr];
+            return;
+        }else
+        {
+            [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
+        }
+    }
+    //
+    
+    UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+    if (![cell.detailTextLabel.text isEqualToString:@"Others Features"] && ![cell.detailTextLabel.text isEqualToString:@"Select One"] && ![cell.detailTextLabel.text isEqualToString:@""] ) {
+        if (accessoryView) {
+            accessoryView.image = [UIImage imageNamed:@"accessoryView.png"];
+            accessoryView.highlightedImage = [UIImage imageNamed:@"accessoryView.png"];
+            CGRect frame = accessoryView.frame;
+            frame.size = CGSizeMake(30, 30);
+            [accessoryView setFrame:frame];
+        }
+        //Property detail
+        rang = [headerStr rangeOfString:@"Details"];
+        if (rang.length) {
+            if (indexPath.row == array.count - 1 || indexPath.row < 6) {
+                cell.detailTextLabel.text = @"Select One";
+            }else
+                cell.detailTextLabel.text = @"";//Value for Price ,...
+            [[NSUserDefaults standardUserDefaults]setValue:cell.detailTextLabel.text forKey:cell.textLabel.text];
+        }
+        // Address of Property
+        rang = [headerStr rangeOfString:@"Address"];
+        if (rang.length) {
+            cell.detailTextLabel.text = @"";
+            [[NSUserDefaults standardUserDefaults]setValue:cell.detailTextLabel.text forKey:cell.textLabel.text];
+        }
+        
+        //Picture, URL
+        rang = [headerStr rangeOfString:@"Pictures"];
+        if (rang.length) {
+            cell.detailTextLabel.text = @"";
+            [[NSUserDefaults standardUserDefaults]setValue:cell.detailTextLabel.text forKey:cell.textLabel.text];
+        }
+        //Special
+        rang = [headerStr rangeOfString:@"Special"];
+        if (rang.length) {
+            if ([cell.textLabel.text isEqualToString:@"Others"]) {
+                cell.detailTextLabel.text = @"Others Features";
+            }else
+            {
+                cell.detailTextLabel.text = @"Select One";
+            }
+            [[NSUserDefaults standardUserDefaults]setValue:cell.detailTextLabel.text forKey:cell.textLabel.text];
+        }
+    }else
+    {
+        [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -481,10 +628,106 @@
     //               @"Property Details",
     if ([headerStr isEqualToString:@"Property Details"]) {
         if (indexPath.row == array.count - 1 || indexPath.row < 6) {
-            optionTableViewCtr = [[OptionTableHDBPostViewController alloc] init];
-            optionTableViewCtr.dataSource = [NSArray arrayWithArray: array];
-            optionTableViewCtr.headerTitle = [array objectAtIndex:indexPath.row];
-            [self showDialog:optionTableViewCtr.view];
+//            optionTableViewCtr = [[OptionTableHDBPostViewController alloc] init];
+//            optionTableViewCtr.dataSource = [NSArray arrayWithArray: array];
+//            optionTableViewCtr.headerTitle = [array objectAtIndex:indexPath.row];
+//            [self showDialog:optionTableViewCtr.view];
+            NSRange rang = [cell.textLabel.text rangeOfString:@"Property Status"];
+            if (rang.length) {
+                NSArray *array = [staticData objectForKey:@"PropertyStatus"];
+                NSInteger selectedIndex = -1;
+                if (![cell.detailTextLabel.text isEqualToString:@"Select One"]) {
+                    selectedIndex = [array indexOfObject:cell.detailTextLabel.text];
+                }
+                DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:array DCAOptionType:DCAOptionPropertyStatus selectedIndex:selectedIndex];
+                dcaOptionViewCtr.delegate = self;
+                [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+                return;
+            }
+            // Ad Owner
+            rang = [cell.textLabel.text rangeOfString:@"Ad Owner"];
+            if (rang.length) {
+                NSArray *array = [staticData objectForKey:@"AdOwner"];
+                NSInteger selectedIndex = -1;
+                if (![cell.detailTextLabel.text isEqualToString:@"Select One"]) {
+                    selectedIndex = [array indexOfObject:cell.detailTextLabel.text];
+                }
+                DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:array DCAOptionType:DCAOptionAdOwner selectedIndex:selectedIndex];
+                dcaOptionViewCtr.delegate = self;
+                [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+                return;
+            }
+            // HDB Estate
+            rang = [cell.textLabel.text rangeOfString:@"HDB Estate"];
+            if (rang.length) {
+                NSArray *HDBEstateData = [staticData objectForKey:@"HDBEstate"];
+                NSString *hdbEstateString = cell.detailTextLabel.text;
+                NSArray *array = [hdbEstateString componentsSeparatedByString:@", "];
+                if ([hdbEstateString isEqualToString:@"Select One"]) {
+                    array = nil;
+                }
+                DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:HDBEstateData DCAOptionType:DCAOptionSHDBEstate selectedValues:array];
+                //dcaOptionViewCtr.multiSelect = YES;
+                dcaOptionViewCtr.delegate = self;
+                [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+                return;
+            }
+            //HDB Type
+            rang = [cell.textLabel.text rangeOfString:@"HDB Type"];
+            if (rang.length) {
+                NSArray *hdbTypeData = [staticData objectForKey:@"PropertyType"];
+                NSInteger selectedIndex = -1;
+                NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
+                if (![hdbType isEqualToString:@"Any"]) {
+                    selectedIndex = [hdbTypeData indexOfObject:hdbType];
+                }
+                DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionsPropertyType selectedIndex:selectedIndex];
+                dcaOptionViewCtr.delegate = self;
+                [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+                return;
+            }
+            //Bedrooms
+            rang = [cell.textLabel.text rangeOfString:@"Bedrooms"];
+            if (rang.length) {
+                NSArray *hdbTypeData = [staticData objectForKey:@"Bedrooms"];
+                NSInteger selectedIndex = -1;
+                NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
+                if (![hdbType isEqualToString:@"Select One"]) {
+                    selectedIndex = [hdbTypeData indexOfObject:hdbType];
+                }
+                DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionBedrooms selectedIndex:selectedIndex];
+                dcaOptionViewCtr.delegate = self;
+                [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+                return;
+            }
+            //Washrooms
+            rang = [cell.textLabel.text rangeOfString:@"Washrooms"];
+            if (rang.length) {
+                NSArray *hdbTypeData = [staticData objectForKey:@"Washrooms"];
+                NSInteger selectedIndex = -1;
+                NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
+                if (![hdbType isEqualToString:@"Select One"]) {
+                    selectedIndex = [hdbTypeData indexOfObject:hdbType];
+                }
+                DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionWashrooms selectedIndex:selectedIndex];
+                dcaOptionViewCtr.delegate = self;
+                [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+                return;
+            }
+            //Constructed
+            rang = [cell.textLabel.text rangeOfString:@"Completion"];
+            if (rang.length) {
+                NSArray *hdbTypeData = [staticData objectForKey:@"Constructed"];
+                NSInteger selectedIndex = -1;
+                NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
+                if (![hdbType isEqualToString:@"Select One"]) {
+                    selectedIndex = [hdbTypeData indexOfObject:hdbType];
+                }
+                DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCaOptionConstructed selectedIndex:selectedIndex];
+                dcaOptionViewCtr.delegate = self;
+                [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+                return;
+            }
         }
         else{
             [self.textField setKeyboardType:UIKeyboardTypeDecimalPad];
@@ -566,7 +809,10 @@
     }
     
     //               @"Pictures, URLs & Videos",
-    
+    if ([headerStr isEqualToString:@"Pictures, URLs & Videos"]) {
+        InsertPictureViewController *insertPicCtr = [[InsertPictureViewController alloc]init];
+        [self.navigationController pushViewController:insertPicCtr animated:YES];
+    }
     //               @"Special Features",
 
     
@@ -584,6 +830,7 @@
 {
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:currentIndexPath];
     NSString *value = @"";
+    value = [dcaViewCtr.intSource objectAtIndex:dcaViewCtr.selectedIndex];
     if (dcaViewCtr.sourceType == DCAOptionOthersFeatures) {
         
         if (dcaViewCtr.selectedValues.count >= 1) {
@@ -595,7 +842,6 @@
         }else
             value = @"Others Features";
     }
-    
     if (dcaViewCtr.sourceType == DCAOptionUnitLevel) {
         value = [dcaViewCtr.intSource objectAtIndex:dcaViewCtr.selectedIndex];
     }

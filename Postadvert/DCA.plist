@@ -434,6 +434,11 @@
 			<string>Unblocked View</string>
 			<string>Morning Sun</string>
 		</array>
+		<key>PropertyStatus</key>
+		<array>
+			<string>For Sale</string>
+			<string>For Rent</string>
+		</array>
 	</dict>
 	<key>HDB Post</key>
 	<dict>
@@ -458,7 +463,7 @@
 		</array>
 		<key>Description of Property</key>
 		<array>
-			<string>Description</string>
+			<string>Description of Property</string>
 		</array>
 		<key>Pictures, URLs &amp; Videos</key>
 		<array>

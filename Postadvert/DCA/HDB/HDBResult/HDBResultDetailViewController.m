@@ -61,6 +61,9 @@
     //TapGesture
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction)];
     [_tableView addGestureRecognizer:tap];
+    if (_isModePreviewAd) {
+        [_texbox setUserInteractionEnabled:NO];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -532,7 +535,7 @@
     @try {
         if ( v1 >=  v2 ) {
             if (listComments.count > 0) {
-                [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count -1 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count -1 inSection:_tableView.numberOfSections - 1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
             }
         }
     }
@@ -573,44 +576,86 @@
 
 - (void) loadDataInBackground
 {
-    //getHDBDetail($hdb_id, $user_id, $base64_image = false)
-    id data;
-    NSString *functionName;
-    NSArray *paraNames;
-    NSArray *paraValues;
-    functionName = @"getHDBDetail";
-    paraNames = [NSArray arrayWithObjects:@"hdb_id", @"user_id", nil];
-    paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%d", _hdbID], [NSString stringWithFormat:@"%d", _userID], nil];
-    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
-    
-    NSDictionary *dict = [NSDictionary dictionaryWithDictionary:data];
-    
-    if (dict) {
-        cellData = [[HBBResultCellData alloc]init];
-        cellData.hdbID = [[dict objectForKey:@"id"] integerValue];
-        cellData.timeCreated = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
-        cellData.titleHDB = [dict objectForKey:@"address"];
-//        NSString *title = [dict objectForKey:@"street_name"];
-//        cellData.titleHDB = [cellData.titleHDB stringByAppendingString:title];
+    if (_isModePreviewAd) {
+        //getHDBDetail($hdb_id, $user_id, $base64_image = false)
+        id data;
+        NSString *functionName;
+        NSArray *paraNames;
+        NSArray *paraValues;
+        functionName = @"getHDBDetail";
+        paraNames = [NSArray arrayWithObjects:@"hdb_id", @"user_id", nil];
+        paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%d", _hdbID], [NSString stringWithFormat:@"%d", _userID], nil];
+        data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
         
-        //author
-        NSDictionary *authorDict = [dict objectForKey:@"author"];
-        cellData.userInfo = [[CredentialInfo alloc]init];
-        if ([authorDict isKindOfClass:[NSDictionary class]]) {
-            cellData.userInfo = [[CredentialInfo alloc]initWithDictionary:authorDict];
-        }
+        NSDictionary *dict = [NSDictionary dictionaryWithDictionary:data];
         
-        for (NSString *key in cellData.paraNames) {
-            id object = [dict objectForKey:key];
-            if (object != nil) {
-                [cellData.paraValues addObject: object];
+        if (dict) {
+            cellData = [[HBBResultCellData alloc]init];
+            cellData.hdbID = [[dict objectForKey:@"id"] integerValue];
+            cellData.timeCreated = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
+            cellData.titleHDB = [dict objectForKey:@"address"];
+            //        NSString *title = [dict objectForKey:@"street_name"];
+            //        cellData.titleHDB = [cellData.titleHDB stringByAppendingString:title];
+            
+            //author
+            NSDictionary *authorDict = [dict objectForKey:@"author"];
+            cellData.userInfo = [[CredentialInfo alloc]init];
+            if ([authorDict isKindOfClass:[NSDictionary class]]) {
+                cellData.userInfo = [[CredentialInfo alloc]initWithDictionary:authorDict];
+            }
+            
+            for (NSString *key in cellData.paraNames) {
+                id object = [dict objectForKey:key];
+                if (object != nil) {
+                    [cellData.paraValues addObject: object];
+                }
+                
             }
             
         }
-
+        [self.tableView reloadData];
+        [self performSelectorInBackground:@selector(loadCommentsInBackground) withObject:nil];
+    }else
+    {
+        //getHDBDetail($hdb_id, $user_id, $base64_image = false)
+        id data;
+        NSString *functionName;
+        NSArray *paraNames;
+        NSArray *paraValues;
+        functionName = @"getHDBDetail";
+        paraNames = [NSArray arrayWithObjects:@"hdb_id", @"user_id", nil];
+        paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%d", _hdbID], [NSString stringWithFormat:@"%d", _userID], nil];
+        data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+        
+        NSDictionary *dict = [NSDictionary dictionaryWithDictionary:data];
+        
+        if (dict) {
+            cellData = [[HBBResultCellData alloc]init];
+            cellData.hdbID = [[dict objectForKey:@"id"] integerValue];
+            cellData.timeCreated = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
+            //cellData.titleHDB = [dict objectForKey:@"address"];
+            //        NSString *title = [dict objectForKey:@"street_name"];
+            //        cellData.titleHDB = [cellData.titleHDB stringByAppendingString:title];
+            
+            //author
+            NSDictionary *authorDict = [dict objectForKey:@"author"];
+            cellData.userInfo = [[CredentialInfo alloc]init];
+            if ([authorDict isKindOfClass:[NSDictionary class]]) {
+                cellData.userInfo = [[CredentialInfo alloc]initWithDictionary:authorDict];
+            }
+            
+            for (NSString *key in cellData.paraNames) {
+                id object = [dict objectForKey:key];
+                if (object != nil) {
+                    [cellData.paraValues addObject: object];
+                }
+                
+            }
+            
+        }
+        [self.tableView reloadData];
+        [self performSelectorInBackground:@selector(loadCommentsInBackground) withObject:nil];
     }
-    [self.tableView reloadData];
-    [self performSelectorInBackground:@selector(loadCommentsInBackground) withObject:nil];
 }
 
 - (void) loadCommentsInBackground
@@ -663,7 +708,7 @@
     
     [_tableView reloadData];
     @try {
-        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count - 1 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count - 1 inSection:_tableView.numberOfSections -1] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
     }
     @catch (NSException *exception) {
         
@@ -674,6 +719,9 @@
 }
 
 - (IBAction)commentBtnClicked:(id)sender {
+    if (_isModePreviewAd) {
+        return;
+    }
     @try {
         if (listComments.count) {
             [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count - 1 inSection:2] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
@@ -762,6 +810,9 @@
 }
 
 - (IBAction)clapBtnClicked:(id)sender {
+    if (_isModePreviewAd) {
+        return;
+    }
     UIButton *btn = (UIButton*)sender;
     btn.userInteractionEnabled = NO;
     [self performSelectorInBackground:@selector(clap_UnClapPost:) withObject:sender];

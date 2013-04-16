@@ -18,6 +18,7 @@
 }
 @property (nonatomic)   NSInteger hdbID;
 @property (nonatomic)   NSInteger userID;
+@property (nonatomic)   BOOL      isModePreviewAd;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSString *property_status;
 @property (weak, nonatomic) IBOutlet UIButton *btnSend;

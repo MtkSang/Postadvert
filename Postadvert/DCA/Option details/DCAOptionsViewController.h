@@ -19,6 +19,10 @@ enum DCAOptionsType {
     DCAOptionCondition = 7,
     DCAOptionLeaseTerm = 8,
     DCAOptionOthersFeatures = 9,
+    DCAOptionPropertyStatus = 10,
+    DCAOptionBedrooms = 11,
+    DCAOptionWashrooms = 12,
+    DCaOptionConstructed = 13,
     DCAOptionsLocation = 20
 };
 
