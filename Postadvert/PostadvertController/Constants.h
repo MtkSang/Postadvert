@@ -36,7 +36,7 @@
 #define cMinImageMove                       40.0
 #define cTimeCreatedLabelWidth              250.0
 #define REFRESH_HEADER_HEIGHT               52.0f
-
+#define currentMaxNextIDForLocalImage       @"currentMaxNextIDForLocalImage"
 
 #pragma myFunton
 

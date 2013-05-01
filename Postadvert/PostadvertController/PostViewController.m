@@ -74,7 +74,7 @@
     
     //
     listImageNeedToPost = [[NSMutableArray alloc]init];
-    nextID = 0;
+    nextID = [self loadNextID];
     
     //Set up view
     self.titleView.layer.cornerRadius = 5.0;
@@ -103,11 +103,14 @@
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self setModalInPopover:YES];
+    nextID = [self loadNextID];
     [self updateViewAfterRatation];
 }
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    NSNumber *numNextID = [NSNumber numberWithInteger:nextID];
+    [[NSUserDefaults standardUserDefaults] setValue:numNextID forKey:currentMaxNextIDForLocalImage];
     //delete old file
 //    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 //    NSString *pathToDocuments=[paths objectAtIndex:0];
@@ -118,6 +121,14 @@
 //    pathToDocuments = nil;
 }
 
+- (NSInteger) loadNextID
+{
+    NSNumber *numNextID = [[NSUserDefaults standardUserDefaults] objectForKey:currentMaxNextIDForLocalImage];
+    if (numNextID) {
+        return [numNextID integerValue];
+    }
+    return 0;
+}
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
     if (interfaceOrientation==UIInterfaceOrientationPortrait ) {
         return YES;
@@ -554,6 +565,9 @@
     self.botView.userInteractionEnabled = YES;
     [self.activity stopAnimating];
     self.activity.hidden = YES;
+    
+    NSNumber *numNextID = [NSNumber numberWithInteger:nextID];
+    [[NSUserDefaults standardUserDefaults] setValue:numNextID forKey:currentMaxNextIDForLocalImage];
 }
 
 - (void) setActivityLocation

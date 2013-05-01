@@ -76,7 +76,7 @@
     //[contentView addSubview:thumbnailImageView];
     //[contentView sendSubviewToBack:thumbnailImageView];
     // Bar button
-    UIBarButtonItem *leftBarButtonItm = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonItemStylePlain
+    UIBarButtonItem *leftBarButtonItm = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                     target:self
                                                     action:@selector(actionDoneButtonPressed:)];
     leftBarButtonItm.tintColor = [UIColor blueColor];

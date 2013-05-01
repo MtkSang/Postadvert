@@ -16,4 +16,8 @@
 + (NSInteger) getWallIdFromCountryID:(NSInteger)countryID andItemName:(NSString*)itemName;
 
 + (CGSize) sizeForScaleWithMaxWidth:(float) width fromWidth:(float)imageWidth andHeight:(float)imageHeight;
+
++ (NSString*) getYoutubeIDFromUrl:(NSString*) url;
+
++ (BOOL) isYoutubeVideoLink:(NSURL*)url;
 @end

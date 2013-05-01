@@ -712,7 +712,7 @@
         //comment on status
         if ([_content.commnent_type isEqualToString:@"profile.status"] || YES) {
             if ([_content.target_author_name isKindOfClass:[NSString class]]) {
-                if (_content.target_author_name != @"") {
+                if (![_content.target_author_name isEqualToString: @""]) {
                     if (_content.actor_id == _content.target_author_id) {
                         if ([_content.actor_gender isKindOfClass:[NSString class]]) {
                         }
@@ -795,7 +795,7 @@
         // Add Event
         if ([content.app_type isEqualToString:@"events"] && [content.commnent_type isEqualToString:@"groups.event"])  {
             if ([content.target_name isKindOfClass:[NSString class]]) {
-                if (content.target_name != @"") {
+                if (![content.target_name isEqualToString: @""]) {
                     
                 }else
                     content.target_name = @" ";
@@ -808,7 +808,7 @@
         //Commented on an event
         if ([content.app_type isEqualToString:@"events.wall"] && [content.commnent_type isEqualToString:@"events.wall"])  {
             if ([content.target_name isKindOfClass:[NSString class]]) {
-                if (content.target_name != @"") {
+                if (![content.target_name isEqual: @""]) {
                     
                 }else
                     content.target_name = @" ";
@@ -840,7 +840,7 @@
         if ([content.commnent_type isEqualToString:@"profile.status"] || YES) {
                 NSString *target = @"";
                 if ([content.target_author_name isKindOfClass:[NSString class]]) {
-                    if (content.target_author_name != @"") {
+                    if (![content.target_author_name isEqual: @""]) {
                         if (content.actor_id == content.target_author_id) {
                             if ([content.actor_gender isKindOfClass:[NSString class]]) {
                                 target = [NSString stringWithFormat:@"%@'s", content.target_author_name];
@@ -873,7 +873,7 @@
     }
 #warning incomplete function
     if ([content.target_name isKindOfClass:[NSString class]]) {
-        if (content.target_name != @"") {
+        if (![content.target_name isEqual: @""]) {
             
         }else
             content.target_name = @" ";

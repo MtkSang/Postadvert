@@ -30,6 +30,7 @@
     self = [super init];
     if (self) {
         _root = root;
+        maxSize = 4;
     }
     return self;
 }
@@ -38,6 +39,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        maxSize = 4;
     }
     return self;
 }
@@ -143,10 +145,13 @@
     
     if ([self.delegate respondsToSelector:@selector(didFinishPickingMediaWithImage:)]) {
         UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        if (isScale) {
+            image = [self selectedImage:image];
+        }
         [self.delegate didFinishPickingMediaWithImage:image];
     }
 }
-- (void) selectedImage:(UIImage*)image
+- (UIImage*) selectedImage:(UIImage*)image
 {
     
     NSData *imageData = UIImageJPEGRepresentation(image, 1.0f);
@@ -154,8 +159,8 @@
     NSLog(@"Before %f %f %f", image.size.width, image.size.height, imageData.length/(1024*1024.0f));
     float leng = imageData.length / (1024.0f*1024.0f );
     float f = 1;
-    if (leng > 4) {
-        while (leng > 4) {
+    if (leng > maxSize) {
+        while (leng > maxSize) {
             f -= 0.1;
             if (f < 0) {
                 break;
@@ -166,9 +171,16 @@
         }
         image = [UIImage imageWithData:imageData];
     }
-    if ([self.delegate respondsToSelector:@selector(didFinishPickingMediaWithImage:)]) {
-        [self.delegate didFinishPickingMediaWithImage:image];
-    }
+//    if ([self.delegate respondsToSelector:@selector(didFinishPickingMediaWithImage:)]) {
+//        [self.delegate didFinishPickingMediaWithImage:image];
+//    }
+    return image;
+}
+
+- (void) setMaxSizeImage:(NSInteger)maxSize_
+{
+    isScale = YES;
+    maxSize = maxSize_;
 }
 
 //

@@ -15,6 +15,8 @@
 #import "UserPAInfo.h"
 #import "PostAdvertControllerV2.h"
 
+#import "HDBPostViewController.h"
+
 @interface SideBarViewController ()
     - (BOOL) checkForInternal;
     - (void) updateNavigationBarItem;
@@ -303,7 +305,13 @@
     //Load activity
 //    NSDictionary *dict_act = [NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:0] forKey:@"itemID"];
 //    [[NSNotificationCenter defaultCenter] postNotificationName:@"showDetailFromLeftView" object:nil userInfo:dict_act];
+    
+#warning Just for testing
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"loadActivity" object:nil];
+    HDBPostViewController *hdbPostCtr = [[HDBPostViewController alloc]init];
+    
+    [self.navDetail pushViewController:hdbPostCtr animated:YES];
 }
 
 -(void) viewDidDisappear:(BOOL)animated

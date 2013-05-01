@@ -9,19 +9,27 @@
 #import <UIKit/UIKit.h>
 @class UIPlaceHolderTextView;
 @class OptionTableHDBPostViewController;
+@class InsertPictureViewController;
+@class InsertURLViewController;
 @interface HDBPostViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 {
-    NSDictionary *sourceData;
+    NSMutableDictionary *sourceData;
     NSMutableArray *allKeys;
     UITapGestureRecognizer *tapGesture;
     UIView *overlay;
     NSIndexPath *currentIndexPath;
     UIView *activeForm;
     OptionTableHDBPostViewController *optionTableViewCtr;
-    NSDictionary *staticData;
+    InsertPictureViewController *insertPicCtr;
+    InsertURLViewController *insertURLsCtr;
+    InsertURLViewController *insertVideosCtr;
+    NSMutableDictionary *staticData;
 }
 @property (weak, nonatomic) IBOutlet UILabel *inputTitle;
 - (IBAction)clickedOnInputForm:(id)sender;
+- (IBAction)submitAdClicked:(id)sender;
+- (IBAction)previewAdClicked:(id)sender;
+- (IBAction)btnCancelClicked:(id)sender;
 @property (strong, nonatomic) IBOutlet UIView *inputForm;
 @property (strong, nonatomic) IBOutlet UIView *inputTextForm;
 @property (weak, nonatomic) IBOutlet UIView *boundForm;

@@ -183,7 +183,7 @@
         
         [UIView animateWithDuration:0.3
                               delay:0.0
-                            options: UIViewAnimationCurveEaseOut
+                            options: UIViewAnimationOptionCurveEaseIn
                          animations:^{
                              self.popoverController.view.frame = frame;
                          } 
@@ -223,15 +223,15 @@
     return 0;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell ;
     if (indexPath.section != 0) {
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        cell = [tableView_ dequeueReusableCellWithIdentifier:CellIdentifier];
     }else {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"UserIdentifier"];
+        cell = [tableView_ dequeueReusableCellWithIdentifier:@"UserIdentifier"];
     }
     if (cell == nil) {
         if (indexPath.section !=0) {
@@ -311,10 +311,10 @@
     return cell;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (UIView *)tableView:(UITableView *)tableView_ viewForHeaderInSection:(NSInteger)section
 {
 	// create the parent view that will hold header Label
-	UIView* customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0.0, tableView.frame.size.width, cHeaderHeight)];
+	UIView* customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0.0, tableView_.frame.size.width, cHeaderHeight)];
 	customView.backgroundColor = [UIColor grayColor];
     customView.userInteractionEnabled = NO;
 	// create the button object
@@ -324,7 +324,7 @@
 	headerLabel.textColor = [UIColor whiteColor];
 	headerLabel.highlightedTextColor = [UIColor whiteColor];
 	headerLabel.font = [UIFont boldSystemFontOfSize:11];
-	headerLabel.frame = CGRectMake(10.0, 0.0, tableView.frame.size.width, cHeaderHeight);
+	headerLabel.frame = CGRectMake(10.0, 0.0, tableView_.frame.size.width, cHeaderHeight);
     
 	// want to align the header text as centered
 	// headerLabel.frame = CGRectMake(150.0, 0.0, 300.0, 44.0);
@@ -364,12 +364,12 @@
 #pragma mark - Table view delegate
 
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
+- (void)tableView:(UITableView *)tableView_ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    [tableView_ deselectRowAtIndexPath:indexPath animated:NO];
     
     
-    if (tableView.scrollEnabled == NO) {
+    if (tableView_.scrollEnabled == NO) {
         [self enableScrollTable];
         return;
     }

@@ -13,7 +13,12 @@
 #import "OptionTableHDBPostViewController.h"
 #import "DCAOptionsViewController.h"
 #import "InsertPictureViewController.h"
-
+#import "InsertURLViewController.h"
+#import "PostadvertControllerV2.h"
+#import "UserPAInfo.h"
+#import "HBBResultCellData.h"
+#import "NSData+Base64.h"
+#import "HDBResultDetailViewController.h"
 @interface HDBPostViewController ()
 
 @end
@@ -33,11 +38,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //Load plist
-    NSString *plistPathForStaticDCA = [[NSBundle mainBundle] pathForResource:@"DCA" ofType:@"plist"];
-    staticData = [NSDictionary dictionaryWithContentsOfFile:plistPathForStaticDCA];
-    staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"HDB Search"]];
-    
     
     UIImage *image = [UIImage imageNamed:@"titleHDB.png"];
     image = [image resizedImage:self.lbTitle.frame.size interpolationQuality:0];
@@ -48,10 +48,15 @@
     tapGesture.numberOfTapsRequired = 1;
     tapGesture.numberOfTouchesRequired = 1;
     
+    //Load plist
+    NSString *plistPathForStaticDCA = [[NSBundle mainBundle] pathForResource:@"DCA" ofType:@"plist"];
+    staticData = [NSMutableDictionary dictionaryWithContentsOfFile:plistPathForStaticDCA];
+    staticData = [NSMutableDictionary dictionaryWithDictionary: [staticData objectForKey:@"HDB Search"]];
+    
     //
     NSString *plistPathForStaticHDBPost = [[NSBundle mainBundle] pathForResource:@"DCA" ofType:@"plist"];
     NSDictionary *staticData2 = [NSDictionary dictionaryWithContentsOfFile:plistPathForStaticHDBPost];
-    sourceData = [NSDictionary dictionaryWithDictionary: [staticData2 objectForKey:@"HDB Post"]];
+    sourceData = [NSMutableDictionary dictionaryWithDictionary: [staticData2 objectForKey:@"HDB Post"]];
     allKeys = [[NSMutableArray alloc]initWithObjects:
                @"Property Details",
                @"Address of Property",
@@ -59,6 +64,10 @@
                @"Pictures, URLs & Videos",
                @"Special Features",
                @"Home Interior", nil];
+    
+    [self InsertPictureDidDisappear];
+    [self InsertURLsDidDisappear];
+    [self resetValue];
 }
 
 - (void)didReceiveMemoryWarning
@@ -121,7 +130,7 @@
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.3f];
     [UIView setAnimationCurve:UIViewAnimationCurveLinear];
-	rc.origin = CGPointMake(0.0f, 90.0f);//point; //CGPointMake(0.0f, 10.0f);
+	rc.origin = CGPointMake(0.0f, 0.0f);//point; //CGPointMake(0.0f, 10.0f);
 	view.frame = rc;
     [UIView commitAnimations];
     
@@ -233,6 +242,7 @@
         if (textLabel == nil) {
             textLabel =@"";
         }
+        
         cell.textLabel.text = textLabel;
         NSString *detailText = [[NSUserDefaults standardUserDefaults] objectForKey:textLabel];
         if (detailText == nil || [detailText isEqualToString:@""]) {
@@ -591,8 +601,38 @@
         //Picture, URL
         rang = [headerStr rangeOfString:@"Pictures"];
         if (rang.length) {
-            cell.detailTextLabel.text = @"";
-            [[NSUserDefaults standardUserDefaults]setValue:cell.detailTextLabel.text forKey:cell.textLabel.text];
+            rang = [cell.textLabel.text rangeOfString:@"Images"];
+            if (rang.length) {
+                if (insertPicCtr) {
+                    insertPicCtr.dataSoure = [[NSMutableArray alloc]init];
+                }
+                cell.detailTextLabel.text = @"";
+                [[NSUserDefaults standardUserDefaults]setValue:cell.detailTextLabel.text forKey:cell.textLabel.text];
+                [insertPicCtr performSelectorInBackground:@selector(updateView) withObject:nil];
+            }
+            
+            //URL
+            rang = [cell.textLabel.text rangeOfString:@"URL"];
+            if (rang.length) {
+                if (insertURLsCtr) {
+                    insertURLsCtr.listURLs = [[NSMutableArray alloc]init];
+                }
+                cell.detailTextLabel.text = @"";
+                [[NSUserDefaults standardUserDefaults]setValue:cell.detailTextLabel.text forKey:cell.textLabel.text];
+                [insertURLsCtr.tableView reloadData];
+                
+            }
+            //Video
+            rang = [cell.textLabel.text rangeOfString:@"Video"];
+            if (rang.length) {
+                if (insertVideosCtr) {
+                    insertVideosCtr.listURLs = [[NSMutableArray alloc]init];
+                }
+                cell.detailTextLabel.text = @"";
+                [[NSUserDefaults standardUserDefaults]setValue:cell.detailTextLabel.text forKey:cell.textLabel.text];
+                [insertVideosCtr.tableView reloadData];
+                
+            }
         }
         //Special
         rang = [headerStr rangeOfString:@"Special"];
@@ -613,11 +653,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section >= allKeys.count) {
+        return;
+    }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     currentIndexPath = indexPath;
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     NSString *headerStr = [allKeys objectAtIndex:indexPath.section];
     NSArray *array = [sourceData objectForKey:headerStr];
+    NSRange rang ;
 //    allKeys = [[NSMutableArray alloc]initWithObjects:
 //               @"Property Details",
 //               @"Address of Property",
@@ -810,8 +854,37 @@
     
     //               @"Pictures, URLs & Videos",
     if ([headerStr isEqualToString:@"Pictures, URLs & Videos"]) {
-        InsertPictureViewController *insertPicCtr = [[InsertPictureViewController alloc]init];
-        [self.navigationController pushViewController:insertPicCtr animated:YES];
+        rang = [cell.textLabel.text rangeOfString:@"Images"];
+        if (rang.length) {
+            if (!insertPicCtr) {
+                insertPicCtr = [[InsertPictureViewController alloc]init];
+                insertPicCtr.keyForTitle = cell.textLabel.text;
+                insertPicCtr.delegate = self;
+            }
+            
+            [self.navigationController pushViewController:insertPicCtr animated:YES];
+        }
+        rang = [cell.textLabel.text rangeOfString:@"URL"];
+        if (rang.length) {
+            if (!insertURLsCtr) {
+                insertURLsCtr = [[InsertURLViewController alloc]init];
+                insertURLsCtr.delegate = self;
+                insertURLsCtr.keyForTitle = cell.textLabel.text;
+            }
+            
+            [self.navigationController pushViewController:insertURLsCtr animated:YES];
+        }
+        rang = [cell.textLabel.text rangeOfString:@"Video"];
+        if (rang.length) {
+            if (!insertVideosCtr) {
+                insertVideosCtr = [[InsertURLViewController alloc]init];
+                insertVideosCtr.delegate = self;
+                insertVideosCtr.keyForTitle = cell.textLabel.text;
+            }
+            
+            [self.navigationController pushViewController:insertVideosCtr animated:YES];
+        }
+
     }
     //               @"Special Features",
 
@@ -830,7 +903,9 @@
 {
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:currentIndexPath];
     NSString *value = @"";
-    value = [dcaViewCtr.intSource objectAtIndex:dcaViewCtr.selectedIndex];
+    if (dcaViewCtr.selectedIndex>=0 && dcaViewCtr.selectedIndex < dcaViewCtr.intSource.count) {
+        value = [dcaViewCtr.intSource objectAtIndex:dcaViewCtr.selectedIndex];
+    }
     if (dcaViewCtr.sourceType == DCAOptionOthersFeatures) {
         
         if (dcaViewCtr.selectedValues.count >= 1) {
@@ -853,6 +928,8 @@
     //Lease Term
     
     [[NSUserDefaults standardUserDefaults] setValue:value forKey:cell.textLabel.text];
+    
+    [self propertyStatusChanged];
     
     [dcaViewCtr.navigationController popViewControllerAnimated:YES];
     
@@ -894,4 +971,422 @@
     [self hideDialog:activeForm];
     [_tableView reloadData];
 }
+
+- (IBAction)submitAdClicked:(id)sender {
+    id data;
+    NSString *functionName;
+    NSMutableArray *paraNames;
+    NSMutableArray *paraValues;
+    NSMutableArray *pararNamesOnView;
+    functionName = @"createHDB";
+    NSArray *para = [self addValueForArrays];
+    paraNames = [para objectAtIndex:0];
+    paraValues = [para objectAtIndex:1];
+    pararNamesOnView = [para objectAtIndex:2];
+    NSString *notPassed = [self checkValue:pararNamesOnView of:paraValues];
+    if (![notPassed isEqualToString:@""]) {
+        [[PostadvertControllerV2 sharedPostadvertController] showAlertWithMessage:[NSString stringWithFormat:@"You must select: %@", notPassed ] andTitle:@"Submit Ad"];
+        return;
+    }
+    
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+    
+    NSDictionary *dict = [NSDictionary dictionaryWithDictionary:data];
+    
+    if (dict.allKeys.count) {
+        
+        HBBResultCellData *cellData = [[HBBResultCellData alloc]init];
+        cellData.hdbID = [[dict objectForKey:@"id"] integerValue];
+        cellData.timeCreated = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
+        //cellData.titleHDB = [dict objectForKey:@"address"];
+        //        NSString *title = [dict objectForKey:@"street_name"];
+        //        cellData.titleHDB = [cellData.titleHDB stringByAppendingString:title];
+        
+        //author
+        NSDictionary *authorDict = [dict objectForKey:@"author"];
+        cellData.userInfo = [[CredentialInfo alloc]init];
+        if ([authorDict isKindOfClass:[NSDictionary class]]) {
+            cellData.userInfo = [[CredentialInfo alloc]initWithDictionary:authorDict];
+        }
+        
+        for (NSString *key in cellData.paraNames) {
+            id object = [dict objectForKey:key];
+            if (object != nil) {
+                [cellData.paraValues addObject: object];
+            }
+            
+        }
+        HDBResultDetailViewController *detailViewCtr = [[HDBResultDetailViewController alloc]initWithHDBID:cellData.hdbID userID:[[UserPAInfo sharedUserPAInfo]registrationID]];
+        //[self.navigationController popViewControllerAnimated:YES];
+        [self.navigationController pushViewController:detailViewCtr animated:YES];
+    }else
+    {
+        
+    }
+}
+
+- (IBAction)previewAdClicked:(id)sender {
+}
+
+- (IBAction)btnCancelClicked:(id)sender {
+    [self hideDialog:activeForm];
+}
+
+#pragma mark - 
+
+- (void) propertyStatusChanged
+{
+    NSString *value = [[NSUserDefaults standardUserDefaults] objectForKey:@"Property Status *"];
+    //For Sale
+    //For Rent
+    NSRange rang ;
+    NSMutableArray *array = [[NSMutableArray alloc] initWithArray: [sourceData objectForKey:@"Property Details"]];
+    NSString *key;
+    if ([value isEqualToString:@"For Sale"]) {
+        
+        for (NSInteger index = 0; index < array.count; index ++) {
+            //Monthly Rental (S$)
+            key = [array objectAtIndex:index];
+            rang = [key rangeOfString:@"Monthly"];
+            if (rang.length) {
+                [array replaceObjectAtIndex:index withObject:@"Price (S$)"];
+            }
+            //Lease Term
+            rang = [key rangeOfString:@"Lease Term"];
+            if (rang.length) {
+                [array replaceObjectAtIndex:index withObject:@"Valuation Price (S$)"];
+            }
+        }
+       
+    }
+    else if ([value isEqualToString:@"For Rent"]) {
+        
+        for (NSInteger index = 0; index < array.count; index ++) {
+            //Price (S$)
+            key = [array objectAtIndex:index];
+            if ([key isEqualToString:@"Price (S$)"]) {
+                [array replaceObjectAtIndex:index withObject:@"Monthly Rental (S$)"];
+            }
+            //Valuation Price (S$)
+            rang = [key rangeOfString:@"Valuation Price (S$)"];
+            if (rang.length) {
+                [array replaceObjectAtIndex:index withObject:@"Lease Term"];
+            }
+        }
+        
+    }
+    [sourceData setObject:array forKey:@"Property Details"];
+}
+
+- (NSArray*) addValueForArrays;
+{
+    NSMutableArray *paraNames = [[NSMutableArray alloc]init];
+    NSMutableArray *paraValues = [[NSMutableArray alloc]init];
+    NSMutableArray *paraNamesOnView = [[NSMutableArray alloc]init];
+//    createHDB($property_status, $block, $street_name, $property_type, $hdb_owner, $hdb_estate, $bedrooms, $washrooms, $price, $size, $valuation, $lease_term, $completion, $unit_level, $furnishing, $condition, $description, $other_features, $fixtures_fittings, $picture, $url, $video, $user_id, $limit, $base64_image = false)
+    @try {
+        
+        NSString *value;
+        NSString *key;
+        NSUserDefaults *database = [NSUserDefaults standardUserDefaults];
+        //property_status
+        [paraNames addObject:@"property_status"];
+        key = @"Property Status *";
+        value = [database objectForKey:key];
+        if ([value isEqualToString:@"For Sale"]) {
+            value = @"s";
+        }else
+            value = @"r";
+        [paraValues addObject:value];
+        [paraNamesOnView addObject:@"Property Status *"];
+        //block
+        [paraNames addObject:@"block"];
+        key = @"Block No. *";
+        value = [database objectForKey:key];
+        [paraValues addObject:value];
+        [paraNamesOnView addObject:@"Block No. *"];
+        //street_name
+        [paraNames addObject:@"street_name"];
+        key = @"Street Name *";
+        value = [database objectForKey:key];
+        [paraValues addObject:value];
+        [paraNamesOnView addObject:@"Street Name *"];
+        //property_type
+        [paraNames addObject:@"property_type"];
+        key = @"HDB Type *";
+        value = [database objectForKey:key];
+        [paraValues addObject:value];
+        [paraNamesOnView addObject:@"HDB Type *"];
+        //hdb_owner
+        [paraNames addObject:@"hdb_owner"];
+        value = [database objectForKey:@"Ad Owner *"];
+        [paraValues addObject:value];
+        [paraNamesOnView addObject:@"Ad Owner *"];
+        //hdb_estate
+        [paraNames addObject:@"hdb_estate"];
+        [paraValues addObject:[database objectForKey:@"HDB Estate *"]];
+        [paraNamesOnView addObject:@"HDB Estate *"];
+        //bedrooms
+        [paraNames addObject:@"bedrooms"];
+        value = [database objectForKey:@"No. of Bedrooms *"];
+        value = [NSString stringWithFormat:@"%d", [value integerValue]];
+        [paraValues addObject:value];
+        [paraNamesOnView addObject:@"No. of Bedrooms *"];
+        //washrooms
+        [paraNames addObject:@"washrooms"];
+        value = [database objectForKey:@"No. of Washrooms *"];
+        value = [NSString stringWithFormat:@"%d", [value integerValue]];
+        [paraValues addObject:value];
+        [paraNamesOnView addObject:@"No. of Washrooms *"];
+        //price
+        [paraNames addObject:@"price"];
+        value = [paraValues objectAtIndex:0];
+        if ([value isEqualToString:@"s"]) {
+            [paraValues addObject:[database objectForKey:@"Price (S$)"]];
+            [paraNamesOnView addObject:@"Price (S$)"];
+        }else
+        {
+            [paraValues addObject:[database objectForKey:@"Monthly Rental (S$)"]];
+            [paraNamesOnView addObject:@"Monthly Rental (S$)"];
+        }
+        //size
+        [paraNames addObject:@"size"];
+        [paraValues addObject:[database objectForKey:@"Size (sq ft) *"]];
+        [paraNamesOnView addObject:@"Size (sq ft) *"];
+        //valuation
+        [paraNames addObject:@"valuation"];
+        [paraValues addObject:[database objectForKey:@"Valuation Price (S$)"]];
+        [paraNamesOnView addObject:@"Valuation Price (S$)"];
+        //lease_term
+        [paraNames addObject:@"lease_term"];
+        [paraValues addObject:[database objectForKey:@"Lease Term"]];
+        [paraNamesOnView addObject:@"Lease Term"];
+        //completion
+        [paraNames addObject:@"completion"];
+        [paraValues addObject:[database objectForKey:@"Building Completion"]];
+        [paraNamesOnView addObject:@"Building Completion"];
+        //unit_level
+        [paraNames addObject:@"unit_level"];
+        [paraValues addObject:[database objectForKey:@"Unit Level"]];
+        [paraNamesOnView addObject:@"Unit Level"];
+        //furnishing
+        [paraNames addObject:@"furnishing"];
+        [paraValues addObject:[database objectForKey:@"Furnishing"]];
+        [paraNamesOnView addObject:@"Furnishing"];
+        //condition
+        [paraNames addObject:@"condition"];
+        [paraValues addObject:[database objectForKey:@"Condition "]];
+        [paraNamesOnView addObject:@"Condition "];
+        //description
+        [paraNames addObject:@"description"];
+        value = [database objectForKey:@"Description of Property"];
+        
+        [paraValues addObject:value];
+        [paraNamesOnView addObject:@"Description of Property"];
+        //other_features
+        [paraNames addObject:@"other_features"];
+        [paraValues addObject:[database objectForKey:@"Others"]];
+        [paraNamesOnView addObject:@"Others"];
+        //fixtures_fittings
+        [paraNames addObject:@"fixtures_fittings"];
+        [paraValues addObject:@""];
+        [paraNamesOnView addObject:@"Insert Videos"];
+        //picture
+        [paraNames addObject:@"picture"];
+        [paraValues addObject:@""];
+        [paraNamesOnView addObject:@"Upload Images"];
+        //url
+        [paraNames addObject:@"url"];
+        value = @"";
+        for (NSString* urlStr in insertURLsCtr.listURLs) {
+            value = [value stringByAppendingString:urlStr];
+            value = [value stringByAppendingString:@","];
+        }
+        if (![value isEqualToString:@""]) {
+            NSRange rang = [value rangeOfString:@"," options:NSBackwardsSearch];
+            value = [value stringByReplacingCharactersInRange:rang withString:@""];
+        }
+        [paraValues addObject:value];
+        [paraNamesOnView addObject:@"Insert URLs"];
+        //video
+        [paraNames addObject:@"video"];
+        value = @"";
+        for (NSString* urlStr in insertVideosCtr.listURLs) {
+            value = [value stringByAppendingString:urlStr];
+            value = [value stringByAppendingString:@","];
+        }
+        if (![value isEqualToString:@""]) {
+            NSRange rang = [value rangeOfString:@"," options:NSBackwardsSearch];
+            value = [value stringByReplacingCharactersInRange:rang withString:@""];
+        }
+        [paraValues addObject:value];
+        [paraNamesOnView addObject:@"Insert Videos"];
+        //user_id
+        [paraNames addObject:@"user_id"];
+        [paraValues addObject:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID]];
+        [paraNamesOnView addObject:@""];
+        //limit
+        [paraNames addObject:@"limit"];
+        [paraValues addObject:@"1"];
+        [paraNamesOnView addObject:@"1"];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@", exception);
+    }
+    return [NSArray arrayWithObjects:paraNames, paraValues, paraNamesOnView, nil];
+}
+
+- (NSString*) checkValue:(NSMutableArray*)paraNames of:(NSMutableArray*)paraValues
+{
+    NSString *notPassed =@"";
+    NSInteger index;
+    NSRange rang;
+    NSString *value;
+    for (NSString *key in paraNames) {
+        rang = [key rangeOfString:@"*"];
+        index = [paraNames indexOfObject:key];
+        if (index != NSIntegerMax) {
+            value = [paraValues objectAtIndex:index];
+        }
+        if ([value isEqualToString:@"Select One"] || [value isEqualToString:@"Others Features"]) {
+            value = @"";
+            [paraValues replaceObjectAtIndex:index withObject:@""];
+        }
+        if (rang.length) {
+            if ([value isEqualToString:@""] ) {
+                value = [key stringByReplacingOccurrencesOfString:@"*" withString:@""];
+                value = [NSString stringWithFormat:@"\n%@", value];
+                notPassed = [NSString stringWithFormat:@" %@ %@", notPassed, value];
+            }
+        }
+    }
+    return notPassed;
+}
+- (void) resetValue
+{
+    return;
+    NSUserDefaults *database = [NSUserDefaults standardUserDefaults];
+    //property_status
+    [database setValue:@"Select One" forKey:@"Property Status *"];
+    //block
+    [database setValue:@"" forKey:@"Block No. *"];
+    //street_name
+    [database setValue:@"" forKey:@"Street Name *"];
+    //property_type
+    [database setValue:@"Select One" forKey:@"HDB Type *"];
+    //hdb_owner
+    [database setValue:@"Select One" forKey:@"Ad Owner *"];
+    //hdb_estate
+    [database setValue:@"Select One" forKey:@"HDB Estate *"];
+    //bedrooms
+    [database setValue:@"Select One" forKey:@"No. of Bedrooms *"];
+    //washrooms
+    [database setValue:@"Select One" forKey:@"No. of Washrooms *"];
+    //price
+    [database setValue:@"" forKey:@"Price (S$)"];
+    //size
+    [database setValue:@"" forKey:@"Size (sq ft) *"];
+    //valuation
+    [database setValue:@"" forKey:@"Valuation Price (S$)"];
+    //lease_term
+    [database setValue:@"" forKey:@"Lease Term"];
+    //completion
+    [database setValue:@"" forKey:@"Building Completion"];
+    //unit_level
+    [database setValue:@"Select One" forKey:@"Unit Level"];
+    //furnishing
+    [database setValue:@"Select One" forKey:@"Furnishing"];
+    //condition
+    [database setValue:@"Select One" forKey:@"Condition "];
+    //description
+    [database setValue:@"" forKey:@"Description of Property"];
+    //other_features
+    [database setValue:@"" forKey:@"Others"];
+    //fixtures_fittings
+    
+    //picture
+    [database setValue:@"" forKey:@"Upload Images"];
+    if (insertPicCtr) {
+        [insertPicCtr.dataSoure removeAllObjects];
+        [insertPicCtr updateView];
+    }
+    //url
+    [database setValue:@"" forKey:@"Insert URLs"];
+    if (insertURLsCtr) {
+        [insertURLsCtr.listURLs removeAllObjects];
+    }
+    //video
+    [database setValue:@"" forKey:@"Insert Videos"];
+    if (insertVideosCtr) {
+        [insertVideosCtr.listURLs removeAllObjects];
+    }
+    //user_id
+    
+    //limit
+
+    //Size (sqm) *
+    [database setValue:@"" forKey:@"Size (sqm) *"];
+    [database setValue:@"" forKey:@"Monthly Rental (S$)"];
+    [database setValue:@"" forKey:@"Lease Term"];
+}
+
+#pragma mark InsertPictureDelegate
+
+- (void) InsertPictureDidDisappear
+{
+    NSInteger count = 0;
+    NSString *keyForTitle = @"Upload Images";
+    if (insertPicCtr) {
+        count = insertPicCtr.dataSoure.count;
+        keyForTitle = insertPicCtr.keyForTitle;
+    }
+    if (count) {
+        if (count == 1) {
+            [[NSUserDefaults standardUserDefaults] setValue:@"Selected a photo" forKey:keyForTitle];
+        }else
+            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"Selected %d photos", count] forKey:keyForTitle];
+    }else
+    {
+        [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:keyForTitle];
+    }
+    [_tableView reloadData];
+}
+#pragma mark InsertURLsDidDisappear
+
+- (void) InsertURLsDidDisappear
+{
+    NSInteger count = 0;
+    NSString *keyForTitle = @"Insert URLs";
+    if (insertURLsCtr) {
+        count = insertURLsCtr.listURLs.count;
+        keyForTitle = insertURLsCtr.keyForTitle;
+    }
+    if (count) {
+        if (count == 1) {
+            [[NSUserDefaults standardUserDefaults] setValue:@"Added an URL" forKey:keyForTitle];
+        }else
+            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"Added %d URLs", count] forKey:keyForTitle];
+    }else
+    {
+        [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:keyForTitle];
+    }
+    count = 0;
+    keyForTitle = @"Insert Videos";
+    if (insertVideosCtr) {
+        count = insertVideosCtr.listURLs.count;
+        keyForTitle = insertVideosCtr.keyForTitle;
+    }
+    if (count) {
+        if (count == 1) {
+            [[NSUserDefaults standardUserDefaults] setValue:@"Added an Video" forKey:keyForTitle];
+        }else
+            [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"Added %d Videos", count] forKey:keyForTitle];
+    }else
+    {
+        [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:keyForTitle];
+    }
+
+    [_tableView reloadData];
+}
+
 @end

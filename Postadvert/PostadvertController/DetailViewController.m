@@ -1405,7 +1405,7 @@
     
     NSString *text = [[NSUserDefaults standardUserDefaults] objectForKey:@"_text_NewPost"];
     NSInteger totalImage = [[NSUserDefaults standardUserDefaults] integerForKey:@"_totalImage_NewPost"];
-    NSDataDetector *detect = [[NSDataDetector alloc] initWithTypes:NSTextCheckingTypeLink error:nil];
+    NSDataDetector *detect = [[NSDataDetector alloc] initWithTypes:NSTextCheckingAllTypes error:nil];
     NSArray *matches = [detect matchesInString:text options:0 range:NSMakeRange(0, [text length])];
     PostCellContent *_content =[[PostCellContent alloc] init];
     for (NSTextCheckingResult *match in matches) {

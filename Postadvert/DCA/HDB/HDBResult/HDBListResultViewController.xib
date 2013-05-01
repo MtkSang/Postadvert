@@ -161,6 +161,7 @@
 						<string key="NSFrame">{{0, 455}, {320, 49}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -172,7 +173,7 @@
 								<string key="IBUITitle">Sort</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">sort_active.png</string>
+									<string key="NSResourceName">sort.png</string>
 								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<reference key="IBUITabBar" ref="296846632"/>
@@ -181,7 +182,7 @@
 								<string key="IBUITitle">Photo View</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">photo-view_inactive.png</string>
+									<string key="NSResourceName">photo.png</string>
 								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<reference key="IBUITabBar" ref="296846632"/>
@@ -190,7 +191,7 @@
 								<string key="IBUITitle">List View</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">listview_inactive.png</string>
+									<string key="NSResourceName">list.png</string>
 								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<reference key="IBUITabBar" ref="296846632"/>
@@ -199,7 +200,7 @@
 								<string key="IBUITitle">Map</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">map_inactive.png</string>
+									<string key="NSResourceName">map.png</string>
 								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<reference key="IBUITabBar" ref="296846632"/>
@@ -776,17 +777,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">HDBListResultViewController</string>
 					<string key="superclassName">UIViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">refresh</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">refresh</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">refresh</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="lbNumFound">UILabel</string>
 						<string key="lbTitle">UILabel</string>
@@ -861,10 +851,10 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="listview_inactive.png">{76, 61}</string>
-			<string key="map_inactive.png">{76, 61}</string>
-			<string key="photo-view_inactive.png">{76, 61}</string>
-			<string key="sort_active.png">{76, 61}</string>
+			<string key="list.png">{30, 30}</string>
+			<string key="map.png">{30, 30}</string>
+			<string key="photo.png">{30, 30}</string>
+			<string key="sort.png">{30, 30}</string>
 		</dictionary>
 		<bool key="IBDocument.UseAutolayout">YES</bool>
 		<string key="IBCocoaTouchPluginVersion">2083</string>

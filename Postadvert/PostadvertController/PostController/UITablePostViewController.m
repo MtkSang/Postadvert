@@ -332,7 +332,7 @@
     cell.indexPath = indexPath;
     cell.navigationController = self.navigationController;
     [cell updateCellWithContent:[listContent objectAtIndex:index] andOption:self.optionView];
-    [cell setSelectionStyle:UITableViewCellEditingStyleNone];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     [cell setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [listPostCell replaceObjectAtIndex:index withObject:cell];
     cell.backgroundView = [[UIView alloc]initWithFrame:cell.bounds];

@@ -10,6 +10,7 @@
 #import "SideBarViewController.h"
 #import "UserPAInfo.h"
 #import "PostadvertControllerV2.h"
+#import "Constants.h"
 
 @implementation AppDelegate
 
@@ -28,6 +29,26 @@
     return YES;
 }
 
+- (void) deleteAllLocalSelectedPhotos
+{
+    NSNumber *numNextID = [[NSUserDefaults standardUserDefaults] objectForKey:currentMaxNextIDForLocalImage];
+    NSInteger maxNextNumber = numNextID.integerValue;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *pathToDocuments=[paths objectAtIndex:0];
+    for (int i =1; i <= maxNextNumber; i++) {
+        BOOL result =[[NSFileManager defaultManager]removeItemAtPath:[NSString stringWithFormat:@"%@/newPost%d.jpg", pathToDocuments, i] error:nil];
+        if (result) {
+            NSLog(@"Success %@",[NSString stringWithFormat:@"%@/newPost%d.jpg", pathToDocuments, i]);
+            
+        }else
+            NSLog(@"Fail %@",[NSString stringWithFormat:@"%@/newPost%d.jpg", pathToDocuments, i]);
+
+    }
+    paths = nil;
+    pathToDocuments = nil;
+    numNextID = [NSNumber numberWithInteger:0];
+    [[NSUserDefaults standardUserDefaults]setValue:numNextID forKey:currentMaxNextIDForLocalImage];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -65,7 +86,7 @@
 
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    
+    [self performSelectorInBackground:@selector(deleteAllLocalSelectedPhotos) withObject:nil];
     
     return YES;
 }

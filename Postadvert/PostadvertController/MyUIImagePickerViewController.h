@@ -15,12 +15,16 @@
 {
     UIImagePickerController *imagePicker;
     BOOL isShowed;
+    NSInteger maxSize;
+    BOOL isScale;
     UIViewController *_root;
 }
+
 @property (nonatomic, weak) id <MyUIImagePickerViewControllerDelegate> delegate;
 @property (nonatomic, strong)   NSMutableArray *photos;
 @property (nonatomic)           UIImagePickerControllerSourceType sourceType;
 - (id) initWithRoot:(UIViewController*) root;
+- (void) setMaxSizeImage:(NSInteger)maxSize_;
 
 //+ (ALAssetsLibrary *)defaultAssetsLibrary;
 

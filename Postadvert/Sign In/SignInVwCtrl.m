@@ -86,7 +86,7 @@
 }
 - (UIInterfaceOrientation) preferredInterfaceOrientationForPresentation
 {
-    return UIInterfaceOrientationMaskPortrait;
+    return UIInterfaceOrientationPortrait;
 }
 
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -302,6 +302,14 @@
         [self.navigationController popViewControllerAnimated:YES];
         [activityIndicator stopAnimating];
     } else {
+#warning just for Login without user info
+        {
+            success = 1;
+            _autoLogin = NO;
+            [self.navigationController popViewControllerAnimated:YES];
+            [activityIndicator stopAnimating];
+        }
+        
         [activityIndicator stopAnimating];
         if(_autoLogin)
         {

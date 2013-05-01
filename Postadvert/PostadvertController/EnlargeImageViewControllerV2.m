@@ -67,7 +67,7 @@
     _scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     //_scrollView.autoresizesSubviews = YES;
     
-    UIBarButtonItem *leftBarButtonItm = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonItemStylePlain
+    UIBarButtonItem *leftBarButtonItm = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                       target:self
                                                                                       action:@selector(actionDoneButtonPressed:)];
     leftBarButtonItm.tintColor = [UIColor blueColor];

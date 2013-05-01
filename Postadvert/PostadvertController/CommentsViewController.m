@@ -71,7 +71,7 @@
         [actiCell loadNibFile];
         actiCell.navigationController = cell.navigationController;
         [actiCell updateCellWithContent:cell.content andOption:1];
-        [actiCell setSelectionStyle:UITableViewCellEditingStyleNone];
+        [actiCell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [actiCell setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 //        actiCell.backgroundView = [[UIView alloc]initWithFrame:cell.bounds];
 //        actiCell.backgroundView.backgroundColor = [UIColor whiteColor];
@@ -235,7 +235,7 @@
                 [actiCell loadNibFile];
                 actiCell.navigationController = self.navigationController;
                 [actiCell updateCellWithContent:cellContent andOption:1];
-                [actiCell setSelectionStyle:UITableViewCellEditingStyleNone];
+                [actiCell setSelectionStyle:UITableViewCellSelectionStyleNone];
                 [actiCell setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
                 //        actiCell.backgroundView = [[UIView alloc]initWithFrame:cell.bounds];
                 //        actiCell.backgroundView.backgroundColor = [UIColor whiteColor];

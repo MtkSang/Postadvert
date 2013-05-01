@@ -149,7 +149,7 @@ const CGFloat ktkDefaultToolbarHeight = 44;
                                     ktkDefaultToolbarHeight);
 
     //Config botToolbar
-    leftBarButtonItm = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonItemStylePlain
+    leftBarButtonItm = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                       target:self
                                                                                       action:@selector(actionDoneButtonPressed:)];
     leftBarButtonItm.tintColor = [UIColor blueColor];

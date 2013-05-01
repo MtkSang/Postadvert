@@ -451,8 +451,8 @@
 			<string>No. of Bedrooms *</string>
 			<string>No. of Washrooms *</string>
 			<string>Price (S$)</string>
-			<string>Size (sq ft)</string>
-			<string>Size (sqm)</string>
+			<string>Size (sq ft) *</string>
+			<string>Size (sqm) *</string>
 			<string>Valuation Price (S$)</string>
 			<string>Building Completion</string>
 		</array>

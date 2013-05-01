@@ -7,6 +7,7 @@
 //
 
 #import "SupportFunction.h"
+#import "SBJson.h"
 
 @implementation SupportFunction
 
@@ -408,4 +409,28 @@
     return returnSize;
 }
 
++ (NSString*) getYoutubeIDFromUrl:(NSString*) url
+{
+    NSString *videoID = [url stringByReplacingOccurrencesOfString:@"http://m." withString:@""];
+    videoID = [videoID stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+    videoID = [videoID stringByReplacingOccurrencesOfString:@"www." withString:@""];
+    videoID = [videoID stringByReplacingOccurrencesOfString:@"youtube.com/watch?v=" withString:@""];
+    videoID = [videoID stringByReplacingOccurrencesOfString:@"youtube.com/v/" withString:@""];
+    videoID = [videoID stringByReplacingOccurrencesOfString:@"youtu.be/" withString:@""];
+    return [[videoID componentsSeparatedByString:@"&"] objectAtIndex:0];
+    videoID = nil;
+}
+
++ (BOOL) isYoutubeVideoLink:(NSURL*)url
+{
+    NSURL *newURL = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"http://www.youtube.com/oembed?url=%@&format=json",[url absoluteString]]];
+    NSString *youtubeInfo = [NSString stringWithContentsOfURL:newURL encoding:NSUTF8StringEncoding error:nil];
+    NSDictionary *dic = [youtubeInfo JSONValue];
+    if ( [((NSString*)[dic valueForKey:@"type"])isEqualToString:@"video"]) {
+        newURL = nil;
+        return YES;
+    }
+    newURL =nil;
+    return NO;
+}
 @end

@@ -137,7 +137,6 @@ CLLocationManagerDelegate>
 
 - (long)getFriendRegistrationID;
 - (NSString*)getFriendName;
-- (NSString*)getFriendName;
 - (NSString*)getFriendInterested;
 - (NSString*)getFriendAvatarURL;
 - (void)getDefaultUser;
