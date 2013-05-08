@@ -8,15 +8,13 @@
 
 #import "SignInVwCtrl.h"
 
-#import "PostAdvertController.h"
 #import "PostAdvertControllerV2.h"
-//#import "PalUpAppDelegate_iPhone.h"
-
 #import "CredentialInfo.h"
 #import "SignInBaseVwCtrl.h"
 #import "NewAccountVwCtrl.h"
 #import "Constants.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UserPAInfo.h"
 
 @interface SignInVwCtrl ()
 - (IBAction)valueChanged:(id)sender;
@@ -301,15 +299,7 @@
          _autoLogin = NO;
         [self.navigationController popViewControllerAnimated:YES];
         [activityIndicator stopAnimating];
-    } else {
-#warning just for Login without user info
-        {
-            success = 1;
-            _autoLogin = NO;
-            [self.navigationController popViewControllerAnimated:YES];
-            [activityIndicator stopAnimating];
-        }
-        
+    } else {        
         [activityIndicator stopAnimating];
         if(_autoLogin)
         {
@@ -423,66 +413,66 @@
     //    } 
 }
 
-
-- (void)registrationResetPassword:(NSString*) registeredEmail
-{
-    
-    //PalUpController   *palUpCtrl = (PalUpController *)cAppiPhoneDelegate.palUpController;
-    
-    if(![palUpCtrl isConnectToWeb]){
-        [palUpCtrl showAlertWithMessage:@"This device does not connect to Internet." andTitle:@"PalUp"];
-        
-        return;
-    }
-    
-    NSLog(@"=====================E: registrationResetPassword=====================");
-   
-    NSString *post = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-					  "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
-                        "<soap:Body>"
-                            "<RegistrationResetPassword xmlns='http://50.19.216.234/palup/server.php'>"
-                                "<userName>%@</userName>"
-                            "</RegistrationResetPassword>"
-                        "</soap:Body>"
-					  "</soap:Envelope>", registeredEmail];
-	
-	NSLog(@"%@", post);
-	NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-	NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
-	
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init]; 
-	[request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@#%@", cServiceLinks, @"RegistrationResetPassword"]]];
-	[request setHTTPMethod:@"POST"];
-	[request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-	[request setValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-	[request setHTTPBody:postData];
-    
-	NSError *error;
-	NSURLResponse *response;
-	NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    
-    NSLog(@"=====================");
-    NSString *encodeData=[[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];	
-    NSString *data1 = [encodeData stringByReplacingOccurrencesOfString:@"&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;" withString:@""];
-//    data1 = [data1 stringByReplacingOccurrencesOfString:@"&lt;" withString:@"<"];
-//    data1 = [data1 stringByReplacingOccurrencesOfString:@"&gt;" withString:@">"];
-    
-	NSLog(@"%@", data1);
-    NSLog(@"=====================");
-
-/*    NSScanner *scanner = [NSScanner scannerWithString:data1];
-    NSString *startTag = [NSString stringWithFormat:@"Status RegistrationStatusTypeID=\""];
-    NSString *strResult= nil;
-    
-    [scanner scanUpToString:startTag intoString:nil];
-    [scanner scanString:startTag intoString:nil];
-    [scanner scanUpToString:@"\"" intoString:&strResult];
-    
-    NSLog(@"RegistrationStatusTypeID: %@", strResult);
-    int retVal = 5; //OffLine status as default
-    if (strResult) {
-        retVal = [strResult longLongValue];
-    }*/
-}
+//
+//- (void)registrationResetPassword:(NSString*) registeredEmail
+//{
+//    
+//    //PalUpController   *palUpCtrl = (PalUpController *)cAppiPhoneDelegate.palUpController;
+//    
+//    if(![palUpCtrl isConnectToWeb]){
+//        [palUpCtrl showAlertWithMessage:@"This device does not connect to Internet." andTitle:@"PalUp"];
+//        
+//        return;
+//    }
+//    
+//    NSLog(@"=====================E: registrationResetPassword=====================");
+//   
+//    NSString *post = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+//					  "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
+//                        "<soap:Body>"
+//                            "<RegistrationResetPassword xmlns='http://50.19.216.234/palup/server.php'>"
+//                                "<userName>%@</userName>"
+//                            "</RegistrationResetPassword>"
+//                        "</soap:Body>"
+//					  "</soap:Envelope>", registeredEmail];
+//	
+//	NSLog(@"%@", post);
+//	NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+//	NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+//	
+//	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init]; 
+//	[request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@#%@", cServiceLinks, @"RegistrationResetPassword"]]];
+//	[request setHTTPMethod:@"POST"];
+//	[request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+//	[request setValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+//	[request setHTTPBody:postData];
+//    
+//	NSError *error;
+//	NSURLResponse *response;
+//	NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+//    
+//    NSLog(@"=====================");
+//    NSString *encodeData=[[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];	
+//    NSString *data1 = [encodeData stringByReplacingOccurrencesOfString:@"&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;" withString:@""];
+////    data1 = [data1 stringByReplacingOccurrencesOfString:@"&lt;" withString:@"<"];
+////    data1 = [data1 stringByReplacingOccurrencesOfString:@"&gt;" withString:@">"];
+//    
+//	NSLog(@"%@", data1);
+//    NSLog(@"=====================");
+//
+///*    NSScanner *scanner = [NSScanner scannerWithString:data1];
+//    NSString *startTag = [NSString stringWithFormat:@"Status RegistrationStatusTypeID=\""];
+//    NSString *strResult= nil;
+//    
+//    [scanner scanUpToString:startTag intoString:nil];
+//    [scanner scanString:startTag intoString:nil];
+//    [scanner scanUpToString:@"\"" intoString:&strResult];
+//    
+//    NSLog(@"RegistrationStatusTypeID: %@", strResult);
+//    int retVal = 5; //OffLine status as default
+//    if (strResult) {
+//        retVal = [strResult longLongValue];
+//    }*/
+//}
 
 @end

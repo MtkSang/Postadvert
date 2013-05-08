@@ -112,6 +112,9 @@
 - (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *header = nil;
+    if (_isModePreviewAd) {
+        return header;
+    }
 //    if (section == 0) {
 //        return nil;
 //    }
@@ -577,42 +580,7 @@
 - (void) loadDataInBackground
 {
     if (_isModePreviewAd) {
-        //getHDBDetail($hdb_id, $user_id, $base64_image = false)
-        id data;
-        NSString *functionName;
-        NSArray *paraNames;
-        NSArray *paraValues;
-        functionName = @"getHDBDetail";
-        paraNames = [NSArray arrayWithObjects:@"hdb_id", @"user_id", nil];
-        paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%d", _hdbID], [NSString stringWithFormat:@"%d", _userID], nil];
-        data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
-        
-        NSDictionary *dict = [NSDictionary dictionaryWithDictionary:data];
-        
-        if (dict) {
-            cellData = [[HBBResultCellData alloc]init];
-            cellData.hdbID = [[dict objectForKey:@"id"] integerValue];
-            cellData.timeCreated = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
-            cellData.titleHDB = [dict objectForKey:@"address"];
-            //        NSString *title = [dict objectForKey:@"street_name"];
-            //        cellData.titleHDB = [cellData.titleHDB stringByAppendingString:title];
-            
-            //author
-            NSDictionary *authorDict = [dict objectForKey:@"author"];
-            cellData.userInfo = [[CredentialInfo alloc]init];
-            if ([authorDict isKindOfClass:[NSDictionary class]]) {
-                cellData.userInfo = [[CredentialInfo alloc]initWithDictionary:authorDict];
-            }
-            
-            for (NSString *key in cellData.paraNames) {
-                id object = [dict objectForKey:key];
-                if (object != nil) {
-                    [cellData.paraValues addObject: object];
-                }
-                
-            }
-            
-        }
+        [self convertDataForModePreviewAd];
         [self.tableView reloadData];
         [self performSelectorInBackground:@selector(loadCommentsInBackground) withObject:nil];
     }else
@@ -688,6 +656,104 @@
     
 }
 
+#pragma mark Mode Preview Ad
+
+//createHDB($property_status, $block, $street_name, $property_type, $hdb_owner, $hdb_estate, $bedrooms, $washrooms, $price, $size, $valuation, $lease_term, $completion, $unit_level, $furnishing, $condition, $description, $other_features, $fixtures_fittings, $picture, $url, $video, $user_id, $limit, $base64_image = false)
+- (void) convertDataForModePreviewAd
+{
+    NSArray *sourceParaNames = [NSArray arrayWithArray: _sourceForPreviewMode[0]];
+    NSArray *sourceValues = [NSArray arrayWithArray:_sourceForPreviewMode[1]];
+    NSInteger index = 0;
+    id objectValue;
+    cellData = [[HBBResultCellData alloc]init];
+    cellData.hdbID = 0;
+    cellData.timeCreated = @"N/A";
+    //            cellData.titleHDB = [dict objectForKey:@"address"];
+    
+    //author
+    cellData.userInfo = [UserPAInfo sharedUserPAInfo];
+//                      @"id",
+    [cellData.paraValues addObject:@"0"];
+//                      @"status",
+    index = [sourceParaNames indexOfObject:@"property_status"];
+    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//                      @"block_no",
+    index = [sourceParaNames indexOfObject:@"block"];
+    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//                      @"street_name",
+    index = [sourceParaNames indexOfObject:@"street_name"];
+    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//                      @"property_type",
+    index = [sourceParaNames indexOfObject:@"property_type"];
+    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//                      @"description",
+    index = [sourceParaNames indexOfObject:@"description"];
+    objectValue = [sourceValues objectAtIndex:index];
+    objectValue = [NSData base64EncodedStringFromplainText:objectValue];
+    [cellData.paraValues addObject:objectValue];
+//                      @"unit_level",
+    index = [sourceParaNames indexOfObject:@"unit_level"];
+    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//                      @"hdb_estate",
+    index = [sourceParaNames indexOfObject:@"hdb_estate"];
+    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//                      @"size",
+    index = [sourceParaNames indexOfObject:@"size"];
+    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//                      @"bedrooms",
+    index = [sourceParaNames indexOfObject:@"bedrooms"];
+    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//                      @"washroom",
+    index = [sourceParaNames indexOfObject:@"washrooms"];
+    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//                      @"furnishing",
+    index = [sourceParaNames indexOfObject:@"furnishing"];
+    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//                      @"building_completion",
+    index = [sourceParaNames indexOfObject:@"completion"];
+    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//                      @"created",
+    [cellData.paraValues addObject:@""];
+//                      @"price",
+    index = [sourceParaNames indexOfObject:@"price"];
+    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//                      @"valuation_price",
+    index = [sourceParaNames indexOfObject:@"valuation"];
+    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//                      @"monthly_rental",
+    index = [sourceParaNames indexOfObject:@"price"];
+    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//                      @"lease_term",
+    index = [sourceParaNames indexOfObject:@"lease_term"];
+    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//                      @"thumb",
+    [cellData.paraValues addObject:[UserPAInfo sharedUserPAInfo].avatarUrl];
+//                      @"psf",
+#warning psf
+    index = [sourceParaNames indexOfObject:@"price"];
+    objectValue = [sourceValues objectAtIndex:index];
+    float price = [objectValue floatValue];
+    index = [sourceParaNames indexOfObject:@"size"];
+    objectValue = [sourceValues objectAtIndex:index];
+    float size = [objectValue floatValue];
+    
+    NSNumberFormatter * formatter = [NSNumberFormatter new];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    [formatter setMaximumFractionDigits:2];
+    NSString *psftStr = [formatter stringFromNumber:[NSNumber numberWithFloat:price/size]];
+    [cellData.paraValues addObject:psftStr];
+//                      @"ad_owner",
+    index = [sourceParaNames indexOfObject:@"hdb_owner"];
+    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//                      @"total_comments",
+    [cellData.paraValues addObject:@""];
+//                      @"clap_info",
+    [cellData.paraValues addObject:@""];
+//                      @"total_views",
+    [cellData.paraValues addObject:@"0"];
+//                      nil];
+
+}
 
 #pragma mark -
 - (void) addCell:(CommentsCellContent *) commentContent

@@ -273,6 +273,22 @@
 			<string>7,500 sqft (697 sqm)</string>
 			<string>10,000 sqft ( 929 sqm)</string>
 		</array>
+		<key>SizeSqm</key>
+		<array>
+			<string>50 sqm (538 sqft)</string>
+			<string>70 sqm (753 sqft)</string>
+			<string>90 sqm (969 sqft)</string>
+			<string>100 sqm (1,076 sqft)</string>
+			<string>120 sqm (1,292 sqft)</string>
+			<string>150 sqm (1,615 sqft)</string>
+			<string>200 sqm (2,153 sqft)</string>
+			<string>250 sqm (2,691 sqft)</string>
+			<string>300 sqm (3,229 sqft)</string>
+			<string>400 sqm (4,306 sqft)</string>
+			<string>500 sqm (5,382 sqft)</string>
+			<string>700 sqm (7,535 sqft)</string>
+			<string>1,000 sqm (10,764 sqft)</string>
+		</array>
 		<key>AdOwner</key>
 		<array>
 			<string>Property Agent</string>

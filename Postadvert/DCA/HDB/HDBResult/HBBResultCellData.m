@@ -14,7 +14,8 @@
 {
     self = [super init];
     if (self) {
-        self.paraNames = [[NSMutableArray alloc]initWithObjects:@"id",
+        self.paraNames = [[NSMutableArray alloc]initWithObjects:
+                          @"id",
                           @"status",
                           @"block_no",
                           @"street_name",

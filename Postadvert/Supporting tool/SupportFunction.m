@@ -433,4 +433,54 @@
     newURL =nil;
     return NO;
 }
+
++ (NSString *) stringFromYears:(NSInteger) years andMonths:(NSInteger)months
+{
+    NSString *str =@"";
+    if (years == 1 ) {
+        str = [str stringByAppendingString:@"1 Year "];
+    }
+    if (years > 1) {
+        str = [str stringByAppendingFormat:@"%d Years ",years];
+    }
+    if (months == 1 ) {
+        str = [str stringByAppendingString:@"1 Month"];
+    }
+    if (months > 1) {
+        str = [str stringByAppendingFormat:@"%d Months",months];
+    }
+
+    return str;
+}
+
++ (NSArray*) numbersFromFullYearsMonths:(NSString*)fullStr
+{
+    fullStr = [fullStr stringByReplacingOccurrencesOfString:@"s" withString:@""];
+    NSString *startValue = fullStr;
+    NSString *endValue = fullStr;
+    NSInteger yearNum = 0;
+    NSInteger monthNum = 0;
+    NSRange rang = [startValue rangeOfString:@"Year"];
+    if (rang.length) {
+        startValue = [startValue substringToIndex:rang.location - 1];
+        yearNum = [startValue integerValue];
+        endValue = [fullStr substringFromIndex:rang.location + rang.length];
+    }
+    rang = [endValue rangeOfString:@"Month"];
+    if (rang.length) {
+        endValue = [endValue substringToIndex:rang.location - 1];
+        monthNum = [endValue integerValue];
+    }
+    
+    //
+    NSString *yearStr, *monthStr, *totalMonthStr, *year_monthStr;
+    
+    yearStr = [NSString stringWithFormat:@"%d",yearNum];
+    monthStr = [NSString stringWithFormat:@"%d",monthNum];
+    totalMonthStr = [NSString stringWithFormat:@"%d",yearNum * 12 + monthNum];
+    year_monthStr = [NSString stringWithFormat:@"%d,%d",yearNum, monthNum];
+    
+    return [NSArray arrayWithObjects:yearStr, monthStr, totalMonthStr, year_monthStr, nil];
+}
+
 @end

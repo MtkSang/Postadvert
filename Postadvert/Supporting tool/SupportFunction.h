@@ -20,4 +20,7 @@
 + (NSString*) getYoutubeIDFromUrl:(NSString*) url;
 
 + (BOOL) isYoutubeVideoLink:(NSURL*)url;
+
++ (NSString *) stringFromYears:(NSInteger) years andMonths:(NSInteger)months;
++ (NSArray*) numbersFromFullYearsMonths:(NSString*)fullStr;
 @end

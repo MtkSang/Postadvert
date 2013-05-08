@@ -19,6 +19,9 @@
 #import "HBBResultCellData.h"
 #import "NSData+Base64.h"
 #import "HDBResultDetailViewController.h"
+#import "DCAPickerViewController.h"
+#import "SupportFunction.h"
+#import "HDBResultDetailViewController.h"
 @interface HDBPostViewController ()
 
 @end
@@ -97,7 +100,7 @@
     CGSize constraint, size;
     constraint = CGSizeMake(300.f, 160.f);
     size = [textView.text sizeWithFont:textView.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-    self.boundForm.frame = CGRectMake(10, 38, 300, size.height + 10);
+    //self.boundForm.frame = CGRectMake(10, 38, 300, size.height + 10);
 }
 
 #pragma mark - subview
@@ -245,7 +248,7 @@
         
         cell.textLabel.text = textLabel;
         NSString *detailText = [[NSUserDefaults standardUserDefaults] objectForKey:textLabel];
-        if (detailText == nil || [detailText isEqualToString:@""]) {
+        if (detailText == nil || [detailText isEqualToString:@""] || [detailText isEqualToString:@"0"]) {
             if (indexPath.row == array.count - 1 || indexPath.row < 6) {
                 detailText = @"Select One";
             }else
@@ -507,14 +510,12 @@
             textLabel =@"";
         }
         cell.textLabel.text = textLabel;
-        NSString *detailText = [[NSUserDefaults standardUserDefaults] objectForKey:textLabel];
-        if (detailText == nil || [detailText isEqualToString:@""]) {
-            detailText = @"No";
-        }
-        if ([detailText isEqualToString:@"No"]) {
-            [cell setAccessoryType:UITableViewCellAccessoryNone];
-        }else
+        NSString *fixtures_fittings = [[NSUserDefaults standardUserDefaults] objectForKey:headerStr];
+        NSRange rang = [fixtures_fittings rangeOfString:cell.textLabel.text];
+        if (rang.length) {
             [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+        }else
+            [cell setAccessoryType:UITableViewCellAccessoryNone];
         
     }
     return cell;
@@ -774,12 +775,45 @@
             }
         }
         else{
-            [self.textField setKeyboardType:UIKeyboardTypeDecimalPad];
-            [self.textField setReturnKeyType:UIReturnKeyDone];
-            [self.textField becomeFirstResponder];
-            [self.textField setText:cell.detailTextLabel.text];
-            [self.inputTitle setText:[NSString stringWithFormat:@"Enter value for %@", cell.textLabel.text]];
-            [self showDialog:self.inputForm];
+#warning in progress
+//            [self.textField setKeyboardType:UIKeyboardTypeDecimalPad];
+//            [self.textField setReturnKeyType:UIReturnKeyDone];
+//            [self.textField becomeFirstResponder];
+//            [self.textField setText:cell.detailTextLabel.text];
+//            [self.inputTitle setText:[NSString stringWithFormat:@"Enter value for %@", cell.textLabel.text]];
+//            [self showDialog:self.inputForm];
+            UIDCAPickerControllerSourceType sourceType = pickerTypeUnknow;
+            rang = [cell.textLabel.text rangeOfString:@"Size (sq ft)"];
+            if (rang.length) {
+                sourceType = pickerTypeInputSizeSqft;
+            }
+            rang = [cell.textLabel.text rangeOfString:@"Size (sqm)"];
+            if (rang.length) {
+                sourceType = pickerTypeInputSizeSqm;
+            }
+            rang = [cell.textLabel.text rangeOfString:@"Size (sqm)"];
+            if (rang.length) {
+                sourceType = pickerTypeInputSizeSqm;
+            }
+            rang = [cell.textLabel.text rangeOfString:@"Valuation"];
+            if (rang.length) {
+                sourceType = pickerTypeInputValuationPrice;
+            }
+            if ([cell.textLabel.text isEqualToString:@"Price (S$)"]) {
+                sourceType = pickerTypeInputPrice;
+            }
+            rang = [cell.textLabel.text rangeOfString:@"Monthly Rental"];
+            if (rang.length) {
+                sourceType = pickerTypeInputMonthlyRental;
+            }
+            rang = [cell.textLabel.text rangeOfString:@"Lease Term"];
+            if (rang.length) {
+                sourceType = pickerTypeInputLeaseTerm;
+            }
+            picker = [[DCAPickerViewController alloc]initWithDictionary:staticData andSourceType:sourceType andValue:cell.detailTextLabel.text];
+            picker.delegate = self;
+            //picker.customValue = cell.detailTextLabel.text;
+            [self presentSemiModalViewController:picker];
         }
     }
     if ([headerStr isEqualToString:@"Special Features"]) {
@@ -893,8 +927,16 @@
     if ([headerStr isEqualToString:@"Home Interior"]) {
         if (cell.accessoryType == UITableViewCellAccessoryNone) {
             [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+            NSString *fixtures_fittings = [[NSUserDefaults standardUserDefaults] valueForKey:headerStr];
+            fixtures_fittings = [fixtures_fittings stringByAppendingFormat:@"%@, ", cell.textLabel.text];
+            [[NSUserDefaults standardUserDefaults] setValue:fixtures_fittings forKey:headerStr];
         }else
+        {
             [cell setAccessoryType:UITableViewCellAccessoryNone];
+            NSString *fixtures_fittings = [[NSUserDefaults standardUserDefaults] valueForKey:headerStr];
+            fixtures_fittings = [fixtures_fittings stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@, ", cell.textLabel.text] withString:@""];
+            [[NSUserDefaults standardUserDefaults] setValue:fixtures_fittings forKey:headerStr];
+        }
     }
     
 }
@@ -1026,6 +1068,15 @@
 }
 
 - (IBAction)previewAdClicked:(id)sender {
+    HDBResultDetailViewController *hdbResultViewCtr = [[HDBResultDetailViewController alloc] init];
+    hdbResultViewCtr.isModePreviewAd = YES;
+    NSArray *source = [NSArray arrayWithArray:[self addValueForArrays]];
+    hdbResultViewCtr.sourceForPreviewMode = source;
+    NSString *notPassed = [self checkValue:source[2]of:source[1]];
+    if (![notPassed isEqualToString:@""]) {
+        [[PostadvertControllerV2 sharedPostadvertController] showAlertWithMessage:[NSString stringWithFormat:@"You must select: %@", notPassed ] andTitle:@"Preview Ad"];
+    }else
+        [self.navigationController pushViewController:hdbResultViewCtr animated:YES];
 }
 
 - (IBAction)btnCancelClicked:(id)sender {
@@ -1083,6 +1134,7 @@
     NSMutableArray *paraNames = [[NSMutableArray alloc]init];
     NSMutableArray *paraValues = [[NSMutableArray alloc]init];
     NSMutableArray *paraNamesOnView = [[NSMutableArray alloc]init];
+    NSMutableArray *templateArray = [[NSMutableArray alloc]init];
 //    createHDB($property_status, $block, $street_name, $property_type, $hdb_owner, $hdb_estate, $bedrooms, $washrooms, $price, $size, $valuation, $lease_term, $completion, $unit_level, $furnishing, $condition, $description, $other_features, $fixtures_fittings, $picture, $url, $video, $user_id, $limit, $base64_image = false)
     @try {
         
@@ -1159,7 +1211,9 @@
         [paraNamesOnView addObject:@"Valuation Price (S$)"];
         //lease_term
         [paraNames addObject:@"lease_term"];
-        [paraValues addObject:[database objectForKey:@"Lease Term"]];
+        value = [database objectForKey:@"Lease Term"];
+        templateArray = [NSMutableArray arrayWithArray: [SupportFunction numbersFromFullYearsMonths:value]];
+        [paraValues addObject:templateArray[3]];
         [paraNamesOnView addObject:@"Lease Term"];
         //completion
         [paraNames addObject:@"completion"];
@@ -1189,8 +1243,12 @@
         [paraNamesOnView addObject:@"Others"];
         //fixtures_fittings
         [paraNames addObject:@"fixtures_fittings"];
-        [paraValues addObject:@""];
-        [paraNamesOnView addObject:@"Insert Videos"];
+        value = [database objectForKey:@"Home Interior"];
+        if ([value rangeOfString:@","].length) {
+            value = [value substringToIndex:value.length - 2];
+        }
+        [paraValues addObject: value];
+        [paraNamesOnView addObject:@"Home Interior"];
         //picture
         [paraNames addObject:@"picture"];
         [paraValues addObject:@""];
@@ -1232,6 +1290,13 @@
     }
     @catch (NSException *exception) {
         NSLog(@"%@", exception);
+    }
+    for (int i = 0; i < paraValues.count; i++) {
+        NSString *value = [paraValues objectAtIndex:i];
+        if ([value isEqualToString:@"Select One"] || [value isEqualToString:@"Others Features"]) {
+            value = @"";
+            [paraValues replaceObjectAtIndex:i withObject:@""];
+        }
     }
     return [NSArray arrayWithObjects:paraNames, paraValues, paraNamesOnView, nil];
 }
@@ -1303,7 +1368,7 @@
     //other_features
     [database setValue:@"" forKey:@"Others"];
     //fixtures_fittings
-    
+    [database setValue:@"" forKey:@"Home Interior"];
     //picture
     [database setValue:@"" forKey:@"Upload Images"];
     if (insertPicCtr) {
@@ -1328,6 +1393,85 @@
     [database setValue:@"" forKey:@"Size (sqm) *"];
     [database setValue:@"" forKey:@"Monthly Rental (S$)"];
     [database setValue:@"" forKey:@"Lease Term"];
+}
+#pragma mark DCAPickerViewControllerDelegate
+
+-(void) didPickerCloseWithControll:(DCAPickerViewController *)ctr
+{
+    NSUserDefaults *database = [NSUserDefaults standardUserDefaults];
+    //Size (sq ft) *
+    if (ctr.sourceType == pickerTypeInputSizeSqft) {
+        NSString *value = [ctr.customValue stringByReplacingOccurrencesOfString:@"," withString:@""];
+        float sqftValue = [value floatValue];
+        float sqmValue = sqftValue * 0.092903;
+        
+        NSNumberFormatter * formatter = [NSNumberFormatter new];
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        [formatter setMaximumFractionDigits:2]; 
+        
+        NSString *sqftStr = [formatter stringFromNumber:[NSNumber numberWithFloat:sqftValue]];
+        NSString *sqmStr = [formatter stringFromNumber:[NSNumber numberWithFloat:sqmValue]];
+        [database setValue:sqftStr forKey:@"Size (sq ft) *"];
+        [database setValue:sqmStr forKey:@"Size (sqm) *"];
+    }
+    //Size (sqm) *
+    if (ctr.sourceType == pickerTypeInputSizeSqm) {
+        NSString *value = [ctr.customValue stringByReplacingOccurrencesOfString:@"," withString:@""];
+        float sqmValue = [value floatValue];
+        float sqftValue = sqmValue * 10.7639;
+        
+        NSNumberFormatter * formatter = [NSNumberFormatter new];
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        [formatter setMaximumFractionDigits:2];
+        
+        NSString *sqftStr = [formatter stringFromNumber:[NSNumber numberWithFloat:sqftValue]];
+        NSString *sqmStr = [formatter stringFromNumber:[NSNumber numberWithFloat:sqmValue]];
+        [database setValue:sqftStr forKey:@"Size (sq ft) *"];
+        [database setValue:sqmStr forKey:@"Size (sqm) *"];
+    }
+    // Price
+    if (ctr.sourceType == pickerTypeInputPrice) {
+        NSString *value = [ctr.customValue stringByReplacingOccurrencesOfString:@"," withString:@""];
+        float price = [value floatValue];
+        
+        NSNumberFormatter * formatter = [NSNumberFormatter new];
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        [formatter setMaximumFractionDigits:2];
+        
+        NSString *priceStr = [formatter stringFromNumber:[NSNumber numberWithFloat:price]];
+        [database setValue:priceStr forKey:@"Price (S$)"];
+    }
+    // ValuationPrice
+    if (ctr.sourceType == pickerTypeInputValuationPrice) {
+        NSString *value = [ctr.customValue stringByReplacingOccurrencesOfString:@"," withString:@""];
+        float price = [value floatValue];
+        
+        NSNumberFormatter * formatter = [NSNumberFormatter new];
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        [formatter setMaximumFractionDigits:2];
+        
+        NSString *priceStr = [formatter stringFromNumber:[NSNumber numberWithFloat:price]];
+        [database setValue:priceStr forKey:@"Valuation Price (S$)"];
+    }
+    // Monthly Rental
+    if (ctr.sourceType == pickerTypeInputMonthlyRental) {
+        NSString *value = [ctr.customValue stringByReplacingOccurrencesOfString:@"," withString:@""];
+        float price = [value floatValue];
+        
+        NSNumberFormatter * formatter = [NSNumberFormatter new];
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        [formatter setMaximumFractionDigits:2];
+        
+        NSString *priceStr = [formatter stringFromNumber:[NSNumber numberWithFloat:price]];
+        [database setValue:priceStr forKey:@"Monthly Rental (S$)"];
+    }
+    // Lease Term
+    if (ctr.sourceType == pickerTypeInputLeaseTerm) {
+        [database setValue:picker.customValue forKey:@"Lease Term"];
+    }
+    
+    [self dismissSemiModalViewController:ctr];
+    [self.tableView reloadData];
 }
 
 #pragma mark InsertPictureDelegate

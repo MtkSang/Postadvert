@@ -255,6 +255,23 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
         [database setValue:[UserPAInfo sharedUserPAInfo].email  forKey:@"email"];
         [database setValue:[UserPAInfo sharedUserPAInfo].passwordPU forKey:@"passwordPA"];
         [database synchronize];
+    }else
+    {
+#warning just for login without Login
+        logInId = 97;
+        [UserPAInfo sharedUserPAInfo].registrationID = logInId;
+        //for Kelvin
+        //[UserPAInfo sharedUserPAInfo].registrationID = 101;
+        [UserPAInfo sharedUserPAInfo].email = @"sang@futureworkz.com";
+        [UserPAInfo sharedUserPAInfo].fullName = @"A B";
+        [UserPAInfo sharedUserPAInfo].usernamePU = @"Mtk2";
+        [UserPAInfo sharedUserPAInfo].passwordPU = @"qwerty";
+        //save user info
+        NSUserDefaults *database = [[NSUserDefaults alloc]init];
+        [database setValue:[UserPAInfo sharedUserPAInfo].usernamePU forKey:@"userNamePA"];
+        [database setValue:[UserPAInfo sharedUserPAInfo].email  forKey:@"email"];
+        [database setValue:[UserPAInfo sharedUserPAInfo].passwordPU forKey:@"passwordPA"];
+        [database synchronize];
     }
     jsonObject = nil;
     return logInId;

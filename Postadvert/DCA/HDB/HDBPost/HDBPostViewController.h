@@ -11,8 +11,10 @@
 @class OptionTableHDBPostViewController;
 @class InsertPictureViewController;
 @class InsertURLViewController;
+@class DCAPickerViewController;
 @interface HDBPostViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 {
+    DCAPickerViewController *picker;
     NSMutableDictionary *sourceData;
     NSMutableArray *allKeys;
     UITapGestureRecognizer *tapGesture;
