@@ -15,6 +15,7 @@
 #import "CommentsCellContent.h"
 #import "UserPAInfo.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SupportFunction.h"
 @interface HDBResultDetailViewController ()
 
 @end
@@ -88,8 +89,12 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (cellData) {
-        return 3;
-        // 0-Detail Ad  1-contact Ad Owner  2- comments
+        return 5;
+        // 0-Detail Ad
+        // 1-contact Ad Owner
+        // 2-Feature
+        // 3-Hom Interior _ fixting
+        // 4-Commments
     }
     return 0;
 }
@@ -102,12 +107,26 @@
     if (section == 01) {
         return 2;
     }
-    if (section == 2) {//comments
-        return listComments.count;
+    if (section == 2) {//spectail Feature
+        return cellData.array_other_features.count;
     }
-    
-    return 0;
+    if (section == 3) {//fixtures_fittings
+        return cellData.array_fixtures_fittings.count;
+    }
+    return listComments.count;
 }
+
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+//    NSString *title = nil;
+//    if (section == 2) {
+//        title = @"Special Features";
+//    }
+//    if (section == 3) {
+//        title = @"Feature & Fittings";
+//    }
+//    return title;
+//}
 
 - (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
@@ -212,6 +231,13 @@
         }
         
         
+    }
+    if (section == 2) {
+        //title = @"Special Features";
+        
+    }
+    if (section == 3) {
+        //title = @"Feature & Fittings";
     }
     return header;
 }
@@ -402,6 +428,28 @@
         
     }
     if (indexPath.section == 2) {
+        static NSString *CellIdentifier2 = @"Cell";
+        
+        UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier2];
+        
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier2];
+        }
+        cell.textLabel.text = [cellData.array_other_features objectAtIndex:indexPath.row];
+        return cell;
+    }
+    if (indexPath.section == 3) {
+        static NSString *CellIdentifier2 = @"Cell";
+        
+        UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier2];
+        
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier2];
+        }
+        cell.textLabel.text = [cellData.array_fixtures_fittings objectAtIndex:indexPath.row];
+        return cell;
+    }
+    if (indexPath.section == 4) {
         static NSString *CellIdentifier = @"UICommentCell";
         
         UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -466,6 +514,9 @@
             return size.height + 25;
         }
     }
+    if (indexPath.section == 2 || indexPath.section == 3) {
+        return cCellHeight;
+    }
     //commment size
     return [CommentsCellContent getCellHeighWithContent:[listComments objectAtIndex:indexPath.row] withWidth:294 - 74];
 }
@@ -477,7 +528,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 1) {
+    if (section == 1 || section == 2 || section == 3) {
         return CELL_COMMENTS_HEADER_HEIGHT;
         //        if (actiCell._content.totalClap) {
         //            return CELL_COMMENTS_HEADER_HEIGHT;
@@ -619,7 +670,7 @@
                 }
                 
             }
-            
+            [cellData parseFixtures_fittingAndFeatures];
         }
         [self.tableView reloadData];
         [self performSelectorInBackground:@selector(loadCommentsInBackground) withObject:nil];
@@ -725,11 +776,11 @@
     [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
 //                      @"lease_term",
     index = [sourceParaNames indexOfObject:@"lease_term"];
-    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+    objectValue = [SupportFunction stringFromShortYearMonthString:[sourceValues objectAtIndex:index]];
+    [cellData.paraValues addObject: objectValue];
 //                      @"thumb",
     [cellData.paraValues addObject:[UserPAInfo sharedUserPAInfo].avatarUrl];
 //                      @"psf",
-#warning psf
     index = [sourceParaNames indexOfObject:@"price"];
     objectValue = [sourceValues objectAtIndex:index];
     float price = [objectValue floatValue];
@@ -751,7 +802,21 @@
     [cellData.paraValues addObject:@""];
 //                      @"total_views",
     [cellData.paraValues addObject:@"0"];
-//                      nil];
+//    @"other_features",
+    index = [sourceParaNames indexOfObject:@"other_features"];
+    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//    @"fixtures_fittings",
+    index = [sourceParaNames indexOfObject:@"fixtures_fittings"];
+    [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//    @"images",
+    [cellData.paraValues addObject:@""];
+//    @"videos",
+    [cellData.paraValues addObject:@""];
+//    @"websites",
+    [cellData.paraValues addObject:@""];
+    
+//
+    [cellData parseFixtures_fittingAndFeatures];
 
 }
 

@@ -9,7 +9,9 @@
 #import "HBBResultCellData.h"
 
 @implementation HBBResultCellData
-
+//condition,
+//"ad_owner",
+//"size_m",
 - (id) init
 {
     self = [super init];
@@ -39,12 +41,39 @@
                           @"total_comments",
                           @"clap_info",
                           @"total_views",
+                          @"other_features",
+                          @"fixtures_fittings",
+                          @"images",
+                          @"videos",
+                          @"websites",
                           nil];
-                          
+        
         self.paraValues = [[NSMutableArray alloc]init];
+        self.array_fixtures_fittings = [[NSMutableArray alloc]init];
+        self.array_other_features = [[NSMutableArray alloc]init];
     }
     
     return self;
 }
-
+- (void) parseFixtures_fittingAndFeatures{
+    NSInteger index;
+    id objectValue;
+    index = [self.paraNames indexOfObject:@"other_features"];
+    if (index != NSIntegerMax) {
+        objectValue = [self.paraValues objectAtIndex:index];
+        if (![objectValue isEqualToString:@""] && [objectValue isKindOfClass:[NSString class]]) {
+            objectValue = [objectValue stringByReplacingOccurrencesOfString:@", " withString:@","];
+            self.array_other_features = [[NSMutableArray alloc]initWithArray:[objectValue componentsSeparatedByString:@","]];
+        }
+    }
+    
+    index = [self.paraNames indexOfObject:@"fixtures_fittings"];
+    if (index != NSIntegerMax) {
+        objectValue = [self.paraValues objectAtIndex:index];
+        if (![objectValue isEqualToString:@""] && [objectValue isKindOfClass:[NSString class]]) {
+            objectValue = [objectValue stringByReplacingOccurrencesOfString:@", " withString:@","];
+            self.array_fixtures_fittings = [[NSMutableArray alloc]initWithArray:[objectValue componentsSeparatedByString:@","]];
+        }
+    }
+}
 @end

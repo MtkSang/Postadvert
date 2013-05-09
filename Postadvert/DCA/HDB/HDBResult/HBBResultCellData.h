@@ -19,5 +19,9 @@
 @property (nonatomic, strong) CredentialInfo *userInfo;
 @property (nonatomic, strong) NSMutableArray *paraNames;
 @property (nonatomic, strong) NSMutableArray *paraValues;
+@property (nonatomic, strong) NSMutableArray *array_fixtures_fittings;
+@property (nonatomic, strong) NSMutableArray *array_other_features;
+
+- (void) parseFixtures_fittingAndFeatures;
 
 @end

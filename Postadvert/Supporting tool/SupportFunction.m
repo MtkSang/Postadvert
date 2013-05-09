@@ -452,6 +452,18 @@
 
     return str;
 }
++ (NSString *) stringFromShortYearMonthString:(NSString*) str
+{
+    NSArray *array = [str componentsSeparatedByString:@","];
+    NSInteger year = 0, month = 0;
+    if (array.count>0) {
+        year = [[array objectAtIndex:0] integerValue];
+    }
+    if (array.count>1) {
+        month = [[array objectAtIndex:1] integerValue];
+    }
+    return [SupportFunction stringFromYears:year andMonths:month];
+}
 
 + (NSArray*) numbersFromFullYearsMonths:(NSString*)fullStr
 {

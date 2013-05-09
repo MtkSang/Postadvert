@@ -22,5 +22,6 @@
 + (BOOL) isYoutubeVideoLink:(NSURL*)url;
 
 + (NSString *) stringFromYears:(NSInteger) years andMonths:(NSInteger)months;
++ (NSString *) stringFromShortYearMonthString:(NSString*) str;
 + (NSArray*) numbersFromFullYearsMonths:(NSString*)fullStr;
 @end
