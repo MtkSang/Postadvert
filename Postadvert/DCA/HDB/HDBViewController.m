@@ -441,6 +441,9 @@
     }else
     {
         NSInteger index = [sortByData indexOfObject:sortByValue];
+        if (index == NSIntegerMax) {
+            index = 0;
+        }
         NSString *value = [sortByDataV3 objectAtIndex:index];
         [[NSUserDefaults standardUserDefaults] setValue:value forKey:@"Sort By V3"];
     }

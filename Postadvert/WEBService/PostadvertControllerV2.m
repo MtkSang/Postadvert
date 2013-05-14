@@ -458,7 +458,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     //NSLog(@"web url = %@",locationOfWebService);
     
     NSMutableURLRequest *theRequest = [[NSMutableURLRequest alloc]initWithURL:locationOfWebService];// cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:4];
-    [theRequest setTimeoutInterval:120];
+    [theRequest setTimeoutInterval:180];
     NSString *msgLength = [NSString stringWithFormat:@"%d",[soapFormat length]];
     
     

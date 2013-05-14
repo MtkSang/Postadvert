@@ -16,9 +16,16 @@
 #import "UserPAInfo.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SupportFunction.h"
+#import "KTPhotoScrollViewController.h"
+#import "SDWebImageDataSource.h"
 @interface HDBResultDetailViewController ()
 
 @end
+enum viewModeForDCADetail {
+    modePreview = 0,
+    modeViewDetail = 1,
+    modeSubmitAd = 2
+    };
 
 @implementation HDBResultDetailViewController
 
@@ -28,10 +35,24 @@
     if (self) {
         _hdbID = hdbID_;
         _userID = userID_;
+        self.viewMode = modeViewDetail;
     }
     return self;
 }
 
+- (id)initBySubmitParaNames:(NSArray*)paranames andParavalues:(NSArray*)paravalues withListImages:(NSArray*)listimages
+{
+    self = [super init];
+    if (self) {
+        self.viewMode = modeSubmitAd;
+        _paraValues = [[NSArray alloc]initWithArray:paravalues];
+        _paraNames = [[NSArray alloc]initWithArray:paranames];
+        if (listimages.count) {
+            _listImages = [[NSArray alloc]initWithArray:listimages];
+        }
+    }
+    return self;
+}
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -62,19 +83,27 @@
     //TapGesture
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction)];
     [_tableView addGestureRecognizer:tap];
-    if (_isModePreviewAd) {
+    if (_viewMode == modePreview ) {
         [_texbox setUserInteractionEnabled:NO];
     }
+    currentItem = [self.tabBar.items objectAtIndex:0];
+    [self.tabBar setSelectedItem:currentItem];
+}
+- (void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.tabBar setSelectedItem:currentItem];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
-    [hud showWhileExecuting:@selector(loadDataInBackground) onTarget:self withObject:nil animated:YES];
-    if (self.showKeyboard) {
-        [self.texbox becomeFirstResponder];
+    if (hud == nil) {
+        hud = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:hud];
+        [hud showWhileExecuting:@selector(loadDataInBackground) onTarget:self withObject:nil animated:YES];
+        if (self.showKeyboard) {
+            [self.texbox becomeFirstResponder];
+        }
     }
 }
 - (void)didReceiveMemoryWarning
@@ -116,22 +145,22 @@
     return listComments.count;
 }
 
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-//{
-//    NSString *title = nil;
-//    if (section == 2) {
-//        title = @"Special Features";
-//    }
-//    if (section == 3) {
-//        title = @"Feature & Fittings";
-//    }
-//    return title;
-//}
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSString *title = nil;
+    if (section == 2 && cellData.array_other_features.count) {
+        title = @"Special Features";
+    }
+    if (section == 3 && cellData.array_fixtures_fittings.count) {
+        title = @"Feature & Fittings";
+    }
+    return title;
+}
 
 - (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *header = nil;
-    if (_isModePreviewAd) {
+    if (_viewMode == modePreview) {
         return header;
     }
 //    if (section == 0) {
@@ -232,13 +261,26 @@
         
         
     }
-    if (section == 2) {
-        //title = @"Special Features";
-        
-    }
-    if (section == 3) {
-        //title = @"Feature & Fittings";
-    }
+//    if (section == 2) {
+//        //title = @"Special Features";
+//        header = [[UIView alloc]initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, CELL_COMMENTS_HEADER_HEIGHT)];
+//        header.backgroundColor = [UIColor clearColor];
+//        UILabel *titleView = [[UILabel alloc] initWithFrame:header.frame];
+//        [titleView setText:@"Special Features"];
+//        [titleView setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
+//        [titleView setTextColor:[UIColor whiteColor]];
+//        titleView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+//        [header addSubview:titleView];
+//    }
+//    if (section == 3) {
+//        //title = @"Feature & Fittings";
+//        header = [[UIView alloc]initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, CELL_COMMENTS_HEADER_HEIGHT)];
+//        header.backgroundColor = [UIColor clearColor];
+//        UILabel *titleView = [[UILabel alloc] initWithFrame:header.frame];
+//        [titleView setText:@"Feature & Fittings"];
+//        titleView.backgroundColor = [UIColor lightGrayColor];
+//        [header addSubview:titleView];
+//    }
     return header;
 }
 
@@ -435,7 +477,10 @@
         if (cell == nil) {
             cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier2];
         }
+        [cell.imageView setImage:[UIImage imageNamed:@"accessoryView.png"]];
+        [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE_SMALL]];
         cell.textLabel.text = [cellData.array_other_features objectAtIndex:indexPath.row];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         return cell;
     }
     if (indexPath.section == 3) {
@@ -446,6 +491,9 @@
         if (cell == nil) {
             cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier2];
         }
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        [cell.imageView setImage:[UIImage imageNamed:@"accessoryView.png"]];
+        [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE_SMALL]];
         cell.textLabel.text = [cellData.array_fixtures_fittings objectAtIndex:indexPath.row];
         return cell;
     }
@@ -511,11 +559,11 @@
             value = [NSData stringDecodeFromBase64String:value];
             CGSize constraint = CGSizeMake(320 - 26, 20000.0f);
             CGSize size = [value sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE_SMALL] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-            return size.height + 25;
+            return size.height + 28;
         }
     }
     if (indexPath.section == 2 || indexPath.section == 3) {
-        return cCellHeight;
+        return cHeaderHeight;
     }
     //commment size
     return [CommentsCellContent getCellHeighWithContent:[listComments objectAtIndex:indexPath.row] withWidth:294 - 74];
@@ -528,21 +576,51 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 1 || section == 2 || section == 3) {
+    if (section == 1) {
+        if (_viewMode == modePreview) {
+            return 1.0;
+        }
         return CELL_COMMENTS_HEADER_HEIGHT;
-        //        if (actiCell._content.totalClap) {
-        //            return CELL_COMMENTS_HEADER_HEIGHT;
-        //        }
+    }
+    if (section == 2) {
+        if (cellData.array_other_features.count) {
+            return CELL_COMMENTS_HEADER_HEIGHT;
+        }else
+            return 1.0;
+    }
+    if (section == 3) {
+        if (cellData.array_fixtures_fittings.count) {
+            return CELL_COMMENTS_HEADER_HEIGHT;
+        }else
+            return 1.0;
     }
     return 10.0;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+//{
+//    if (section == 1) {
+//        return 10.0;
+//    }
+//    return 1.0;
+//}
+#pragma mark - UITabBarDelegate
+
+- (void) tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
-    if (section == 1) {
-        return 10.0;
+    if ([item.title isEqualToString:@"Photos"]) {
+        if (cellData.images.count <= 0) {
+            return;
+        }
+        SDWebImageDataSource *dataSource_ = [[SDWebImageDataSource alloc]initWithArray:cellData.images];
+        KTPhotoScrollViewController *newController = [[KTPhotoScrollViewController alloc]
+                                                      initWithDataSource:dataSource_
+                                                      andStartWithPhotoAtIndex:0];
+        [self.navigationController presentModalViewController:newController animated:YES];
+    }else
+    {
+        currentItem = item;
     }
-    return 1.0;
 }
 
 #pragma mark - UITextViewDelegate
@@ -630,12 +708,12 @@
 
 - (void) loadDataInBackground
 {
-    if (_isModePreviewAd) {
+    if (_viewMode == modePreview) {
         [self convertDataForModePreviewAd];
         [self.tableView reloadData];
         [self performSelectorInBackground:@selector(loadCommentsInBackground) withObject:nil];
-    }else
-    {
+    }
+    if (_viewMode == modeViewDetail) {
         //getHDBDetail($hdb_id, $user_id, $base64_image = false)
         id data;
         NSString *functionName;
@@ -671,6 +749,45 @@
                 
             }
             [cellData parseFixtures_fittingAndFeatures];
+        }
+        [self.tableView reloadData];
+        [self performSelectorInBackground:@selector(loadCommentsInBackground) withObject:nil];
+    }
+    if (_viewMode == modeSubmitAd) {
+        id data;
+        NSString *functionName;
+        functionName = @"createHDB";        
+        data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:_paraNames parametterValue:_paraValues];
+        
+        NSDictionary *dict = [NSDictionary dictionaryWithDictionary:data];
+        if (dict.allKeys.count) {
+            cellData = [[HBBResultCellData alloc]init];
+            cellData.hdbID = [[dict objectForKey:@"id"] integerValue];
+            cellData.timeCreated = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
+            //cellData.titleHDB = [dict objectForKey:@"address"];
+            //        NSString *title = [dict objectForKey:@"street_name"];
+            //        cellData.titleHDB = [cellData.titleHDB stringByAppendingString:title];
+            
+            //author
+            NSDictionary *authorDict = [dict objectForKey:@"author"];
+            cellData.userInfo = [[CredentialInfo alloc]init];
+            if ([authorDict isKindOfClass:[NSDictionary class]]) {
+                cellData.userInfo = [[CredentialInfo alloc]initWithDictionary:authorDict];
+            }
+            
+            for (NSString *key in cellData.paraNames) {
+                id object = [dict objectForKey:key];
+                if (object != nil) {
+                    [cellData.paraValues addObject: object];
+                }
+                
+            }
+            [cellData parseFixtures_fittingAndFeatures];
+            //update locall list Images
+            if (_listImages.count) {
+                cellData.images = [[NSMutableArray alloc]initWithArray:_listImages];
+            }
+            
         }
         [self.tableView reloadData];
         [self performSelectorInBackground:@selector(loadCommentsInBackground) withObject:nil];
@@ -850,12 +967,12 @@
 }
 
 - (IBAction)commentBtnClicked:(id)sender {
-    if (_isModePreviewAd) {
+    if (_viewMode == modePreview) {
         return;
     }
     @try {
         if (listComments.count) {
-            [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count - 1 inSection:2] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+            [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:listComments.count - 1 inSection:4] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         }
         [self performSelectorInBackground:@selector(loadCommentsInBackground) withObject:nil];
     }
@@ -941,7 +1058,7 @@
 }
 
 - (IBAction)clapBtnClicked:(id)sender {
-    if (_isModePreviewAd) {
+    if (_viewMode == modePreview) {
         return;
     }
     UIButton *btn = (UIButton*)sender;
@@ -974,6 +1091,7 @@
     [self setBtnSend:nil];
     [self setTexbox:nil];
     [self setScrollView:nil];
+    [self setTabBar:nil];
     [super viewDidUnload];
 }
 @end

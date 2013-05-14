@@ -51,12 +51,16 @@
         self.paraValues = [[NSMutableArray alloc]init];
         self.array_fixtures_fittings = [[NSMutableArray alloc]init];
         self.array_other_features = [[NSMutableArray alloc]init];
+        self.images = [[NSMutableArray alloc]init];
     }
     
     return self;
 }
 - (void) parseFixtures_fittingAndFeatures{
     NSInteger index;
+    if (self.paraValues.count != self.paraNames.count) {
+        return;
+    }
     id objectValue;
     index = [self.paraNames indexOfObject:@"other_features"];
     if (index != NSIntegerMax) {
@@ -73,6 +77,25 @@
         if (![objectValue isEqualToString:@""] && [objectValue isKindOfClass:[NSString class]]) {
             objectValue = [objectValue stringByReplacingOccurrencesOfString:@", " withString:@","];
             self.array_fixtures_fittings = [[NSMutableArray alloc]initWithArray:[objectValue componentsSeparatedByString:@","]];
+        }
+    }
+    index = [self.paraNames indexOfObject:@"images"];
+    if (index != NSIntegerMax) {
+        objectValue = [self.paraValues objectAtIndex:index];
+        if ([objectValue isKindOfClass:[NSArray class]]) {
+            NSString *imageURL, *imageThumb;
+            for (NSDictionary *dict in objectValue) {
+                imageThumb = [dict objectForKey:@"thumb"];
+                imageURL = [dict objectForKey:@"image_url"];
+                if (imageThumb == nil) {
+                    imageThumb = @"";
+                }
+                if (imageURL == nil) {
+                    imageURL = @"";
+                }
+                [self.images addObject:[NSArray arrayWithObjects:imageURL, imageThumb, nil]];
+            }
+            //self.images = [[NSMutableArray alloc]initWithArray:objectValue];
         }
     }
 }

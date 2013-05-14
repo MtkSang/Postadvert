@@ -308,10 +308,10 @@
     
 #warning Just for testing
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"loadActivity" object:nil];
-    HDBPostViewController *hdbPostCtr = [[HDBPostViewController alloc]init];
-    
-    [self.navDetail pushViewController:hdbPostCtr animated:YES];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"loadActivity" object:nil];
+//    HDBPostViewController *hdbPostCtr = [[HDBPostViewController alloc]init];
+//    
+//    [self.navDetail pushViewController:hdbPostCtr animated:YES];
 }
 
 -(void) viewDidDisappear:(BOOL)animated

@@ -1069,7 +1069,7 @@
 
 - (IBAction)previewAdClicked:(id)sender {
     HDBResultDetailViewController *hdbResultViewCtr = [[HDBResultDetailViewController alloc] init];
-    hdbResultViewCtr.isModePreviewAd = YES;
+    hdbResultViewCtr.viewMode = 0;
     NSArray *source = [NSArray arrayWithArray:[self addValueForArrays]];
     hdbResultViewCtr.sourceForPreviewMode = source;
     NSString *notPassed = [self checkValue:source[2]of:source[1]];
@@ -1244,6 +1244,9 @@
         //fixtures_fittings
         [paraNames addObject:@"fixtures_fittings"];
         value = [database objectForKey:@"Home Interior"];
+        if (value == nil) {
+            value = @"";
+        }
         if ([value rangeOfString:@","].length) {
             value = [value substringToIndex:value.length - 2];
         }
@@ -1393,6 +1396,8 @@
     [database setValue:@"" forKey:@"Size (sqm) *"];
     [database setValue:@"" forKey:@"Monthly Rental (S$)"];
     [database setValue:@"" forKey:@"Lease Term"];
+    [database setValue:@"" forKey:@"fixtures_fittings"];
+    [database setValue:@"" forKey:@"other_features"];
 }
 #pragma mark DCAPickerViewControllerDelegate
 

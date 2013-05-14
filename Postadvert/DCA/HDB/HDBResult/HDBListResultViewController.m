@@ -18,6 +18,7 @@
 #import "UIImageView+URL.h"
 #import "UserPAInfo.h"
 #import "HDBResultDetailViewController.h"
+#import "DCAOptionsViewController.h"
 @interface HDBListResultViewController ()
 
 @end
@@ -44,7 +45,8 @@
     [self.lbNumFound setBackgroundColor:[UIColor colorWithRed:90.0/255 green:85.0/255 blue:73.0/255 alpha:1]];
     [self.lbNumFound setTextColor:[UIColor whiteColor]];
     resultType = @"For Sale";
-
+    
+    currentItem = [self.tabBar.items objectAtIndex:1];
     
     //setup footview
     UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44)];
@@ -75,12 +77,15 @@
     [self setLbNumFound:nil];
     [self setPullTableViewCtrl:nil];
     [self setPullTableViewCtrl:nil];
+    [self setTabBar:nil];
     [super viewDidUnload];
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.tabBar setSelectedItem:currentItem];
     if (hud) {
         if (hud.superview) {
             [hud removeFromSuperview];
@@ -109,6 +114,35 @@
         hud = nil;
     }
 }
+#pragma  mark - UItabBarDelegate
+
+- (void) tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
+{
+    if (item == currentItem) {
+        return;
+    }else
+    {
+        if ([item.title isEqualToString:@"Sort"]) {
+            
+        }else
+            currentItem = item;
+    }
+    if ([item.title isEqualToString:@"Photo View"]) {
+        isListView = NO;
+        [self.tableView performSelector:@selector(reloadData)];
+        NSLog(@"sfsdfs");
+        return;
+    }
+    if ([item.title isEqualToString:@"List View"]) {
+        isListView = YES;
+        [self.tableView performSelector:@selector(reloadData)];
+        return;
+    }
+    if ([item.title isEqualToString:@"Sort"]) {
+        [self showSortBy];
+        return;
+    }
+}
 
 #pragma mark - Table view data source
 
@@ -119,6 +153,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (isListView) {
+        return 1;
+    }
     return 2;
 }
 
@@ -127,10 +164,19 @@
     HBBResultCellData *cellData = [currentListResult objectAtIndex:indexPath.section];
     if (indexPath.row == 0) {
         static NSString *CellIdentifier1 = @"HDBListResultCell1";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+        static NSString *CellIdentifier1ListView = @"HDBListResultCell1ListView";
+        UITableViewCell *cell;
+        if (isListView) {
+            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1ListView];
+        }else
+            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
         if (cell == nil) {
             
-            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier1 owner:self options:nil];
+            NSArray *topLevelObjects;
+            if (isListView) {
+                topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier1ListView owner:self options:nil];
+            }else
+                topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier1 owner:self options:nil];
             cell = [topLevelObjects objectAtIndex:0];
             topLevelObjects = nil;
             [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
@@ -286,10 +332,20 @@
 
 
 #pragma mark - Table view delegate
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (isListView) {
+        return 2;
+    }
+    return 10;
+}
 
 - (float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
+        if (isListView) {
+            return 75;
+        }
         return 159;
     }
     if (indexPath.row == 1) {
@@ -351,6 +407,27 @@
     isLoadData = YES;
     [loadingHideView showWhileExecuting:@selector(addNewData) onTarget:self withObject:nil animated:YES];
 }
+#pragma mark - 
+#pragma mark DCAPOptionViewController Delegate
+- (void) didSelectRowOfDCAOptionViewController:(DCAOptionsViewController *)dcaViewCtr
+{
+    if (dcaViewCtr.sourceType == DCAOptionsSortBy) {
+        NSDictionary *dict ;
+        if ([property_status isEqualToString:@"s"]) {
+            dict = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Sale"]];
+        }else
+            dict = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Rent"]];
+        NSArray *sortByData = [dict objectForKey:@"Sort By"];
+        sortByValue = [sortByData objectAtIndex:dcaViewCtr.selectedIndex];
+        NSInteger index = [sortByData indexOfObject:sortByValue];
+        NSArray *sortByDataV3 = [dict objectForKey:@"Sort By V3"];
+        NSString *value = [sortByDataV3 objectAtIndex:index];
+        [[NSUserDefaults standardUserDefaults] setValue:sortByValue forKey:@"Sort By"];
+        [[NSUserDefaults standardUserDefaults] setValue:value forKey:@"Sort By V3"];
+    }
+    [dcaViewCtr.navigationController popViewControllerAnimated:YES];
+}
+
 
 #pragma mark - background function
 
@@ -1014,4 +1091,23 @@
     detailViewCtr.property_status = property_status;
     [self.navigationController pushViewController:detailViewCtr animated:YES];
 }
+
+- (void) showSortBy
+{
+    NSDictionary *dict;
+    if ([property_status isEqualToString:@"s"]) {
+        dict = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Sale"]];
+    }else
+        dict = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Rent"]];
+    NSArray *sortByData = [dict objectForKey:@"Sort By"];
+    sortByValue = [[NSUserDefaults standardUserDefaults] valueForKey:@"Sort By"];
+    NSInteger index = [sortByData indexOfObject:sortByValue];
+    if (index == NSIntegerMax) {
+        index = -1 ;
+    }
+    DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:sortByData DCAOptionType:DCAOptionsSortBy selectedIndex:index];
+    dcaOptionViewCtr.delegate = self;
+    [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+}
+
 @end
