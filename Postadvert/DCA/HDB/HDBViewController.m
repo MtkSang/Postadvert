@@ -48,6 +48,7 @@
     UIImage *image = [UIImage imageNamed:@"titleHDB.png"];
     image = [image resizedImage:self.lbTitle.frame.size interpolationQuality:0];
     [self.lbTitle setBackgroundColor:[UIColor colorWithPatternImage:image]];
+    [self.lbTitle setText:self.itemName];
     
     //setupTabelHeader
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 35)];
@@ -211,6 +212,20 @@
                 internalID = 2;//rent off
     }
     
+    if ([itemName isEqualToString:@"Condos Search"]) {
+        if (currentButton == leftButton) {
+            if (isMoreOptionOn) {
+                internalID = 103;//sale on
+            }
+            else
+                internalID = 3;//sale off
+        }else
+            if (isMoreOptionOn) {
+                internalID = 104;//rent on
+            }else
+                internalID = 4;//rent off
+    }
+    
     return internalID;
 }
 
@@ -220,7 +235,12 @@
     internalItemID = [self getInternalItemIDWithItemName:self.itemName];
     NSString *plistPathForStaticDCA = [[NSBundle mainBundle] pathForResource:@"DCA" ofType:@"plist"];
     staticData = [NSDictionary dictionaryWithContentsOfFile:plistPathForStaticDCA];
-    staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"HDB Search"]];
+    if ([self.itemName isEqualToString:@"HDB Search"]) {
+        staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"HDB Search"]];
+    }
+    if ([self.itemName isEqualToString:@"Condos Search"]) {
+        staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Condos Search"]];
+    }
     NSDictionary *dict;
     //NSUserDefaults *database = [[NSUserDefaults alloc]init];
     
@@ -288,7 +308,12 @@
     internalItemID = [self getInternalItemIDWithItemName:self.itemName];
     NSString *plistPathForStaticDCA = [[NSBundle mainBundle] pathForResource:@"DCA" ofType:@"plist"];
     staticData = [NSDictionary dictionaryWithContentsOfFile:plistPathForStaticDCA];
-    staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"HDB Search"]];
+    if ([self.itemName isEqualToString:@"HDB Search"]) {
+        staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"HDB Search"]];
+    }
+    if ([self.itemName isEqualToString:@"Condos Search"]) {
+        staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Condos Search"]];
+    }
     NSDictionary *dict;
     if ((internalItemID % 2) == 1) {
         dict = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Sale"]];
@@ -574,7 +599,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (internalItemID == 1) {// SALE off
+    if (internalItemID == 1 || internalItemID == 3) {// SALE off
         if (indexPath.section == 0) {
             static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
@@ -715,7 +740,7 @@
     }
 //////////////////////////////////////////////////////////////////
     
-    if (internalItemID == 2) {// RENT off
+    if (internalItemID == 2 || internalItemID == 4) {// RENT off
         if (indexPath.section == 0) {
             static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
@@ -856,7 +881,7 @@
     
 //  //////////////////////////////////////////////////////
     
-    if (internalItemID == 101) { //Sale on
+    if (internalItemID == 101 || internalItemID == 103) { //Sale on
         if (indexPath.section == 0) {
             static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
@@ -1060,7 +1085,7 @@
     
     //  //////////////////////////////////////////////////////
     
-    if (internalItemID == 102) { //Rent on
+    if (internalItemID == 102 || internalItemID == 104) { //Rent on
         if (indexPath.section == 0) {
             static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];

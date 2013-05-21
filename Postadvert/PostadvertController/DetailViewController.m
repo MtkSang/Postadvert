@@ -1188,6 +1188,13 @@
         hdbSearch.navagationBarItem = self.navigationItem;
         viewCtr = hdbSearch;
     }
+    if ([itemName isEqualToString:@"Condos"]) {
+        HDBViewController *hdbSearch = [[HDBViewController alloc]init];
+        hdbSearch.itemName = @"Condos Search";
+        hdbSearch.navigationController = self.navigationController;
+        hdbSearch.navagationBarItem = self.navigationItem;
+        viewCtr = hdbSearch;
+    }
     if (!viewCtr) {
 #warning in progress
         return;

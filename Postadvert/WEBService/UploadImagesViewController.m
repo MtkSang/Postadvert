@@ -15,7 +15,6 @@
 
 
 @interface UploadImagesViewController ()
-
 @end
 
 @implementation UploadImagesViewController
@@ -48,6 +47,7 @@
 
 -(void) uploadtoPost:(NSInteger)postID withListImages:(NSArray*)listImages
 {
+    self.uploadType = uploadImageTypeDefault;
     self.postID = postID;
     self.listImageNeedToPost = [[NSArray alloc]initWithArray:listImages];
     currentIndex = 0;
@@ -59,7 +59,20 @@
     [self uploadImage];
     
 }
-
+- (void) uploadtoAd:(NSInteger)adID withListImages:(NSArray *)listImages andType:(NSString *)type_
+{
+    self.postID = adID;
+    type = type_;
+    self.listImageNeedToPost = [[NSArray alloc]initWithArray:listImages];
+    currentIndex = 0;
+    isUploading = YES;
+    isSuccess = YES;
+    self.progressView.progress = 0;
+    self.retryBtn.hidden = YES;
+    self.uploadType = uploadImageTypeAd;
+    //[self performSelectorInBackground:@selector(uploadImage) withObject:nil];
+    [self uploadImage];
+}
 - (void) updateViewWithState
 {
     if (isSuccess) {
@@ -72,6 +85,7 @@
         self.view.hidden = YES;
     }
 }
+
 -(void) uploadImage
 {
     if (currentIndex >= self.listImageNeedToPost.count) {
@@ -93,13 +107,22 @@
     NSMutableArray *paraValues;
     NSString *parametterString = @"";
     ////uploadPostImage($imageString, $post_id, $folder = '')
-    functionName = @"uploadPostImage";
+    //uploadADsImage($imageString, $ad_id, $type = 'hdb', $folder = '') {
+
     
     NSData *imageData = [[NSData alloc]initWithContentsOfFile:[self.listImageNeedToPost objectAtIndex:currentIndex]];
     self.imageView.image = [UIImage imageWithData:imageData];
     NSString *encodedImage = [imageData base64EncodedString];
-    paraNames = [NSArray arrayWithObjects:@"imageString", @"post_id",nil];
-    paraValues = [NSMutableArray arrayWithObjects:encodedImage, [NSString stringWithFormat:@"%d", self.postID],  nil];
+    if (self.uploadType == uploadImageTypeDefault) {
+        functionName = @"uploadPostImage";
+        paraNames = [NSArray arrayWithObjects:@"imageString", @"post_id",nil];
+        paraValues = [NSMutableArray arrayWithObjects:encodedImage, [NSString stringWithFormat:@"%d", self.postID],  nil];
+    }
+    if (self.uploadType == uploadImageTypeAd) {
+        paraNames = [NSArray arrayWithObjects:@"imageString", @"ad_id", @"type", @"folder", nil];
+        paraValues = [NSMutableArray arrayWithObjects:encodedImage, [NSString stringWithFormat:@"%d", self.postID], type, @"", nil];
+        functionName = @"uploadADsImage";
+    }
     int count = 0;
     for (NSString* ns1 in paraNames) {
         NSString *parametterStr = [NSString stringWithFormat:@"<%@>%@</%@>", ns1, [paraValues objectAtIndex:count], ns1];
@@ -130,7 +153,6 @@
     [theRequest setHTTPMethod:@"POST"];
     [theRequest setHTTPBody:[soapFormat dataUsingEncoding:NSUTF8StringEncoding]];
     [theRequest setTimeoutInterval:10*60];
-    
 //    NSURLResponse *response;
 //    NSError *error;
 //    NSData *data = [NSURLConnection sendSynchronousRequest:theRequest returningResponse:&response error:&error];

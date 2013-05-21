@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "HBBResultCellData.h"
 #import "UIPlaceHolderTextView.h"
+@class UploadImagesViewController;
 @class MBProgressHUD;
 @interface HDBResultDetailViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UITabBarDelegate>
 {
@@ -19,6 +20,7 @@
     NSArray *_paraValues;
     NSArray *_paraNames;
     NSArray *_listImages;
+    UploadImagesViewController* uploadImagesView;
 }
 @property (nonatomic)   NSInteger hdbID;
 @property (nonatomic)   NSInteger userID;

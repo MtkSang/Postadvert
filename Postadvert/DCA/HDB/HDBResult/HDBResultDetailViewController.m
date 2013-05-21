@@ -18,13 +18,15 @@
 #import "SupportFunction.h"
 #import "KTPhotoScrollViewController.h"
 #import "SDWebImageDataSource.h"
+#import "UploadImagesViewController.h"
 @interface HDBResultDetailViewController ()
 
 @end
 enum viewModeForDCADetail {
     modePreview = 0,
     modeViewDetail = 1,
-    modeSubmitAd = 2
+    modeSubmitAd = 2,
+    modeSubmitAdWithImages = 3
     };
 
 @implementation HDBResultDetailViewController
@@ -88,6 +90,14 @@ enum viewModeForDCADetail {
     }
     currentItem = [self.tabBar.items objectAtIndex:0];
     [self.tabBar setSelectedItem:currentItem];
+    
+    //
+    if (! uploadImagesView) {
+        uploadImagesView = [[UploadImagesViewController alloc]init];
+        uploadImagesView.view.frame = CGRectMake(0, 0, self.view.frame.size.width, cCellHeight);
+        uploadImagesView.view.hidden = YES;
+        [self.view addSubview:uploadImagesView.view];
+    }
 }
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -290,7 +300,6 @@ enum viewModeForDCADetail {
         static NSString *CellIdentifier1 = @"HDBResultDetailCell1";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
         if (cell == nil) {
-            
             NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier1 owner:self options:nil];
             cell = [topLevelObjects objectAtIndex:0];
             topLevelObjects = nil;
@@ -299,10 +308,19 @@ enum viewModeForDCADetail {
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         }
         NSInteger index = 0;
-        NSString *value =@"";
+        id value ;
         //Property Status
         UILabel *status = (UILabel*)[cell viewWithTag:1];
-        if ([_property_status isEqualToString:@"r"]) {
+        index = [cellData.paraNames indexOfObject:@"status"];
+        value = [cellData.paraValues objectAtIndex:index];
+        _property_status = @"r";
+        if ([value isKindOfClass:[NSString class]]) {
+            _property_status = value;
+        }
+        if ([value isKindOfClass:[NSNumber class]]) {
+            _property_status = [value stringValue];
+        }
+        if ([_property_status isEqualToString:@"r"] || [_property_status isEqualToString:@"1"]) {
             [status setText:@"For Rent"];
         }else
         {
@@ -783,15 +801,24 @@ enum viewModeForDCADetail {
                 
             }
             [cellData parseFixtures_fittingAndFeatures];
-            //update locall list Images
-            if (_listImages.count) {
-                cellData.images = [[NSMutableArray alloc]initWithArray:_listImages];
-            }
+            [self performSelectorOnMainThread:@selector(uploadImagesToAd) withObject:nil waitUntilDone:NO];
+        }else
+        {
             
         }
         [self.tableView reloadData];
         [self performSelectorInBackground:@selector(loadCommentsInBackground) withObject:nil];
     }
+}
+- (void) uploadImagesToAd
+{
+    if (_listImages.count == 0) {
+        return;
+    }
+    uploadImagesView.view.hidden = NO;
+    uploadImagesView.postID = cellData.hdbID;
+    uploadImagesView.listImageNeedToPost = [[NSArray alloc]initWithArray:_listImages];
+    [uploadImagesView uploadtoAd:cellData.hdbID withListImages:_listImages andType:@"hdb"];
 }
 
 - (void) loadCommentsInBackground

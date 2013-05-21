@@ -1030,41 +1030,42 @@
         [[PostadvertControllerV2 sharedPostadvertController] showAlertWithMessage:[NSString stringWithFormat:@"You must select: %@", notPassed ] andTitle:@"Submit Ad"];
         return;
     }
-    
-    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
-    
-    NSDictionary *dict = [NSDictionary dictionaryWithDictionary:data];
-    
-    if (dict.allKeys.count) {
-        
-        HBBResultCellData *cellData = [[HBBResultCellData alloc]init];
-        cellData.hdbID = [[dict objectForKey:@"id"] integerValue];
-        cellData.timeCreated = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
-        //cellData.titleHDB = [dict objectForKey:@"address"];
-        //        NSString *title = [dict objectForKey:@"street_name"];
-        //        cellData.titleHDB = [cellData.titleHDB stringByAppendingString:title];
-        
-        //author
-        NSDictionary *authorDict = [dict objectForKey:@"author"];
-        cellData.userInfo = [[CredentialInfo alloc]init];
-        if ([authorDict isKindOfClass:[NSDictionary class]]) {
-            cellData.userInfo = [[CredentialInfo alloc]initWithDictionary:authorDict];
-        }
-        
-        for (NSString *key in cellData.paraNames) {
-            id object = [dict objectForKey:key];
-            if (object != nil) {
-                [cellData.paraValues addObject: object];
-            }
-            
-        }
-        HDBResultDetailViewController *detailViewCtr = [[HDBResultDetailViewController alloc]initWithHDBID:cellData.hdbID userID:[[UserPAInfo sharedUserPAInfo]registrationID]];
-        //[self.navigationController popViewControllerAnimated:YES];
-        [self.navigationController pushViewController:detailViewCtr animated:YES];
-    }else
-    {
-        
-    }
+    HDBResultDetailViewController *detailViewCtr = [[HDBResultDetailViewController alloc]initBySubmitParaNames:paraNames andParavalues:paraValues withListImages:insertPicCtr.dataSoure];
+    [self.navigationController pushViewController:detailViewCtr animated:YES];
+//    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+//    
+//    NSDictionary *dict = [NSDictionary dictionaryWithDictionary:data];
+//    
+//    if (dict.allKeys.count) {
+//        
+//        HBBResultCellData *cellData = [[HBBResultCellData alloc]init];
+//        cellData.hdbID = [[dict objectForKey:@"id"] integerValue];
+//        cellData.timeCreated = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
+//        //cellData.titleHDB = [dict objectForKey:@"address"];
+//        //        NSString *title = [dict objectForKey:@"street_name"];
+//        //        cellData.titleHDB = [cellData.titleHDB stringByAppendingString:title];
+//        
+//        //author
+//        NSDictionary *authorDict = [dict objectForKey:@"author"];
+//        cellData.userInfo = [[CredentialInfo alloc]init];
+//        if ([authorDict isKindOfClass:[NSDictionary class]]) {
+//            cellData.userInfo = [[CredentialInfo alloc]initWithDictionary:authorDict];
+//        }
+//        
+//        for (NSString *key in cellData.paraNames) {
+//            id object = [dict objectForKey:key];
+//            if (object != nil) {
+//                [cellData.paraValues addObject: object];
+//            }
+//            
+//        }
+//        HDBResultDetailViewController *detailViewCtr = [[HDBResultDetailViewController alloc]initWithHDBID:cellData.hdbID userID:[[UserPAInfo sharedUserPAInfo]registrationID]];
+//        //[self.navigationController popViewControllerAnimated:YES];
+//        [self.navigationController pushViewController:detailViewCtr animated:YES];
+//    }else
+//    {
+//        
+//    }
 }
 
 - (IBAction)previewAdClicked:(id)sender {
@@ -1254,7 +1255,8 @@
         [paraNamesOnView addObject:@"Home Interior"];
         //picture
         [paraNames addObject:@"picture"];
-        [paraValues addObject:@""];
+        value = @"";
+        [paraValues addObject:value];
         [paraNamesOnView addObject:@"Upload Images"];
         //url
         [paraNames addObject:@"url"];
@@ -1332,7 +1334,7 @@
 }
 - (void) resetValue
 {
-    return;
+    //return;
     NSUserDefaults *database = [NSUserDefaults standardUserDefaults];
     //property_status
     [database setValue:@"Select One" forKey:@"Property Status *"];
