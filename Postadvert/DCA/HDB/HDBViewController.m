@@ -14,6 +14,7 @@
 #import "DCAOptionsViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "HDBListResultViewController.h"
+#import "PostadvertControllerV2.h"
 //#import "MyModalViewController.h"
 //#import "UIViewController+MyModalView.h"
 //#import "MyViewController.h"
@@ -528,7 +529,20 @@
     [self saveCurrentValues];
     [[NSUserDefaults standardUserDefaults] setValue:@"up" forKey:@"scroll"];
     
-    [self.navigationController pushViewController:resultVctr animated:YES];
+    if ([self.itemName isEqualToString:@"HDB Search"]) {
+        [self.navigationController pushViewController:resultVctr animated:YES];
+    }
+    if ([self.itemName isEqualToString:@"Condos Search"]) {
+        id data;
+        NSString *functionName;
+        NSArray *paraNames;
+        NSArray *paraValues;
+        functionName = @"getCondosSearchValues";
+        paraNames = [NSArray arrayWithObjects: nil];
+        paraValues = [NSArray arrayWithObjects: nil];
+        data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName:functionName parametterName:paraNames parametterValue:paraValues];
+        
+    }
     
     UIButton *btn = (UIButton*) sender;
     if ( [btn.titleLabel.text isEqualToString:@"Search"]) {
