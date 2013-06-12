@@ -51,11 +51,134 @@
         self.paraValues = [[NSMutableArray alloc]init];
         self.array_fixtures_fittings = [[NSMutableArray alloc]init];
         self.array_other_features = [[NSMutableArray alloc]init];
+        self.array_amenities = [[NSMutableArray alloc]init];
         self.images = [[NSMutableArray alloc]init];
     }
     
     return self;
 }
+
+- (id) initWithItemName:(NSString*)itemName
+{
+    self = [super init];
+    if (self) {
+        if ([itemName isEqualToString:@"HDB Search"]) {
+            self.paraNames = [[NSMutableArray alloc]initWithObjects:
+                              @"id",
+                              @"status",
+                              @"block_no",
+                              @"street_name",
+                              @"property_type",
+                              @"description",
+                              @"unit_level",
+                              @"hdb_estate",
+                              @"size",
+                              @"bedrooms",
+                              @"washroom",
+                              @"furnishing",
+                              @"building_completion",
+                              @"created",
+                              @"price",
+                              @"valuation_price",
+                              @"monthly_rental",
+                              @"lease_term",
+                              @"thumb",
+                              @"psf",
+                              @"ad_owner",
+                              @"total_comments",
+                              @"clap_info",
+                              @"total_views",
+                              @"other_features",
+                              @"fixtures_fittings",
+                              @"images",
+                              @"videos",
+                              @"websites",
+                              nil];
+        }
+        if ([itemName isEqualToString:@"Condos Search"]) {
+            self.paraNames = [[NSMutableArray alloc]initWithObjects:
+                              @"max_id",
+                              @"id",
+                              @"status",
+                              @"address",
+                              @"description",
+                              @"project_name",
+                              @"ad_owner",
+                              @"unit_level",
+                              @"district",
+                              @"tenure",
+                              @"size",
+                              @"size_m",
+                              @"bedrooms",
+                              @"washroom",
+                              @"furnishing",
+                              @"other_features",
+                              @"fixtures_fittings",
+                              @"building_completion",
+                              @"created",
+                              @"price",
+                              @"valuation_price",
+                              @"monthly_rental",
+                              @"psf",
+                              @"lease_term",
+                              @"thumb",
+                              @"author",
+                              @"total_comments",
+                              @"clap_info",
+                              @"total_views",
+                              @"images",
+                              @"videos",
+                              @"websites",
+                              @"amenities",
+                              nil];
+        }
+        if ([itemName isEqualToString:@"Landed Property Search"]) {
+            self.paraNames = [[NSMutableArray alloc]initWithObjects:
+                              @"max_id",
+                              @"id",
+                              @"status",
+                              @"address",
+                              @"description",
+                              @"ad_owner",
+                              @"district",
+                              @"tenure",
+                              @"size",
+                              @"size_m",
+                              @"bedrooms",
+                              @"washroom",
+                              @"furnishing",
+                              @"other_features",
+                              @"fixtures_fittings",
+                              @"building_completion",
+                              @"created",
+                              @"price",
+                              @"valuation_price",
+                              @"monthly_rental",
+                              @"psf",
+                              @"lease_term",
+                              @"thumb",
+                              @"author",
+                              @"total_comments",
+                              @"clap_info",
+                              @"total_views",
+                              @"images",
+                              @"videos",
+                              @"websites",
+                              @"indoor_outdoors",
+                              nil];
+            
+        }
+
+
+        self.paraValues = [[NSMutableArray alloc]init];
+        self.array_fixtures_fittings = [[NSMutableArray alloc]init];
+        self.array_other_features = [[NSMutableArray alloc]init];
+        self.images = [[NSMutableArray alloc]init];
+    }
+    
+    return self;
+}
+
 - (void) parseFixtures_fittingAndFeatures{
     NSInteger index;
     if (self.paraValues.count != self.paraNames.count) {
@@ -71,6 +194,23 @@
         }
     }
     
+    index = [self.paraNames indexOfObject:@"amenities"];
+    if (index != NSIntegerMax) {
+        objectValue = [self.paraValues objectAtIndex:index];
+        if (![objectValue isEqualToString:@""] && [objectValue isKindOfClass:[NSString class]]) {
+            objectValue = [objectValue stringByReplacingOccurrencesOfString:@", " withString:@","];
+            self.array_amenities = [[NSMutableArray alloc]initWithArray:[objectValue componentsSeparatedByString:@","]];
+        }
+    }
+    
+    index = [self.paraNames indexOfObject:@"indoor_outdoors"];
+    if (index != NSIntegerMax) {
+        objectValue = [self.paraValues objectAtIndex:index];
+        if (![objectValue isEqualToString:@""] && [objectValue isKindOfClass:[NSString class]]) {
+            objectValue = [objectValue stringByReplacingOccurrencesOfString:@", " withString:@","];
+            self.array_amenities = [[NSMutableArray alloc]initWithArray:[objectValue componentsSeparatedByString:@","]];
+        }
+    }
     index = [self.paraNames indexOfObject:@"fixtures_fittings"];
     if (index != NSIntegerMax) {
         objectValue = [self.paraValues objectAtIndex:index];

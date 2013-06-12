@@ -41,7 +41,7 @@
     UIImage *image = [UIImage imageNamed:@"titleHDB.png"];
     image = [image resizedImage:self.lbTitle.frame.size interpolationQuality:0];
     [self.lbTitle setBackgroundColor:[UIColor colorWithPatternImage:image]];
-    [self.lbNumFound setText:@"   No properties found"];
+    [self.lbNumFound setText:@"   Searching ..."];
     [self.lbNumFound setBackgroundColor:[UIColor colorWithRed:90.0/255 green:85.0/255 blue:73.0/255 alpha:1]];
     [self.lbNumFound setTextColor:[UIColor whiteColor]];
     resultType = @"For Sale";
@@ -63,6 +63,17 @@
     footerLoading.autoresizesSubviews = YES;
     footerView = nil;
     
+    max_id = @"0";
+    
+    //Map
+    mapView = [[MyMapViewController alloc]init];
+    mapView.delegate = self;
+    CGRect frame = _flipView.frame;
+    frame.origin.y = 0;
+    mapView.view.frame = frame;
+    //
+    mbpMap = [[MBProgressHUD alloc]initWithView:self.view];
+    [self.view addSubview:mbpMap];
 }
 
 - (void)didReceiveMemoryWarning
@@ -78,13 +89,22 @@
     [self setPullTableViewCtrl:nil];
     [self setPullTableViewCtrl:nil];
     [self setTabBar:nil];
+    [self setFlipView:nil];
     [super viewDidUnload];
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+    if ([self.itemName isEqualToString:@"HDB Search"]) {
+        [self.lbTitle setText:@"HDB"];
+    }
+    if ([self.itemName isEqualToString:@"Condos Search"]) {
+        [self.lbTitle setText:@"Condos"];
+    }
+    if ([self.itemName isEqualToString:@"Landed Property Search"]) {
+        [self.lbTitle setText:@"Landed Property"];
+    }
     [self.tabBar setSelectedItem:currentItem];
     if (hud) {
         if (hud.superview) {
@@ -103,6 +123,11 @@
         [hud showWhileExecuting:@selector(loadDataInBackground) onTarget:self withObject:nil animated:YES];
         
     }
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
 }
 
 - (void) viewDidDisappear:(BOOL)animated
@@ -130,16 +155,44 @@
     if ([item.title isEqualToString:@"Photo View"]) {
         isListView = NO;
         [self.tableView performSelector:@selector(reloadData)];
-        NSLog(@"sfsdfs");
+        [UIView beginAnimations:@"View Flip" context:nil];
+        [UIView setAnimationDuration:0.80];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        
+        [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight
+                               forView:_tableView cache:NO];
+        
+        if (mapView.view.superview) {
+            [mapView.view removeFromSuperview];
+        }
+        
+        [UIView commitAnimations];
         return;
     }
     if ([item.title isEqualToString:@"List View"]) {
         isListView = YES;
         [self.tableView performSelector:@selector(reloadData)];
+        [UIView beginAnimations:@"View Flip" context:nil];
+        [UIView setAnimationDuration:0.80];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        
+        [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight
+                               forView:_tableView cache:NO];
+        
+        if (mapView.view.superview) {
+            [mapView.view removeFromSuperview];
+        }
+        
+        [UIView commitAnimations];
+        
         return;
     }
     if ([item.title isEqualToString:@"Sort"]) {
         [self showSortBy];
+        return;
+    }
+    if ([item.title isEqualToString:@"Map"]) {
+        [self act_ShowMap:self];
         return;
     }
 }
@@ -162,172 +215,502 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     HBBResultCellData *cellData = [currentListResult objectAtIndex:indexPath.section];
-    if (indexPath.row == 0) {
-        static NSString *CellIdentifier1 = @"HDBListResultCell1";
-        static NSString *CellIdentifier1ListView = @"HDBListResultCell1ListView";
-        UITableViewCell *cell;
-        if (isListView) {
-            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1ListView];
-        }else
-            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
-        if (cell == nil) {
-            
-            NSArray *topLevelObjects;
+#pragma mark . HDB Search
+    if ([self.itemName isEqualToString:@"HDB Search"]) {
+        if (indexPath.row == 0) {
+            static NSString *CellIdentifier1 = @"HDBListResultCell1";
+            static NSString *CellIdentifier1ListView = @"HDBListResultCell1ListView";
+            UITableViewCell *cell;
             if (isListView) {
-                topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier1ListView owner:self options:nil];
+                cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1ListView];
             }else
-                topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier1 owner:self options:nil];
-            cell = [topLevelObjects objectAtIndex:0];
-            topLevelObjects = nil;
-            [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
-            cell.backgroundView = [[UIView alloc] init];
-            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        }
-        NSInteger index = 0;
-        NSString *value =@"";
-        //Property Status
-        UILabel *status = (UILabel*)[cell viewWithTag:1];
-        if ([property_status isEqualToString:@"r"]) {
-            [status setText:@"For Rent"];
-        }else
-        {
-            [status setText:@"For Sale"];
-        }
-        //Create
-        UILabel *created = (UILabel*)[cell viewWithTag:2];
-        index = [cellData.paraNames indexOfObject:@"created"];
-        value = [NSData stringDecodeFromBase64String:[cellData.paraValues objectAtIndex:index]];
-        [created setText:value];
-        //thumb
-        UIImageView *imagView = (UIImageView*)[cell viewWithTag:3];
-        index = [cellData.paraNames indexOfObject:@"thumb"];
-        value = [cellData.paraValues objectAtIndex:index];
-        [imagView setImageWithURL:[NSURL URLWithString:value]];
-        //Title
-        UILabel *titleHDB = (UILabel*) [cell viewWithTag:4];
-        index = [cellData.paraNames indexOfObject:@"block_no"];
-        value = [cellData.paraValues objectAtIndex:index];
-        
-        index = [cellData.paraNames indexOfObject:@"street_name"];
-        value = [NSString stringWithFormat:@"%@ %@",value, [cellData.paraValues objectAtIndex:index]];
-        [titleHDB setText:value];
-        //price
-        UILabel *price = (UILabel*) [cell viewWithTag:12];
-        if ([property_status isEqualToString:@"s"]) {
-            index = [cellData.paraNames indexOfObject:@"price"];
-        }else
-        {
-            index = [cellData.paraNames indexOfObject:@"monthly_rental"];
-        }
-        
-        value = [cellData.paraValues objectAtIndex:index];
-        [price setText:[NSString stringWithFormat:@"S$ %@", value]];
-        //psf
-        index = [cellData.paraNames indexOfObject:@"psf"];
-        value = [cellData.paraValues objectAtIndex:index];
-        
-        [price setText:[NSString stringWithFormat:@"%@ (S$ %@ psf)",price.text, value]];
-        
-        
-        //lease_term_valuation_price (unit_level)
-        UILabel *lease_term_valuation_price = (UILabel*) [cell viewWithTag:5];
-        if ([property_status isEqualToString:@"s"]) {
-            index = [cellData.paraNames indexOfObject:@"valuation_price"];
-            value = [NSString stringWithFormat:@"S$ %@ valn", [cellData.paraValues objectAtIndex:index]];
-        }else
-        {
-            index = [cellData.paraNames indexOfObject:@"lease_term"];
+                cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+            if (cell == nil) {
+                
+                NSArray *topLevelObjects;
+                if (isListView) {
+                    topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier1ListView owner:self options:nil];
+                }else
+                    topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier1 owner:self options:nil];
+                cell = [topLevelObjects objectAtIndex:0];
+                topLevelObjects = nil;
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                cell.backgroundView = [[UIView alloc] init];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            }
+            NSInteger index = 0;
+            NSString *value =@"";
+            //Property Status
+            UILabel *status = (UILabel*)[cell viewWithTag:1];
+            if ([property_status isEqualToString:@"r"]) {
+                [status setText:@"For Rent"];
+            }else
+            {
+                [status setText:@"For Sale"];
+            }
+            //Create
+            UILabel *created = (UILabel*)[cell viewWithTag:2];
+            index = [cellData.paraNames indexOfObject:@"created"];
+            value = [NSData stringDecodeFromBase64String:[cellData.paraValues objectAtIndex:index]];
+            [created setText:value];
+            //thumb
+            UIImageView *imagView = (UIImageView*)[cell viewWithTag:3];
+            index = [cellData.paraNames indexOfObject:@"thumb"];
             value = [cellData.paraValues objectAtIndex:index];
-        }
-        
-        //unit_level
-        index = [cellData.paraNames indexOfObject:@"unit_level"];
-        NSString *unit_level = [cellData.paraValues objectAtIndex:index];
-        if (unit_level.length > 0) {
-            value = [NSString stringWithFormat:@"%@ ( %@ )", value, unit_level];
-        }
-        [lease_term_valuation_price setText:value];
-        //hdb_estate
-        UILabel *hdb_estate = (UILabel*) [cell viewWithTag:6];
-        index = [cellData.paraNames indexOfObject:@"hdb_estate"];
-        value = [cellData.paraValues objectAtIndex:index];
-        
-        //furnishing
-        index = [cellData.paraNames indexOfObject:@"furnishing"];
-        NSString *furnishing = [cellData.paraValues objectAtIndex:index];
-        if (! [furnishing isEqualToString:@""] ) {
-            value = [value stringByAppendingFormat:@" ( %@ )", furnishing];
-        }
-        [hdb_estate setText:value];
-        //size
-        UILabel *size = (UILabel*) [cell viewWithTag:7];
-        index = [cellData.paraNames indexOfObject:@"size"];
-        value = [cellData.paraValues objectAtIndex:index];
-        [size setText:[NSString stringWithFormat:@"%@ sqft",value]];
-        float sqft = [value floatValue];
-        float sqm = sqft * 0.092903;
-        [size setText:[NSString stringWithFormat:@"%@ sqft / %0.02f sqm",value, sqm]];
-        //building_completion
-        UILabel *building_completion = (UILabel*) [cell viewWithTag:11];
-        index = [cellData.paraNames indexOfObject:@"building_completion"];
-        value = [cellData.paraValues objectAtIndex:index];
-        [building_completion setText:[NSString stringWithFormat:@"%@ Completed", value]];
-        //bedrooms
-        UILabel *bedrooms = (UILabel*) [cell viewWithTag:8];
-        index = [cellData.paraNames indexOfObject:@"bedrooms"];
-        value = [cellData.paraValues objectAtIndex:index];
-        [bedrooms setText:value];
-        //washroom
-        UILabel *washroom = (UILabel*) [cell viewWithTag:9];
-        index = [cellData.paraNames indexOfObject:@"washroom"];
-        value = [cellData.paraValues objectAtIndex:index];
-        [washroom setText:value];
-        //HDB Type
-        UILabel *HDBType = (UILabel*) [cell viewWithTag:14];
-        index = [cellData.paraNames indexOfObject:@"property_type"];
-        value = [cellData.paraValues objectAtIndex:index];
-        [HDBType setText:value];
-        return cell;
-        
-    }
-    
-    if (indexPath.row > 0) {
-        static NSString *CellIdentifier2 = @"HDBListResultCell2";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier2];
-        if (cell == nil) {
-            
-            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier2 owner:self options:nil];
-            cell = [topLevelObjects objectAtIndex:0];
-            topLevelObjects = nil;
-            [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
-            cell.backgroundView = [[UIView alloc] init];
-            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        }
-        NSInteger index;
-        NSString *value;
-        @try {
-            //avartar
-            UIImageView *avatar = (UIImageView*)[cell viewWithTag:3];
-            [avatar setImageWithURL:[NSURL URLWithString:cellData.userInfo.avatarUrl]];
-            // posted user
-            UILabel *user_posted = (UILabel*)[cell viewWithTag:4];
-            [user_posted setText:cellData.userInfo.fullName];
-            
-            
-            //ad_owner
-            UILabel *ad_owner = (UILabel*)[cell viewWithTag:5];
-            index = [cellData.paraNames indexOfObject:@"ad_owner"];
+            [imagView setImageWithURL:[NSURL URLWithString:value]];
+            //Title
+            UILabel *titleHDB = (UILabel*) [cell viewWithTag:4];
+            index = [cellData.paraNames indexOfObject:@"block_no"];
             value = [cellData.paraValues objectAtIndex:index];
-            [ad_owner setText:value];
-        }
-        @catch (NSException *exception) {
+            
+            index = [cellData.paraNames indexOfObject:@"street_name"];
+            value = [NSString stringWithFormat:@"%@ %@",value, [cellData.paraValues objectAtIndex:index]];
+            [titleHDB setText:value];
+            //price
+            UILabel *price = (UILabel*) [cell viewWithTag:12];
+            if ([property_status isEqualToString:@"s"]) {
+                index = [cellData.paraNames indexOfObject:@"price"];
+            }else
+            {
+                index = [cellData.paraNames indexOfObject:@"monthly_rental"];
+            }
+            
+            value = [cellData.paraValues objectAtIndex:index];
+            [price setText:[NSString stringWithFormat:@"S$ %@", value]];
+            //psf
+            index = [cellData.paraNames indexOfObject:@"psf"];
+            value = [cellData.paraValues objectAtIndex:index];
+            
+            [price setText:[NSString stringWithFormat:@"%@ (S$ %@ psf)",price.text, value]];
+            
+            
+            //lease_term_valuation_price (unit_level)
+            UILabel *lease_term_valuation_price = (UILabel*) [cell viewWithTag:5];
+            if ([property_status isEqualToString:@"s"]) {
+                index = [cellData.paraNames indexOfObject:@"valuation_price"];
+                value = [NSString stringWithFormat:@"S$ %@ valn", [cellData.paraValues objectAtIndex:index]];
+            }else
+            {
+                index = [cellData.paraNames indexOfObject:@"lease_term"];
+                value = [cellData.paraValues objectAtIndex:index];
+            }
+            
+            //unit_level
+            index = [cellData.paraNames indexOfObject:@"unit_level"];
+            NSString *unit_level = [cellData.paraValues objectAtIndex:index];
+            if (unit_level.length > 0) {
+                value = [NSString stringWithFormat:@"%@ ( %@ )", value, unit_level];
+            }
+            [lease_term_valuation_price setText:value];
+            //hdb_estate
+            UILabel *hdb_estate = (UILabel*) [cell viewWithTag:6];
+            index = [cellData.paraNames indexOfObject:@"hdb_estate"];
+            value = [cellData.paraValues objectAtIndex:index];
+            
+            //furnishing
+            index = [cellData.paraNames indexOfObject:@"furnishing"];
+            NSString *furnishing = [cellData.paraValues objectAtIndex:index];
+            if (! [furnishing isEqualToString:@""] ) {
+                value = [value stringByAppendingFormat:@" ( %@ )", furnishing];
+            }
+            [hdb_estate setText:value];
+            //size
+            UILabel *size = (UILabel*) [cell viewWithTag:7];
+            index = [cellData.paraNames indexOfObject:@"size"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [size setText:[NSString stringWithFormat:@"%@ sqft",value]];
+            float sqft = [value floatValue];
+            float sqm = sqft * 0.092903;
+            [size setText:[NSString stringWithFormat:@"%@ sqft / %0.02f sqm",value, sqm]];
+            //building_completion
+            UILabel *building_completion = (UILabel*) [cell viewWithTag:11];
+            index = [cellData.paraNames indexOfObject:@"building_completion"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [building_completion setText:[NSString stringWithFormat:@"%@ Completed", value]];
+            //bedrooms
+            UILabel *bedrooms = (UILabel*) [cell viewWithTag:8];
+            index = [cellData.paraNames indexOfObject:@"bedrooms"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [bedrooms setText:value];
+            //washroom
+            UILabel *washroom = (UILabel*) [cell viewWithTag:9];
+            index = [cellData.paraNames indexOfObject:@"washroom"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [washroom setText:value];
+            //HDB Type
+            UILabel *HDBType = (UILabel*) [cell viewWithTag:14];
+            index = [cellData.paraNames indexOfObject:@"property_type"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [HDBType setText:value];
+            return cell;
             
         }
         
-        [self setClapCommentForCell:cell andData:cellData];
-        return cell;
+        if (indexPath.row > 0) {
+            static NSString *CellIdentifier2 = @"HDBListResultCell2";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier2];
+            if (cell == nil) {
+                
+                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier2 owner:self options:nil];
+                cell = [topLevelObjects objectAtIndex:0];
+                topLevelObjects = nil;
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                cell.backgroundView = [[UIView alloc] init];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            }
+            NSInteger index;
+            NSString *value;
+            @try {
+                //avartar
+                UIImageView *avatar = (UIImageView*)[cell viewWithTag:3];
+                [avatar setImageWithURL:[NSURL URLWithString:cellData.userInfo.avatarUrl]];
+                // posted user
+                UILabel *user_posted = (UILabel*)[cell viewWithTag:4];
+                [user_posted setText:cellData.userInfo.fullName];
+                
+                
+                //ad_owner
+                UILabel *ad_owner = (UILabel*)[cell viewWithTag:5];
+                index = [cellData.paraNames indexOfObject:@"ad_owner"];
+                value = [cellData.paraValues objectAtIndex:index];
+                [ad_owner setText:value];
+            }
+            @catch (NSException *exception) {
+                
+            }
+            
+            [self setClapCommentForCell:cell andData:cellData];
+            return cell;
+        }
     }
-    return nil;
+#pragma mark . Condos Search
+    if ([self.itemName isEqualToString:@"Condos Search"]) {
+        if (indexPath.row == 0) {
+            static NSString *CellIdentifier1 = @"HDBListResultCell1";
+            static NSString *CellIdentifier1ListView = @"HDBListResultCell1ListView";
+            UITableViewCell *cell;
+            if (isListView) {
+                cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1ListView];
+            }else
+                cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+            if (cell == nil) {
+                
+                NSArray *topLevelObjects;
+                if (isListView) {
+                    topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier1ListView owner:self options:nil];
+                }else
+                    topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier1 owner:self options:nil];
+                cell = [topLevelObjects objectAtIndex:0];
+                topLevelObjects = nil;
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                cell.backgroundView = [[UIView alloc] init];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            }
+            NSInteger index = 0;
+            NSString *value =@"";
+            //Property Status
+            UILabel *status = (UILabel*)[cell viewWithTag:1];
+            if ([property_status isEqualToString:@"r"]) {
+                [status setText:@"For Rent"];
+            }else
+            {
+                [status setText:@"For Sale"];
+            }
+            //Create
+            UILabel *created = (UILabel*)[cell viewWithTag:2];
+            index = [cellData.paraNames indexOfObject:@"created"];
+            value = [NSData stringDecodeFromBase64String:[cellData.paraValues objectAtIndex:index]];
+            [created setText:value];
+            //thumb
+            UIImageView *imagView = (UIImageView*)[cell viewWithTag:3];
+            index = [cellData.paraNames indexOfObject:@"thumb"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [imagView setImageWithURL:[NSURL URLWithString:value]];
+            //Title
+            UILabel *titleHDB = (UILabel*) [cell viewWithTag:4];
+            index = [cellData.paraNames indexOfObject:@"address"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [titleHDB setText:value];
+            //price
+            UILabel *price = (UILabel*) [cell viewWithTag:12];
+            if ([property_status isEqualToString:@"s"]) {
+                index = [cellData.paraNames indexOfObject:@"price"];
+            }else
+            {
+                index = [cellData.paraNames indexOfObject:@"monthly_rental"];
+            }
+            
+            value = [cellData.paraValues objectAtIndex:index];
+            [price setText:[NSString stringWithFormat:@"S$ %@", value]];
+            //psf
+            index = [cellData.paraNames indexOfObject:@"psf"];
+            value = [cellData.paraValues objectAtIndex:index];
+            
+            [price setText:[NSString stringWithFormat:@"%@ (S$ %@ psf)",price.text, value]];
+            
+            
+            //lease_term_valuation_price (unit_level)
+            UILabel *lease_term_valuation_price = (UILabel*) [cell viewWithTag:5];
+            if ([property_status isEqualToString:@"s"]) {
+                index = [cellData.paraNames indexOfObject:@"valuation_price"];
+                value = [NSString stringWithFormat:@"S$ %@ valn", [cellData.paraValues objectAtIndex:index]];
+            }else
+            {
+                index = [cellData.paraNames indexOfObject:@"lease_term"];
+                value = [cellData.paraValues objectAtIndex:index];
+            }
+            
+            //unit_level
+            index = [cellData.paraNames indexOfObject:@"unit_level"];
+            NSString *unit_level = [cellData.paraValues objectAtIndex:index];
+            if (unit_level.length > 0) {
+                value = [NSString stringWithFormat:@"%@ ( %@ )", value, unit_level];
+            }
+            [lease_term_valuation_price setText:value];
+            //district
+            UILabel *hdb_estate = (UILabel*) [cell viewWithTag:6];
+            index = [cellData.paraNames indexOfObject:@"district"];
+            value = [cellData.paraValues objectAtIndex:index];
+            
+            //furnishing
+            index = [cellData.paraNames indexOfObject:@"furnishing"];
+            NSString *furnishing = [cellData.paraValues objectAtIndex:index];
+            if (! [furnishing isEqualToString:@""] ) {
+                value = [value stringByAppendingFormat:@" ( %@ )", furnishing];
+            }
+            [hdb_estate setText:value];
+            //size
+            UILabel *size = (UILabel*) [cell viewWithTag:7];
+            index = [cellData.paraNames indexOfObject:@"size"];
+            value = [cellData.paraValues objectAtIndex:index];
+            index = [cellData.paraNames indexOfObject:@"size_m"];
+            NSString *size_m = [cellData.paraValues objectAtIndex:index];
+            [size setText:[NSString stringWithFormat:@"%@ sqft / %@ sqm",value, size_m]];
+            //building_completion
+            UILabel *building_completion = (UILabel*) [cell viewWithTag:11];
+            index = [cellData.paraNames indexOfObject:@"building_completion"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [building_completion setText:[NSString stringWithFormat:@"%@ Completed", value]];
+            //bedrooms
+            UILabel *bedrooms = (UILabel*) [cell viewWithTag:8];
+            index = [cellData.paraNames indexOfObject:@"bedrooms"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [bedrooms setText:value];
+            //washroom
+            UILabel *washroom = (UILabel*) [cell viewWithTag:9];
+            index = [cellData.paraNames indexOfObject:@"washroom"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [washroom setText:value];
+            //HDB Type
+            UILabel *HDBType = (UILabel*) [cell viewWithTag:14];
+            index = [cellData.paraNames indexOfObject:@"project_name"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [HDBType setText:value];
+            return cell;
+            
+        }
+        
+        if (indexPath.row > 0) {
+            static NSString *CellIdentifier2 = @"HDBListResultCell2";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier2];
+            if (cell == nil) {
+                
+                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier2 owner:self options:nil];
+                cell = [topLevelObjects objectAtIndex:0];
+                topLevelObjects = nil;
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                cell.backgroundView = [[UIView alloc] init];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            }
+            NSInteger index;
+            NSString *value;
+            @try {
+                //avartar
+                UIImageView *avatar = (UIImageView*)[cell viewWithTag:3];
+                [avatar setImageWithURL:[NSURL URLWithString:cellData.userInfo.avatarUrl]];
+                // posted user
+                UILabel *user_posted = (UILabel*)[cell viewWithTag:4];
+                [user_posted setText:cellData.userInfo.fullName];
+                
+                
+                //ad_owner
+                UILabel *ad_owner = (UILabel*)[cell viewWithTag:5];
+                index = [cellData.paraNames indexOfObject:@"ad_owner"];
+                value = [cellData.paraValues objectAtIndex:index];
+                [ad_owner setText:value];
+            }
+            @catch (NSException *exception) {
+                
+            }
+            
+            [self setClapCommentForCell:cell andData:cellData];
+            return cell;
+        }
+    }
+#pragma mark . Landed Property Search
+    if ([self.itemName isEqualToString:@"Landed Property Search"]) {
+        if (indexPath.row == 0) {
+            static NSString *CellIdentifier1 = @"HDBListResultCell1";
+            static NSString *CellIdentifier1ListView = @"HDBListResultCell1ListView";
+            UITableViewCell *cell;
+            if (isListView) {
+                cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1ListView];
+            }else
+                cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+            if (cell == nil) {
+                
+                NSArray *topLevelObjects;
+                if (isListView) {
+                    topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier1ListView owner:self options:nil];
+                }else
+                    topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier1 owner:self options:nil];
+                cell = [topLevelObjects objectAtIndex:0];
+                topLevelObjects = nil;
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                cell.backgroundView = [[UIView alloc] init];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            }
+            NSInteger index = 0;
+            NSString *value =@"";
+            //Property Status
+            UILabel *status = (UILabel*)[cell viewWithTag:1];
+            if ([property_status isEqualToString:@"r"]) {
+                [status setText:@"For Rent"];
+            }else
+            {
+                [status setText:@"For Sale"];
+            }
+            //Create
+            UILabel *created = (UILabel*)[cell viewWithTag:2];
+            index = [cellData.paraNames indexOfObject:@"created"];
+            value = [NSData stringDecodeFromBase64String:[cellData.paraValues objectAtIndex:index]];
+            [created setText:value];
+            //thumb
+            UIImageView *imagView = (UIImageView*)[cell viewWithTag:3];
+            index = [cellData.paraNames indexOfObject:@"thumb"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [imagView setImageWithURL:[NSURL URLWithString:value]];
+            //Title
+            UILabel *titleHDB = (UILabel*) [cell viewWithTag:4];
+            index = [cellData.paraNames indexOfObject:@"address"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [titleHDB setText:value];
+            //price
+            UILabel *price = (UILabel*) [cell viewWithTag:12];
+            if ([property_status isEqualToString:@"s"]) {
+                index = [cellData.paraNames indexOfObject:@"price"];
+            }else
+            {
+                index = [cellData.paraNames indexOfObject:@"monthly_rental"];
+            }
+            
+            value = [cellData.paraValues objectAtIndex:index];
+            [price setText:[NSString stringWithFormat:@"S$ %@", value]];
+            //psf
+            index = [cellData.paraNames indexOfObject:@"psf"];
+            value = [cellData.paraValues objectAtIndex:index];
+            
+            [price setText:[NSString stringWithFormat:@"%@ (S$ %@ psf)",price.text, value]];
+            
+            
+            //lease_term_valuation_price (unit_level)
+            UILabel *lease_term_valuation_price = (UILabel*) [cell viewWithTag:5];
+            if ([property_status isEqualToString:@"s"]) {
+                index = [cellData.paraNames indexOfObject:@"valuation_price"];
+                value = [NSString stringWithFormat:@"S$ %@ valn", [cellData.paraValues objectAtIndex:index]];
+            }else
+            {
+                index = [cellData.paraNames indexOfObject:@"lease_term"];
+                value = [cellData.paraValues objectAtIndex:index];
+            }
+            
+            //tenure
+            index = [cellData.paraNames indexOfObject:@"tenure"];
+            NSString *unit_level = [cellData.paraValues objectAtIndex:index];
+            if (unit_level.length > 0) {
+                value = [NSString stringWithFormat:@"%@ ( %@ )", value, unit_level];
+            }
+            [lease_term_valuation_price setText:value];
+            //district
+            UILabel *hdb_estate = (UILabel*) [cell viewWithTag:6];
+            index = [cellData.paraNames indexOfObject:@"district"];
+            value = [cellData.paraValues objectAtIndex:index];
+            
+            //furnishing
+            index = [cellData.paraNames indexOfObject:@"furnishing"];
+            NSString *furnishing = [cellData.paraValues objectAtIndex:index];
+            if (! [furnishing isEqualToString:@""] ) {
+                value = [value stringByAppendingFormat:@" ( %@ )", furnishing];
+            }
+            [hdb_estate setText:value];
+            //size
+            UILabel *size = (UILabel*) [cell viewWithTag:7];
+            index = [cellData.paraNames indexOfObject:@"size"];
+            value = [cellData.paraValues objectAtIndex:index];
+            index = [cellData.paraNames indexOfObject:@"size_m"];
+            NSString *size_m = [cellData.paraValues objectAtIndex:index];
+            [size setText:[NSString stringWithFormat:@"%@ sqft / %@ sqm",value, size_m]];
+            //building_completion
+            UILabel *building_completion = (UILabel*) [cell viewWithTag:11];
+            index = [cellData.paraNames indexOfObject:@"building_completion"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [building_completion setText:[NSString stringWithFormat:@"%@ Completed", value]];
+            //bedrooms
+            UILabel *bedrooms = (UILabel*) [cell viewWithTag:8];
+            index = [cellData.paraNames indexOfObject:@"bedrooms"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [bedrooms setText:value];
+            //washroom
+            UILabel *washroom = (UILabel*) [cell viewWithTag:9];
+            index = [cellData.paraNames indexOfObject:@"washroom"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [washroom setText:value];
+            //HDB Type
+            UILabel *HDBType = (UILabel*) [cell viewWithTag:14];
+            value = @"";
+            [HDBType setText:value];
+            return cell;
+            
+        }
+        
+        if (indexPath.row > 0) {
+            static NSString *CellIdentifier2 = @"HDBListResultCell2";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier2];
+            if (cell == nil) {
+                
+                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier2 owner:self options:nil];
+                cell = [topLevelObjects objectAtIndex:0];
+                topLevelObjects = nil;
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                cell.backgroundView = [[UIView alloc] init];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            }
+            NSInteger index;
+            NSString *value;
+            @try {
+                //avartar
+                UIImageView *avatar = (UIImageView*)[cell viewWithTag:3];
+                [avatar setImageWithURL:[NSURL URLWithString:cellData.userInfo.avatarUrl]];
+                // posted user
+                UILabel *user_posted = (UILabel*)[cell viewWithTag:4];
+                [user_posted setText:cellData.userInfo.fullName];
+                
+                
+                //ad_owner
+                UILabel *ad_owner = (UILabel*)[cell viewWithTag:5];
+                index = [cellData.paraNames indexOfObject:@"ad_owner"];
+                value = [cellData.paraValues objectAtIndex:index];
+                [ad_owner setText:value];
+            }
+            @catch (NSException *exception) {
+                
+            }
+            
+            [self setClapCommentForCell:cell andData:cellData];
+            return cell;
+        }
+    }
+    return [[UITableViewCell alloc]init];
 }
 
 
@@ -359,7 +742,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     HBBResultCellData *cellData = [currentListResult objectAtIndex:indexPath.section];
     HDBResultDetailViewController *detailViewCtr = [[HDBResultDetailViewController alloc]initWithHDBID:cellData.hdbID userID:[[UserPAInfo sharedUserPAInfo]registrationID]];
-    
+    detailViewCtr.itemName = self.itemName;
     detailViewCtr.property_status = property_status;
     [self.navigationController pushViewController:detailViewCtr animated:YES];
 }
@@ -447,121 +830,110 @@
 - (void) setNumFound:(NSNumber*) num
 {
     NSInteger numFound = num.integerValue;
-    if (numFound > 1) {
-        [self.lbNumFound setText:[NSString stringWithFormat:@"   %d properties found", numFound]];
+    if ([self.itemName isEqualToString:@"HDB Search"]) {
+        if (numFound > 1) {
+            [self.lbNumFound setText:[NSString stringWithFormat:@"   %d properties found", numFound]];
+        }
+        else
+        {
+            if (numFound == 1) {
+                [self.lbNumFound setText:[NSString stringWithFormat:@"   1 property found"]];
+            }else
+                [self.lbNumFound setText:[NSString stringWithFormat:@"   No properties found"]];
+        }
     }
-    else
-    {
-        if (numFound == 1) {
-            [self.lbNumFound setText:[NSString stringWithFormat:@"   1 properties found"]];
-        }else
-            [self.lbNumFound setText:[NSString stringWithFormat:@"   No properties found"]];
+    if ([self.itemName isEqualToString:@"Condos Search"]) {
+        if (numFound > 1) {
+            [self.lbNumFound setText:[NSString stringWithFormat:@"   %d condos found", numFound]];
+        }
+        else
+        {
+            if (numFound == 1) {
+                [self.lbNumFound setText:[NSString stringWithFormat:@"   1 condo found"]];
+            }else
+                [self.lbNumFound setText:[NSString stringWithFormat:@"   No condos found"]];
+        }
     }
-
+    if ([self.itemName isEqualToString:@"Landed Property Search"]) {
+        if (numFound > 1) {
+            [self.lbNumFound setText:[NSString stringWithFormat:@"   %d Landed Properties found", numFound]];
+        }
+        else
+        {
+            if (numFound == 1) {
+                [self.lbNumFound setText:[NSString stringWithFormat:@"   1 Landed Property found"]];
+            }else
+                [self.lbNumFound setText:[NSString stringWithFormat:@"   No Landed Properties found"]];
+        }
+    }
 }
 - (void) getData
 {
     //function searchHDB($property_status, $keywords, $property_type, $hdb_owner, $hdb_estate, $bedrooms_from, $bedrooms_to, $washrooms_from, $washrooms_to, $price_from, $price_to, $size_from, $size_to, $valuation_from, $valuation_to, $lease_term_from, $lease_term_to, $completion_from, $completion_to, $unit_level, $furnishing, $condition, $limit, $hdb_id = 0, $psf_from, $psf_to, $user_id, $sort_type, $start, $scroll = 'down', $is_save = 0, $base64_image = false) 
-
-    id data;
-    NSString *functionName;
-    NSArray *paraNames;
-    NSMutableArray *paraValues = [[NSMutableArray alloc]init];
-    functionName = @"searchHDB";
-    paraNames = [NSArray arrayWithObjects:@"property_status", @"keywords", @"property_type", @"hdb_owner", @"hdb_estate", @"bedrooms_from", @"bedrooms_to", @"washrooms_from", @"washrooms_to", @"price_from", @"price_to", @"size_from", @"size_to", @"valuation_from", @"valuation_to", @"lease_term_from", @"lease_term_to", @"completion_from", @"completion_to", @"unit_level", @"furnishing", @"condition", @"limit", @"hdb_id",@"psf_from",@"psf_to", @"user_id", @"sort_type", @"start", @"scroll", @"is_save",  nil];
-    //paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], [NSString stringWithFormat:@"%d",self.infoChatting.parent_id],self.message.text, @"5", nil];
-    
-    //property_status
-    [paraValues addObject:property_status];
-    //keyWorlds
-    NSString *keyWorlds = [[NSUserDefaults standardUserDefaults] valueForKey:@"keyWorlds"];
-    if (! keyWorlds) {
-        keyWorlds = @"";
-    }
-    [paraValues addObject:keyWorlds];
-    
-    //
-    int index = 0;
-    NSString *value;
-    NSArray *from_to;
-    //property_type
-    index = [mainFiles indexOfObject:@"HDB Type"];
-    value = [mainFilesValues objectAtIndex:index];
-    [paraValues addObject:value];
-    //hdb_owner
-    index = [mainFiles indexOfObject:@"Ad Owner"];
-    value = [mainFilesValues objectAtIndex:index];
-    [paraValues addObject:value];
-    //hdb_estate
-    index = [mainFiles indexOfObject:@"HDB Estate"];
-    value = [mainFilesValues objectAtIndex:index];
-    [paraValues addObject:value];
-    //bedrooms_from
-    index = [mainFiles indexOfObject:@"Bedrooms"];
-    value = [mainFilesValues objectAtIndex:index];
-    from_to = [value componentsSeparatedByString:@"____"];
-    //bedrooms_to
-    if (from_to.count == 2) {
-        [paraValues addObjectsFromArray:from_to];
-    }else{
-        [paraValues addObject:@"0"];
-        [paraValues addObject:@"0"];
-    }
-    //washrooms_from
-    index = [mainFiles indexOfObject:@"Washrooms"];
-    value = [mainFilesValues objectAtIndex:index];
-    from_to = [value componentsSeparatedByString:@"____"];
-    //washrooms_to
-    if (from_to.count == 2) {
-        [paraValues addObjectsFromArray:from_to];
-    }else{
-        [paraValues addObject:@"0"];
-        [paraValues addObject:@"0"];
-    }
-    //price_from
-    index = [mainFiles indexOfObject:@"Price"];
-    if (index == NSIntegerMax) {
-        index = [mainFiles indexOfObject:@"Monthly Rental"];
-    }
-    value = [mainFilesValues objectAtIndex:index];
-    //price_to
-    from_to = [value componentsSeparatedByString:@"____"];
-    if (from_to.count == 2) {
-        [paraValues addObjectsFromArray:from_to];
-    }else{
-        [paraValues addObject:@"0"];
-        [paraValues addObject:@"0"];
-    }
-    //size_from
-    index = [mainFiles indexOfObject:@"Size"];
-    value = [mainFilesValues objectAtIndex:index];
-    //size_to
-    from_to = [value componentsSeparatedByString:@"____"];
-    if (from_to.count == 2) {
-        [paraValues addObjectsFromArray:from_to];
-    }else{
-        [paraValues addObject:@"0"];
-        [paraValues addObject:@"0"];
-    }
-    //valuation_from
-    index = [mainFiles indexOfObject:@"Val'n Price"];
-    value = [mainFilesValues objectAtIndex:index];
-    //valuation_to
-    from_to = [value componentsSeparatedByString:@"____"];
-    if (from_to.count == 2) {
-        [paraValues addObjectsFromArray:from_to];
-    }else{
-        [paraValues addObject:@"0"];
-        [paraValues addObject:@"0"];
-    }
-    //lease_term_from
-    index = [mainFiles indexOfObject:@"Lease Term"];
-    if (index == NSIntegerMax) {
-        [paraValues addObject:@"0"];
-        [paraValues addObject:@"0"];
-    }else
-    {
+#pragma mark . HDB Search
+    if ([self.itemName isEqualToString:@"HDB Search"]) {
+        id data;
+        NSString *functionName;
+        NSArray *paraNames;
+        NSMutableArray *paraValues = [[NSMutableArray alloc]init];
+        functionName = @"searchHDB";
+        paraNames = [NSArray arrayWithObjects:@"property_status", @"keywords", @"property_type", @"hdb_owner", @"hdb_estate", @"bedrooms_from", @"bedrooms_to", @"washrooms_from", @"washrooms_to", @"price_from", @"price_to", @"size_from", @"size_to", @"valuation_from", @"valuation_to", @"lease_term_from", @"lease_term_to", @"completion_from", @"completion_to", @"unit_level", @"furnishing", @"condition", @"limit", @"hdb_id",@"psf_from",@"psf_to", @"user_id", @"sort_type", @"start", @"scroll", @"is_save",  nil];
+        //paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], [NSString stringWithFormat:@"%d",self.infoChatting.parent_id],self.message.text, @"5", nil];
+        
+        //property_status
+        [paraValues addObject:property_status];
+        //keyWorlds
+        NSString *keyWorlds = [[NSUserDefaults standardUserDefaults] valueForKey:@"keyWorlds"];
+        if (! keyWorlds) {
+            keyWorlds = @"";
+        }
+        [paraValues addObject:keyWorlds];
+        
+        //
+        int index = 0;
+        NSString *value;
+        NSArray *from_to;
+        //property_type
+        index = [mainFiles indexOfObject:@"HDB Type"];
         value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //hdb_owner
+        index = [mainFiles indexOfObject:@"Ad Owner"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //hdb_estate
+        index = [mainFiles indexOfObject:@"HDB Estate"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //bedrooms_from
+        index = [mainFiles indexOfObject:@"Bedrooms"];
+        value = [mainFilesValues objectAtIndex:index];
+        from_to = [value componentsSeparatedByString:@"____"];
+        //bedrooms_to
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+        //washrooms_from
+        index = [mainFiles indexOfObject:@"Washrooms"];
+        value = [mainFilesValues objectAtIndex:index];
+        from_to = [value componentsSeparatedByString:@"____"];
+        //washrooms_to
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+        //price_from
+        index = [mainFiles indexOfObject:@"Price"];
+        if (index == NSIntegerMax) {
+            index = [mainFiles indexOfObject:@"Monthly Rental"];
+        }
+        value = [mainFilesValues objectAtIndex:index];
+        //price_to
         from_to = [value componentsSeparatedByString:@"____"];
         if (from_to.count == 2) {
             [paraValues addObjectsFromArray:from_to];
@@ -569,112 +941,790 @@
             [paraValues addObject:@"0"];
             [paraValues addObject:@"0"];
         }
-    }
-    
-    //lease_term_to
-    
-    
-    //completion_from
-    index = [mainFiles indexOfObject:@"Constructed"];
-    if (from_to.count == 2) {
-        [paraValues addObjectsFromArray:from_to];
-    }else{
-        [paraValues addObject:@"0"];
-        [paraValues addObject:@"0"];
-    }
-    //completion_to
-    //unit_level
-    index = [mainFiles indexOfObject:@"Unit Level"];
-    value = [mainFilesValues objectAtIndex:index];
-    [paraValues addObject:value];
-    //furnishing
-    index = [mainFiles indexOfObject:@"Furnishing"];
-    value = [mainFilesValues objectAtIndex:index];
-    [paraValues addObject:value];
-    //condition
-    index = [mainFiles indexOfObject:@"Condition"];
-    value = [mainFilesValues objectAtIndex:index];
-    [paraValues addObject:value];
-    //limit
-    value = @"5";
-    [paraValues addObject:value];
-    //hdb_id
-    value = @"0";
-    [paraValues addObject:value];
-    //psf from
-    index = [mainFiles indexOfObject:@"PSF"];
-    value = [mainFilesValues objectAtIndex:index];
-    from_to = [value componentsSeparatedByString:@"____"];
-    //psf to
-    if (from_to.count == 2) {
-        [paraValues addObjectsFromArray:from_to];
-    }else{
-        [paraValues addObject:@"0"];
-        [paraValues addObject:@"0"];
-    }
-    
-    //user_id
-    [paraValues addObject:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID]];
-    //sort_type
-    value = [[NSUserDefaults standardUserDefaults] objectForKey:@"Sort By V3"];
-
-    [paraValues addObject:value];
-    //start
-    value = [[NSUserDefaults standardUserDefaults] objectForKey:@"start"];
-    [paraValues addObject:value];
-    //scroll
-    value = [[NSUserDefaults standardUserDefaults] objectForKey:@"scroll"];
-    [paraValues addObject:value];
-    //is_save
-    //value = [[NSUserDefaults standardUserDefaults] objectForKey:@"is_save"];
-    value = @"0";
-    [paraValues addObject:value];
-
-    // replace "Any" - > ""
-    for (int i = 0; i < paraValues.count; i++) {
-        NSString *myValue = [paraValues objectAtIndex:i];
-        if ([myValue isEqualToString:@"Any"]) {
-            [paraValues replaceObjectAtIndex:i withObject:@""];
+        //size_from
+        index = [mainFiles indexOfObject:@"Size"];
+        value = [mainFilesValues objectAtIndex:index];
+        //size_to
+        from_to = [value componentsSeparatedByString:@"____"];
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
         }
-        if ([myValue isEqualToString:@"Select One"]) {
-            [paraValues replaceObjectAtIndex:i withObject:@""];
+        //valuation_from
+        index = [mainFiles indexOfObject:@"Val'n Price"];
+        value = [mainFilesValues objectAtIndex:index];
+        //valuation_to
+        from_to = [value componentsSeparatedByString:@"____"];
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
         }
-    }
-    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
-    for (NSDictionary *dict in data) {
-        if (![dict isKindOfClass:[NSDictionary class]]) {
-            continue;
-        }
-        
-        NSString *count = [dict objectForKey:@"count"];
-        NSNumber *num = [NSNumber numberWithInteger:count.integerValue];
-        [self performSelectorOnMainThread:@selector(setNumFound:) withObject:num waitUntilDone:NO];
-        
-        HBBResultCellData *cellData = [[HBBResultCellData alloc]init];
-        cellData.hdbID = [[dict objectForKey:@"id"] integerValue];
-        cellData.timeCreated = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
-        cellData.titleHDB = [dict objectForKey:@"block_no"];
-        NSString *title = [dict objectForKey:@"street_name"];
-        cellData.titleHDB = [cellData.titleHDB stringByAppendingString:title];
-        
-        //author
-        NSDictionary *authorDict = [dict objectForKey:@"author"];
-        cellData.userInfo = [[CredentialInfo alloc]init];
-        if ([authorDict isKindOfClass:[NSDictionary class]]) {
-            cellData.userInfo = [[CredentialInfo alloc]initWithDictionary:authorDict];
-        }
-        
-        for (NSString *key in cellData.paraNames) {
-            id object = [dict objectForKey:key];
-            if (object != nil) {
-                [cellData.paraValues addObject: object];
+        //lease_term_from
+        index = [mainFiles indexOfObject:@"Lease Term"];
+        if (index == NSIntegerMax) {
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }else
+        {
+            value = [mainFilesValues objectAtIndex:index];
+            from_to = [value componentsSeparatedByString:@"____"];
+            if (from_to.count == 2) {
+                [paraValues addObjectsFromArray:from_to];
+            }else{
+                [paraValues addObject:@"0"];
+                [paraValues addObject:@"0"];
             }
         }
         
-        [currentListResult addObject:cellData];
+        //lease_term_to
+        
+        
+        //completion_from
+        index = [mainFiles indexOfObject:@"Constructed"];
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+        //completion_to
+        //unit_level
+        index = [mainFiles indexOfObject:@"Unit Level"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //furnishing
+        index = [mainFiles indexOfObject:@"Furnishing"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //condition
+        index = [mainFiles indexOfObject:@"Condition"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //limit
+        value = @"5";
+        [paraValues addObject:value];
+        //hdb_id
+        value = @"0";
+        [paraValues addObject:value];
+        //psf from
+        index = [mainFiles indexOfObject:@"PSF"];
+        value = [mainFilesValues objectAtIndex:index];
+        from_to = [value componentsSeparatedByString:@"____"];
+        //psf to
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+        
+        //user_id
+        [paraValues addObject:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID]];
+        //sort_type
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"Sort By V3"];
+        
+        [paraValues addObject:value];
+        //start
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"start"];
+        [paraValues addObject:value];
+        //scroll
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"scroll"];
+        [paraValues addObject:value];
+        //is_save
+        //value = [[NSUserDefaults standardUserDefaults] objectForKey:@"is_save"];
+        value = @"0";
+        [paraValues addObject:value];
+        
+        // replace "Any" - > ""
+        for (int i = 0; i < paraValues.count; i++) {
+            NSString *myValue = [paraValues objectAtIndex:i];
+            if ([myValue isEqualToString:@"Any"]) {
+                [paraValues replaceObjectAtIndex:i withObject:@""];
+            }
+            if ([myValue isEqualToString:@"Select One"]) {
+                [paraValues replaceObjectAtIndex:i withObject:@""];
+            }
+        }
+        data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+        
+        if (data && [data count] == 0 && currentListResult.count == 0) {
+            [self setNumFound:[NSNumber numberWithInteger:0]];
+        }
+        for (NSDictionary *dict in data) {
+            if (![dict isKindOfClass:[NSDictionary class]]) {
+                continue;
+            }
+            
+            NSString *count = [dict objectForKey:@"count"];
+            NSNumber *num = [NSNumber numberWithInteger:count.integerValue];
+            [self performSelectorOnMainThread:@selector(setNumFound:) withObject:num waitUntilDone:NO];
+            
+            HBBResultCellData *cellData = [[HBBResultCellData alloc]init];
+            cellData.hdbID = [[dict objectForKey:@"id"] integerValue];
+            cellData.timeCreated = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
+            cellData.titleHDB = [dict objectForKey:@"block_no"];
+            NSString *title = [dict objectForKey:@"street_name"];
+            cellData.titleHDB = [cellData.titleHDB stringByAppendingString:title];
+            
+            //author
+            NSDictionary *authorDict = [dict objectForKey:@"author"];
+            cellData.userInfo = [[CredentialInfo alloc]init];
+            if ([authorDict isKindOfClass:[NSDictionary class]]) {
+                cellData.userInfo = [[CredentialInfo alloc]initWithDictionary:authorDict];
+            }
+            
+            for (NSString *key in cellData.paraNames) {
+                id object = [dict objectForKey:key];
+                if (object != nil) {
+                    [cellData.paraValues addObject: object];
+                }
+            }
+            
+            [currentListResult addObject:cellData];
+        }
+    }
+#pragma mark . Condos Search
+    if ([self.itemName isEqualToString:@"Condos Search"]) {
+//        searchCondos($property_status, $keywords, $project_name, $ad_owner, $district, $bedrooms_from, $bedrooms_to, $washrooms_from, $washrooms_to, $price_from, $price_to, $size_from, $size_to, $valuation_from, $valuation_to, $lease_term_from, $lease_term_to, $completion_from, $completion_to, $unit_level, $furnishing, $condition, $limit, $max_id = 0, $psf_from, $psf_to,  $tenure, $user_id, $sort_type, $start, $scroll = 'down', $is_save = 0, $base64_image = false)
+        id data;
+        NSString *functionName;
+        NSArray *paraNames;
+        NSMutableArray *paraValues = [[NSMutableArray alloc]init];
+        functionName = @"searchCondos";
+        paraNames = [NSArray arrayWithObjects:
+                     @"property_status",
+                     @"keywords",
+                     @"project_name",
+                     @"ad_owner",
+                     @"district",
+                     @"bedrooms_from",
+                     @"bedrooms_to",
+                     @"washrooms_from",
+                     @"washrooms_to",
+                     @"price_from",
+                     @"price_to",
+                     @"size_from",
+                     @"size_to",
+                     @"valuation_from",
+                     @"valuation_to",
+                     @"lease_term_from",
+                     @"lease_term_to",
+                     @"completion_from",
+                     @"completion_to",
+                     @"unit_level",
+                     @"furnishing",
+                     @"condition",
+                     @"limit",
+                     @"max_id",
+                     @"psf_from",
+                     @"psf_to",
+                     @"tenure",
+                     @"user_id",
+                     @"sort_type",
+                     @"start",
+                     @"scroll",
+                     @"is_save",  nil];
+        
+        //property_status
+        [paraValues addObject:property_status];
+        //keyWorlds
+        NSString *keyWorlds = [[NSUserDefaults standardUserDefaults] valueForKey:@"keyWorlds"];
+        if (! keyWorlds) {
+            keyWorlds = @"";
+        }
+        [paraValues addObject:keyWorlds];
+        
+        //
+        int index = 0;
+        NSString *value;
+        NSArray *from_to;
+        //property_type
+        index = [mainFiles indexOfObject:@"Project Name"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //hdb_owner
+        index = [mainFiles indexOfObject:@"Ad Owner"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //hdb_estate
+        index = [mainFiles indexOfObject:@"District"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //bedrooms_from
+        index = [mainFiles indexOfObject:@"Bedrooms"];
+        value = [mainFilesValues objectAtIndex:index];
+        from_to = [value componentsSeparatedByString:@"____"];
+        //bedrooms_to
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+        //washrooms_from
+        index = [mainFiles indexOfObject:@"Washrooms"];
+        value = [mainFilesValues objectAtIndex:index];
+        from_to = [value componentsSeparatedByString:@"____"];
+        //washrooms_to
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+        //price_from
+        index = [mainFiles indexOfObject:@"Price"];
+        if (index == NSIntegerMax) {
+            index = [mainFiles indexOfObject:@"Monthly Rental"];
+        }
+        value = [mainFilesValues objectAtIndex:index];
+        //price_to
+        from_to = [value componentsSeparatedByString:@"____"];
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+        //size_from
+        index = [mainFiles indexOfObject:@"Size"];
+        value = [mainFilesValues objectAtIndex:index];
+        //size_to
+        from_to = [value componentsSeparatedByString:@"____"];
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+        //valuation_from
+        index = [mainFiles indexOfObject:@"Val'n Price"];
+        if (index == NSIntegerMax) {
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }else
+        {
+            value = [mainFilesValues objectAtIndex:index];
+            //valuation_to
+            from_to = [value componentsSeparatedByString:@"____"];
+            if (from_to.count == 2) {
+                [paraValues addObjectsFromArray:from_to];
+            }else{
+                [paraValues addObject:@"0"];
+                [paraValues addObject:@"0"];
+            }
+        }
+        //lease_term_from
+        index = [mainFiles indexOfObject:@"Lease Term"];
+        if (index == NSIntegerMax) {
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }else
+        {
+            value = [mainFilesValues objectAtIndex:index];
+            from_to = [value componentsSeparatedByString:@"____"];
+            if (from_to.count == 2) {
+                [paraValues addObjectsFromArray:from_to];
+            }else{
+                [paraValues addObject:@"0"];
+                [paraValues addObject:@"0"];
+            }
+        }
+        
+        //lease_term_to
+        
+        
+        //completion_from
+        index = [mainFiles indexOfObject:@"Constructed"];
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+        //completion_to
+        //unit_level
+        index = [mainFiles indexOfObject:@"Unit Level"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //furnishing
+        index = [mainFiles indexOfObject:@"Furnishing"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //condition
+        index = [mainFiles indexOfObject:@"Condition"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //limit
+        value = @"5";
+        [paraValues addObject:value];
+        //max_id
+        [paraValues addObject:max_id];
+        //psf from
+        index = [mainFiles indexOfObject:@"PSF"];
+        value = [mainFilesValues objectAtIndex:index];
+        from_to = [value componentsSeparatedByString:@"____"];
+        //psf to
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+        //tenure
+        index = [mainFiles indexOfObject:@"Tenure"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //user_id
+        [paraValues addObject:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID]];
+        //sort_type
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"Sort By V3"];
+        
+        [paraValues addObject:value];
+        //start
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"start"];
+        [paraValues addObject:value];
+        //scroll
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"scroll"];
+        [paraValues addObject:value];
+        //is_save
+        //value = [[NSUserDefaults standardUserDefaults] objectForKey:@"is_save"];
+        value = @"0";
+        [paraValues addObject:value];
+        
+        // replace "Any" - > ""
+        for (int i = 0; i < paraValues.count; i++) {
+            NSString *myValue = [paraValues objectAtIndex:i];
+            if ([myValue isEqualToString:@"Any"]) {
+                [paraValues replaceObjectAtIndex:i withObject:@""];
+            }
+            if ([myValue isEqualToString:@"Select One"]) {
+                [paraValues replaceObjectAtIndex:i withObject:@""];
+            }
+        }
+        data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+        if (data && [data count] == 0 && currentListResult.count == 0) {
+            [self setNumFound:[NSNumber numberWithInteger:0]];
+        }
+        for (NSDictionary *dict in data) {
+            if (![dict isKindOfClass:[NSDictionary class]]) {
+                continue;
+            }
+            
+            NSString *count = [dict objectForKey:@"count"];
+            NSNumber *num = [NSNumber numberWithInteger:count.integerValue];
+            [self performSelectorOnMainThread:@selector(setNumFound:) withObject:num waitUntilDone:NO];
+            
+            HBBResultCellData *cellData = [[HBBResultCellData alloc]initWithItemName:self.itemName];
+            cellData.hdbID = [[dict objectForKey:@"id"] integerValue];
+            cellData.timeCreated = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
+            NSString *title = [dict objectForKey:@"address"];
+            cellData.titleHDB = title;
+            
+            //author
+            NSDictionary *authorDict = [dict objectForKey:@"author"];
+            cellData.userInfo = [[CredentialInfo alloc]init];
+            if ([authorDict isKindOfClass:[NSDictionary class]]) {
+                cellData.userInfo = [[CredentialInfo alloc]initWithDictionary:authorDict];
+            }
+            
+            for (NSString *key in cellData.paraNames) {
+                id object = [dict objectForKey:key];
+                if (object != nil) {
+                    [cellData.paraValues addObject: object];
+                }
+            }
+            
+            [currentListResult addObject:cellData];
+        }
+    }
+#pragma mark . Landed Property
+    if ([self.itemName isEqualToString:@"Landed Property Search"]) {
+//    searchLanded($property_status, $keywords, $tenure, $ad_owner, $district, $bedrooms_from, $bedrooms_to, $washrooms_from, $washrooms_to, $price_from, $price_to, $size_from, $size_to, $valuation_from, $valuation_to, $lease_term_from, $lease_term_to, $completion_from, $completion_to, $furnishing, $condition, $limit, $max_id = 0, $psf_from, $psf_to, $user_id, $sort_type, $start, $scroll = 'down', $is_save = 0, $base64_image = false)
+        id data;
+        NSString *functionName;
+        NSArray *paraNames;
+        NSMutableArray *paraValues = [[NSMutableArray alloc]init];
+        functionName = @"searchLanded";
+        paraNames = [NSArray arrayWithObjects:
+                     @"property_status",
+                     @"keywords",
+                     @"tenure",
+                     @"ad_owner",
+                     @"district",
+                     @"bedrooms_from",
+                     @"bedrooms_to",
+                     @"washrooms_from",
+                     @"washrooms_to",
+                     @"price_from",
+                     @"price_to",
+                     @"size_from",
+                     @"size_to",
+                     @"valuation_from",
+                     @"valuation_to", 
+                     @"lease_term_from", 
+                     @"lease_term_to", 
+                     @"completion_from", 
+                     @"completion_to", 
+                     @"furnishing", 
+                     @"condition", 
+                     @"limit", 
+                     @"max_id", 
+                     @"psf_from", 
+                     @"psf_to", 
+                     @"user_id", 
+                     @"sort_type", 
+                     @"start", 
+                     @"scroll",
+                     @"is_save",  nil];
+        
+        //property_status
+        [paraValues addObject:property_status];
+        //keyWorlds
+        NSString *keyWorlds = [[NSUserDefaults standardUserDefaults] valueForKey:@"keyWorlds"];
+        if (! keyWorlds) {
+            keyWorlds = @"";
+        }
+        [paraValues addObject:keyWorlds];
+        
+        //
+        int index = 0;
+        NSString *value;
+        NSArray *from_to;
+        //tenure
+        index = [mainFiles indexOfObject:@"Tenure"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //ad_owner
+        index = [mainFiles indexOfObject:@"Ad Owner"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //district
+        index = [mainFiles indexOfObject:@"District"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //bedrooms_from
+        index = [mainFiles indexOfObject:@"Bedrooms"];
+        value = [mainFilesValues objectAtIndex:index];
+        from_to = [value componentsSeparatedByString:@"____"];
+        //bedrooms_to
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+        //washrooms_from
+        index = [mainFiles indexOfObject:@"Washrooms"];
+        value = [mainFilesValues objectAtIndex:index];
+        from_to = [value componentsSeparatedByString:@"____"];
+        //washrooms_to
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+        //price_from
+        index = [mainFiles indexOfObject:@"Price"];
+        if (index == NSIntegerMax) {
+            index = [mainFiles indexOfObject:@"Monthly Rental"];
+        }
+        value = [mainFilesValues objectAtIndex:index];
+        //price_to
+        from_to = [value componentsSeparatedByString:@"____"];
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+        //size_from
+        index = [mainFiles indexOfObject:@"Size"];
+        value = [mainFilesValues objectAtIndex:index];
+        //size_to
+        from_to = [value componentsSeparatedByString:@"____"];
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+        //valuation_from
+        index = [mainFiles indexOfObject:@"Val'n Price"];
+        if (index == NSIntegerMax) {
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }else
+        {
+            value = [mainFilesValues objectAtIndex:index];
+            //valuation_to
+            from_to = [value componentsSeparatedByString:@"____"];
+            if (from_to.count == 2) {
+                [paraValues addObjectsFromArray:from_to];
+            }else{
+                [paraValues addObject:@"0"];
+                [paraValues addObject:@"0"];
+            }
+        }
+        //lease_term_from
+        index = [mainFiles indexOfObject:@"Lease Term"];
+        if (index == NSIntegerMax) {
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }else
+        {
+            value = [mainFilesValues objectAtIndex:index];
+            from_to = [value componentsSeparatedByString:@"____"];
+            if (from_to.count == 2) {
+                [paraValues addObjectsFromArray:from_to];
+            }else{
+                [paraValues addObject:@"0"];
+                [paraValues addObject:@"0"];
+            }
+        }
+        
+        //lease_term_to
+        
+        
+        //completion_from
+        index = [mainFiles indexOfObject:@"Constructed"];
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+        //completion_to
+        //furnishing
+        index = [mainFiles indexOfObject:@"Furnishing"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //condition
+        index = [mainFiles indexOfObject:@"Condition"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //limit
+        value = @"5";
+        [paraValues addObject:value];
+        //max_id
+        [paraValues addObject:max_id];
+        //psf from
+        index = [mainFiles indexOfObject:@"PSF"];
+        value = [mainFilesValues objectAtIndex:index];
+        from_to = [value componentsSeparatedByString:@"____"];
+        //psf to
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+        //user_id
+        [paraValues addObject:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID]];
+        //sort_type
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"Sort By V3"];
+        
+        [paraValues addObject:value];
+        //start
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"start"];
+        [paraValues addObject:value];
+        //scroll
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"scroll"];
+        [paraValues addObject:value];
+        //is_save
+        //value = [[NSUserDefaults standardUserDefaults] objectForKey:@"is_save"];
+        value = @"0";
+        [paraValues addObject:value];
+        
+        // replace "Any" - > ""
+        for (int i = 0; i < paraValues.count; i++) {
+            NSString *myValue = [paraValues objectAtIndex:i];
+            if ([myValue isEqualToString:@"Any"]) {
+                [paraValues replaceObjectAtIndex:i withObject:@""];
+            }
+            if ([myValue isEqualToString:@"Select One"]) {
+                [paraValues replaceObjectAtIndex:i withObject:@""];
+            }
+        }
+        data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+        if (data && [data count] == 0 && currentListResult.count == 0) {
+            [self setNumFound:[NSNumber numberWithInteger:0]];
+        }
+        for (NSDictionary *dict in data) {
+            if (![dict isKindOfClass:[NSDictionary class]]) {
+                continue;
+            }
+            
+            NSString *count = [dict objectForKey:@"count"];
+            NSNumber *num = [NSNumber numberWithInteger:count.integerValue];
+            [self performSelectorOnMainThread:@selector(setNumFound:) withObject:num waitUntilDone:NO];
+            
+            HBBResultCellData *cellData = [[HBBResultCellData alloc]initWithItemName:self.itemName];
+            cellData.hdbID = [[dict objectForKey:@"id"] integerValue];
+            cellData.timeCreated = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
+            NSString *title = [dict objectForKey:@"address"];
+            cellData.titleHDB = title;
+            
+            //author
+            NSDictionary *authorDict = [dict objectForKey:@"author"];
+            cellData.userInfo = [[CredentialInfo alloc]init];
+            if ([authorDict isKindOfClass:[NSDictionary class]]) {
+                cellData.userInfo = [[CredentialInfo alloc]initWithDictionary:authorDict];
+            }
+            
+            for (NSString *key in cellData.paraNames) {
+                id object = [dict objectForKey:key];
+                if (object != nil) {
+                    [cellData.paraValues addObject: object];
+                }else
+                    [cellData.paraValues addObject:@""];
+            }
+            
+            [currentListResult addObject:cellData];
+        }
     }
     isLoadData = NO;
 }
+#pragma mark MapViewControllerDelegate
+
+- (void) callOutBtn_Clicked:(id)sender
+{
+    UIView* aView = (UIView*)sender;
+    HBBResultCellData *cellData = [currentListResult objectAtIndex:aView.tag];
+    HDBResultDetailViewController *detailViewCtr = [[HDBResultDetailViewController alloc]initWithHDBID:cellData.hdbID userID:[[UserPAInfo sharedUserPAInfo]registrationID]];
+    detailViewCtr.itemName = self.itemName;
+    detailViewCtr.property_status = property_status;
+    [self.navigationController pushViewController:detailViewCtr animated:YES];
+}
+
+#pragma mark . Show Map
+- (IBAction)act_ShowMap:(id)sender
+{
+    if (! mapView.listPlacemarks.count) {
+        [mbpMap show:YES];
+        for (HBBResultCellData *cellData in currentListResult) {
+            NSInteger index;
+            NSString *value;
+            if ([self.itemName isEqualToString:@"HDB Search"]) {
+                index = [cellData.paraNames indexOfObject:@"block_no"];
+                value = [cellData.paraValues objectAtIndex:index];
+                
+                index = [cellData.paraNames indexOfObject:@"street_name"];
+                value = [NSString stringWithFormat:@"%@ %@",value, [cellData.paraValues objectAtIndex:index]];
+            }
+            if ([self.itemName isEqualToString:@"Condos Search"]) {
+                index = [cellData.paraNames indexOfObject:@"address"];
+                value = [cellData.paraValues objectAtIndex:index];
+            }
+            
+            if ([self.itemName isEqualToString:@"Landed Property Search"]) {
+                index = [cellData.paraNames indexOfObject:@"address"];
+                value = [cellData.paraValues objectAtIndex:index];
+            }
+            
+            if ([self.itemName isEqualToString:@"Room For Rent Search"]) {
+                index = [cellData.paraNames indexOfObject:@"address"];
+                value = [cellData.paraValues objectAtIndex:index];
+            }
+            [self getAllPlacemarksWithAddress:value];
+        }
+    }
+    else
+        {
+            [UIView beginAnimations:@"View Flip" context:nil];
+            [UIView setAnimationDuration:0.80];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+            
+            [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight
+                                   forView:_flipView cache:NO];
+            
+            [self.flipView addSubview:mapView.view];
+            
+            [UIView commitAnimations];
+        }
+}
+- (void) getAllPlacemarksWithAddress:(NSString*)addressString
+{
+    NSMutableArray *listPlacemarks = [[NSMutableArray alloc]init];
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    [geocoder geocodeAddressString:addressString completionHandler:^(NSArray *placemarks, NSError *error) {
+        if (error)
+        {
+            NSLog(@"Geocode failed with error: %@", error);
+            [listPlacemarks addObject:[NSNull null]];
+            [self displayError:error];
+            [mapView.listPlacemarks addObject: [NSNull null]];
+            if (mapView.listPlacemarks.count == currentListResult.count) {
+                [mbpMap hide:YES];
+                [mapView centerMap];
+            }
+            return ;
+        }
+        
+        NSLog(@"Received placemarks: %@", placemarks);
+        
+        if (! mapView.view.superview) {
+            [mapView.listPlacemarks addObject: [placemarks objectAtIndex:0]];
+            [UIView beginAnimations:@"View Flip" context:nil];
+            [UIView setAnimationDuration:0.80];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+            
+            [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown
+                                   forView:_flipView cache:NO];
+            
+            [self.flipView addSubview:mapView.view];
+            
+            [UIView commitAnimations];
+        }else
+        {
+            [mapView addPlacemark:[placemarks objectAtIndex:0]];
+        }
+        if (mapView.listPlacemarks.count == currentListResult.count) {
+            [mbpMap hide:YES];
+            [mapView centerMap];
+        }
+        
+    }];
+}
+
+// display a given NSError in an UIAlertView
+- (void)displayError:(NSError *)error
+{
+    return;
+    dispatch_async(dispatch_get_main_queue(),^ {
+        
+        NSString *message;
+        switch ([error code])
+        {
+            case kCLErrorGeocodeFoundNoResult:
+                message = @"kCLErrorGeocodeFoundNoResult";
+                break;
+            case kCLErrorGeocodeCanceled:
+                message = @"kCLErrorGeocodeCanceled";
+                break;
+            case kCLErrorGeocodeFoundPartialResult:
+                message = @"kCLErrorGeocodeFoundNoResult";
+                break;
+            default:
+                message = [error description];
+                break;
+        }
+        
+        UIAlertView *alert =  [[UIAlertView alloc] initWithTitle:@"An error occurred."
+                                                         message:message
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];;
+        [alert show];
+    });
+}
+
+#pragma mark -
 
 - (void) addNewData
 {
@@ -718,7 +1768,15 @@
 {
     NSString *plistPathForStaticDCA = [[NSBundle mainBundle] pathForResource:@"DCA" ofType:@"plist"];
     staticData = [NSDictionary dictionaryWithContentsOfFile:plistPathForStaticDCA];
-    staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"HDB Search"]];
+    if ([self.itemName isEqualToString:@"HDB Search"]) {
+        staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"HDB Search"]];
+    }
+    if ([self.itemName isEqualToString:@"Condos Search"]) {
+        staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Condos Search"]];
+    }
+    if ([self.itemName isEqualToString:@"Landed Property Search"]) {
+        staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Landed Property Search"]];
+    }
     NSDictionary *dict;
     NSUserDefaults *database = [[NSUserDefaults alloc]init];
     property_status = [database objectForKey:@"property_status"];
@@ -770,16 +1828,12 @@
             [mainFilesValues replaceObjectAtIndex:i withObject:value];
             continue;
         }
-        
-        // Sort by
-        //Filters
-//        if ([[self tableView:tableView titleForHeaderInSection:indexPath.section] isEqualToString:@"Filters"]) {
-//            if (cell.accessoryType == UITableViewCellAccessoryCheckmark) {
-//                cell.accessoryType = UITableViewCellAccessoryNone;
-//            }
-//            else
-//                cell.accessoryType = UITableViewCellAccessoryCheckmark;
-//        }
+        //HDB Estate
+        if ([key isEqualToString:@"District"]) {
+            value = [value stringByReplacingOccurrencesOfString:@", " withString:@","];
+            [mainFilesValues replaceObjectAtIndex:i withObject:value];
+            continue;
+        }
         
         {
             if ([key isEqualToString:@"Price"] || [key isEqualToString:@"Monthly Rental"] || [key isEqualToString:@"Size"] || [key isEqualToString:@"Bedrooms"] || [key isEqualToString:@"Val'n Price"] || [key isEqualToString:@"Washrooms"] || [key isEqualToString:@"Constructed"] || [key isEqualToString:@"PSF"] || [key isEqualToString:@"Lease Term"]) {
@@ -1058,6 +2112,13 @@
     NSNumber *num = [[NSUserDefaults standardUserDefaults] objectForKey:@"cellData"];
     cellData = [currentListResult objectAtIndex:num.integerValue];
     functionName = @"hdbClap";
+    if ([self.itemName isEqualToString:@"Condos Search"]) {
+        functionName = @"condosClap";
+    }
+    if ([self.itemName isEqualToString:@"Landed Property Search"]) {
+        functionName = @"landedClap";
+    }
+    
     paraNames = [NSArray arrayWithObjects:@"user_id", @"hdb_id", nil];
     paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], [NSString stringWithFormat:@"%d", cellData.hdbID], nil];
     data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName:functionName parametterName:paraNames parametterValue:paraValues];
@@ -1088,6 +2149,7 @@
     HBBResultCellData *cellData = [currentListResult objectAtIndex:num.integerValue];
     HDBResultDetailViewController *detailViewCtr = [[HDBResultDetailViewController alloc]initWithHDBID:cellData.hdbID userID:[[UserPAInfo sharedUserPAInfo]registrationID]];
     detailViewCtr.showKeyboard = YES;
+    detailViewCtr.itemName = self.itemName;
     detailViewCtr.property_status = property_status;
     [self.navigationController pushViewController:detailViewCtr animated:YES];
 }

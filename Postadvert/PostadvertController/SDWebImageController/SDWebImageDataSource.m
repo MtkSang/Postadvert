@@ -108,6 +108,18 @@
    NSArray *imageUrls = [images_ objectAtIndex:index];
    NSString *urlF = [imageUrls objectAtIndex:FULL_SIZE_INDEX];
    NSString *urlThumb = [imageUrls objectAtIndex:THUMBNAIL_INDEX];
+    
+    {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *pathToDocuments=[paths objectAtIndex:0];
+        NSRange rang = [urlF rangeOfString:pathToDocuments];
+        if (rang.length) {
+            UIImage *image = [UIImage imageWithContentsOfFile:urlF];
+            [photoView setImage:image];
+            return;
+        }
+    }
+    
    [photoView setImageWithURL:[NSURL URLWithString:urlF] placeholderURL:[NSURL URLWithString:urlThumb] placeholderImage:[UIImage imageNamed:@"photoDefault.png"]];
     //[photoView setImageWithURL:[NSURL URLWithString:urlF] placeholderImage:[UIImage imageNamed:@"photoDefault.png"]];
     NSLog(@"Load Full Image %@", urlF);

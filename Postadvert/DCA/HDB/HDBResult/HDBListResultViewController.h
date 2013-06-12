@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "PullRefreshTableViewController.h"
+#import "MyMapViewController.h"
 @class MBProgressHUD;
-@interface HDBListResultViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, PullRefreshTableViewControllerDelegate, UITabBarDelegate>
+@interface HDBListResultViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, PullRefreshTableViewControllerDelegate, UITabBarDelegate, MyMapViewControllerDelegate>
 {
     MBProgressHUD *hud;
+    MBProgressHUD *mbpMap;
     NSMutableArray *currentListResult;
     NSUInteger totalResultCount;
     NSString *resultType;
@@ -20,16 +22,21 @@
     NSMutableArray *mainFiles;
     NSMutableArray *mainFilesValues;
     NSMutableArray *moreOptions;
+    NSString *max_id;
     NSString *sortByValue;
     NSString *property_status;
     
     MBProgressHUD *footerLoading;
     MBProgressHUD *loadingHideView;
     
+    MyMapViewController *mapView;
+    
     UITabBarItem *currentItem;
     BOOL isLoadData;
     BOOL isListView;
 }
+@property (weak, nonatomic) IBOutlet UIView *flipView;
+@property (nonatomic, strong) NSString *itemName;
 @property (weak, nonatomic) IBOutlet UITabBar *tabBar;
 @property (strong, nonatomic) IBOutlet PullRefreshTableViewController *pullTableViewCtrl;
 @property (weak, nonatomic) IBOutlet UILabel *lbTitle;

@@ -986,6 +986,20 @@
 - (void) newHDBPostClicked:(id)sender
 {
     HDBPostViewController *newPostViewCtr = [[HDBPostViewController alloc]init];
+    NSString *title = self.lbTitle.text;
+    NSRange rang;
+    rang = [title rangeOfString:@"HDB"];
+    if (rang.length) {
+        newPostViewCtr.itemName = @"HDB Search";
+    }
+    rang = [title rangeOfString:@"Condos"];
+    if (rang.length) {
+        newPostViewCtr.itemName = @"Condos Search";
+    }
+    rang = [title rangeOfString:@"Landed"];
+    if (rang.length) {
+        newPostViewCtr.itemName = @"Landed Property Search";
+    }
     [self.navigationController pushViewController:newPostViewCtr animated:YES];
 }
 
@@ -1195,6 +1209,14 @@
         hdbSearch.navagationBarItem = self.navigationItem;
         viewCtr = hdbSearch;
     }
+    if ([itemName isEqualToString:@"Landed Property"]) {
+        HDBViewController *hdbSearch = [[HDBViewController alloc]init];
+        hdbSearch.itemName = @"Landed Property Search";
+        hdbSearch.navigationController = self.navigationController;
+        hdbSearch.navagationBarItem = self.navigationItem;
+        viewCtr = hdbSearch;
+    }
+    
     if (!viewCtr) {
 #warning in progress
         return;

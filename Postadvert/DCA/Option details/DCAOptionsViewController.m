@@ -133,6 +133,12 @@
             break;
         case DCAOptionOthersFeatures:
             return @"Others Features";
+        case DCAOptionCondosProjectName:
+            return @"Project Name";
+        case DCAOptionCondosDistrict:
+            return @"District";
+        case DCAOptionCondosTenure:
+            return @"Tenure";
         default:
             return @"";
             break;

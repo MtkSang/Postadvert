@@ -51,16 +51,23 @@
 		D43D6529169C0EAF005A262F /* DCASeprator.png in Resources */ = {isa = PBXBuildFile; fileRef = D43D6528169C0EAF005A262F /* DCASeprator.png */; };
 		D43D652E169C1BE9005A262F /* accessoryView.png in Resources */ = {isa = PBXBuildFile; fileRef = D43D652D169C1BE9005A262F /* accessoryView.png */; };
 		D43D6530169C1D3B005A262F /* accessoryViewSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = D43D652F169C1D3A005A262F /* accessoryViewSelected.png */; };
+		D43FB30E1761B62D00EFA924 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D43FB30D1761B62D00EFA924 /* MapKit.framework */; };
 		D440FF3F1659EB1100E04BC8 /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D440FF3E1659EB1100E04BC8 /* ChatViewController.xib */; };
+		D444E08E176711650001F495 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D444E08C176711650001F495 /* AddressBook.framework */; };
+		D444E08F176711650001F495 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D444E08D176711650001F495 /* AddressBookUI.framework */; };
 		D44516701666F94700A69E46 /* clap_black_white.png in Resources */ = {isa = PBXBuildFile; fileRef = D445166F1666F94700A69E46 /* clap_black_white.png */; };
 		D44516731666F9B900A69E46 /* black-white-clapping-hands-th.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D44516721666F9B900A69E46 /* black-white-clapping-hands-th.jpg */; };
 		D4451681166741F600A69E46 /* error_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4451680166741F600A69E46 /* error_icon.png */; };
 		D445168316674A9600A69E46 /* fail_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D445168216674A9600A69E46 /* fail_icon.png */; };
 		D44516871667628000A69E46 /* UploadImagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D44516851667627F00A69E46 /* UploadImagesViewController.m */; };
 		D44516881667628000A69E46 /* UploadImagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D44516861667628000A69E46 /* UploadImagesViewController.xib */; };
+		D44B92B8176894D60016B6E0 /* CurrentLocationDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = D44B92B7176894D60016B6E0 /* CurrentLocationDetector.m */; };
 		D44D478C16B0BDFE0002B358 /* eraseIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = D44D478B16B0BDFE0002B358 /* eraseIcon.png */; };
 		D44D479216B0E58A0002B358 /* DCAOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D44D479016B0E58A0002B358 /* DCAOptionsViewController.m */; };
 		D44D479316B0E58A0002B358 /* DCAOptionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D44D479116B0E58A0002B358 /* DCAOptionsViewController.xib */; };
+		D44EF47E1765C500001FEBD7 /* MyMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D44EF47C1765C500001FEBD7 /* MyMapViewController.xib */; };
+		D44EF4801765C64B001FEBD7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44EF47F1765C64B001FEBD7 /* CoreLocation.framework */; };
+		D44EF4811765C78B001FEBD7 /* MyMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D44EF47B1765C500001FEBD7 /* MyMapViewController.m */; };
 		D45389F01678466500BC5612 /* FriendButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D45389EE1678466500BC5612 /* FriendButtonViewController.m */; };
 		D45389F11678466500BC5612 /* FriendButtonViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D45389EF1678466500BC5612 /* FriendButtonViewController.xib */; };
 		D45389F516785AA100BC5612 /* UINewStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D45389F316785AA100BC5612 /* UINewStatusViewController.m */; };
@@ -699,7 +706,10 @@
 		D43D6528169C0EAF005A262F /* DCASeprator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DCASeprator.png; sourceTree = "<group>"; };
 		D43D652D169C1BE9005A262F /* accessoryView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accessoryView.png; sourceTree = "<group>"; };
 		D43D652F169C1D3A005A262F /* accessoryViewSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accessoryViewSelected.png; sourceTree = "<group>"; };
+		D43FB30D1761B62D00EFA924 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		D440FF3E1659EB1100E04BC8 /* ChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatViewController.xib; sourceTree = "<group>"; };
+		D444E08C176711650001F495 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		D444E08D176711650001F495 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		D445166F1666F94700A69E46 /* clap_black_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clap_black_white.png; sourceTree = "<group>"; };
 		D44516721666F9B900A69E46 /* black-white-clapping-hands-th.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "black-white-clapping-hands-th.jpg"; sourceTree = "<group>"; };
 		D4451680166741F600A69E46 /* error_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = error_icon.png; sourceTree = "<group>"; };
@@ -707,10 +717,16 @@
 		D44516841667627F00A69E46 /* UploadImagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadImagesViewController.h; sourceTree = "<group>"; };
 		D44516851667627F00A69E46 /* UploadImagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadImagesViewController.m; sourceTree = "<group>"; };
 		D44516861667628000A69E46 /* UploadImagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UploadImagesViewController.xib; sourceTree = "<group>"; };
+		D44B92B6176894D60016B6E0 /* CurrentLocationDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentLocationDetector.h; sourceTree = "<group>"; };
+		D44B92B7176894D60016B6E0 /* CurrentLocationDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentLocationDetector.m; sourceTree = "<group>"; };
 		D44D478B16B0BDFE0002B358 /* eraseIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = eraseIcon.png; sourceTree = "<group>"; };
 		D44D478F16B0E58A0002B358 /* DCAOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCAOptionsViewController.h; sourceTree = "<group>"; };
 		D44D479016B0E58A0002B358 /* DCAOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCAOptionsViewController.m; sourceTree = "<group>"; };
 		D44D479116B0E58A0002B358 /* DCAOptionsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DCAOptionsViewController.xib; sourceTree = "<group>"; };
+		D44EF47A1765C500001FEBD7 /* MyMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyMapViewController.h; sourceTree = "<group>"; };
+		D44EF47B1765C500001FEBD7 /* MyMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyMapViewController.m; sourceTree = "<group>"; };
+		D44EF47C1765C500001FEBD7 /* MyMapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyMapViewController.xib; sourceTree = "<group>"; };
+		D44EF47F1765C64B001FEBD7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		D45389ED1678466500BC5612 /* FriendButtonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendButtonViewController.h; sourceTree = "<group>"; };
 		D45389EE1678466500BC5612 /* FriendButtonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendButtonViewController.m; sourceTree = "<group>"; };
 		D45389EF1678466500BC5612 /* FriendButtonViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendButtonViewController.xib; sourceTree = "<group>"; };
@@ -1465,6 +1481,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D444E08E176711650001F495 /* AddressBook.framework in Frameworks */,
+				D444E08F176711650001F495 /* AddressBookUI.framework in Frameworks */,
+				D44EF4801765C64B001FEBD7 /* CoreLocation.framework in Frameworks */,
+				D43FB30E1761B62D00EFA924 /* MapKit.framework in Frameworks */,
 				D4140B601682F38D00C1AD5F /* AssetsLibrary.framework in Frameworks */,
 				FA9BB9B015E4E4EA00818F1E /* QuartzCore.framework in Frameworks */,
 				FA6DDB0515E3299B0016C755 /* CoreText.framework in Frameworks */,
@@ -1541,6 +1561,7 @@
 		D4348054168C7FAF009027AC /* DCA */ = {
 			isa = PBXGroup;
 			children = (
+				D44EF4741765AC86001FEBD7 /* Map */,
 				D44D478E16B0E52B0002B358 /* Option details */,
 				D48A462E16ACE58C007FE890 /* ModalViewCtr */,
 				D439AE471695302500932577 /* HDB */,
@@ -1606,6 +1627,18 @@
 				D44D479116B0E58A0002B358 /* DCAOptionsViewController.xib */,
 			);
 			path = "Option details";
+			sourceTree = "<group>";
+		};
+		D44EF4741765AC86001FEBD7 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				D44EF47A1765C500001FEBD7 /* MyMapViewController.h */,
+				D44EF47B1765C500001FEBD7 /* MyMapViewController.m */,
+				D44EF47C1765C500001FEBD7 /* MyMapViewController.xib */,
+				D44B92B6176894D60016B6E0 /* CurrentLocationDetector.h */,
+				D44B92B7176894D60016B6E0 /* CurrentLocationDetector.m */,
+			);
+			path = Map;
 			sourceTree = "<group>";
 		};
 		D46D705316819C9A004B90B0 /* privacy-icons */ = {
@@ -1706,6 +1739,9 @@
 			children = (
 				FA032304157748E1002EB93D /* libxml2.dylib */,
 				FA032302157748CB002EB93D /* libz.dylib */,
+				D444E08C176711650001F495 /* AddressBook.framework */,
+				D444E08D176711650001F495 /* AddressBookUI.framework */,
+				D44EF47F1765C64B001FEBD7 /* CoreLocation.framework */,
 				D4140B5F1682F38D00C1AD5F /* AssetsLibrary.framework */,
 				FA9BB9AF15E4E4EA00818F1E /* QuartzCore.framework */,
 				FA6DDB0415E3299B0016C755 /* CoreText.framework */,
@@ -1717,6 +1753,7 @@
 				FA03216915772BEB002EB93D /* CoreGraphics.framework */,
 				FA03216B15772BEB002EB93D /* CoreData.framework */,
 				FA03218215772BEC002EB93D /* SenTestingKit.framework */,
+				D43FB30D1761B62D00EFA924 /* MapKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -3376,6 +3413,7 @@
 				D458343E1733A27500464B16 /* hdb_post_go_normal@2x.png in Resources */,
 				D4E3E8A4173CCAF700653B0D /* 30x25.png in Resources */,
 				D408AAE31740A78600E05C63 /* HDBListResultCell1ListView.xib in Resources */,
+				D44EF47E1765C500001FEBD7 /* MyMapViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3410,6 +3448,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D44EF4811765C78B001FEBD7 /* MyMapViewController.m in Sources */,
 				FA03217415772BEB002EB93D /* main.m in Sources */,
 				FA03217815772BEB002EB93D /* AppDelegate.m in Sources */,
 				FA03217B15772BEC002EB93D /* Postadvert.xcdatamodeld in Sources */,
@@ -3572,6 +3611,7 @@
 				D467914D1712BEC400D75C76 /* OptionTableHDBPostViewController.m in Sources */,
 				D4B855B91717FBC000983E07 /* InsertPictureViewController.m in Sources */,
 				D476C0B41720243700DAE44A /* InsertURLViewController.m in Sources */,
+				D44B92B8176894D60016B6E0 /* CurrentLocationDetector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3640,11 +3680,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_LDFLAGS = "-lxml2";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos6.1;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = NO;
 			};
@@ -3669,12 +3709,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-lxml2";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos6.1;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};

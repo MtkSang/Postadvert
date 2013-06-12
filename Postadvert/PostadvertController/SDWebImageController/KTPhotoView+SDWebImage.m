@@ -15,6 +15,7 @@
 }
 
 - (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder {
+    
    SDWebImageManager *manager = [SDWebImageManager sharedManager];
     [activityView_ setHidden:NO];
     [activityView_ startAnimating];
@@ -42,8 +43,6 @@
 }
 - (void)setImageWithURL:(NSURL *)url placeholderURL:(NSURL *)placeholderURL placeholderImage:(UIImage *)placeholderImage {
     
-    //[self setImageWithURL:url placeholderImage:placeholderImage];
-    //return;
     [activityView_ setHidden:NO];
     [activityView_ startAnimating];
     

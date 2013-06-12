@@ -9,26 +9,31 @@
 #import <UIKit/UIKit.h>
 #import "HBBResultCellData.h"
 #import "UIPlaceHolderTextView.h"
+#import "MyMapViewController.h"
 @class UploadImagesViewController;
 @class MBProgressHUD;
-@interface HDBResultDetailViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UITabBarDelegate>
+@class MyMapViewController;
+@interface HDBResultDetailViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UITabBarDelegate, MyMapViewControllerDelegate>
 {
     MBProgressHUD *hud;
+    MBProgressHUD *mbpMap;
     HBBResultCellData *cellData;
     NSMutableArray *listComments;
     UITabBarItem *currentItem;
     NSArray *_paraValues;
     NSArray *_paraNames;
-    NSArray *_listImages;
     UploadImagesViewController* uploadImagesView;
+    MyMapViewController *mapView;
 }
 @property (nonatomic)   NSInteger hdbID;
 @property (nonatomic)   NSInteger userID;
 @property (nonatomic)   NSInteger viewMode;
 @property (nonatomic, strong) NSArray *sourceForPreviewMode;
+@property (nonatomic, strong) NSArray *listImages;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UITabBar *tabBar;
 @property (nonatomic, strong) NSString *property_status;
+@property (nonatomic, strong) NSString *itemName;
 @property (weak, nonatomic) IBOutlet UIButton *btnSend;
 @property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *texbox;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -37,3 +42,4 @@
 - (id)initBySubmitParaNames:(NSArray*)paranames andParavalues:(NSArray*)paravalues withListImages:(NSArray*)listimages;
 - (IBAction)btnSendClicked:(id)sender;
 @end
+

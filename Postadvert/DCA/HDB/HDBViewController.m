@@ -227,6 +227,20 @@
                 internalID = 4;//rent off
     }
     
+    if ([itemName isEqualToString:@"Landed Property Search"]) {
+        if (currentButton == leftButton) {
+            if (isMoreOptionOn) {
+                internalID = 105;//sale on
+            }
+            else
+                internalID = 5;//sale off
+        }else
+            if (isMoreOptionOn) {
+                internalID = 106;//rent on
+            }else
+                internalID = 6;//rent off
+    }
+    
     return internalID;
 }
 
@@ -241,6 +255,9 @@
     }
     if ([self.itemName isEqualToString:@"Condos Search"]) {
         staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Condos Search"]];
+    }
+    if ([self.itemName isEqualToString:@"Landed Property Search"]) {
+        staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Landed Property Search"]];
     }
     NSDictionary *dict;
     //NSUserDefaults *database = [[NSUserDefaults alloc]init];
@@ -314,6 +331,9 @@
     }
     if ([self.itemName isEqualToString:@"Condos Search"]) {
         staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Condos Search"]];
+    }
+    if ([self.itemName isEqualToString:@"Landed Property Search"]) {
+        staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Landed Property Search"]];
     }
     NSDictionary *dict;
     if ((internalItemID % 2) == 1) {
@@ -528,21 +548,8 @@
         [[NSUserDefaults standardUserDefaults] setValue:@"r" forKey:@"property_status"];
     [self saveCurrentValues];
     [[NSUserDefaults standardUserDefaults] setValue:@"up" forKey:@"scroll"];
-    
-    if ([self.itemName isEqualToString:@"HDB Search"]) {
-        [self.navigationController pushViewController:resultVctr animated:YES];
-    }
-    if ([self.itemName isEqualToString:@"Condos Search"]) {
-        id data;
-        NSString *functionName;
-        NSArray *paraNames;
-        NSArray *paraValues;
-        functionName = @"getCondosSearchValues";
-        paraNames = [NSArray arrayWithObjects: nil];
-        paraValues = [NSArray arrayWithObjects: nil];
-        data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName:functionName parametterName:paraNames parametterValue:paraValues];
-        
-    }
+    resultVctr.itemName = self.itemName;
+    [self.navigationController pushViewController:resultVctr animated:YES];
     
     UIButton *btn = (UIButton*) sender;
     if ( [btn.titleLabel.text isEqualToString:@"Search"]) {
@@ -613,7 +620,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (internalItemID == 1 || internalItemID == 3) {// SALE off
+#pragma mark . item = 1, 3, 5
+    if (internalItemID == 1 || internalItemID == 3 || internalItemID == 5) {// SALE off
         if (indexPath.section == 0) {
             static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
@@ -753,8 +761,8 @@
         }
     }
 //////////////////////////////////////////////////////////////////
-    
-    if (internalItemID == 2 || internalItemID == 4) {// RENT off
+#pragma mark . item = 2, 4, 6
+    if (internalItemID == 2 || internalItemID == 4 || internalItemID == 6) {// RENT off
         if (indexPath.section == 0) {
             static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
@@ -894,8 +902,8 @@
     }
     
 //  //////////////////////////////////////////////////////
-    
-    if (internalItemID == 101 || internalItemID == 103) { //Sale on
+#pragma mark . item = 101, 103, 105
+    if (internalItemID == 101 || internalItemID == 103 || internalItemID == 105) { //Sale on
         if (indexPath.section == 0) {
             static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
@@ -1098,8 +1106,8 @@
     }
     
     //  //////////////////////////////////////////////////////
-    
-    if (internalItemID == 102 || internalItemID == 104) { //Rent on
+#pragma mark . item = 102, 104, 106
+    if (internalItemID == 102 || internalItemID == 104 || internalItemID == 106) { //Rent on
         if (indexPath.section == 0) {
             static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
@@ -1409,6 +1417,7 @@
 {
     [self makeKeyBoardGoAway];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+#pragma mark - HDB Search
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     // HDB Type
     if ([cell.textLabel.text isEqualToString:@"HDB Type"]) {
@@ -1423,6 +1432,7 @@
         [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
         return;
     }
+    
     //HDB Estate
     if ([cell.textLabel.text isEqualToString:@"HDB Estate"]) {
         NSArray *HDBEstateData = [staticData objectForKey:@"HDBEstate"];
@@ -1601,26 +1611,51 @@
         return;
     }
     
-    // Lease Term
-//    if ([cell.textLabel.text isEqualToString:@"Lease Term"]) {
-//        NSArray *hdbTypeData = [staticData objectForKey:@"LeaseTerm"];
-//        NSInteger selectedIndex = -1;
-//        NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
-//        if (![hdbType isEqualToString:@"Any"]) {
-//            selectedIndex = [hdbTypeData indexOfObject:hdbType];
-//        }
-////        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionLeaseTerm selectedIndex:selectedIndex];
-////        dcaOptionViewCtr.delegate = self;
-////        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
-//        
-//        picker = [[DCAPickerViewController alloc]initWithSourceType:pickerTypeLeaseTerm];
-//        picker.delegate = self;
-//        [self presentSemiModalViewController:picker];
-//
-//        return;
-//    }
-    
-    //Reset
+#pragma mark - Condos Search
+//    // Project Name
+    if ([cell.textLabel.text isEqualToString:@"Project Name"]) {
+        NSArray *hdbTypeData = [staticData objectForKey:@"Project Name"];
+        NSInteger selectedIndex = -1;
+        NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
+        if (![hdbType isEqualToString:@"Any"]) {
+            selectedIndex = [hdbTypeData indexOfObject:hdbType];
+        }
+        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionCondosProjectName selectedIndex:selectedIndex];
+        dcaOptionViewCtr.delegate = self;
+        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+        return;
+    }
+
+    if ([cell.textLabel.text isEqualToString:@"Reset"]) {
+        [self resetBtnClicked:nil];
+    }
+    //    // District
+    if ([cell.textLabel.text isEqualToString:@"District"]) {
+        NSArray *HDBEstateData = [staticData objectForKey:@"District"];
+        NSString *hdbEstateString = [mainFilesValues objectAtIndex:1];
+        NSArray *array = [hdbEstateString componentsSeparatedByString:@", "];
+        if ([hdbEstateString isEqualToString:@"Any"]) {
+            array = nil;
+        }
+        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:HDBEstateData DCAOptionType:DCAOptionCondosDistrict selectedValues:array];
+        dcaOptionViewCtr.multiSelect = YES;
+        dcaOptionViewCtr.delegate = self;
+        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+        return;
+    }
+//    //Tenure
+    if ([cell.textLabel.text isEqualToString:@"Tenure"]) {
+        NSArray *hdbTypeData = [staticData objectForKey:@"Tenure"];
+        NSInteger selectedIndex = -1;
+        NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
+        if (![hdbType isEqualToString:@"Any"]) {
+            selectedIndex = [hdbTypeData indexOfObject:hdbType];
+        }
+        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionCondosTenure selectedIndex:selectedIndex];
+        dcaOptionViewCtr.delegate = self;
+        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+        return;
+    }
     if ([cell.textLabel.text isEqualToString:@"Reset"]) {
         [self resetBtnClicked:nil];
     }
@@ -1773,6 +1808,39 @@
     if (dcaViewCtr.sourceType == DCAOptionLeaseTerm) {
         NSString *value = [dcaViewCtr.intSource objectAtIndex:dcaViewCtr.selectedIndex];
         NSUInteger index = [mainFiles indexOfObject:@"Lease Term"];
+        if (index != NSNotFound) {
+            [mainFilesValues replaceObjectAtIndex:index withObject:value];
+        }
+    }
+#pragma mark - Condos
+    //Project Name
+    if (dcaViewCtr.sourceType == DCAOptionCondosProjectName) {
+        NSString *value = [dcaViewCtr.intSource objectAtIndex:dcaViewCtr.selectedIndex];
+        NSUInteger index = [mainFiles indexOfObject:@"Project Name"];
+        if (index != NSNotFound) {
+            [mainFilesValues replaceObjectAtIndex:index withObject:value];
+        }
+    }
+    //District
+    if (dcaViewCtr.sourceType == DCAOptionCondosDistrict) {
+        NSString *value = @"";
+        if (dcaViewCtr.selectedValues.count >= 1) {
+            value = [dcaViewCtr.selectedValues objectAtIndex:0];
+            [dcaViewCtr.selectedValues removeObjectAtIndex:0];
+            for (NSString *str in dcaViewCtr.selectedValues) {
+                value = [value stringByAppendingFormat:@", %@", str];
+            }
+        }else
+            value = @"Any";
+        NSUInteger index = [mainFiles indexOfObject:@"District"];
+        if (index != NSNotFound) {
+            [mainFilesValues replaceObjectAtIndex:index withObject:value];
+        }
+    }
+    //Tenure
+    if (dcaViewCtr.sourceType == DCAOptionCondosTenure) {
+        NSString *value = [dcaViewCtr.intSource objectAtIndex:dcaViewCtr.selectedIndex];
+        NSUInteger index = [mainFiles indexOfObject:@"Tenure"];
         if (index != NSNotFound) {
             [mainFilesValues replaceObjectAtIndex:index withObject:value];
         }

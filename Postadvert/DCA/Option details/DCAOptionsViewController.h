@@ -23,7 +23,11 @@ enum DCAOptionsType {
     DCAOptionBedrooms = 11,
     DCAOptionWashrooms = 12,
     DCaOptionConstructed = 13,
+    DCAOptionCondosProjectName = 14,
+    DCAOptionCondosDistrict = 15,
+    DCAOptionCondosTenure = 16,
     DCAOptionsLocation = 20
+    
 };
 
 typedef NSInteger DCAOptionSourceType;

@@ -27,6 +27,7 @@
     InsertURLViewController *insertVideosCtr;
     NSMutableDictionary *staticData;
 }
+@property (nonatomic, strong) NSString *itemName;
 @property (weak, nonatomic) IBOutlet UILabel *inputTitle;
 - (IBAction)clickedOnInputForm:(id)sender;
 - (IBAction)submitAdClicked:(id)sender;
