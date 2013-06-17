@@ -29,6 +29,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _mapView.showsUserLocation = NO;
     // Do any additional setup after loading the view from its nib.
     
 }
@@ -51,7 +52,7 @@
 
 - (void) viewDidAppear:(BOOL)animated
 {
-    [_mapView setShowsUserLocation:NO];
+    _mapView.showsUserLocation = NO;
     [super viewDidAppear:animated];
 }
 
@@ -84,8 +85,8 @@
         [myLocation setCoordinate:coor];
         myLocation.title= addressString;
         //        myLocation.subtitle=tempCategory;
-        [_mapView addAnnotation:myLocation];
         [allPointAnotation addObject:myLocation];
+        [_mapView addAnnotation:myLocation];
     }
     //
 //    if (_listPlacemarks.count) {
@@ -125,8 +126,9 @@
     [myLocation setCoordinate:coor];
     myLocation.title= addressString;
     //        myLocation.subtitle=tempCategory;
-    [_mapView addAnnotation:myLocation];
     [allPointAnotation addObject:myLocation];
+    [_mapView addAnnotation:myLocation];
+    
 }
 
 - (void) centerMap
@@ -162,7 +164,7 @@
     [rightButton addTarget:self
                     action:@selector(showDetailView:)
           forControlEvents:UIControlEventTouchUpInside];
-    annotationView.tag = [allPointAnotation indexOfObject:annotation];
+    rightButton.tag = [allPointAnotation indexOfObject:annotation];
     annotationView.rightCalloutAccessoryView = rightButton;
     //    }
     return annotationView;

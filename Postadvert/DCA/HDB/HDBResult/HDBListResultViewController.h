@@ -15,6 +15,7 @@
     MBProgressHUD *hud;
     MBProgressHUD *mbpMap;
     NSMutableArray *currentListResult;
+    NSMutableArray *currentListForMap;
     NSUInteger totalResultCount;
     NSString *resultType;
     

@@ -22,6 +22,7 @@
 
 - (void) addPlacemark:(CLPlacemark*)pm;
 - (void) centerMap;
+- (void) addAnnotation;
 @end
 
 @protocol MyMapViewControllerDelegate <NSObject>

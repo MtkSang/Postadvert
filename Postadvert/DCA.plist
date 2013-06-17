@@ -6501,5 +6501,314 @@
 			<string>Window Grilles</string>
 		</array>
 	</dict>
+	<key>Rooms For Rent Search</key>
+	<dict>
+		<key>Rent</key>
+		<dict>
+			<key>Main Fields</key>
+			<array>
+				<string>Property Type</string>
+				<string>District</string>
+				<string>Monthly Rental</string>
+				<string>Floor Size</string>
+				<string>PSF</string>
+			</array>
+			<key>DefaultValues</key>
+			<array>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+			</array>
+			<key>More Options</key>
+			<array>
+				<string>Ad Owner</string>
+				<string>Room Type</string>
+				<string>Attached Bathroom</string>
+				<string>Lease Term</string>
+				<string>Unit Level</string>
+				<string>Furnishing</string>
+				<string>Condition</string>
+			</array>
+			<key>Sort By</key>
+			<array>
+				<string>Date (new to old)</string>
+				<string>Date (old to new)</string>
+				<string>Monthly Rental (low to high)</string>
+				<string>Monthly Rental (high to low)</string>
+				<string>Size (low to high)</string>
+				<string>Size (high to low)</string>
+				<string>PSF (low to high)</string>
+				<string>PSF (high to low)</string>
+			</array>
+			<key>Sort By V2</key>
+			<array>
+				<string>Date - Descending</string>
+				<string>Date - Ascending</string>
+				<string>Monthly Rental  - Ascending</string>
+				<string>Monthly Rental  - Descending</string>
+				<string>Size - Ascending</string>
+				<string>Size - Descending</string>
+				<string>PSF - Ascending</string>
+				<string>PSF - Descending</string>
+			</array>
+			<key>Sort By V3</key>
+			<array>
+				<string>date_new</string>
+				<string>date_old</string>
+				<string>price_high</string>
+				<string>price_low</string>
+				<string>size_high</string>
+				<string>size_low</string>
+				<string>psf_high</string>
+				<string>psf_low</string>
+			</array>
+			<key>Filters</key>
+			<array>
+				<string>With Photos</string>
+				<string>With Videos</string>
+			</array>
+		</dict>
+		<key>PropertyType</key>
+		<array>
+			<string>HDB</string>
+			<string>Condos</string>
+			<string>Landed Property</string>
+			<string>Others</string>
+		</array>
+		<key>Price</key>
+		<array>
+			<string>S$ 200,000</string>
+			<string>S$ 300,000</string>
+			<string>S$ 400,000</string>
+			<string>S$ 500,000</string>
+			<string>S$ 600,000</string>
+			<string>S$ 700,000</string>
+			<string>S$ 800,000</string>
+			<string>S$ 900,000</string>
+			<string>S$ 1,000,000</string>
+			<string>S$ 1,250,000</string>
+			<string>S$1,500,000</string>
+			<string>S$ 2,000,000</string>
+			<string>S$ 2,500,000</string>
+			<string>S$ 3,000,000</string>
+			<string>S$ 4,000,000</string>
+			<string>S$ 5,000,000</string>
+			<string>S$ 6,000,000</string>
+			<string>S$ 8,000,000</string>
+			<string>S$ 9,000,000</string>
+		</array>
+		<key>PSF</key>
+		<array>
+			<string>S$300</string>
+			<string>S$400</string>
+			<string>S$500</string>
+			<string>S$600</string>
+			<string>S$700</string>
+			<string>S$800</string>
+			<string>S$900</string>
+			<string>S$1,000</string>
+			<string>S$1,250</string>
+			<string>S$1,750</string>
+			<string>S$2,000</string>
+			<string>S$2,500</string>
+			<string>S$3,000</string>
+			<string>S$3,500</string>
+			<string>S$4,000</string>
+			<string>S$4,500</string>
+			<string>S$5,000</string>
+		</array>
+		<key>Size</key>
+		<array>
+			<string>500 sqft (46 sqm)</string>
+			<string>750 sqft (70 sqm)</string>
+			<string>1,000 sqft (93 sqm)</string>
+			<string>1,200 sqft (112 sqm)</string>
+			<string>1,500 sqft (139 sqm)</string>
+			<string>2,000 sqft (186 sqm)</string>
+			<string>2,500 sqft (232 sqm)</string>
+			<string>3,000 sqft (279 sqm)</string>
+			<string>4,000 sqft (372 sqm)</string>
+			<string>5,000 sqft (465 sqm)</string>
+			<string>7,500 sqft (697 sqm)</string>
+			<string>10,000 sqft ( 929 sqm)</string>
+		</array>
+		<key>SizeSqm</key>
+		<array>
+			<string>50 sqm (538 sqft)</string>
+			<string>70 sqm (753 sqft)</string>
+			<string>90 sqm (969 sqft)</string>
+			<string>100 sqm (1,076 sqft)</string>
+			<string>120 sqm (1,292 sqft)</string>
+			<string>150 sqm (1,615 sqft)</string>
+			<string>200 sqm (2,153 sqft)</string>
+			<string>250 sqm (2,691 sqft)</string>
+			<string>300 sqm (3,229 sqft)</string>
+			<string>400 sqm (4,306 sqft)</string>
+			<string>500 sqm (5,382 sqft)</string>
+			<string>700 sqm (7,535 sqft)</string>
+			<string>1,000 sqm (10,764 sqft)</string>
+		</array>
+		<key>AdOwner</key>
+		<array>
+			<string>Property Agent</string>
+			<string>Direct Owner</string>
+		</array>
+		<key>UnitLevel</key>
+		<array>
+			<string>Ground Level</string>
+			<string>Low Floor</string>
+			<string>Mid Floor</string>
+			<string>Hight Floor</string>
+			<string>Penthouse</string>
+		</array>
+		<key>Furnishing</key>
+		<array>
+			<string>Patial Furnishing</string>
+			<string>Fully Furnished</string>
+			<string>Not Furnished</string>
+		</array>
+		<key>Condition</key>
+		<array>
+			<string>Brand New</string>
+			<string>Original</string>
+			<string>Renovated</string>
+			<string>Newly</string>
+		</array>
+		<key>LeaseTerm</key>
+		<array>
+			<string>1 Month</string>
+			<string>2 Months</string>
+			<string>3 Months</string>
+			<string>4 Months</string>
+			<string>5 Months</string>
+			<string>6 Months</string>
+			<string>8 Months</string>
+			<string>10 Months</string>
+			<string>1 Year</string>
+			<string>1.5 Years</string>
+			<string>2 Years</string>
+			<string>2.5 Years</string>
+			<string>3 Years</string>
+			<string>3.5 Years</string>
+			<string>4 Years</string>
+			<string>4.5 Years</string>
+			<string>5 Years</string>
+		</array>
+		<key>PropertyStatus</key>
+		<array>
+			<string>For Sale</string>
+			<string>For Rent</string>
+		</array>
+		<key>District</key>
+		<array>
+			<string>D01 Boat Quay/Raffles Place</string>
+			<string>D02 Chinatown/Tanjong Pagar</string>
+			<string>D03 Alexandra/Commonwealth</string>
+			<string>D04 Harbourfront/Telok Blangah</string>
+			<string>D05 Buona Vista/West Coast</string>
+			<string>D06 City Hall/Clarke Quay</string>
+			<string>D07 Beach Road/Bugis/Rochor</string>
+			<string>D08 Farrer Park/Serangoon Road</string>
+			<string>D09 Orchard/River Valley</string>
+			<string>D10 Tanglin/Holland</string>
+			<string>D11 Newton/Novena</string>
+			<string>D12 Balestier/Toa Payoh</string>
+			<string>D13 Macpherson/Potong Pasir</string>
+			<string>D14 Eunos/Geylang/Paya Lebar</string>
+			<string>D15 East Coast/Marine Parade</string>
+			<string>D16 Bedok/Upper East Coast</string>
+			<string>D17 Changi Airport/Changi Village</string>
+			<string>D18 Pasir Ris/Tampines</string>
+			<string>D19 Hougang/Punggol/Sengkang</string>
+			<string>D20 Ang Mo Kio/Bishan/Thomson</string>
+			<string>D21 Clementi/Upper Bukit Timah</string>
+			<string>D22 Boon Lay/Jurong/Tuas</string>
+			<string>D23 Bukit Batok/Bukit Panjang</string>
+			<string>D24 Choa Chu Kang/Tengah</string>
+			<string>D25 Admiralty/Woodlands</string>
+			<string>D26 Mandai/Upper Thomson</string>
+			<string>D27 Sembawang/Yishun</string>
+			<string>D28 Seletar/Yio Chu Kang</string>
+		</array>
+		<key>RoomType</key>
+		<array>
+			<string>Master Bedroom</string>
+			<string>Normal Bedroom</string>
+		</array>
+		<key>AttachedBathroom</key>
+		<array>
+			<string>Yes</string>
+			<string>No</string>
+		</array>
+	</dict>
+	<key>Rooms For Rent Post</key>
+	<dict>
+		<key>Property Details</key>
+		<array>
+			<string>Property Status *</string>
+			<string>Ad Owner *</string>
+			<string>District *</string>
+			<string>Tenure *</string>
+			<string>No. of Bedrooms *</string>
+			<string>No. of Washrooms *</string>
+			<string>Price (S$)</string>
+			<string>Size (sq ft) *</string>
+			<string>Size (sqm) *</string>
+			<string>Valuation Price (S$)</string>
+			<string>Building Completion</string>
+		</array>
+		<key>Address of Property</key>
+		<array>
+			<string>Address *</string>
+		</array>
+		<key>Description of Property</key>
+		<array>
+			<string>Description of Property</string>
+		</array>
+		<key>Pictures, URLs &amp; Videos</key>
+		<array>
+			<string>Upload Images</string>
+			<string>Insert URLs</string>
+			<string>Insert Videos</string>
+		</array>
+		<key>Special Features</key>
+		<array>
+			<string>Furnishing</string>
+			<string>Condition </string>
+			<string>Others</string>
+		</array>
+		<key>Indoor &amp; Outdoors</key>
+		<array>
+			<string>Balcony</string>
+			<string>Private Garden</string>
+			<string>Walk-in Wardrobe</string>
+			<string>Garage</string>
+			<string>Roof Terrace</string>
+			<string>Maid&apos;s Room</string>
+			<string>Storeroom</string>
+		</array>
+		<key>Fixtures &amp; Fittings</key>
+		<array>
+			<string>Air Conditioning</string>
+			<string>Cooker Hob / Hood</string>
+			<string>Balcony</string>
+			<string>Walk-in Wardrobe</string>
+			<string>Child Safety Grilles</string>
+			<string>Flooring</string>
+			<string>Water Heater</string>
+			<string>Ceiling Fan</string>
+			<string>Storeroom</string>
+			<string>Window Grilles</string>
+		</array>
+	</dict>
 </dict>
 </plist>

@@ -128,6 +128,11 @@
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    if (mapView.view.superview) {
+        if (mapView.listPlacemarks.count) {
+            [mapView addAnnotation];
+        }
+    }
 }
 
 - (void) viewDidDisappear:(BOOL)animated
@@ -192,6 +197,13 @@
         return;
     }
     if ([item.title isEqualToString:@"Map"]) {
+        if (!currentListForMap) {
+            currentListForMap = [[NSMutableArray alloc]init];
+        }
+        if (currentListForMap.count != currentListResult.count) {
+            [currentListForMap removeAllObjects];
+            [mapView.listPlacemarks removeAllObjects];
+        }
         [self act_ShowMap:self];
         return;
     }
@@ -1595,7 +1607,7 @@
 - (void) callOutBtn_Clicked:(id)sender
 {
     UIView* aView = (UIView*)sender;
-    HBBResultCellData *cellData = [currentListResult objectAtIndex:aView.tag];
+    HBBResultCellData *cellData = [currentListForMap objectAtIndex:aView.tag];
     HDBResultDetailViewController *detailViewCtr = [[HDBResultDetailViewController alloc]initWithHDBID:cellData.hdbID userID:[[UserPAInfo sharedUserPAInfo]registrationID]];
     detailViewCtr.itemName = self.itemName;
     detailViewCtr.property_status = property_status;
@@ -1631,7 +1643,7 @@
                 index = [cellData.paraNames indexOfObject:@"address"];
                 value = [cellData.paraValues objectAtIndex:index];
             }
-            [self getAllPlacemarksWithAddress:value];
+            [self getAllPlacemarksWithAddress:value andData:cellData];
         }
     }
     else
@@ -1648,11 +1660,12 @@
             [UIView commitAnimations];
         }
 }
-- (void) getAllPlacemarksWithAddress:(NSString*)addressString
+- (void) getAllPlacemarksWithAddress:(NSString*)addressString andData:(HBBResultCellData*)cellData
 {
     NSMutableArray *listPlacemarks = [[NSMutableArray alloc]init];
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     [geocoder geocodeAddressString:addressString completionHandler:^(NSArray *placemarks, NSError *error) {
+        [currentListForMap addObject:cellData];
         if (error)
         {
             NSLog(@"Geocode failed with error: %@", error);
@@ -1669,7 +1682,7 @@
         NSLog(@"Received placemarks: %@", placemarks);
         
         if (! mapView.view.superview) {
-            [mapView.listPlacemarks addObject: [placemarks objectAtIndex:0]];
+            [mapView addPlacemark:[placemarks objectAtIndex:0]];
             [UIView beginAnimations:@"View Flip" context:nil];
             [UIView setAnimationDuration:0.80];
             [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
