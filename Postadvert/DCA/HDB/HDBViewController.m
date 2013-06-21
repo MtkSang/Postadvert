@@ -43,7 +43,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self initAndLoadDataForView];
     // Do any additional setup after loading the view from its nib.
     //
     UIImage *image = [UIImage imageNamed:@"titleHDB.png"];
@@ -64,6 +63,10 @@
     [rightButton addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [rightButton setTitle:@"Rent" forState:UIControlStateNormal];
     currentButton = leftButton;
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        currentButton = rightButton;
+        leftButton.hidden = YES;
+    }
     [self updateButtonSelected];
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(20, 5, 280, 30)];
     view.backgroundColor = [UIColor colorWithRed:183.0/255 green:220.0/255 blue:223.0/255 alpha:1];
@@ -74,7 +77,9 @@
     self.tableView.tableHeaderView = headerView;
     self.tableView.separatorColor = [UIColor colorWithRed:79.0/255 green:177.0/255 blue:190.0/255 alpha:1];
     //self.tableView.separatorColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"DCASeprator.png"]];
-    
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        self.tableView.tableHeaderView = nil;
+    }
     //SearchBar
     for(UIView *subView in self.searchBar.subviews) {
         if([subView conformsToProtocol:@protocol(UITextInputTraits)]) {
@@ -105,6 +110,9 @@
                                              selector:@selector(hideKeyboardWhenSwitchViews)
                                                  name:@"sideBarUpdate"
                                                object:nil];
+    
+    [self initAndLoadDataForView];
+    [self resetBtnClicked:nil];
     
 }
 - (void) viewDidAppear:(BOOL)animated
@@ -241,6 +249,20 @@
                 internalID = 6;//rent off
     }
     
+    if ([itemName isEqualToString:@"Rooms For Rent Search"]) {
+        if (currentButton == leftButton) {
+            if (isMoreOptionOn) {
+                internalID = 107;//sale on
+            }
+            else
+                internalID = 7;//sale off
+        }else
+            if (isMoreOptionOn) {
+                internalID = 108;//rent on
+            }else
+                internalID = 8;//rent off
+    }
+    
     return internalID;
 }
 
@@ -258,6 +280,9 @@
     }
     if ([self.itemName isEqualToString:@"Landed Property Search"]) {
         staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Landed Property Search"]];
+    }
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Rooms For Rent Search"]];
     }
     NSDictionary *dict;
     //NSUserDefaults *database = [[NSUserDefaults alloc]init];
@@ -335,6 +360,9 @@
     if ([self.itemName isEqualToString:@"Landed Property Search"]) {
         staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Landed Property Search"]];
     }
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Rooms For Rent Search"]];
+    }
     NSDictionary *dict;
     if ((internalItemID % 2) == 1) {
         dict = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Sale"]];
@@ -371,6 +399,10 @@
             
             break;
     }
+    //With Photos
+    [[NSUserDefaults standardUserDefaults] setValue:@"false" forKey:@"With Photos"];
+    [[NSUserDefaults standardUserDefaults] setValue:@"false" forKey:@"With Videos"];
+    
     //
     if (! sortByValue && sortByValue.length) {
         sortByValue =@"Any";
@@ -761,8 +793,8 @@
         }
     }
 //////////////////////////////////////////////////////////////////
-#pragma mark . item = 2, 4, 6
-    if (internalItemID == 2 || internalItemID == 4 || internalItemID == 6) {// RENT off
+#pragma mark . item = 2, 4, 6, 8
+    if (internalItemID == 2 || internalItemID == 4 || internalItemID == 6 || internalItemID == 8) {// RENT off
         if (indexPath.section == 0) {
             static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
@@ -866,17 +898,16 @@
                 UIButton *searchBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 0, 300, cCellHeight)];
                 searchBtn.tag = 1;
                 [searchBtn setBackgroundImage:[UIImage imageNamed:@"btnHDBUnormal.png"] forState:UIControlStateNormal];
+                [searchBtn addTarget:self action:@selector(searchBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
                 [cell addSubview:searchBtn];
             }
+            UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
             if (indexPath.section == 2) {
-                UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
                 [searchBtn setTitle:@"Search" forState:UIControlStateNormal];
             }
             if (indexPath.section == 3) {
-                UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
                 [searchBtn setTitle:@"Save & Search" forState:UIControlStateNormal];
             }
-            
             return cell;
         }
         
@@ -1106,8 +1137,8 @@
     }
     
     //  //////////////////////////////////////////////////////
-#pragma mark . item = 102, 104, 106
-    if (internalItemID == 102 || internalItemID == 104 || internalItemID == 106) { //Rent on
+#pragma mark . item = 102, 104, 106, 108
+    if (internalItemID == 102 || internalItemID == 104 || internalItemID == 106 || internalItemID == 108) { //Rent on
         if (indexPath.section == 0) {
             static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
@@ -1275,14 +1306,14 @@
                 UIButton *searchBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 0, 300, cCellHeight)];
                 searchBtn.tag = 1;
                 [searchBtn setBackgroundImage:[UIImage imageNamed:@"btnHDBUnormal.png"] forState:UIControlStateNormal];
+                [searchBtn addTarget:self action:@selector(searchBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
                 [cell addSubview:searchBtn];
             }
+            UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
             if (indexPath.section == 5) {
-                UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
                 [searchBtn setTitle:@"Search" forState:UIControlStateNormal];
             }
             if (indexPath.section == 6) {
-                UIButton *searchBtn = (UIButton*)[cell viewWithTag:1];
                 [searchBtn setTitle:@"Save & Search" forState:UIControlStateNormal];
             }
             
@@ -1462,14 +1493,18 @@
     if ([[self tableView:tableView titleForHeaderInSection:indexPath.section] isEqualToString:@"Filters"]) {
         if (cell.accessoryType == UITableViewCellAccessoryCheckmark) {
             cell.accessoryType = UITableViewCellAccessoryNone;
+            [[NSUserDefaults standardUserDefaults] setValue:@"false" forKey:cell.textLabel.text];
         }
         else
+        {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            [[NSUserDefaults standardUserDefaults] setValue:@"true" forKey:cell.textLabel.text];
+        }
     }
     
     //if (internalItemID == 1 || internalItemID == 101) {
     if (indexPath.section == 0) {
-        if ([cell.textLabel.text isEqualToString:@"Price"] || [cell.textLabel.text isEqualToString:@"Monthly Rental"] || [cell.textLabel.text isEqualToString:@"Size"] || [cell.textLabel.text isEqualToString:@"Bedrooms"] || [cell.textLabel.text isEqualToString:@"Val'n Price"] || [cell.textLabel.text isEqualToString:@"Washrooms"] || [cell.textLabel.text isEqualToString:@"Constructed"] || [cell.textLabel.text isEqualToString:@"PSF"] || [cell.textLabel.text isEqualToString:@"Lease Term"]) {
+        if ([cell.textLabel.text isEqualToString:@"Price"] || [cell.textLabel.text isEqualToString:@"Monthly Rental"] || [cell.textLabel.text isEqualToString:@"Size"] || [cell.textLabel.text isEqualToString:@"Floor Size"] || [cell.textLabel.text isEqualToString:@"Bedrooms"] || [cell.textLabel.text isEqualToString:@"Val'n Price"] || [cell.textLabel.text isEqualToString:@"Washrooms"] || [cell.textLabel.text isEqualToString:@"Constructed"] || [cell.textLabel.text isEqualToString:@"PSF"] || [cell.textLabel.text isEqualToString:@"Lease Term"]) {
             NSString *value = [mainFilesValues objectAtIndex:indexPath.row];
             value = [value stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
             NSArray *array = [value componentsSeparatedByString:@" to "];
@@ -1493,6 +1528,12 @@
                 listValues = [staticData objectForKey:@"Size"];
                 sourceType = pickerTypeSize;
             }
+            
+            if ([cell.textLabel.text isEqualToString:@"Floor Size"]) {
+                listValues = [staticData objectForKey:@"Size"];
+                sourceType = pickerTypeFloorSize;
+            }
+            
             //Bedrooms
             if ([cell.textLabel.text isEqualToString:@"Bedrooms"]) {
                 listValues = [staticData objectForKey:@"Bedrooms"];
@@ -1659,6 +1700,44 @@
     if ([cell.textLabel.text isEqualToString:@"Reset"]) {
         [self resetBtnClicked:nil];
     }
+#pragma mark . Rooms For Rent
+    // Property Type
+    if ([cell.textLabel.text isEqualToString:@"Property Type"]) {
+        NSArray *hdbTypeData = [staticData objectForKey:@"PropertyType"];
+        NSInteger selectedIndex = -1;
+        NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
+        if (![hdbType isEqualToString:@"Any"]) {
+            selectedIndex = [hdbTypeData indexOfObject:hdbType];
+        }
+        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionsPropertyType selectedIndex:selectedIndex];
+        dcaOptionViewCtr.delegate = self;
+        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+        return;
+    }
+    //Room Type
+    if ([cell.textLabel.text isEqualToString:@"Room Type"]) {
+        NSArray *array = [staticData objectForKey:@"RoomType"];
+        NSInteger selectedIndex = -1;
+        if (![cell.detailTextLabel.text isEqualToString:@"Any"]) {
+            selectedIndex = [array indexOfObject:cell.detailTextLabel.text];
+        }
+        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:array DCAOptionType:DCAOptionRoomsRoomType selectedIndex:selectedIndex];
+        dcaOptionViewCtr.delegate = self;
+        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+        return;
+    }
+    //Attached Bathroom
+    if ([cell.textLabel.text isEqualToString:@"Attached Bathroom"]) {
+        NSArray *array = [staticData objectForKey:@"AttachedBathroom"];
+        NSInteger selectedIndex = -1;
+        if (![cell.detailTextLabel.text isEqualToString:@"Any"]) {
+            selectedIndex = [array indexOfObject:cell.detailTextLabel.text];
+        }
+        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:array DCAOptionType:DCAOptionRoomsAttachedBathroom selectedIndex:selectedIndex];
+        dcaOptionViewCtr.delegate = self;
+        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+        return;
+    }
 
 }
 
@@ -1678,7 +1757,7 @@
 
 - (void) didPickerCloseWithControll:(DCAPickerViewController *)ctr
 {
-    if (ctr.sourceType == pickerTypePrice || ctr.sourceType == pickerTypeBedrooms || ctr.sourceType == pickerTypeSize || ctr.sourceType == pickerTypeValnSize || ctr.sourceType == pickerTypeWashrooms || ctr.sourceType == pickerTypeConstructed || ctr.sourceType == pickerTypePSF || ctr.sourceType == pickerTypeLeaseTerm) {
+    if (ctr.sourceType == pickerTypePrice || ctr.sourceType == pickerTypeBedrooms || ctr.sourceType == pickerTypeSize || ctr.sourceType == pickerTypeValnSize || ctr.sourceType == pickerTypeWashrooms || ctr.sourceType == pickerTypeConstructed || ctr.sourceType == pickerTypePSF || ctr.sourceType == pickerTypeLeaseTerm || ctr.sourceType == pickerTypeFloorSize) {
         NSString *vl1, *vl2, *value;
         if (ctr.strartIndex == 0) {
             if (ctr.endIndex == ctr.intSource.count) {
@@ -1686,7 +1765,7 @@
             }else
             {
                 vl2 = [ctr.intSource objectAtIndex:ctr.endIndex];
-                if (ctr.sourceType == pickerTypeSize || ctr.sourceType == pickerTypeValnSize) {
+                if (ctr.sourceType == pickerTypeSize || ctr.sourceType == pickerTypeValnSize || ctr.sourceType == pickerTypeFloorSize) {
                     value = [vl2 stringByAppendingString:@"\nand below"];
                 }else
                     value = [vl2 stringByAppendingString:@" and below"];
@@ -1695,14 +1774,14 @@
         if (ctr.strartIndex !=0) {
             vl1 = [ctr.intSource objectAtIndex:ctr.strartIndex - 1];
             if (ctr.endIndex == ctr.intSource.count) {
-                if (ctr.sourceType == pickerTypeSize || ctr.sourceType == pickerTypeValnSize || ctr.sourceType == pickerTypeBedrooms || ctr.sourceType == pickerTypeWashrooms) {
+                if (ctr.sourceType == pickerTypeSize || ctr.sourceType == pickerTypeFloorSize || ctr.sourceType == pickerTypeValnSize || ctr.sourceType == pickerTypeBedrooms || ctr.sourceType == pickerTypeWashrooms) {
                     value = [vl1 stringByAppendingString:@"\nand above"];
                 }else
                     value = [vl1 stringByAppendingString:@" and above"];
             }else
             {
                 vl2 = [ctr.intSource objectAtIndex:ctr.endIndex];
-                if (ctr.sourceType == pickerTypeSize || ctr.sourceType == pickerTypeValnSize || ctr.sourceType == pickerTypeBedrooms || ctr.sourceType == pickerTypeWashrooms) {
+                if (ctr.sourceType == pickerTypeSize || ctr.sourceType == pickerTypeValnSize || ctr.sourceType == pickerTypeBedrooms || ctr.sourceType == pickerTypeWashrooms || ctr.sourceType == pickerTypeFloorSize) {
                     value = [NSString stringWithFormat:@"%@\nto %@", vl1, vl2];
                 }else
                     value = [NSString stringWithFormat:@"%@ to %@", vl1, vl2];
@@ -1722,6 +1801,9 @@
                 break;
             case pickerTypeSize:
                 index = [mainFiles indexOfObject:@"Size"];
+                break;
+            case pickerTypeFloorSize:
+                index = [mainFiles indexOfObject:@"Floor Size"];
                 break;
             case pickerTypeBedrooms:
                 index = [mainFiles indexOfObject:@"Bedrooms"];
@@ -1812,7 +1894,7 @@
             [mainFilesValues replaceObjectAtIndex:index withObject:value];
         }
     }
-#pragma mark - Condos
+#pragma mark . Condos
     //Project Name
     if (dcaViewCtr.sourceType == DCAOptionCondosProjectName) {
         NSString *value = [dcaViewCtr.intSource objectAtIndex:dcaViewCtr.selectedIndex];
@@ -1846,6 +1928,24 @@
         }
     }
 
+#pragma mark . Rooms For Rent
+    //Room Type
+    if (dcaViewCtr.sourceType == DCAOptionRoomsRoomType) {
+        NSString *value = [dcaViewCtr.intSource objectAtIndex:dcaViewCtr.selectedIndex];
+        NSUInteger index = [mainFiles indexOfObject:@"Room Type"];
+        if (index != NSNotFound) {
+            [mainFilesValues replaceObjectAtIndex:index withObject:value];
+        }
+    }
+    //Attached Bathroom
+    if (dcaViewCtr.sourceType == DCAOptionRoomsAttachedBathroom) {
+        NSString *value = [dcaViewCtr.intSource objectAtIndex:dcaViewCtr.selectedIndex];
+        NSUInteger index = [mainFiles indexOfObject:@"Attached Bathroom"];
+        if (index != NSNotFound) {
+            [mainFilesValues replaceObjectAtIndex:index withObject:value];
+        }
+    }
+    
     [dcaViewCtr.navigationController popViewControllerAnimated:YES];
     
     [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];

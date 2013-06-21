@@ -22,6 +22,7 @@
 @property (nonatomic, strong) NSMutableArray *array_fixtures_fittings;
 @property (nonatomic, strong) NSMutableArray *array_other_features;
 @property (nonatomic, strong) NSMutableArray *array_amenities;
+@property (nonatomic, strong) NSMutableArray *arry_restrictions;
 
 - (id) initWithItemName:(NSString*)itemName;
 - (void) parseFixtures_fittingAndFeatures;

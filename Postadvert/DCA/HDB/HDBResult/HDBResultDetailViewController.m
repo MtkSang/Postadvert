@@ -154,6 +154,9 @@ enum viewModeForDCADetail {
         if ([self.itemName isEqualToString:@"Landed Property Search"]) {
             return 6;
         }
+        if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+            return 7;
+        }
 
     }
     return 0;
@@ -214,6 +217,29 @@ enum viewModeForDCADetail {
         }
         
     }
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        if (section == 0) {
+            return 1;
+        }
+        if (section == 01) {
+            return 2;
+        }
+        
+        if (section == 2) {//spectail Feature
+            return cellData.array_other_features.count;
+        }
+        if (section == 3) {
+            return cellData.array_amenities.count;
+        }
+        if (section == 4) {//fixtures_fittings
+            return cellData.array_fixtures_fittings.count;
+        }
+        if (section == 5) {//fixtures_fittings
+            return cellData.arry_restrictions.count;
+        }
+        
+    }
+
     return listComments.count;
 }
 
@@ -249,6 +275,21 @@ enum viewModeForDCADetail {
         }
         if (section == 4 && cellData.array_fixtures_fittings.count) {
             title = @"Fixtures & Fittings";
+        }
+    }
+    
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        if (section == 2 && cellData.array_other_features.count) {
+            title = @"Special Features";
+        }
+        if (section == 3 && cellData.array_amenities.count) {
+            title = @"Amenities";
+        }
+        if (section == 4 && cellData.array_fixtures_fittings.count) {
+            title = @"Home Interior";
+        }
+        if (section == 5 && cellData.arry_restrictions.count) {
+            title = @"Restrictions";
         }
     }
     return title;
@@ -1179,8 +1220,285 @@ enum viewModeForDCADetail {
             
         }
     }
+    
+#pragma mark . Rooms For Rent
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        if ((indexPath.section == 0) && (indexPath.row == 0)) {
+            static NSString *CellIdentifier1 = @"HDBResultDetailCell1";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+            if (cell == nil) {
+                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier1 owner:self options:nil];
+                cell = [topLevelObjects objectAtIndex:0];
+                topLevelObjects = nil;
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                cell.backgroundView = [[UIView alloc] init];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            }
+            NSInteger index = 0;
+            NSString *value =@"";
+            //Property Status
+            UILabel *status = (UILabel*)[cell viewWithTag:1];
+            [status setText:@"For Sale"];
+            //Create
+            UILabel *created = (UILabel*)[cell viewWithTag:2];
+            index = [cellData.paraNames indexOfObject:@"created"];
+            value = [NSData stringDecodeFromBase64String:[cellData.paraValues objectAtIndex:index]];
+            [created setText:value];
+            //thumb
+            UIImageView *imagView = (UIImageView*)[cell viewWithTag:3];
+            index = [cellData.paraNames indexOfObject:@"thumb"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [imagView setImageWithURL:[NSURL URLWithString:value]];
+            //Title
+            UILabel *titleHDB = (UILabel*) [cell viewWithTag:4];
+            index = [cellData.paraNames indexOfObject:@"address"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [titleHDB setText:value];
+            //price
+            UILabel *price = (UILabel*) [cell viewWithTag:12];
+            index = [cellData.paraNames indexOfObject:@"monthly_rental"];
+            
+            value = [cellData.paraValues objectAtIndex:index];
+            [price setText:[NSString stringWithFormat:@"S$ %@", value]];
+            //psf
+            index = [cellData.paraNames indexOfObject:@"psf"];
+            value = [cellData.paraValues objectAtIndex:index];
+            
+            [price setText:[NSString stringWithFormat:@"%@ (S$ %@ psf)",price.text, value]];
+            
+            
+            //lease_term_valuation_price (unit_level)
+            UILabel *lease_term_valuation_price = (UILabel*) [cell viewWithTag:5];
+            index = [cellData.paraNames indexOfObject:@"lease_term"];
+            value = [cellData.paraValues objectAtIndex:index];
+            
+            //unit_level
+            index = [cellData.paraNames indexOfObject:@"unit_level"];
+            NSString *unit_level = [cellData.paraValues objectAtIndex:index];
+            if (unit_level.length > 0) {
+                value = [NSString stringWithFormat:@"%@ ( %@ )", value, unit_level];
+            }
+            [lease_term_valuation_price setText:value];
+            //district
+            UILabel *hdb_estate = (UILabel*) [cell viewWithTag:6];
+            index = [cellData.paraNames indexOfObject:@"location"];
+            value = [cellData.paraValues objectAtIndex:index];
+            
+            //furnishing
+            index = [cellData.paraNames indexOfObject:@"furnishing"];
+            NSString *furnishing = [cellData.paraValues objectAtIndex:index];
+            if (! [furnishing isEqualToString:@""] ) {
+                value = [value stringByAppendingFormat:@" ( %@ )", furnishing];
+            }
+            [hdb_estate setText:value];
+            //size
+            UILabel *size = (UILabel*) [cell viewWithTag:7];
+            index = [cellData.paraNames indexOfObject:@"size"];
+            value = [cellData.paraValues objectAtIndex:index];
+            index = [cellData.paraNames indexOfObject:@"size_m"];
+            NSString *size_m = [cellData.paraValues objectAtIndex:index];
+            [size setText:[NSString stringWithFormat:@"%@ sqft / %@ sqm",value, size_m]];
+            //building_completion
+            UILabel *building_completion = (UILabel*) [cell viewWithTag:11];
+            index = [cellData.paraNames indexOfObject:@"room_type"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [building_completion setText:[NSString stringWithFormat:@"%@", value]];
+            //bathroom icon
+            UIImageView *imageViewBedroom = (UIImageView*)[cell viewWithTag:15];
+            [imageViewBedroom setImage:[UIImage imageNamed:@"bathroom.png"]];
+            imageViewBedroom.hidden = YES;
+            //bedrooms
+            UILabel *bedrooms = (UILabel*) [cell viewWithTag:8];
+            index = [cellData.paraNames indexOfObject:@"attached_bathroom"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [bedrooms setText:value];
+            bedrooms.hidden = YES;
+            //            //washroom
+            UILabel *washroom = (UILabel*) [cell viewWithTag:9];
+            washroom.hidden = YES;
+            //            index = [cellData.paraNames indexOfObject:@"washroom"];
+            //            value = [cellData.paraValues objectAtIndex:index];
+            //            [washroom setText:value];
+            UIImageView *imageViewWashroom = (UIImageView*)[cell viewWithTag:16];
+            imageViewWashroom.hidden = YES;
+            [imageViewWashroom setImage:[UIImage imageNamed:@"bathroom.png"]];
+            if ([bedrooms.text isEqualToString:@"Yes"] || [bedrooms.text isEqualToString:@"YES"]) {
+                imageViewBedroom.hidden = NO;
+            }else
+            {
+                imageViewBedroom.hidden = YES;
+            }
+            //property_type
+            UILabel *HDBType = (UILabel*) [cell viewWithTag:14];
+            index = [cellData.paraNames indexOfObject:@"property_type"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [HDBType setText:value];
 
-    return nil;
+            //totalView
+            UILabel *total_views = (UILabel*) [cell viewWithTag:13];
+            index = [cellData.paraNames indexOfObject:@"total_views"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [total_views setText:[NSString stringWithFormat:@"Total Views: %@", value]];
+            return cell;
+            
+        }
+        
+        if ((indexPath.section == 1)) {
+            if ( ( indexPath.row == 0) ) {
+                static NSString *CellIdentifier2 = @"HDBResultDetailCell2";
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier2];
+                if (cell == nil) {
+                    
+                    NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier2 owner:self options:nil];
+                    cell = [topLevelObjects objectAtIndex:0];
+                    topLevelObjects = nil;
+                    [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                    cell.backgroundView = [[UIView alloc] init];
+                    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+                }
+                NSInteger index;
+                NSString *value;
+                //avartar
+                UIImageView *avatar = (UIImageView*)[cell viewWithTag:3];
+                [avatar setImageWithURL:[NSURL URLWithString:cellData.userInfo.avatarUrl]];
+                // posted user
+                UILabel *user_posted = (UILabel*)[cell viewWithTag:4];
+                [user_posted setText:cellData.userInfo.fullName];
+                
+                
+                //ad_owner
+                UILabel *ad_owner = (UILabel*)[cell viewWithTag:5];
+                index = [cellData.paraNames indexOfObject:@"ad_owner"];
+                value = [cellData.paraValues objectAtIndex:index];
+                [ad_owner setText:value];
+                
+                //[self setClapCommentForCell:cell andData:cellData];
+                return cell;
+            }
+            if (indexPath.row == 1) {
+                //descritption
+                //HDBResultDetailCell3
+                static NSString *CellIdentifier3 = @"HDBResultDetailCell3";
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier3];
+                if (cell == nil) {
+                    NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier3 owner:self options:nil];
+                    cell = [topLevelObjects objectAtIndex:0];
+                    topLevelObjects = nil;
+                    [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                    cell.backgroundView = [[UIView alloc] init];
+                    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+                }
+                
+                NSInteger index;
+                NSString *value;
+                index = [cellData.paraNames indexOfObject:@"description"];
+                value = [cellData.paraValues objectAtIndex:index];
+                value = [NSData stringDecodeFromBase64String:value];
+                UILabel *description = (UILabel*)[cell viewWithTag:2];
+                [description setText:value];
+                
+                return cell;
+            }
+            
+        }
+        if (indexPath.section == 2) {
+            static NSString *CellIdentifier2 = @"Cell";
+            
+            UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier2];
+            
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier2];
+            }
+            [cell.imageView setImage:[UIImage imageNamed:@"accessoryView.png"]];
+            [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE_SMALL]];
+            cell.textLabel.text = [cellData.array_other_features objectAtIndex:indexPath.row];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            return cell;
+        }
+        if (indexPath.section == 3) {
+            static NSString *CellIdentifier2 = @"Cell";
+            
+            UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier2];
+            
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier2];
+            }
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            [cell.imageView setImage:[UIImage imageNamed:@"accessoryView.png"]];
+            [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE_SMALL]];
+            cell.textLabel.text = [cellData.array_amenities objectAtIndex:indexPath.row];
+            return cell;
+        }
+        if (indexPath.section == 4) {
+            static NSString *CellIdentifier2 = @"Cell";
+            
+            UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier2];
+            
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier2];
+            }
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            [cell.imageView setImage:[UIImage imageNamed:@"accessoryView.png"]];
+            [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE_SMALL]];
+            cell.textLabel.text = [cellData.array_fixtures_fittings objectAtIndex:indexPath.row];
+            return cell;
+        }
+
+        if (indexPath.section == 5) {
+            static NSString *CellIdentifier2 = @"Cell";
+            
+            UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier2];
+            
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier2];
+            }
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            [cell.imageView setImage:[UIImage imageNamed:@"accessoryView.png"]];
+            [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE_SMALL]];
+            cell.textLabel.text = [cellData.arry_restrictions objectAtIndex:indexPath.row];
+            return cell;
+        }
+
+        if (indexPath.section == 6) {
+            static NSString *CellIdentifier = @"UICommentCell";
+            
+            UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier];
+            
+            if (cell == nil) {
+                NSArray *nib = nil;
+                nib = [[NSBundle mainBundle] loadNibNamed:CellIdentifier owner:self options:nil];
+                cell = (UITableViewCell *)[nib objectAtIndex:0];
+                
+            }
+            CommentsCellContent *content = [listComments objectAtIndex:indexPath.row];
+            //ImageView
+            UIImageView *imageView = (UIImageView*)[cell viewWithTag:1];
+            [imageView setImageWithURL:[NSURL URLWithString: content.userAvatarURL]];
+            //Username
+            UILabel *userName = (UILabel*)[cell viewWithTag:2];
+            userName.text = content.userPostName;
+            //text
+            UILabel *text = (UILabel*)[cell viewWithTag:3];
+            text.text = content.text;
+            [text setNeedsDisplay];
+            CGSize constraint = CGSizeMake(294 - 74, 20000.0f);
+            CGSize size = [content.text sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+            CGRect frame = text.frame;
+            frame.size = size;
+            text.frame = frame;
+            //    [text setAutoresizingMask: UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin ];
+            //Create
+            UILabel *created = (UILabel*)[cell viewWithTag:4];
+            created.text = content.created;
+            tableView.scrollEnabled = YES;
+            
+            cell.backgroundView = [[UIView alloc]initWithFrame:cell.bounds];
+            return cell;
+            
+        }
+    }
+
+    return [[UITableViewCell alloc]init];
 }
 
 
@@ -1263,6 +1581,33 @@ enum viewModeForDCADetail {
             return cHeaderHeight;
         }
     }
+    
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        if (indexPath.section == 0) {
+            if (indexPath.row == 0) {
+                return 201;
+            }
+        }
+        if (indexPath.section == 01) {
+            if (indexPath.row == 0) {
+                return 120;
+            }
+            if (indexPath.row == 1) {//description
+                NSInteger index;
+                NSString *value;
+                index = [cellData.paraNames indexOfObject:@"description"];
+                value = [cellData.paraValues objectAtIndex:index];
+                value = [NSData stringDecodeFromBase64String:value];
+                CGSize constraint = CGSizeMake(320 - 26, 20000.0f);
+                CGSize size = [value sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE_SMALL] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+                return size.height + 28;
+            }
+        }
+        if (indexPath.section == 2 || indexPath.section == 3 || indexPath.section == 4 || indexPath.section == 5) {
+            return cHeaderHeight;
+        }
+    }
+    
     //commment size
     return [CommentsCellContent getCellHeighWithContent:[listComments objectAtIndex:indexPath.row] withWidth:294 - 74];
 }
@@ -1346,7 +1691,41 @@ enum viewModeForDCADetail {
                 return 1.0;
         }
     }
+    
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        if (section == 1) {
+            if (_viewMode == modePreview) {
+                return 1.0;
+            }
+            return CELL_COMMENTS_HEADER_HEIGHT;
+        }
+        if (section == 2) {
+            if (cellData.array_other_features.count) {
+                return CELL_COMMENTS_HEADER_HEIGHT;
+            }else
+                return 1.0;
+        }
+        if (section == 3) {
+            if (cellData.array_amenities.count) {
+                return CELL_COMMENTS_HEADER_HEIGHT;
+            }else
+                return 1.0;
+        }
+        if (section == 4) {
+            if (cellData.array_fixtures_fittings.count) {
+                return CELL_COMMENTS_HEADER_HEIGHT;
+            }else
+                return 1.0;
+        }
+        if (section == 5) {
+            if (cellData.arry_restrictions.count) {
+                return CELL_COMMENTS_HEADER_HEIGHT;
+            }else
+                return 1.0;
+        }
+    }
 
+    
     return 10.0;
 }
 
@@ -1371,20 +1750,20 @@ enum viewModeForDCADetail {
         }
         
         
-        [UIView beginAnimations:@"View Flip" context:nil];
-        [UIView setAnimationDuration:0.80];
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-        
-        [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
-                               forView:_scrollView cache:NO];
+//        [UIView beginAnimations:@"View Flip" context:nil];
+//        [UIView setAnimationDuration:0.80];
+//        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//        
+//        [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
+//                               forView:_scrollView cache:NO];
         
         SDWebImageDataSource *dataSource_ = [[SDWebImageDataSource alloc]initWithArray:cellData.images];
         KTPhotoScrollViewController *newController = [[KTPhotoScrollViewController alloc]
                                                       initWithDataSource:dataSource_
                                                       andStartWithPhotoAtIndex:0];
-        [self.navigationController presentModalViewController:newController animated:NO];
+        [self.navigationController presentModalViewController:newController animated:YES];
         
-        [UIView commitAnimations];
+//        [UIView commitAnimations];
         
         
     }else
@@ -1522,6 +1901,9 @@ enum viewModeForDCADetail {
         if ([self.itemName isEqualToString:@"Landed Property Search"]) {
             functionName = @"getLandedDetail";
         }
+        if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+            functionName = @"getRoomDetail";
+        }
 
         paraNames = [NSArray arrayWithObjects:@"hdb_id", @"user_id", nil];
         paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%d", _hdbID], [NSString stringWithFormat:@"%d", _userID], nil];
@@ -1653,6 +2035,10 @@ enum viewModeForDCADetail {
     }
     if ([self.itemName isEqualToString:@"Landed Property Search"]) {
         functionName = @"getLandedComments";
+    }
+    
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        functionName = @"getRoomComments";
     }
     
     paraNames = [NSArray arrayWithObjects:@"hdb_id", @"limit", @"comment_id", @"base64_image", @"function", nil];
@@ -2095,6 +2481,9 @@ enum viewModeForDCADetail {
     if ([self.itemName isEqualToString:@"Landed Property Search"]) {
         functionName = @"insertLandedComment";
     }
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        functionName = @"insertRoomComment";
+    }
     paraNames = [NSArray arrayWithObjects:@"user_id", @"hdb_id", @"content", @"limit", nil];
     paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], [NSString stringWithFormat:@"%d", self.hdbID], str, @"1", nil];
     data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName:functionName parametterName:paraNames parametterValue:paraValues];
@@ -2136,6 +2525,10 @@ enum viewModeForDCADetail {
     if ([self.itemName isEqualToString:@"Landed Property Search"]) {
         functionName = @"landedClap";
     }
+    
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        functionName = @"roomClap";
+    }
     paraNames = [NSArray arrayWithObjects:@"user_id", @"hdb_id", nil];
     paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], [NSString stringWithFormat:@"%d", self.hdbID], nil];
     data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName:functionName parametterName:paraNames parametterValue:paraValues];
@@ -2150,7 +2543,6 @@ enum viewModeForDCADetail {
         [clapInfo setValue:[NSString stringWithFormat:@"%d", totalClap] forKey:@"total_claps"];
         [clapInfo setValue:[NSString stringWithFormat:@"%d", isClap] forKey:@"is_clap"];
         [cellData.paraValues replaceObjectAtIndex:index withObject:clapInfo];
-        
     }
     @catch (NSException *exception) {
         NSLog(@"%@",exception);
@@ -2220,7 +2612,7 @@ enum viewModeForDCADetail {
             value = [cellData.paraValues objectAtIndex:index];
         }
         
-        if ([self.itemName isEqualToString:@"Room For Rent Search"]) {
+        if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
             index = [cellData.paraNames indexOfObject:@"address"];
             value = [cellData.paraValues objectAtIndex:index];
         }

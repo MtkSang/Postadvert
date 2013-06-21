@@ -6754,17 +6754,15 @@
 	<dict>
 		<key>Property Details</key>
 		<array>
-			<string>Property Status *</string>
 			<string>Ad Owner *</string>
+			<string>Property Type*</string>
 			<string>District *</string>
-			<string>Tenure *</string>
-			<string>No. of Bedrooms *</string>
-			<string>No. of Washrooms *</string>
-			<string>Price (S$)</string>
-			<string>Size (sq ft) *</string>
-			<string>Size (sqm) *</string>
-			<string>Valuation Price (S$)</string>
-			<string>Building Completion</string>
+			<string>Lease Term</string>
+			<string>Room Type</string>
+			<string>Attached Bathroom</string>
+			<string>Room Size (sq ft) *</string>
+			<string>Room Size (sqm) *</string>
+			<string>Monthly Rental (S$)</string>
 		</array>
 		<key>Address of Property</key>
 		<array>
@@ -6786,17 +6784,27 @@
 			<string>Condition </string>
 			<string>Others</string>
 		</array>
-		<key>Indoor &amp; Outdoors</key>
+		<key>Amenities</key>
 		<array>
-			<string>Balcony</string>
-			<string>Private Garden</string>
-			<string>Walk-in Wardrobe</string>
-			<string>Garage</string>
-			<string>Roof Terrace</string>
-			<string>Maid&apos;s Room</string>
-			<string>Storeroom</string>
+			<string>24-hour Security</string>
+			<string>Covered Carpark</string>
+			<string>Game Room</string>
+			<string>Lounge</string>
+			<string>Sauna</string>
+			<string>Tennis Court</string>
+			<string>Basement Carpark</string>
+			<string>Clubhouse</string>
+			<string>Gymnasium</string>
+			<string>Playground</string>
+			<string>Squash Court</string>
+			<string>Wading Pool</string>
+			<string>BBQ Pits</string>
+			<string>Fitness Corner</string>
+			<string>Jacuzzi Pool</string>
+			<string>Putting Green</string>
+			<string>Swimming Pool</string>
 		</array>
-		<key>Fixtures &amp; Fittings</key>
+		<key>Home Interior</key>
 		<array>
 			<string>Air Conditioning</string>
 			<string>Cooker Hob / Hood</string>
@@ -6808,6 +6816,15 @@
 			<string>Ceiling Fan</string>
 			<string>Storeroom</string>
 			<string>Window Grilles</string>
+		</array>
+		<key>Restrictions ( if any )</key>
+		<array>
+			<string>Female Tenant Preferred</string>
+			<string>Male Tenant Preferred</string>
+			<string>No Cooking</string>
+			<string>No Guests</string>
+			<string>No Pets</string>
+			<string>No Stayover Guests</string>
 		</array>
 	</dict>
 </dict>

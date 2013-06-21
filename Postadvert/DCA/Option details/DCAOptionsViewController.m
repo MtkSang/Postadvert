@@ -139,6 +139,10 @@
             return @"District";
         case DCAOptionCondosTenure:
             return @"Tenure";
+        case DCAOptionRoomsRoomType:
+            return @"Room Type";
+        case DCAOptionRoomsAttachedBathroom:
+            return @"Attached Bathroom";
         default:
             return @"";
             break;

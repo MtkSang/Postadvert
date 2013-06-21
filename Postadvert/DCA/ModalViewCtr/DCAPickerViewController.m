@@ -31,7 +31,7 @@
     self = [super init];
     if (self) {
         self.sourceType = sourceType_;
-        if (sourceType_ == pickerTypePrice || sourceType_ == pickerTypeBedrooms || sourceType_ == pickerTypeSize || sourceType_ == pickerTypeValnSize || sourceType_ == pickerTypeWashrooms || sourceType_ == pickerTypeConstructed || sourceType_ == pickerTypePSF || sourceType_ == pickerTypeLeaseTerm) {
+        if (sourceType_ == pickerTypePrice || sourceType_ == pickerTypeBedrooms || sourceType_ == pickerTypeSize || sourceType_ == pickerTypeValnSize || sourceType_ == pickerTypeWashrooms || sourceType_ == pickerTypeConstructed || sourceType_ == pickerTypePSF || sourceType_ == pickerTypeLeaseTerm || sourceType_ == pickerTypeFloorSize) {
             _intSource = [NSArray arrayWithArray:array];
         }
         start += 1;
@@ -280,6 +280,7 @@
         case pickerTypeSize:
         case pickerTypeBedrooms:
         case pickerTypePrice:
+        case pickerTypeFloorSize:
             return 3;
             break;
         case pickerTypeLeaseTerm:
@@ -316,6 +317,7 @@
         case pickerTypeBedrooms:
         case pickerTypePrice:
         case pickerTypeLeaseTerm:
+        case pickerTypeFloorSize:
             if (component == 0 || component == 2) {
                 return _intSource.count + 1;
             }
@@ -357,6 +359,7 @@
         case pickerTypeBedrooms:
         case pickerTypePrice:
         case pickerTypeLeaseTerm:
+        case pickerTypeFloorSize:
             if (component == 1) {
                 return 30;
             }
@@ -535,7 +538,7 @@
     if (!retval || ![retval isKindOfClass:[UILabel class]]) {
         retval= [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [pickerView rowSizeForComponent:component].width - 15, [pickerView rowSizeForComponent:component].height)];
         
-        if (_sourceType == pickerTypeSize || _sourceType == pickerTypeValnSize)  {
+        if (_sourceType == pickerTypeSize || _sourceType == pickerTypeValnSize || _sourceType == pickerTypeFloorSize)  {
             retval.font = [UIFont fontWithName:FONT_NAME size:FONT_SIZE_SMALL];
         }
         retval.minimumFontSize = FONT_SIZE_SMALL - 2;
@@ -555,6 +558,7 @@
         case pickerTypeBedrooms:
         case pickerTypePrice:
         case pickerTypeLeaseTerm:
+        case pickerTypeFloorSize:
             if (component == 1) {
                 title = @"to";
                 [retval sizeToFit];

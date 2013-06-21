@@ -105,6 +105,9 @@
     if ([self.itemName isEqualToString:@"Landed Property Search"]) {
         [self.lbTitle setText:@"Landed Property"];
     }
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        [self.lbTitle setText:@"Rooms For Rent"];
+    }
     [self.tabBar setSelectedItem:currentItem];
     if (hud) {
         if (hud.superview) {
@@ -204,7 +207,10 @@
             [currentListForMap removeAllObjects];
             [mapView.listPlacemarks removeAllObjects];
         }
-        [self act_ShowMap:self];
+        if (currentListResult.count) {
+            [self act_ShowMap:self];
+        }
+        
         return;
     }
 }
@@ -722,6 +728,185 @@
             return cell;
         }
     }
+#pragma mark . Rooms For Rent Search
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        if (indexPath.row == 0) {
+            static NSString *CellIdentifier1 = @"HDBListResultCell1";
+            static NSString *CellIdentifier1ListView = @"HDBListResultCell1ListView";
+            UITableViewCell *cell;
+            if (isListView) {
+                cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1ListView];
+            }else
+                cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+            if (cell == nil) {
+                
+                NSArray *topLevelObjects;
+                if (isListView) {
+                    topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier1ListView owner:self options:nil];
+                }else
+                    topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier1 owner:self options:nil];
+                cell = [topLevelObjects objectAtIndex:0];
+                topLevelObjects = nil;
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                cell.backgroundView = [[UIView alloc] init];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            }
+            NSInteger index = 0;
+            NSString *value =@"";
+            //Property Status
+            UILabel *status = (UILabel*)[cell viewWithTag:1];
+            if ([property_status isEqualToString:@"r"]) {
+                [status setText:@"For Rent"];
+            }else
+            {
+                [status setText:@"For Sale"];
+            }
+            //Create
+            UILabel *created = (UILabel*)[cell viewWithTag:2];
+            index = [cellData.paraNames indexOfObject:@"created"];
+            value = [NSData stringDecodeFromBase64String:[cellData.paraValues objectAtIndex:index]];
+            [created setText:value];
+            //thumb
+            UIImageView *imagView = (UIImageView*)[cell viewWithTag:3];
+            index = [cellData.paraNames indexOfObject:@"thumb"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [imagView setImageWithURL:[NSURL URLWithString:value]];
+            //Title
+            UILabel *titleHDB = (UILabel*) [cell viewWithTag:4];
+            index = [cellData.paraNames indexOfObject:@"address"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [titleHDB setText:value];
+            //price
+            UILabel *price = (UILabel*) [cell viewWithTag:12];
+            index = [cellData.paraNames indexOfObject:@"monthly_rental"];
+            
+            value = [cellData.paraValues objectAtIndex:index];
+            [price setText:[NSString stringWithFormat:@"S$ %@", value]];
+            //psf
+            index = [cellData.paraNames indexOfObject:@"psf"];
+            value = [cellData.paraValues objectAtIndex:index];
+            
+            [price setText:[NSString stringWithFormat:@"%@ (S$ %@ psf)",price.text, value]];
+            
+            
+            //lease_term_valuation_price (unit_level)
+            UILabel *lease_term_valuation_price = (UILabel*) [cell viewWithTag:5];
+            index = [cellData.paraNames indexOfObject:@"lease_term"];
+            value = [cellData.paraValues objectAtIndex:index];
+            
+            //unit_level
+            index = [cellData.paraNames indexOfObject:@"unit_level"];
+            NSString *unit_level = [cellData.paraValues objectAtIndex:index];
+            if (unit_level.length > 0) {
+                value = [NSString stringWithFormat:@"%@ ( %@ )", value, unit_level];
+            }
+            [lease_term_valuation_price setText:value];
+            //district
+            UILabel *hdb_estate = (UILabel*) [cell viewWithTag:6];
+            index = [cellData.paraNames indexOfObject:@"location"];
+            value = [cellData.paraValues objectAtIndex:index];
+            
+            //furnishing
+            index = [cellData.paraNames indexOfObject:@"furnishing"];
+            NSString *furnishing = [cellData.paraValues objectAtIndex:index];
+            if (! [furnishing isEqualToString:@""] ) {
+                value = [value stringByAppendingFormat:@" ( %@ )", furnishing];
+            }
+            [hdb_estate setText:value];
+            //size
+            UILabel *size = (UILabel*) [cell viewWithTag:7];
+            index = [cellData.paraNames indexOfObject:@"size"];
+            value = [cellData.paraValues objectAtIndex:index];
+            index = [cellData.paraNames indexOfObject:@"size_m"];
+            NSString *size_m = [cellData.paraValues objectAtIndex:index];
+            [size setText:[NSString stringWithFormat:@"%@ sqft / %@ sqm",value, size_m]];
+            //building_completion
+            UILabel *building_completion = (UILabel*) [cell viewWithTag:11];
+            index = [cellData.paraNames indexOfObject:@"room_type"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [building_completion setText:[NSString stringWithFormat:@"%@", value]];
+            //bathroom icon
+            UIImageView *imageViewBedroom = (UIImageView*)[cell viewWithTag:15];
+            [imageViewBedroom setImage:[UIImage imageNamed:@"bathroom.png"]];
+            imageViewBedroom.hidden = YES;
+            //bedrooms
+            UILabel *bedrooms = (UILabel*) [cell viewWithTag:8];
+            index = [cellData.paraNames indexOfObject:@"attached_bathroom"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [bedrooms setText:value];
+            bedrooms.hidden = YES;
+//            //washroom
+            UILabel *washroom = (UILabel*) [cell viewWithTag:9];
+            washroom.hidden = YES;
+//            index = [cellData.paraNames indexOfObject:@"washroom"];
+//            value = [cellData.paraValues objectAtIndex:index];
+//            [washroom setText:value];
+            UIImageView *imageViewWashroom = (UIImageView*)[cell viewWithTag:16];
+            imageViewWashroom.hidden = YES;
+            [imageViewWashroom setImage:[UIImage imageNamed:@"bathroom.png"]];
+            if (isListView) {
+                if ([bedrooms.text isEqualToString:@"Yes"] || [bedrooms.text isEqualToString:@"YES"]) {
+                    imageViewWashroom.hidden = NO;
+                }else
+                {
+                    imageViewWashroom.hidden = YES;
+                }
+            }else
+            {
+                if ([bedrooms.text isEqualToString:@"Yes"] || [bedrooms.text isEqualToString:@"YES"]) {
+                    imageViewBedroom.hidden = NO;
+                }else
+                {
+                    imageViewBedroom.hidden = YES;
+                }
+            }
+            //property_type
+            UILabel *HDBType = (UILabel*) [cell viewWithTag:14];
+            index = [cellData.paraNames indexOfObject:@"property_type"];
+            value = [cellData.paraValues objectAtIndex:index];
+            [HDBType setText:value];
+            return cell;
+            
+        }
+        
+        if (indexPath.row > 0) {
+            static NSString *CellIdentifier2 = @"HDBListResultCell2";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier2];
+            if (cell == nil) {
+                
+                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:CellIdentifier2 owner:self options:nil];
+                cell = [topLevelObjects objectAtIndex:0];
+                topLevelObjects = nil;
+                [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+                cell.backgroundView = [[UIView alloc] init];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            }
+            NSInteger index;
+            NSString *value;
+            @try {
+                //avartar
+                UIImageView *avatar = (UIImageView*)[cell viewWithTag:3];
+                [avatar setImageWithURL:[NSURL URLWithString:cellData.userInfo.avatarUrl]];
+                // posted user
+                UILabel *user_posted = (UILabel*)[cell viewWithTag:4];
+                [user_posted setText:cellData.userInfo.fullName];
+                
+                
+                //ad_owner
+                UILabel *ad_owner = (UILabel*)[cell viewWithTag:5];
+                index = [cellData.paraNames indexOfObject:@"ad_owner"];
+                value = [cellData.paraValues objectAtIndex:index];
+                [ad_owner setText:value];
+            }
+            @catch (NSException *exception) {
+                
+            }
+            
+            [self setClapCommentForCell:cell andData:cellData];
+            return cell;
+        }
+    }
+
     return [[UITableViewCell alloc]init];
 }
 
@@ -878,6 +1063,19 @@
                 [self.lbNumFound setText:[NSString stringWithFormat:@"   No Landed Properties found"]];
         }
     }
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        if (numFound > 1) {
+            [self.lbNumFound setText:[NSString stringWithFormat:@"   %d Rooms For Rent found", numFound]];
+        }
+        else
+        {
+            if (numFound == 1) {
+                [self.lbNumFound setText:[NSString stringWithFormat:@"   1 Room For Rent found"]];
+            }else
+                [self.lbNumFound setText:[NSString stringWithFormat:@"   No Rooms For Rent found"]];
+        }
+    }
+
 }
 - (void) getData
 {
@@ -1600,6 +1798,219 @@
             [currentListResult addObject:cellData];
         }
     }
+    
+#pragma mark . Rooms For Rent
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        id data;
+        NSString *functionName;
+        NSArray *paraNames;
+        NSMutableArray *paraValues = [[NSMutableArray alloc]init];
+        functionName = @"searchRoom";
+        paraNames = [NSArray arrayWithObjects:
+                     @"keywords",
+                     @"property_type",
+                     @"ad_owner",
+                     @"location",
+                     @"room_type",
+                     @"attached_bathroom",
+                     @"price_from",
+                     @"price_to",
+                     @"size_from",
+                     @"size_to",
+                     @"lease_term_from",
+                     @"lease_term_to",
+                     @"unit_level",
+                     @"furnishing",
+                     @"condition",
+                     @"limit",
+                     @"max_id",
+                     @"psf_from",
+                     @"psf_to",
+                     @"user_id",
+                     @"sort_type",
+                     @"start",
+                     @"scroll",
+                     @"is_save",
+                     @"with_image",
+                     @"with_video", nil];
+        
+        //        keywords
+        NSString *keyWorlds = [[NSUserDefaults standardUserDefaults] valueForKey:@"keyWorlds"];
+        if (! keyWorlds) {
+            keyWorlds = @"";
+        }
+        [paraValues addObject:keyWorlds];
+        int index = 0;
+        NSString *value;
+        NSArray *from_to;
+        //        property_type
+        index = [mainFiles indexOfObject:@"Property Type"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //        ad_owner
+        index = [mainFiles indexOfObject:@"Ad Owner"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //        location
+        index = [mainFiles indexOfObject:@"District"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //        room_type
+        index = [mainFiles indexOfObject:@"Room Type"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //        attached_bathroom
+        index = [mainFiles indexOfObject:@"Attached Bathroom"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+
+        //        price_from
+        index = [mainFiles indexOfObject:@"Price"];
+        if (index == NSIntegerMax) {
+            index = [mainFiles indexOfObject:@"Monthly Rental"];
+        }
+        value = [mainFilesValues objectAtIndex:index];
+        //        price_to
+        from_to = [value componentsSeparatedByString:@"____"];
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+        //        size_from
+        index = [mainFiles indexOfObject:@"Floor Size"];
+        value = [mainFilesValues objectAtIndex:index];
+        //size_to
+        from_to = [value componentsSeparatedByString:@"____"];
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+
+        //        lease_term_from
+        index = [mainFiles indexOfObject:@"Lease Term"];
+        if (index == NSIntegerMax) {
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }else
+        {
+            value = [mainFilesValues objectAtIndex:index];
+            from_to = [value componentsSeparatedByString:@"____"];
+            if (from_to.count == 2) {
+                [paraValues addObjectsFromArray:from_to];
+            }else{
+                [paraValues addObject:@"0"];
+                [paraValues addObject:@"0"];
+            }
+        }
+        //        lease_term_to
+        //        unit_level
+        index = [mainFiles indexOfObject:@"Unit Level"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //        furnishing
+        index = [mainFiles indexOfObject:@"Furnishing"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //        condition
+        index = [mainFiles indexOfObject:@"Condition"];
+        value = [mainFilesValues objectAtIndex:index];
+        [paraValues addObject:value];
+        //        limit
+        value = @"5";
+        [paraValues addObject:value];
+        //        max_id = 0
+        [paraValues addObject:max_id];
+        //        psf_from
+        index = [mainFiles indexOfObject:@"PSF"];
+        value = [mainFilesValues objectAtIndex:index];
+        from_to = [value componentsSeparatedByString:@"____"];
+        //psf to
+        if (from_to.count == 2) {
+            [paraValues addObjectsFromArray:from_to];
+        }else{
+            [paraValues addObject:@"0"];
+            [paraValues addObject:@"0"];
+        }
+        //        user_id
+        [paraValues addObject:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID]];
+        //        sort_type        
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"Sort By V3"];
+        [paraValues addObject:value];
+                //        start
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"start"];
+        [paraValues addObject:value];
+        //        scroll = 'down'
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"scroll"];
+        [paraValues addObject:value];
+        //        is_save = 0
+        value = @"0";
+        [paraValues addObject:value];
+        //        with_image = "false"
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"With Photos"];
+        if (![value isKindOfClass:[NSString class]]) {
+            value = @"false";
+        }
+        [paraValues addObject:value];
+        //        with_video = "false"
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"With Videos"];
+        if (![value isKindOfClass:[NSString class]]) {
+            value = @"false";
+        }
+        [paraValues addObject:value];
+        //        base64_image = false
+        
+        // replace "Any" - > ""
+        for (int i = 0; i < paraValues.count; i++) {
+            NSString *myValue = [paraValues objectAtIndex:i];
+            if ([myValue isEqualToString:@"Any"]) {
+                [paraValues replaceObjectAtIndex:i withObject:@""];
+            }
+            if ([myValue isEqualToString:@"Select One"]) {
+                [paraValues replaceObjectAtIndex:i withObject:@""];
+            }
+        }
+        data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+        if (data && [data count] == 0 && currentListResult.count == 0) {
+            [self setNumFound:[NSNumber numberWithInteger:0]];
+        }
+        for (NSDictionary *dict in data) {
+            if (![dict isKindOfClass:[NSDictionary class]]) {
+                continue;
+            }
+            
+            NSString *count = [dict objectForKey:@"count"];
+            NSNumber *num = [NSNumber numberWithInteger:count.integerValue];
+            [self performSelectorOnMainThread:@selector(setNumFound:) withObject:num waitUntilDone:NO];
+            
+            HBBResultCellData *cellData = [[HBBResultCellData alloc]initWithItemName:self.itemName];
+            cellData.hdbID = [[dict objectForKey:@"id"] integerValue];
+            cellData.timeCreated = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
+            NSString *title = [dict objectForKey:@"address"];
+            cellData.titleHDB = title;
+            
+            //author
+            NSDictionary *authorDict = [dict objectForKey:@"author"];
+            cellData.userInfo = [[CredentialInfo alloc]init];
+            if ([authorDict isKindOfClass:[NSDictionary class]]) {
+                cellData.userInfo = [[CredentialInfo alloc]initWithDictionary:authorDict];
+            }
+            
+            for (NSString *key in cellData.paraNames) {
+                id object = [dict objectForKey:key];
+                if (object != nil) {
+                    [cellData.paraValues addObject: object];
+                }else
+                    [cellData.paraValues addObject:@""];
+            }
+            
+            [currentListResult addObject:cellData];
+        }
+    }
+
     isLoadData = NO;
 }
 #pragma mark MapViewControllerDelegate
@@ -1639,7 +2050,7 @@
                 value = [cellData.paraValues objectAtIndex:index];
             }
             
-            if ([self.itemName isEqualToString:@"Room For Rent Search"]) {
+            if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
                 index = [cellData.paraNames indexOfObject:@"address"];
                 value = [cellData.paraValues objectAtIndex:index];
             }
@@ -1648,16 +2059,16 @@
     }
     else
         {
-            [UIView beginAnimations:@"View Flip" context:nil];
-            [UIView setAnimationDuration:0.80];
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-            
-            [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight
-                                   forView:_flipView cache:NO];
-            
-            [self.flipView addSubview:mapView.view];
-            
-            [UIView commitAnimations];
+                [UIView beginAnimations:@"View Flip" context:nil];
+                [UIView setAnimationDuration:0.80];
+                [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                
+                [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight
+                                       forView:_flipView cache:NO];
+                
+                [self.flipView addSubview:mapView.view];
+                
+                [UIView commitAnimations];
         }
 }
 - (void) getAllPlacemarksWithAddress:(NSString*)addressString andData:(HBBResultCellData*)cellData
@@ -1789,6 +2200,9 @@
     }
     if ([self.itemName isEqualToString:@"Landed Property Search"]) {
         staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Landed Property Search"]];
+    }
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Rooms For Rent Search"]];
     }
     NSDictionary *dict;
     NSUserDefaults *database = [[NSUserDefaults alloc]init];
@@ -2040,7 +2454,7 @@
     index = [currentListResult indexOfObject:cellData];
     NSNumber *num = [NSNumber numberWithInteger:index];
     [[NSUserDefaults standardUserDefaults] setValue:num forKey:@"cellData"];
-    [clapBtn addTarget:self action:@selector(insertClap) forControlEvents:UIControlEventTouchUpInside];
+    [clapBtn addTarget:self action:@selector(insertClap:) forControlEvents:UIControlEventTouchUpInside];
     [commentBtn addTarget:self action:@selector(commentBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     //Update location
     float y = 3;
@@ -2113,23 +2527,41 @@
     
 }
 
-- (void) insertClap
+- (void) insertClap: (id) sender
 {
     // hdbClap($user_id, $hdb_id)
-    
+    UIView *view = (UIView*)sender;
+    UITableViewCell *cell;
+    while (view) {
+        if ([view isKindOfClass:[UITableViewCell class]]) {
+            cell = (UITableViewCell*)view;
+            break;
+        }
+        view = view.superview;
+    }
+    if (!cell) {
+        return;
+    }
+    NSIndexPath *indexPath = [_tableView indexPathForCell:(UITableViewCell*) view];
+    if (! indexPath) {
+        return;
+    }
     id data;
     NSString *functionName;
     NSArray *paraNames;
     NSArray *paraValues;
     HBBResultCellData *cellData;
-    NSNumber *num = [[NSUserDefaults standardUserDefaults] objectForKey:@"cellData"];
-    cellData = [currentListResult objectAtIndex:num.integerValue];
+    cellData = [currentListResult objectAtIndex:indexPath.section];
     functionName = @"hdbClap";
     if ([self.itemName isEqualToString:@"Condos Search"]) {
         functionName = @"condosClap";
     }
     if ([self.itemName isEqualToString:@"Landed Property Search"]) {
         functionName = @"landedClap";
+    }
+    
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        functionName = @"roomClap";
     }
     
     paraNames = [NSArray arrayWithObjects:@"user_id", @"hdb_id", nil];
@@ -2157,9 +2589,25 @@
 
 - (void) commentBtnClicked:(id)sender
 {
-    NSNumber *num = [[NSUserDefaults standardUserDefaults] objectForKey:@"cellData"];
+    UIView *view = (UIView*)sender;
+    UITableViewCell *cell;
+    while (view) {
+        if ([view isKindOfClass:[UITableViewCell class]]) {
+            cell = (UITableViewCell*)view;
+            break;
+        }
+        view = view.superview;
+    }
+    if (!cell) {
+        return;
+    }
+    NSIndexPath *indexPath = [_tableView indexPathForCell:(UITableViewCell*) view];
+    if (! indexPath) {
+        return;
+    }
+    //NSNumber *num = [[NSUserDefaults standardUserDefaults] objectForKey:@"cellData"];
     
-    HBBResultCellData *cellData = [currentListResult objectAtIndex:num.integerValue];
+    HBBResultCellData *cellData = [currentListResult objectAtIndex:indexPath.section];
     HDBResultDetailViewController *detailViewCtr = [[HDBResultDetailViewController alloc]initWithHDBID:cellData.hdbID userID:[[UserPAInfo sharedUserPAInfo]registrationID]];
     detailViewCtr.showKeyboard = YES;
     detailViewCtr.itemName = self.itemName;

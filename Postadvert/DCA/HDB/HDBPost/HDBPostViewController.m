@@ -105,6 +105,19 @@
                    @"Fixtures & Fittings", nil];
     }
 
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        sourceData = [NSMutableDictionary dictionaryWithDictionary: [staticData2 objectForKey:@"Rooms For Rent Post"]];
+        allKeys = [[NSMutableArray alloc]initWithObjects:
+                   @"Property Details",
+                   @"Address of Property",
+                   @"Description of Property",
+                   @"Pictures, URLs & Videos",
+                   @"Special Features",
+                   @"Amenities",
+                   @"Home Interior",
+                   @"Restrictions ( if any )", nil];
+    }
+
     
     
     [self InsertPictureDidDisappear];
@@ -686,6 +699,32 @@
             [cell setAccessoryType:UITableViewCellAccessoryNone];
         
     }
+#pragma mark . Restrictions ( if any )
+    if ([headerStr isEqualToString:@"Restrictions ( if any )"]) {
+        static NSString *CellIdentifier7 = @"CellHBDPostWithOption7";
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier7];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier7];
+            [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
+            [cell.textLabel setTextColor:[UIColor whiteColor]];
+            [cell.detailTextLabel setTextColor:[UIColor blackColor]];
+            [cell.detailTextLabel setNumberOfLines:2];
+            [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+            
+        }
+        NSString *textLabel = [array objectAtIndex:indexPath.row];
+        if (textLabel == nil) {
+            textLabel =@"";
+        }
+        cell.textLabel.text = textLabel;
+        NSString *fixtures_fittings = [[NSUserDefaults standardUserDefaults] objectForKey:headerStr];
+        NSRange rang = [fixtures_fittings rangeOfString:cell.textLabel.text];
+        if (rang.length) {
+            [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+        }else
+            [cell setAccessoryType:UITableViewCellAccessoryNone];
+        
+    }
     return cell;
 }
 - (float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -814,6 +853,7 @@
             }
             [[NSUserDefaults standardUserDefaults]setValue:cell.detailTextLabel.text forKey:cell.textLabel.text];
         }
+
     }else
     {
         [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
@@ -1211,6 +1251,22 @@
             [[NSUserDefaults standardUserDefaults] setValue:fixtures_fittings forKey:headerStr];
         }
     }
+#pragma mark . Restrictions ( if any )
+    if ([headerStr isEqualToString:@"Restrictions ( if any )"]) {
+        if (cell.accessoryType == UITableViewCellAccessoryNone) {
+            [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+            NSString *fixtures_fittings = [[NSUserDefaults standardUserDefaults] valueForKey:headerStr];
+            fixtures_fittings = [fixtures_fittings stringByAppendingFormat:@"%@, ", cell.textLabel.text];
+            [[NSUserDefaults standardUserDefaults] setValue:fixtures_fittings forKey:headerStr];
+        }else
+        {
+            [cell setAccessoryType:UITableViewCellAccessoryNone];
+            NSString *fixtures_fittings = [[NSUserDefaults standardUserDefaults] valueForKey:headerStr];
+            fixtures_fittings = [fixtures_fittings stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@, ", cell.textLabel.text] withString:@""];
+            [[NSUserDefaults standardUserDefaults] setValue:fixtures_fittings forKey:headerStr];
+        }
+    }
+
 }
 #pragma mark DCAPOptionViewController Delegate
 - (void) didSelectRowOfDCAOptionViewController:(DCAOptionsViewController *)dcaViewCtr
@@ -2039,6 +2095,8 @@
 #pragma mark . Landed Property
     [database setValue:@"" forKey:@"Indoor & Outdoors"];
     [database setValue:@"" forKey:@"Fixtures & Fittings"];
+#pragma mark . Rooms For Rent
+    [database setValue:@"" forKey:@"Restrictions ( if any )"];
     
 }
 #pragma mark DCAPickerViewControllerDelegate

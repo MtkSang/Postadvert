@@ -24,7 +24,8 @@ enum pickerType {
     pickerTypeInputPrice = 11,
     pickerTypeInputValuationPrice = 12,
     pickerTypeInputMonthlyRental = 13,
-    pickerTypeInputLeaseTerm = 14
+    pickerTypeInputLeaseTerm = 14,
+    pickerTypeFloorSize = 15
     
 };
 typedef NSUInteger UIDCAPickerControllerSourceType;

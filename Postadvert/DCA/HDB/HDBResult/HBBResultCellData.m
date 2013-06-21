@@ -52,6 +52,7 @@
         self.array_fixtures_fittings = [[NSMutableArray alloc]init];
         self.array_other_features = [[NSMutableArray alloc]init];
         self.array_amenities = [[NSMutableArray alloc]init];
+        self.arry_restrictions = [[NSMutableArray alloc]init];
         self.images = [[NSMutableArray alloc]init];
     }
     
@@ -168,7 +169,43 @@
                               nil];
             
         }
-
+        if ([itemName isEqualToString:@"Rooms For Rent Search"]) {
+            self.paraNames = [[NSMutableArray alloc]initWithObjects:
+                              @"max_id",
+                              @"id",
+                              @"status",
+                              @"address",
+                              @"room_type",
+                              @"attached_bathroom",
+                              @"description",
+                              @"property_type",
+                              @"ad_owner",
+                              @"unit_level",
+                              @"location",
+                              @"size",
+                              @"size_m",
+                              @"furnishing",
+                              @"condition",
+                              @"special_features",
+                              @"home_interior",
+                              @"amenities",
+                              @"restrictions",
+                              @"building_completion",
+                              @"created",
+                              @"monthly_rental",
+                              @"psf",
+                              @"lease_term",
+                              @"thumb",
+                              @"author",
+                              @"total_comments",
+                              @"clap_info",
+                              @"total_views",
+                              @"images",
+                              @"videos",
+                              @"websites",
+                              nil];
+            
+        }
 
         self.paraValues = [[NSMutableArray alloc]init];
         self.array_fixtures_fittings = [[NSMutableArray alloc]init];
@@ -219,6 +256,15 @@
             self.array_fixtures_fittings = [[NSMutableArray alloc]initWithArray:[objectValue componentsSeparatedByString:@","]];
         }
     }
+    index = [self.paraNames indexOfObject:@"restrictions"];
+    if (index != NSIntegerMax) {
+        objectValue = [self.paraValues objectAtIndex:index];
+        if (![objectValue isEqualToString:@""] && [objectValue isKindOfClass:[NSString class]]) {
+            objectValue = [objectValue stringByReplacingOccurrencesOfString:@", " withString:@","];
+            self.arry_restrictions = [[NSMutableArray alloc]initWithArray:[objectValue componentsSeparatedByString:@","]];
+        }
+    }
+
     index = [self.paraNames indexOfObject:@"images"];
     if (index != NSIntegerMax) {
         objectValue = [self.paraValues objectAtIndex:index];

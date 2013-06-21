@@ -1000,6 +1000,10 @@
     if (rang.length) {
         newPostViewCtr.itemName = @"Landed Property Search";
     }
+    rang = [title rangeOfString:@"Rooms"];
+    if (rang.length) {
+        newPostViewCtr.itemName = @"Rooms For Rent Search";
+    }
     [self.navigationController pushViewController:newPostViewCtr animated:YES];
 }
 
@@ -1212,6 +1216,13 @@
     if ([itemName isEqualToString:@"Landed Property"]) {
         HDBViewController *hdbSearch = [[HDBViewController alloc]init];
         hdbSearch.itemName = @"Landed Property Search";
+        hdbSearch.navigationController = self.navigationController;
+        hdbSearch.navagationBarItem = self.navigationItem;
+        viewCtr = hdbSearch;
+    }
+    if ([itemName isEqualToString:@"Rooms For Rent"]) {
+        HDBViewController *hdbSearch = [[HDBViewController alloc]init];
+        hdbSearch.itemName = @"Rooms For Rent Search";
         hdbSearch.navigationController = self.navigationController;
         hdbSearch.navagationBarItem = self.navigationItem;
         viewCtr = hdbSearch;
