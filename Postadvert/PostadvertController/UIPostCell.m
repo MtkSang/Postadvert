@@ -50,8 +50,6 @@
 @synthesize height = _height;
 @synthesize isDidDraw = _isDidDraw;
 @synthesize navigationController;
-@synthesize videoView = _videoView;
-@synthesize linkView = _linkPreview;
 @synthesize thumbnailView = _thumnailView;
 @synthesize clapComment = _clapCommentView;
 @synthesize textContent = _textContent;
@@ -118,8 +116,6 @@
         //textContent.contentInset = UIEdgeInsetsZero;
         //textContent.delegate = self;
         textContent.extendBottomToFit = YES;
-        videoView  = (LinkPreview*)[self viewWithTag:4];
-        linkView   = (LinkPreview*)[self viewWithTag:5];
         thumbnailView = (ThumbnailPostCellView*)[self viewWithTag:6];
         botView    =[self viewWithTag:7];
         clapComment= [self viewWithTag:8];
@@ -224,20 +220,31 @@
     }
     //add link here
     if (_content.listLinks.count && optionView) {
-        [linkView reDrawWithFrame:videoFrame];
-        frame = videoFrame;
-        frame.origin.y = cellHeight;
-        linkView.frame = frame;
-        cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+        for (int i = 0; i < _content.listLinks.count; i++) {
+            LinkPreview *linkView = (LinkPreview*)[self.contentView viewWithTag:1000 + i];
+            if (linkView) {
+                [linkView reDrawWithFrame:videoFrame];
+                frame = videoFrame;
+                frame.origin.y = cellHeight;
+                linkView.frame = frame;
+                cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+            }
+        }
+        
     }
     //Video
     if (_content.listVideos.count && optionView) {
-        [videoView reDrawWithFrame:videoFrame];
-        frame = videoFrame;
-        frame.origin.y = cellHeight;
-        videoView.frame = frame;
+        for (int  i = 0; i < _content.listVideos.count; i++) {
+            LinkPreview *videoView = (LinkPreview*)[self.contentView viewWithTag:2000 + i];
+            if (videoView) {
+                [videoView reDrawWithFrame:videoFrame];
+                frame = videoFrame;
+                frame.origin.y = cellHeight;
+                videoView.frame = frame;
+                cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+            }
+        }
         
-        cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
     }
     
     
@@ -388,27 +395,44 @@
             }
         
             //add link here
-            if (_content.linkWebsite && optionView) {
-                linkView.autoresizesSubviews = YES;
-                frame = videoFrame;
-                [linkView loadContentWithFrame:frame LinkInfo:_content.linkWebsite Type:linkPreviewTypeWebSite];
-                frame.origin.y = cellHeight;
-                linkView.frame = frame;
-                cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
-                linkView.hidden = NO;
+            if (_content.listLinks.count && optionView) {
+                for (NSDictionary *website in _content.listLinks) {
+                    LinkPreview* linkView = [[LinkPreview alloc]initWithFrame:videoFrame];
+                    linkView.autoresizesSubviews = YES;
+                    frame = videoFrame;
+                    [linkView loadContentWithFrame:frame LinkInfo:website Type:linkPreviewTypeWebSite];
+                    frame.origin.y = cellHeight;
+                    linkView.frame = frame;
+                    cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+                    linkView.hidden = NO;
+                    linkView.tag = 1000 + [_content.listLinks indexOfObject:website];
+                    [self.contentView addSubview:linkView];
+                }
+                
             }
             
             //Video
-            if (_content.linkYoutube && optionView) {
-                videoView.autoresizesSubviews = YES;
-                frame = videoFrame;
-                [videoView loadContentWithFrame:frame LinkInfo:_content.linkYoutube Type:linkPreviewTypeYoutube];
-                frame.origin.y = cellHeight;
-                videoView.frame = frame;
-                cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
-                videoView.hidden = NO;
+            if (_content.listVideos.count && optionView) {
+                for (NSDictionary *video in _content.listVideos) {
+                    frame = videoFrame;
+                    LinkPreview* videoView = [[LinkPreview alloc]init];
+                    videoView.autoresizesSubviews = YES;
+                    [videoView loadContentWithFrame:frame LinkInfo:video Type:linkPreviewTypeYoutube];
+                    frame.origin.y = cellHeight;
+                    videoView.frame = frame;
+                    cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+                    videoView.hidden = NO;
+                    videoView.tag = 2000 + [_content.listVideos indexOfObject:video];
+                    [self.contentView addSubview:videoView];
+                }
+//                videoView.autoresizesSubviews = YES;
+//                frame = videoFrame;
+//                [videoView loadContentWithFrame:frame LinkInfo:_content.linkYoutube Type:linkPreviewTypeYoutube];
+//                frame.origin.y = cellHeight;
+//                videoView.frame = frame;
+//                cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+//                videoView.hidden = NO;
             }
-            
             
             //BotView
     //        frame = botView.frame;
@@ -523,21 +547,31 @@
             }
             //add link here
             if (_content.listLinks.count && optionView) {
-                [linkView reDrawWithFrame:videoFrame];
-                frame = videoFrame;
-                frame.origin.y = cellHeight;
-                linkView.frame = frame;
-                cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+                for (int i = 0; i < _content.listLinks.count; i++) {
+                    LinkPreview* linkView = (LinkPreview*)[self.contentView viewWithTag:1000 + i];
+                    if (linkView) {
+                        [linkView reDrawWithFrame:videoFrame];
+                        frame = videoFrame;
+                        frame.origin.y = cellHeight;
+                        linkView.frame = frame;
+                        cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+                    }
+                }
             }
 
             //Video
             if (_content.listVideos.count && optionView) {
-                [videoView reDrawWithFrame:videoFrame];
-                frame = videoFrame;
-                frame.origin.y = cellHeight;
-                videoView.frame = frame;
+                for (int i = 0; i < _content.listVideos.count; i++) {
+                    LinkPreview *videoView = (LinkPreview*) [self.contentView viewWithTag:2000 + i];
+                    if (videoView) {
+                        [videoView reDrawWithFrame:videoFrame];
+                        frame = videoFrame;
+                        frame.origin.y = cellHeight;
+                        videoView.frame = frame;
+                    }
+                    cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+                }
                 
-                cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
             }
                     
             //BotView
@@ -654,11 +688,16 @@
     }
     //add link here
     if (content.listLinks.count && opt) {
-        cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+        for (int i = 0 ; i < content.listLinks.count; i++) {
+            cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+        }
+        
     }
     //Video
     if (content.listVideos.count && opt) {
-        cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+        for (int i = 0; i < content.listVideos.count; i++) {
+            cellHeight += videoFrame.size.height + CELL_MARGIN_BETWEEN_CONTROLL;
+        }
     }
     
    

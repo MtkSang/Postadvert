@@ -1087,7 +1087,39 @@
         NSArray *paraNames;
         NSMutableArray *paraValues = [[NSMutableArray alloc]init];
         functionName = @"searchHDB";
-        paraNames = [NSArray arrayWithObjects:@"property_status", @"keywords", @"property_type", @"hdb_owner", @"hdb_estate", @"bedrooms_from", @"bedrooms_to", @"washrooms_from", @"washrooms_to", @"price_from", @"price_to", @"size_from", @"size_to", @"valuation_from", @"valuation_to", @"lease_term_from", @"lease_term_to", @"completion_from", @"completion_to", @"unit_level", @"furnishing", @"condition", @"limit", @"hdb_id",@"psf_from",@"psf_to", @"user_id", @"sort_type", @"start", @"scroll", @"is_save",  nil];
+        paraNames = [NSArray arrayWithObjects:@"property_status",
+                     @"keywords",
+                     @"property_type",
+                     @"hdb_owner",
+                     @"hdb_estate",
+                     @"bedrooms_from",
+                     @"bedrooms_to",
+                     @"washrooms_from",
+                     @"washrooms_to",
+                     @"price_from",
+                     @"price_to",
+                     @"size_from",
+                     @"size_to",
+                     @"valuation_from",
+                     @"valuation_to",
+                     @"lease_term_from",
+                     @"lease_term_to",
+                     @"completion_from",
+                     @"completion_to",
+                     @"unit_level",
+                     @"furnishing",
+                     @"condition",
+                     @"limit",
+                     @"hdb_id",
+                     @"psf_from",
+                     @"psf_to",
+                     @"user_id",
+                     @"sort_type",
+                     @"start",
+                     @"scroll",
+                     @"is_save",
+                     @"with_image",
+                     @"with_video",nil];
         //paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], [NSString stringWithFormat:@"%d",self.infoChatting.parent_id],self.message.text, @"5", nil];
         
         //property_status
@@ -1248,6 +1280,18 @@
         //value = [[NSUserDefaults standardUserDefaults] objectForKey:@"is_save"];
         value = @"0";
         [paraValues addObject:value];
+        //        with_image = "false"
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"With Photos"];
+        if (![value isKindOfClass:[NSString class]]) {
+            value = @"false";
+        }
+        [paraValues addObject:value];
+        //        with_video = "false"
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"With Videos"];
+        if (![value isKindOfClass:[NSString class]]) {
+            value = @"false";
+        }
+        [paraValues addObject:value];
         
         // replace "Any" - > ""
         for (int i = 0; i < paraValues.count; i++) {
@@ -1337,7 +1381,9 @@
                      @"sort_type",
                      @"start",
                      @"scroll",
-                     @"is_save",  nil];
+                     @"is_save",
+                     @"with_image",
+                     @"with_video",nil];
         
         //property_status
         [paraValues addObject:property_status];
@@ -1505,6 +1551,18 @@
         //value = [[NSUserDefaults standardUserDefaults] objectForKey:@"is_save"];
         value = @"0";
         [paraValues addObject:value];
+        //        with_image = "false"
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"With Photos"];
+        if (![value isKindOfClass:[NSString class]]) {
+            value = @"false";
+        }
+        [paraValues addObject:value];
+        //        with_video = "false"
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"With Videos"];
+        if (![value isKindOfClass:[NSString class]]) {
+            value = @"false";
+        }
+        [paraValues addObject:value];
         
         // replace "Any" - > ""
         for (int i = 0; i < paraValues.count; i++) {
@@ -1590,7 +1648,9 @@
                      @"sort_type", 
                      @"start", 
                      @"scroll",
-                     @"is_save",  nil];
+                     @"is_save",
+                     @"with_image",
+                     @"with_video",nil];
         
         //property_status
         [paraValues addObject:property_status];
@@ -1749,6 +1809,18 @@
         //is_save
         //value = [[NSUserDefaults standardUserDefaults] objectForKey:@"is_save"];
         value = @"0";
+        [paraValues addObject:value];
+        //        with_image = "false"
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"With Photos"];
+        if (![value isKindOfClass:[NSString class]]) {
+            value = @"false";
+        }
+        [paraValues addObject:value];
+        //        with_video = "false"
+        value = [[NSUserDefaults standardUserDefaults] objectForKey:@"With Videos"];
+        if (![value isKindOfClass:[NSString class]]) {
+            value = @"false";
+        }
         [paraValues addObject:value];
         
         // replace "Any" - > ""

@@ -507,6 +507,20 @@
 			<string>Storeroom</string>
 			<string>Window Grilles</string>
 		</array>
+		<key>Default Value</key>
+		<array>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string></string>
+			<string></string>
+			<string></string>
+			<string></string>
+			<string>Select One</string>
+		</array>
 	</dict>
 	<key>Condos Search</key>
 	<dict>
@@ -3514,6 +3528,21 @@
 			<string>Storeroom</string>
 			<string>Window Grilles</string>
 		</array>
+		<key>Default Value</key>
+		<array>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string></string>
+			<string></string>
+			<string></string>
+			<string></string>
+			<string>Select One</string>
+		</array>
 	</dict>
 	<key>Landed Property Search</key>
 	<dict>
@@ -6500,6 +6529,20 @@
 			<string>Storeroom</string>
 			<string>Window Grilles</string>
 		</array>
+		<key>Default Value</key>
+		<array>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string></string>
+			<string></string>
+			<string></string>
+			<string>Select One</string>
+		</array>
 	</dict>
 	<key>Rooms For Rent Search</key>
 	<dict>
@@ -6580,7 +6623,7 @@
 		<key>PropertyType</key>
 		<array>
 			<string>HDB</string>
-			<string>Condos</string>
+			<string>Condo</string>
 			<string>Landed Property</string>
 			<string>Others</string>
 		</array>
@@ -6755,13 +6798,13 @@
 		<key>Property Details</key>
 		<array>
 			<string>Ad Owner *</string>
-			<string>Property Type*</string>
+			<string>Property Type *</string>
 			<string>District *</string>
 			<string>Lease Term</string>
 			<string>Room Type</string>
 			<string>Attached Bathroom</string>
-			<string>Room Size (sq ft) *</string>
-			<string>Room Size (sqm) *</string>
+			<string>Size (sq ft) *</string>
+			<string>Size (sqm) *</string>
 			<string>Monthly Rental (S$)</string>
 		</array>
 		<key>Address of Property</key>
@@ -6780,6 +6823,7 @@
 		</array>
 		<key>Special Features</key>
 		<array>
+			<string>Unit Level</string>
 			<string>Furnishing</string>
 			<string>Condition </string>
 			<string>Others</string>
@@ -6825,6 +6869,18 @@
 			<string>No Guests</string>
 			<string>No Pets</string>
 			<string>No Stayover Guests</string>
+		</array>
+		<key>Default Value</key>
+		<array>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string></string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string></string>
+			<string></string>
+			<string></string>
 		</array>
 	</dict>
 </dict>

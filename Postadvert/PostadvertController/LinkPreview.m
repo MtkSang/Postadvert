@@ -234,6 +234,12 @@
 
 - (void) loadContentWithFrame:(CGRect)frame LinkInfo:(NSDictionary *)dict Type:(LinkPreviewType)type
 {
+    NSString *urlStr = [dict objectForKey:@"url"];
+    urlString = [NSData stringDecodeFromBase64String:urlStr];
+    if ([currentLoadedURLString isEqualToString:urlString] && isLoaded) {
+        return;
+    }
+    currentLoadedURLString = urlString;
     for (UIView *view in self.subviews) {
         [view removeFromSuperview];
     }
@@ -241,8 +247,8 @@
     [self performSelectorOnMainThread:@selector(loadNibFile) withObject:nil waitUntilDone:YES];
     
     linkType = type;
-     NSString *urlStr = [dict objectForKey:@"url"];
-    urlString = [NSData stringDecodeFromBase64String:urlStr];
+    
+    
     NSLog(@"Dict %@",dict);
     if (type == linkPreviewTypeYoutube ) {
         //urlString = @"http://www.youtube.com/watch?v=53Sr4Ori-AI";
@@ -292,6 +298,7 @@
         if (image == nil) {
             image = [UIImage imageNamed:@"user_default_thumb.png"];
         }
+        isLoaded = YES;
 
     }else {
         [buttonOnWebView addTarget:self action:@selector(openURLWhenTitleClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -367,6 +374,7 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)_webView
 {
+    isLoaded = YES;
     if (linkType == linkPreviewTypeWebSite) {
          NSLog(@"Webview-LinkPreview DidLoad Type=Website");
         [title setText:[_webView stringByEvaluatingJavaScriptFromString:@"document.title"]];

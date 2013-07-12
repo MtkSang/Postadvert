@@ -13,6 +13,7 @@
 @class UploadImagesViewController;
 @class MBProgressHUD;
 @class MyMapViewController;
+@class NWViewLocationController;
 @interface HDBResultDetailViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UITabBarDelegate, MyMapViewControllerDelegate>
 {
     MBProgressHUD *hud;
@@ -24,6 +25,8 @@
     NSArray *_paraNames;
     UploadImagesViewController* uploadImagesView;
     MyMapViewController *mapView;
+    NWViewLocationController *streetView;
+    NSMutableArray *listPlacemarks;
 }
 @property (nonatomic)   NSInteger hdbID;
 @property (nonatomic)   NSInteger userID;

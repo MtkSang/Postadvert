@@ -9,11 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "PullRefreshTableViewController.h"
 @class DetailViewController;
+@class HDBSubItemsViewController;
 @interface SubLeftViewController : PullRefreshTableViewController<UIGestureRecognizerDelegate>
 {
     CGPoint previousPoint;
     UILabel *lbTitle;
     BOOL isload;
+    HDBSubItemsViewController *subItem;
+    NSMutableArray *listSubMemus;
 }
 @property (nonatomic, strong) NSMutableArray *listItems;
 @property (nonatomic, strong) NSMutableArray *listImages;

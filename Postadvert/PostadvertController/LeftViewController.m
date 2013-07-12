@@ -407,11 +407,10 @@
         }
         
         SubLeftViewController *nextSideController = [[SubLeftViewController alloc] init];
-        //nextSideController.view.frame = self.view.frame;
         //set title
         //[nextSideController setTitle:[listItems objectAtIndex:indexPath.row]];
         [nextSideController setItemName:[listItems objectAtIndex:indexPath.row]];
-        nextSideController.view.backgroundColor =[UIColor grayColor];
+        //nextSideController.view.backgroundColor =[UIColor grayColor];
         nextSideController.detailVw = detailVw;
         nextSideController.listItems = [self getSubItem:indexPath.row];
         nextSideController.listImages = [self getSubImage:indexPath.row];

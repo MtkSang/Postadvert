@@ -66,6 +66,9 @@
     if ([self.itemName isEqualToString:@"Landed Property Search"]) {
         staticData = [NSMutableDictionary dictionaryWithDictionary: [staticData objectForKey:@"Landed Property Search"]];
     }
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        staticData = [NSMutableDictionary dictionaryWithDictionary: [staticData objectForKey:@"Rooms For Rent Search"]];
+    }
     
     
     //
@@ -246,7 +249,7 @@
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return sourceData.count + 1;
+    return allKeys.count + 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -325,10 +328,12 @@
         cell.textLabel.text = textLabel;
         NSString *detailText = [[NSUserDefaults standardUserDefaults] objectForKey:textLabel];
         if (detailText == nil || [detailText isEqualToString:@""] || [detailText isEqualToString:@"0"]) {
-            if (indexPath.row == array.count - 1 || indexPath.row < 6) {
-                detailText = @"Select One";
-            }else
-                detailText = @"";
+            NSArray *defauleValue = [sourceData objectForKey:@"Default Value"];
+            detailText = [defauleValue objectAtIndex:indexPath.row];
+//            if (indexPath.row == array.count - 1 || indexPath.row < 6) {
+//                detailText = @"Select One";
+//            }else
+//                detailText = @"";
         }
         cell.detailTextLabel.text = detailText;
         [cell.detailTextLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
@@ -754,12 +759,22 @@
 {
     NSIndexPath *indexPath;
     UIView *view = tapGesture_.view;
-    UITableViewCell *cell = (UITableViewCell*) view.superview;
+    UITableViewCell *cell;// = (UITableViewCell*) view.superview;
+    while (view) {
+        if ([view isKindOfClass:[UITableViewCell class]]) {
+            cell = (UITableViewCell*)view;
+            break;
+        }
+        view = view.superview;
+    }
     if ([cell isKindOfClass:[UITableViewCell class]]) {
         indexPath = [self.tableView indexPathForCell:cell];
     }
+    if (!indexPath) {
+        return;
+    }
     NSString *headerStr = [allKeys objectAtIndex:indexPath.section];
-    NSArray *array = [sourceData objectForKey:headerStr];
+//    NSArray *array = [sourceData objectForKey:headerStr];
     NSRange rang = [headerStr rangeOfString:@"Description"];
     if (rang.length) {
         UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
@@ -793,10 +808,12 @@
         //Property detail
         rang = [headerStr rangeOfString:@"Details"];
         if (rang.length) {
-            if (indexPath.row == array.count - 1 || indexPath.row < 6) {
-                cell.detailTextLabel.text = @"Select One";
-            }else
-                cell.detailTextLabel.text = @"";//Value for Price ,...
+            NSArray *defauleValue = [sourceData objectForKey:@"Default Value"];
+            cell.detailTextLabel.text = [defauleValue objectAtIndex:indexPath.row];
+//            if (indexPath.row == array.count - 1 || indexPath.row < 6) {
+//                cell.detailTextLabel.text = @"Select One";
+//            }else
+//                cell.detailTextLabel.text = @"";//Value for Price ,...
             [[NSUserDefaults standardUserDefaults]setValue:cell.detailTextLabel.text forKey:cell.textLabel.text];
         }
         // Address of Property
@@ -1033,38 +1050,84 @@
             [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
             return;
         }
-            UIDCAPickerControllerSourceType sourceType = pickerTypeUnknow;
-            rang = [cell.textLabel.text rangeOfString:@"Size (sq ft)"];
-            if (rang.length) {
-                sourceType = pickerTypeInputSizeSqft;
+        //Property Type
+        rang = [cell.textLabel.text rangeOfString:@"Property Type"];
+        if (rang.length) {
+            NSArray *hdbTypeData = [staticData objectForKey:@"PropertyType"];
+            NSInteger selectedIndex = -1;
+            NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
+            if (![hdbType isEqualToString:@"Any"]) {
+                selectedIndex = [hdbTypeData indexOfObject:hdbType];
             }
-            rang = [cell.textLabel.text rangeOfString:@"Size (sqm)"];
-            if (rang.length) {
-                sourceType = pickerTypeInputSizeSqm;
+            DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionsPropertyType selectedIndex:selectedIndex];
+            dcaOptionViewCtr.delegate = self;
+            [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+            return;
+        }
+        
+        //Room Type
+        rang = [cell.textLabel.text rangeOfString:@"Room Type"];
+        if (rang.length) {
+            NSArray *hdbTypeData = [staticData objectForKey:@"RoomType"];
+            NSInteger selectedIndex = -1;
+            NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
+            if (![hdbType isEqualToString:@"Any"]) {
+                selectedIndex = [hdbTypeData indexOfObject:hdbType];
             }
-            rang = [cell.textLabel.text rangeOfString:@"Size (sqm)"];
-            if (rang.length) {
-                sourceType = pickerTypeInputSizeSqm;
+            DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionsPropertyType selectedIndex:selectedIndex];
+            dcaOptionViewCtr.delegate = self;
+            [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+            return;
+        }
+
+        //Attached Bathroom Type
+        rang = [cell.textLabel.text rangeOfString:@"Attached Bathroom"];
+        if (rang.length) {
+            NSArray *hdbTypeData = [staticData objectForKey:@"AttachedBathroom"];
+            NSInteger selectedIndex = -1;
+            NSString *hdbType = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
+            if (![hdbType isEqualToString:@"Any"]) {
+                selectedIndex = [hdbTypeData indexOfObject:hdbType];
             }
-            rang = [cell.textLabel.text rangeOfString:@"Valuation"];
-            if (rang.length) {
-                sourceType = pickerTypeInputValuationPrice;
-            }
-            if ([cell.textLabel.text isEqualToString:@"Price (S$)"]) {
-                sourceType = pickerTypeInputPrice;
-            }
-            rang = [cell.textLabel.text rangeOfString:@"Monthly Rental"];
-            if (rang.length) {
-                sourceType = pickerTypeInputMonthlyRental;
-            }
-            rang = [cell.textLabel.text rangeOfString:@"Lease Term"];
-            if (rang.length) {
-                sourceType = pickerTypeInputLeaseTerm;
-            }
-            picker = [[DCAPickerViewController alloc]initWithDictionary:staticData andSourceType:sourceType andValue:cell.detailTextLabel.text];
-            picker.delegate = self;
-            //picker.customValue = cell.detailTextLabel.text;
-            [self presentSemiModalViewController:picker];
+            DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:hdbTypeData DCAOptionType:DCAOptionsPropertyType selectedIndex:selectedIndex];
+            dcaOptionViewCtr.delegate = self;
+            [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+            return;
+        }
+
+        
+        UIDCAPickerControllerSourceType sourceType = pickerTypeUnknow;
+        rang = [cell.textLabel.text rangeOfString:@"Size (sq ft)"];
+        if (rang.length) {
+            sourceType = pickerTypeInputSizeSqft;
+        }
+        rang = [cell.textLabel.text rangeOfString:@"Size (sqm)"];
+        if (rang.length) {
+            sourceType = pickerTypeInputSizeSqm;
+        }
+        rang = [cell.textLabel.text rangeOfString:@"Size (sqm)"];
+        if (rang.length) {
+            sourceType = pickerTypeInputSizeSqm;
+        }
+        rang = [cell.textLabel.text rangeOfString:@"Valuation"];
+        if (rang.length) {
+            sourceType = pickerTypeInputValuationPrice;
+        }
+        if ([cell.textLabel.text isEqualToString:@"Price (S$)"]) {
+            sourceType = pickerTypeInputPrice;
+        }
+        rang = [cell.textLabel.text rangeOfString:@"Monthly Rental"];
+        if (rang.length) {
+            sourceType = pickerTypeInputMonthlyRental;
+        }
+        rang = [cell.textLabel.text rangeOfString:@"Lease Term"];
+        if (rang.length) {
+            sourceType = pickerTypeInputLeaseTerm;
+        }
+        picker = [[DCAPickerViewController alloc]initWithDictionary:staticData andSourceType:sourceType andValue:cell.detailTextLabel.text];
+        picker.delegate = self;
+        //picker.customValue = cell.detailTextLabel.text;
+        [self presentSemiModalViewController:picker];
 //        }
     }
 #pragma mark . Special Features
@@ -1595,7 +1658,7 @@
             value = [database objectForKey:@"Description of Property"];
             
             [paraValues addObject:value];
-            [paraNamesOnView addObject:@"Description of Property"];
+            [paraNamesOnView addObject:@"Description *"];
             //other_features
             [paraNames addObject:@"other_features"];
             [paraValues addObject:[database objectForKey:@"Others"]];
@@ -1751,7 +1814,7 @@
             [paraNames addObject:@"description"];
             value = [database objectForKey:@"Description of Property"];
             [paraValues addObject:value];
-            [paraNamesOnView addObject:@"Description of Property"];
+            [paraNamesOnView addObject:@"Description *"];
 //            other_features
             [paraNames addObject:@"other_features"];
             [paraValues addObject:[database objectForKey:@"Others"]];
@@ -1920,7 +1983,7 @@
             [paraNames addObject:@"description"];
             value = [database objectForKey:@"Description of Property"];
             [paraValues addObject:value];
-            [paraNamesOnView addObject:@"Description of Property"];
+            [paraNamesOnView addObject:@"Description *"];
 //            fixtures_fittings,
             [paraNames addObject:@"fixtures_fittings"];
             value = [database objectForKey:@"Fixtures & Fittings"];
@@ -1977,6 +2040,152 @@
             [paraNamesOnView addObject:@"1"];
 //            base64_image
         }
+#pragma mark . Rooms For Rent
+        if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+            
+//            address,
+            [paraNames addObject:@"address"];
+            key = @"Address *";
+            value = [database objectForKey:key];
+            [paraValues addObject:value];
+            [paraNamesOnView addObject:@"Address *"];
+//            property_type,
+            [paraNames addObject:@"property_type"];
+            key = @"Property Type *";
+            value = [database objectForKey:key];
+            [paraValues addObject:value];
+            [paraNamesOnView addObject:@"Property Type *"];
+//            ad_owner,
+            [paraNames addObject:@"ad_owner"];
+            value = [database objectForKey:@"Ad Owner *"];
+            [paraValues addObject:value];
+            [paraNamesOnView addObject:@"Ad Owner *"];
+//            location,
+            [paraNames addObject:@"location"];
+            [paraValues addObject:[database objectForKey:@"District *"]];
+            [paraNamesOnView addObject:@"District *"];
+//            lease_term,
+            [paraNames addObject:@"lease_term"];
+            value = [database objectForKey:@"Lease Term"];
+            templateArray = [NSMutableArray arrayWithArray: [SupportFunction numbersFromFullYearsMonths:value]];
+            [paraValues addObject:templateArray[3]];
+            [paraNamesOnView addObject:@"Lease Term"];
+//            room_type,
+            [paraNames addObject:@"room_type"];
+            [paraValues addObject:[database objectForKey:@"Room Type"]];
+            [paraNamesOnView addObject:@"Room Type"];
+//            attached_bathroom,
+            [paraNames addObject:@"attached_bathroom"];
+            value = [database objectForKey:@"Attached Bathroom"];
+            [paraValues addObject:value];
+            [paraNamesOnView addObject:@"Attached Bathroom"];
+//            price,
+            [paraNames addObject:@"price"];
+            value = [paraValues objectAtIndex:0];
+            [paraValues addObject:[database objectForKey:@"Monthly Rental (S$)"]];
+            [paraNamesOnView addObject:@"Monthly Rental (S$)"];
+//            size,
+            [paraNames addObject:@"size"];
+            [paraValues addObject:[database objectForKey:@"Size (sq ft) *"]];
+            [paraNamesOnView addObject:@"Size (sq ft) *"];
+//            unit_level,
+            [paraNames addObject:@"unit_level"];
+            [paraValues addObject:[database objectForKey:@"Unit Level"]];
+            [paraNamesOnView addObject:@"Unit Level"];
+//            furnishing,
+            [paraNames addObject:@"furnishing"];
+            [paraValues addObject:[database objectForKey:@"Furnishing"]];
+            [paraNamesOnView addObject:@"Furnishing"];
+//            condition, 
+            [paraNames addObject:@"condition"];
+            [paraValues addObject:[database objectForKey:@"Condition "]];
+            [paraNamesOnView addObject:@"Condition "];
+
+//            description,
+            [paraNames addObject:@"description"];
+            value = [database objectForKey:@"Description of Property"];
+            [paraValues addObject:value];
+            [paraNamesOnView addObject:@"Description *"];
+//            special_features,
+            [paraNames addObject:@"special_features"];
+            [paraValues addObject:[database objectForKey:@"Others"]];
+            [paraNamesOnView addObject:@"Others"];
+//            home_interior,
+            [paraNames addObject:@"home_interior"];
+            value = [database objectForKey:@"Home Interior"];
+            if (value == nil) {
+                value = @"";
+            }
+            if ([value rangeOfString:@","].length) {
+                value = [value substringToIndex:value.length - 2];
+            }
+            [paraValues addObject: value];
+            [paraNamesOnView addObject:@"Home Interior"];
+//            restrictions,
+            [paraNames addObject:@"restrictions"];
+            value = [database objectForKey:@"Restrictions ( if any )"];
+            if (value == nil) {
+                value = @"";
+            }
+            if ([value rangeOfString:@","].length) {
+                value = [value substringToIndex:value.length - 2];
+            }
+            [paraValues addObject: value];
+            [paraNamesOnView addObject:@"Restrictions ( if any )"];
+//            picture,
+            [paraNames addObject:@"picture"];
+            value = @"";
+            [paraValues addObject:value];
+            [paraNamesOnView addObject:@"Upload Images"];
+//            url,
+            [paraNames addObject:@"url"];
+            value = @"";
+            for (NSString* urlStr in insertURLsCtr.listURLs) {
+                value = [value stringByAppendingString:urlStr];
+                value = [value stringByAppendingString:@","];
+            }
+            if (![value isEqualToString:@""]) {
+                NSRange rang = [value rangeOfString:@"," options:NSBackwardsSearch];
+                value = [value stringByReplacingCharactersInRange:rang withString:@""];
+            }
+            [paraValues addObject:value];
+            [paraNamesOnView addObject:@"Insert URLs"];
+//            video,
+            [paraNames addObject:@"video"];
+            value = @"";
+            for (NSString* urlStr in insertVideosCtr.listURLs) {
+                value = [value stringByAppendingString:urlStr];
+                value = [value stringByAppendingString:@","];
+            }
+            if (![value isEqualToString:@""]) {
+                NSRange rang = [value rangeOfString:@"," options:NSBackwardsSearch];
+                value = [value stringByReplacingCharactersInRange:rang withString:@""];
+            }
+            [paraValues addObject:value];
+            [paraNamesOnView addObject:@"Insert Videos"];
+//            amenities,
+            [paraNames addObject:@"amenities"];
+            value = [database objectForKey:@"Amenities"];
+            if (value == nil) {
+                value = @"";
+            }
+            if ([value rangeOfString:@","].length) {
+                value = [value substringToIndex:value.length - 2];
+            }
+            [paraValues addObject: value];
+            [paraNamesOnView addObject:@"Amenities"];
+//            user_id,
+            [paraNames addObject:@"user_id"];
+            [paraValues addObject:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID]];
+            [paraNamesOnView addObject:@""];
+//            limit,
+            [paraNames addObject:@"limit"];
+            [paraValues addObject:@"1"];
+            [paraNamesOnView addObject:@"1"];
+
+        }
+
+
     }
     @catch (NSException *exception) {
         NSLog(@"%@", exception);
@@ -2019,7 +2228,7 @@
 }
 - (void) resetValue
 {
-    return;
+    //return;
     NSUserDefaults *database = [NSUserDefaults standardUserDefaults];
     //property_status
     [database setValue:@"Select One" forKey:@"Property Status *"];
@@ -2061,6 +2270,15 @@
     [database setValue:@"" forKey:@"Home Interior"];
     //picture
     [database setValue:@"" forKey:@"Upload Images"];
+    
+    NSArray *propertyDetails = [sourceData objectForKey:@"Property Details"];
+    NSArray *defaultValue = [sourceData objectForKey:@"Default Value"];
+    for (int i = 0 ; i < propertyDetails.count; i++) {
+        NSString *key = [propertyDetails objectAtIndex:i];
+        NSString *value = [defaultValue objectAtIndex:i];
+        [database setValue:value forKey:key];
+    }
+    
     if (insertPicCtr) {
         [insertPicCtr.dataSoure removeAllObjects];
         [insertPicCtr updateView];
@@ -2085,6 +2303,9 @@
     [database setValue:@"" forKey:@"Lease Term"];
     [database setValue:@"" forKey:@"fixtures_fittings"];
     [database setValue:@"" forKey:@"other_features"];
+    
+    //
+    [database setValue:@"" forKey:@"Address *"];
 #pragma mark . Condos
     [database setValue:@"Select One" forKey:@"Project Name *"];
     [database setValue:@"Select One" forKey:@"District *"];

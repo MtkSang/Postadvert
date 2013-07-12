@@ -21,8 +21,6 @@
     IBOutlet OHAttributedLabel *titlePost;
     IBOutlet OHAttributedLabel *textContent;
     IBOutlet UIView *clapComment;//bottom view cell
-    IBOutlet LinkPreview *videoView;
-    IBOutlet LinkPreview *linkView;
     IBOutlet ThumbnailPostCellView *thumbnailView;
     SDWebImageRootViewController *newController;
     ImageViewController *imageViewCtr;
@@ -42,8 +40,6 @@
 }
 @property (nonatomic, strong) IBOutlet OHAttributedLabel *titlePost;
 @property (nonatomic, strong) IBOutlet OHAttributedLabel *textContent;
-@property (nonatomic, strong) IBOutlet LinkPreview *videoView;
-@property (nonatomic, strong) IBOutlet LinkPreview *linkView;
 @property (nonatomic, strong) IBOutlet ThumbnailPostCellView *thumbnailView;
 @property (nonatomic, strong) IBOutlet UIView *clapComment;
 @property (nonatomic, strong) IBOutlet UIImageView *imgAvatar;

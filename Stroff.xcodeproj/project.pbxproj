@@ -7,17 +7,43 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D403B11F178C0679001FA0BF /* My_Q-A.png in Resources */ = {isa = PBXBuildFile; fileRef = D403B115178C0678001FA0BF /* My_Q-A.png */; };
+		D403B120178C0679001FA0BF /* Browse_Q-A.png in Resources */ = {isa = PBXBuildFile; fileRef = D403B116178C0678001FA0BF /* Browse_Q-A.png */; };
+		D403B121178C0679001FA0BF /* Ask_Qn.png in Resources */ = {isa = PBXBuildFile; fileRef = D403B117178C0678001FA0BF /* Ask_Qn.png */; };
+		D403B122178C0679001FA0BF /* My_Q-A@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D403B118178C0678001FA0BF /* My_Q-A@2x.png */; };
+		D403B123178C0679001FA0BF /* Ask_Qn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D403B119178C0678001FA0BF /* Ask_Qn@2x.png */; };
+		D403B124178C0679001FA0BF /* Browse_Q-A@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D403B11A178C0679001FA0BF /* Browse_Q-A@2x.png */; };
+		D403B125178C0679001FA0BF /* HDB_Q-A.png in Resources */ = {isa = PBXBuildFile; fileRef = D403B11B178C0679001FA0BF /* HDB_Q-A.png */; };
+		D403B126178C0679001FA0BF /* HDB_Q-A@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D403B11C178C0679001FA0BF /* HDB_Q-A@2x.png */; };
+		D403B127178C0679001FA0BF /* HDB_Search.png in Resources */ = {isa = PBXBuildFile; fileRef = D403B11D178C0679001FA0BF /* HDB_Search.png */; };
+		D403B128178C0679001FA0BF /* HDB_Search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D403B11E178C0679001FA0BF /* HDB_Search@2x.png */; };
 		D405001817321BEE00B3DF61 /* hdb_post_validate_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = D405001617321BEE00B3DF61 /* hdb_post_validate_normal.png */; };
 		D405001917321BEE00B3DF61 /* hdb_post_validate_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D405001717321BEE00B3DF61 /* hdb_post_validate_normal@2x.png */; };
 		D408AAE31740A78600E05C63 /* HDBListResultCell1ListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D408AAE21740A78600E05C63 /* HDBListResultCell1ListView.xib */; };
 		D40DFD6D1688557D002FF3F9 /* allDay_icon_uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = D40DFD6B1688557D002FF3F9 /* allDay_icon_uncheck.png */; };
 		D40DFD6E1688557D002FF3F9 /* allDay_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D40DFD6C1688557D002FF3F9 /* allDay_icon.png */; };
 		D4140B601682F38D00C1AD5F /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4140B5F1682F38D00C1AD5F /* AssetsLibrary.framework */; };
+		D414542B178E48730046C359 /* Room-For-Rent_Search.png in Resources */ = {isa = PBXBuildFile; fileRef = D4145425178E48720046C359 /* Room-For-Rent_Search.png */; };
+		D414542C178E48730046C359 /* Condos_Search.png in Resources */ = {isa = PBXBuildFile; fileRef = D4145426178E48730046C359 /* Condos_Search.png */; };
+		D414542D178E48730046C359 /* Condos_Search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4145427178E48730046C359 /* Condos_Search@2x.png */; };
+		D414542E178E48730046C359 /* Room-For-Rent_Search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4145428178E48730046C359 /* Room-For-Rent_Search@2x.png */; };
+		D414542F178E48730046C359 /* Landed-Property_Search.png in Resources */ = {isa = PBXBuildFile; fileRef = D4145429178E48730046C359 /* Landed-Property_Search.png */; };
+		D4145430178E48730046C359 /* Landed-Property_Search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D414542A178E48730046C359 /* Landed-Property_Search@2x.png */; };
+		D4145435178F15AA0046C359 /* Q_AViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4145433178F15AA0046C359 /* Q_AViewController.m */; };
+		D4145436178F15AA0046C359 /* Q_AViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4145434178F15AA0046C359 /* Q_AViewController.xib */; };
 		D4187DFC1723FAC700020902 /* CellHDBPostControllerURLWithLink.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4187DFB1723FAC600020902 /* CellHDBPostControllerURLWithLink.xib */; };
 		D41B79B416BF947D002EA427 /* HDBListResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D41B79B216BF947D002EA427 /* HDBListResultViewController.m */; };
 		D41B79B516BF947D002EA427 /* HDBListResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D41B79B316BF947D002EA427 /* HDBListResultViewController.xib */; };
 		D41B79B716BFA6F7002EA427 /* HDBListResultCell1.xib in Resources */ = {isa = PBXBuildFile; fileRef = D41B79B616BFA6F7002EA427 /* HDBListResultCell1.xib */; };
 		D41B79B916BFAA2F002EA427 /* TitleForEachResult.png in Resources */ = {isa = PBXBuildFile; fileRef = D41B79B816BFAA2F002EA427 /* TitleForEachResult.png */; };
+		D41E29A217798F6E003A1653 /* MapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D41E299817798F6E003A1653 /* MapAnnotation.m */; };
+		D41E29A317798F6E003A1653 /* NWmanager.m in Sources */ = {isa = PBXBuildFile; fileRef = D41E299A17798F6E003A1653 /* NWmanager.m */; };
+		D41E29A417798F6E003A1653 /* NWViewLocationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D41E299C17798F6E003A1653 /* NWViewLocationController.m */; };
+		D41E29A517798F6E003A1653 /* NWViewLocationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D41E299D17798F6E003A1653 /* NWViewLocationController.xib */; };
+		D41E29A617798F6E003A1653 /* STImageAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = D41E299F17798F6E003A1653 /* STImageAnnotationView.m */; };
+		D41E29A717798F6E003A1653 /* URLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = D41E29A117798F6E003A1653 /* URLConnection.m */; };
+		D41E29AA17799715003A1653 /* barlong.png in Resources */ = {isa = PBXBuildFile; fileRef = D41E29A817799715003A1653 /* barlong.png */; };
+		D41E29AB17799715003A1653 /* pin.png in Resources */ = {isa = PBXBuildFile; fileRef = D41E29A917799715003A1653 /* pin.png */; };
 		D41F8A9017292ABE001F6D18 /* btn_cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = D41F8A8C17292ABE001F6D18 /* btn_cancel.png */; };
 		D41F8A9117292ABE001F6D18 /* btn_cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D41F8A8D17292ABE001F6D18 /* btn_cancel@2x.png */; };
 		D41F8A9217292ABE001F6D18 /* btn_ok.png in Resources */ = {isa = PBXBuildFile; fileRef = D41F8A8E17292ABE001F6D18 /* btn_ok.png */; };
@@ -145,6 +171,14 @@
 		D4DD9037165F60C9004033E4 /* MyUIImagePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4DD9035165F60C9004033E4 /* MyUIImagePickerViewController.xib */; };
 		D4E38EEE167F207B00FDB63B /* NewAccountVwCtrl_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4E38EED167F207B00FDB63B /* NewAccountVwCtrl_iPad.xib */; };
 		D4E3E8A4173CCAF700653B0D /* 30x25.png in Resources */ = {isa = PBXBuildFile; fileRef = D4E3E8A3173CCAF700653B0D /* 30x25.png */; };
+		D4FE7035178A552000DF8B5F /* HDBSubItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4FE7033178A552000DF8B5F /* HDBSubItemsViewController.m */; };
+		D4FE7036178A552000DF8B5F /* HDBSubItemsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4FE7034178A552000DF8B5F /* HDBSubItemsViewController.xib */; };
+		D4FE7039178A7BAB00DF8B5F /* HDBItemCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D4FE7038178A7BAB00DF8B5F /* HDBItemCollectionViewLayout.m */; };
+		D4FE703C178A7C6200DF8B5F /* BHEmblemView.m in Sources */ = {isa = PBXBuildFile; fileRef = D4FE703B178A7C6200DF8B5F /* BHEmblemView.m */; };
+		D4FE703F178A7CE500DF8B5F /* emblem.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FE703D178A7CE500DF8B5F /* emblem.png */; };
+		D4FE7040178A7CE500DF8B5F /* emblem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FE703E178A7CE500DF8B5F /* emblem@2x.png */; };
+		D4FE7043178A7EDB00DF8B5F /* HDBSubItemTitleCollectionReusebleView.m in Sources */ = {isa = PBXBuildFile; fileRef = D4FE7042178A7EDB00DF8B5F /* HDBSubItemTitleCollectionReusebleView.m */; };
+		D4FE7049178A809C00DF8B5F /* HDBSubItemImageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D4FE7048178A809C00DF8B5F /* HDBSubItemImageCollectionViewCell.m */; };
 		D4FEF629165625AE00CE1129 /* read_message.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FEF627165625AE00CE1129 /* read_message.png */; };
 		D4FEF62A165625AE00CE1129 /* unread_message.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FEF628165625AE00CE1129 /* unread_message.png */; };
 		D4FEF62D16562E8500CE1129 /* unread_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FEF62C16562E8500CE1129 /* unread_icon.png */; };
@@ -662,18 +696,50 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D403B115178C0678001FA0BF /* My_Q-A.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "My_Q-A.png"; sourceTree = "<group>"; };
+		D403B116178C0678001FA0BF /* Browse_Q-A.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Browse_Q-A.png"; sourceTree = "<group>"; };
+		D403B117178C0678001FA0BF /* Ask_Qn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ask_Qn.png; sourceTree = "<group>"; };
+		D403B118178C0678001FA0BF /* My_Q-A@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "My_Q-A@2x.png"; sourceTree = "<group>"; };
+		D403B119178C0678001FA0BF /* Ask_Qn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ask_Qn@2x.png"; sourceTree = "<group>"; };
+		D403B11A178C0679001FA0BF /* Browse_Q-A@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Browse_Q-A@2x.png"; sourceTree = "<group>"; };
+		D403B11B178C0679001FA0BF /* HDB_Q-A.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HDB_Q-A.png"; sourceTree = "<group>"; };
+		D403B11C178C0679001FA0BF /* HDB_Q-A@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HDB_Q-A@2x.png"; sourceTree = "<group>"; };
+		D403B11D178C0679001FA0BF /* HDB_Search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HDB_Search.png; sourceTree = "<group>"; };
+		D403B11E178C0679001FA0BF /* HDB_Search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HDB_Search@2x.png"; sourceTree = "<group>"; };
 		D405001617321BEE00B3DF61 /* hdb_post_validate_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hdb_post_validate_normal.png; sourceTree = "<group>"; };
 		D405001717321BEE00B3DF61 /* hdb_post_validate_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hdb_post_validate_normal@2x.png"; sourceTree = "<group>"; };
 		D408AAE21740A78600E05C63 /* HDBListResultCell1ListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HDBListResultCell1ListView.xib; sourceTree = "<group>"; };
 		D40DFD6B1688557D002FF3F9 /* allDay_icon_uncheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = allDay_icon_uncheck.png; sourceTree = "<group>"; };
 		D40DFD6C1688557D002FF3F9 /* allDay_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = allDay_icon.png; sourceTree = "<group>"; };
 		D4140B5F1682F38D00C1AD5F /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		D4145425178E48720046C359 /* Room-For-Rent_Search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Room-For-Rent_Search.png"; sourceTree = "<group>"; };
+		D4145426178E48730046C359 /* Condos_Search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Condos_Search.png; sourceTree = "<group>"; };
+		D4145427178E48730046C359 /* Condos_Search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Condos_Search@2x.png"; sourceTree = "<group>"; };
+		D4145428178E48730046C359 /* Room-For-Rent_Search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Room-For-Rent_Search@2x.png"; sourceTree = "<group>"; };
+		D4145429178E48730046C359 /* Landed-Property_Search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Landed-Property_Search.png"; sourceTree = "<group>"; };
+		D414542A178E48730046C359 /* Landed-Property_Search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Landed-Property_Search@2x.png"; sourceTree = "<group>"; };
+		D4145432178F15AA0046C359 /* Q_AViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Q_AViewController.h; sourceTree = "<group>"; };
+		D4145433178F15AA0046C359 /* Q_AViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Q_AViewController.m; sourceTree = "<group>"; };
+		D4145434178F15AA0046C359 /* Q_AViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Q_AViewController.xib; sourceTree = "<group>"; };
 		D4187DFB1723FAC600020902 /* CellHDBPostControllerURLWithLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CellHDBPostControllerURLWithLink.xib; sourceTree = "<group>"; };
 		D41B79B116BF947D002EA427 /* HDBListResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HDBListResultViewController.h; sourceTree = "<group>"; };
 		D41B79B216BF947D002EA427 /* HDBListResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDBListResultViewController.m; sourceTree = "<group>"; };
 		D41B79B316BF947D002EA427 /* HDBListResultViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HDBListResultViewController.xib; sourceTree = "<group>"; };
 		D41B79B616BFA6F7002EA427 /* HDBListResultCell1.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HDBListResultCell1.xib; sourceTree = "<group>"; };
 		D41B79B816BFAA2F002EA427 /* TitleForEachResult.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TitleForEachResult.png; sourceTree = "<group>"; };
+		D41E299717798F6E003A1653 /* MapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapAnnotation.h; sourceTree = "<group>"; };
+		D41E299817798F6E003A1653 /* MapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapAnnotation.m; sourceTree = "<group>"; };
+		D41E299917798F6E003A1653 /* NWmanager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWmanager.h; sourceTree = "<group>"; };
+		D41E299A17798F6E003A1653 /* NWmanager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWmanager.m; sourceTree = "<group>"; };
+		D41E299B17798F6E003A1653 /* NWViewLocationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWViewLocationController.h; sourceTree = "<group>"; };
+		D41E299C17798F6E003A1653 /* NWViewLocationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWViewLocationController.m; sourceTree = "<group>"; };
+		D41E299D17798F6E003A1653 /* NWViewLocationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NWViewLocationController.xib; sourceTree = "<group>"; };
+		D41E299E17798F6E003A1653 /* STImageAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STImageAnnotationView.h; sourceTree = "<group>"; };
+		D41E299F17798F6E003A1653 /* STImageAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STImageAnnotationView.m; sourceTree = "<group>"; };
+		D41E29A017798F6E003A1653 /* URLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLConnection.h; sourceTree = "<group>"; };
+		D41E29A117798F6E003A1653 /* URLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLConnection.m; sourceTree = "<group>"; };
+		D41E29A817799715003A1653 /* barlong.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = barlong.png; sourceTree = "<group>"; };
+		D41E29A917799715003A1653 /* pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin.png; sourceTree = "<group>"; };
 		D41F8A8C17292ABE001F6D18 /* btn_cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_cancel.png; sourceTree = "<group>"; };
 		D41F8A8D17292ABE001F6D18 /* btn_cancel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_cancel@2x.png"; sourceTree = "<group>"; };
 		D41F8A8E17292ABE001F6D18 /* btn_ok.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_ok.png; sourceTree = "<group>"; };
@@ -824,6 +890,19 @@
 		D4DD9035165F60C9004033E4 /* MyUIImagePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyUIImagePickerViewController.xib; sourceTree = "<group>"; };
 		D4E38EED167F207B00FDB63B /* NewAccountVwCtrl_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewAccountVwCtrl_iPad.xib; sourceTree = "<group>"; };
 		D4E3E8A3173CCAF700653B0D /* 30x25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 30x25.png; sourceTree = "<group>"; };
+		D4FE7032178A552000DF8B5F /* HDBSubItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HDBSubItemsViewController.h; sourceTree = "<group>"; };
+		D4FE7033178A552000DF8B5F /* HDBSubItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDBSubItemsViewController.m; sourceTree = "<group>"; };
+		D4FE7034178A552000DF8B5F /* HDBSubItemsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HDBSubItemsViewController.xib; sourceTree = "<group>"; };
+		D4FE7037178A7BAB00DF8B5F /* HDBItemCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HDBItemCollectionViewLayout.h; sourceTree = "<group>"; };
+		D4FE7038178A7BAB00DF8B5F /* HDBItemCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDBItemCollectionViewLayout.m; sourceTree = "<group>"; };
+		D4FE703A178A7C6200DF8B5F /* BHEmblemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BHEmblemView.h; sourceTree = "<group>"; };
+		D4FE703B178A7C6200DF8B5F /* BHEmblemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BHEmblemView.m; sourceTree = "<group>"; };
+		D4FE703D178A7CE500DF8B5F /* emblem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = emblem.png; sourceTree = "<group>"; };
+		D4FE703E178A7CE500DF8B5F /* emblem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "emblem@2x.png"; sourceTree = "<group>"; };
+		D4FE7041178A7EDB00DF8B5F /* HDBSubItemTitleCollectionReusebleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HDBSubItemTitleCollectionReusebleView.h; sourceTree = "<group>"; };
+		D4FE7042178A7EDB00DF8B5F /* HDBSubItemTitleCollectionReusebleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDBSubItemTitleCollectionReusebleView.m; sourceTree = "<group>"; };
+		D4FE7047178A809C00DF8B5F /* HDBSubItemImageCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HDBSubItemImageCollectionViewCell.h; sourceTree = "<group>"; };
+		D4FE7048178A809C00DF8B5F /* HDBSubItemImageCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDBSubItemImageCollectionViewCell.m; sourceTree = "<group>"; };
 		D4FEF627165625AE00CE1129 /* read_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = read_message.png; sourceTree = "<group>"; };
 		D4FEF628165625AE00CE1129 /* unread_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unread_message.png; sourceTree = "<group>"; };
 		D4FEF62C16562E8500CE1129 /* unread_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unread_icon.png; sourceTree = "<group>"; };
@@ -1524,6 +1603,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D4145431178F15830046C359 /* Q&A */ = {
+			isa = PBXGroup;
+			children = (
+				D4145432178F15AA0046C359 /* Q_AViewController.h */,
+				D4145433178F15AA0046C359 /* Q_AViewController.m */,
+				D4145434178F15AA0046C359 /* Q_AViewController.xib */,
+			);
+			path = "Q&A";
+			sourceTree = "<group>";
+		};
 		D41B79AA16BF88CA002EA427 /* HDBResult */ = {
 			isa = PBXGroup;
 			children = (
@@ -1547,6 +1636,26 @@
 				D45EE37D16C3940E0092E6BF /* HBBResultCellData.m */,
 			);
 			path = HDBResult;
+			sourceTree = "<group>";
+		};
+		D41E299617798F6E003A1653 /* StreetView */ = {
+			isa = PBXGroup;
+			children = (
+				D41E29A817799715003A1653 /* barlong.png */,
+				D41E29A917799715003A1653 /* pin.png */,
+				D41E299717798F6E003A1653 /* MapAnnotation.h */,
+				D41E299817798F6E003A1653 /* MapAnnotation.m */,
+				D41E299917798F6E003A1653 /* NWmanager.h */,
+				D41E299A17798F6E003A1653 /* NWmanager.m */,
+				D41E299B17798F6E003A1653 /* NWViewLocationController.h */,
+				D41E299C17798F6E003A1653 /* NWViewLocationController.m */,
+				D41E299D17798F6E003A1653 /* NWViewLocationController.xib */,
+				D41E299E17798F6E003A1653 /* STImageAnnotationView.h */,
+				D41E299F17798F6E003A1653 /* STImageAnnotationView.m */,
+				D41E29A017798F6E003A1653 /* URLConnection.h */,
+				D41E29A117798F6E003A1653 /* URLConnection.m */,
+			);
+			path = StreetView;
 			sourceTree = "<group>";
 		};
 		D42399CE17018D8C00331B7F /* HDBPost */ = {
@@ -1594,6 +1703,8 @@
 		D439AE471695302500932577 /* HDB */ = {
 			isa = PBXGroup;
 			children = (
+				D4145431178F15830046C359 /* Q&A */,
+				D4FE702E178A50F500DF8B5F /* HDB SubItems */,
 				D42399CE17018D8C00331B7F /* HDBPost */,
 				D447862F16F9A8050084946C /* Images */,
 				D41B79AA16BF88CA002EA427 /* HDBResult */,
@@ -1690,6 +1801,42 @@
 				D4541A8716AF8B4A008E720E /* DCAPickerViewController.xib */,
 			);
 			path = ModalViewCtr;
+			sourceTree = "<group>";
+		};
+		D4FE702E178A50F500DF8B5F /* HDB SubItems */ = {
+			isa = PBXGroup;
+			children = (
+				D4FE7032178A552000DF8B5F /* HDBSubItemsViewController.h */,
+				D4FE7033178A552000DF8B5F /* HDBSubItemsViewController.m */,
+				D4FE7034178A552000DF8B5F /* HDBSubItemsViewController.xib */,
+				D4FE7037178A7BAB00DF8B5F /* HDBItemCollectionViewLayout.h */,
+				D4FE7038178A7BAB00DF8B5F /* HDBItemCollectionViewLayout.m */,
+				D4FE703A178A7C6200DF8B5F /* BHEmblemView.h */,
+				D4FE703B178A7C6200DF8B5F /* BHEmblemView.m */,
+				D4FE7041178A7EDB00DF8B5F /* HDBSubItemTitleCollectionReusebleView.h */,
+				D4FE7042178A7EDB00DF8B5F /* HDBSubItemTitleCollectionReusebleView.m */,
+				D4FE7047178A809C00DF8B5F /* HDBSubItemImageCollectionViewCell.h */,
+				D4FE7048178A809C00DF8B5F /* HDBSubItemImageCollectionViewCell.m */,
+				D4FE703D178A7CE500DF8B5F /* emblem.png */,
+				D4FE703E178A7CE500DF8B5F /* emblem@2x.png */,
+				D403B115178C0678001FA0BF /* My_Q-A.png */,
+				D403B116178C0678001FA0BF /* Browse_Q-A.png */,
+				D403B117178C0678001FA0BF /* Ask_Qn.png */,
+				D403B118178C0678001FA0BF /* My_Q-A@2x.png */,
+				D403B119178C0678001FA0BF /* Ask_Qn@2x.png */,
+				D403B11A178C0679001FA0BF /* Browse_Q-A@2x.png */,
+				D403B11B178C0679001FA0BF /* HDB_Q-A.png */,
+				D403B11C178C0679001FA0BF /* HDB_Q-A@2x.png */,
+				D403B11D178C0679001FA0BF /* HDB_Search.png */,
+				D403B11E178C0679001FA0BF /* HDB_Search@2x.png */,
+				D4145425178E48720046C359 /* Room-For-Rent_Search.png */,
+				D4145426178E48730046C359 /* Condos_Search.png */,
+				D4145427178E48730046C359 /* Condos_Search@2x.png */,
+				D4145428178E48730046C359 /* Room-For-Rent_Search@2x.png */,
+				D4145429178E48730046C359 /* Landed-Property_Search.png */,
+				D414542A178E48730046C359 /* Landed-Property_Search@2x.png */,
+			);
+			path = "HDB SubItems";
 			sourceTree = "<group>";
 		};
 		FA007C9D1589802C00C21D0E /* ImageTool */ = {
@@ -1912,6 +2059,7 @@
 		FA032215157735A6002EB93D /* Supporting tool */ = {
 			isa = PBXGroup;
 			children = (
+				D41E299617798F6E003A1653 /* StreetView */,
 				FA9BB9A715E4E31800818F1E /* PullRefreshTableViewController */,
 				FAA902D215E39222009D9DD6 /* Label tool */,
 				FACA0E8415E2430800199085 /* UILabel+Fix.m */,
@@ -3434,6 +3582,29 @@
 				D43E66C01772B99F0095B0F8 /* detail.png in Resources */,
 				D43E66C31772B9DC0095B0F8 /* PhotosView.png in Resources */,
 				D43E66C41772B9DC0095B0F8 /* PhotoView@2x.png in Resources */,
+				D41E29A517798F6E003A1653 /* NWViewLocationController.xib in Resources */,
+				D41E29AA17799715003A1653 /* barlong.png in Resources */,
+				D41E29AB17799715003A1653 /* pin.png in Resources */,
+				D4FE7036178A552000DF8B5F /* HDBSubItemsViewController.xib in Resources */,
+				D4FE703F178A7CE500DF8B5F /* emblem.png in Resources */,
+				D4FE7040178A7CE500DF8B5F /* emblem@2x.png in Resources */,
+				D403B11F178C0679001FA0BF /* My_Q-A.png in Resources */,
+				D403B120178C0679001FA0BF /* Browse_Q-A.png in Resources */,
+				D403B121178C0679001FA0BF /* Ask_Qn.png in Resources */,
+				D403B122178C0679001FA0BF /* My_Q-A@2x.png in Resources */,
+				D403B123178C0679001FA0BF /* Ask_Qn@2x.png in Resources */,
+				D403B124178C0679001FA0BF /* Browse_Q-A@2x.png in Resources */,
+				D403B125178C0679001FA0BF /* HDB_Q-A.png in Resources */,
+				D403B126178C0679001FA0BF /* HDB_Q-A@2x.png in Resources */,
+				D403B127178C0679001FA0BF /* HDB_Search.png in Resources */,
+				D403B128178C0679001FA0BF /* HDB_Search@2x.png in Resources */,
+				D414542B178E48730046C359 /* Room-For-Rent_Search.png in Resources */,
+				D414542C178E48730046C359 /* Condos_Search.png in Resources */,
+				D414542D178E48730046C359 /* Condos_Search@2x.png in Resources */,
+				D414542E178E48730046C359 /* Room-For-Rent_Search@2x.png in Resources */,
+				D414542F178E48730046C359 /* Landed-Property_Search.png in Resources */,
+				D4145430178E48730046C359 /* Landed-Property_Search@2x.png in Resources */,
+				D4145436178F15AA0046C359 /* Q_AViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3632,6 +3803,17 @@
 				D4B855B91717FBC000983E07 /* InsertPictureViewController.m in Sources */,
 				D476C0B41720243700DAE44A /* InsertURLViewController.m in Sources */,
 				D44B92B8176894D60016B6E0 /* CurrentLocationDetector.m in Sources */,
+				D41E29A217798F6E003A1653 /* MapAnnotation.m in Sources */,
+				D41E29A317798F6E003A1653 /* NWmanager.m in Sources */,
+				D41E29A417798F6E003A1653 /* NWViewLocationController.m in Sources */,
+				D41E29A617798F6E003A1653 /* STImageAnnotationView.m in Sources */,
+				D41E29A717798F6E003A1653 /* URLConnection.m in Sources */,
+				D4FE7035178A552000DF8B5F /* HDBSubItemsViewController.m in Sources */,
+				D4FE7039178A7BAB00DF8B5F /* HDBItemCollectionViewLayout.m in Sources */,
+				D4FE703C178A7C6200DF8B5F /* BHEmblemView.m in Sources */,
+				D4FE7043178A7EDB00DF8B5F /* HDBSubItemTitleCollectionReusebleView.m in Sources */,
+				D4FE7049178A809C00DF8B5F /* HDBSubItemImageCollectionViewCell.m in Sources */,
+				D4145435178F15AA0046C359 /* Q_AViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

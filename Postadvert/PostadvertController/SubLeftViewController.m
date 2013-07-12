@@ -13,6 +13,7 @@
 #import "UserPAInfo.h"
 #import "SupportFunction.h"
 #import "PostadvertControllerV2.h"
+#import "HDBSubItemsViewController.h"
 @interface SubLeftViewController ()
 - (UIGestureRecognizer*) addPanGesture:(id)target;
 - (void) handlePanGesture:(UIPanGestureRecognizer*) gesture;
@@ -33,20 +34,9 @@
         //view.backgroundColor =[UIColor colorWithRed:79 green:178 blue:187 alpha:1.0];
         listItems = [[NSMutableArray alloc] init];
         listNums = [[NSMutableArray alloc]init];
-        UIImageView *imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed: @"bg_1.png"]];
-        self.tableView.backgroundView = imageView;
-        imageView = nil;
+        listSubMemus = [[NSMutableArray alloc]init];
+        self.tableView.backgroundColor = [UIColor colorWithRed:79.0/225.0 green:178.0/255.0 blue:187.0/255.0 alpha:1];
         self.tableView.separatorColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"div.png"]];
-        UIView *footerView = [[UIView alloc]init];
-        self.tableView.tableFooterView = footerView;
-        footerView = nil;
-        
-//        [self.tableView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_1.png"]]];
-//        [self.tableView setBackgroundColor:[UIColor colorWithRed:79 green:178 blue:187 alpha:1.0]];
-//        UIView *footerView = [[UIView alloc]init];
-//        self.tableView.tableFooterView = footerView;
-//        footerView = nil;
-//        self.tableView.separatorColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"div.png"]];
     }
     return self;
 }
@@ -60,6 +50,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enableScrollTable) name:@"enableScrollTable" object:nil];
     
     [self.view addGestureRecognizer:[self addPanGesture:self]];
+    
+    subItem = [[HDBSubItemsViewController alloc] initWithItems:nil];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -93,7 +86,6 @@
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
 }
 - (void) viewDidDisappear:(BOOL)animated
 {
@@ -125,17 +117,31 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    return listItems.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return listItems.count;
+    if (listSubMemus.count > section) {
+        NSNumber *num = [listSubMemus objectAtIndex:section];
+        if (num.intValue == 1) {
+            return 2;
+        }
+    }
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (listSubMemus.count > indexPath.section) {
+        NSNumber *num = [listSubMemus objectAtIndex:indexPath.section];
+        if (num.intValue == 1) {
+            if (indexPath.row) {
+                return [subItem getSizeToFit].height;
+            }
+        }
+    }
     return cCellHeight;
 }
 //- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -146,7 +152,32 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"SubCell";
+#pragma mark . Sub Cell
+    if (indexPath.row) {
+        static NSString *CellIdentifier1 = @"SubView";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+        if (! cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            cell.selected = NO;
+            subItem.view.tag = 1;
+            [cell.contentView addSubview:subItem.view];
+        }
+        UIView *aView = (UIView*)[cell.contentView viewWithTag:1];
+        if (aView) {
+            aView.hidden = NO;
+            CGRect frame = aView.frame;
+            frame.origin.y = 0;
+            aView.frame = frame;
+        }else
+        {
+            subItem.view.tag = 1;
+            [cell.contentView addSubview:subItem.view];
+        }
+        return cell;
+    }
+#pragma mark . Normal Cell
+    static NSString *CellIdentifier = @"NormalCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (! cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
@@ -157,11 +188,12 @@
         imageBGSelected.opaque = NO;
         //imageBGSelected.layer.cornerRadius = 10;
         //imageBGSelected.layer.masksToBounds = YES;
-        imageBGSelected.image = [UIImage imageNamed:@"selected_state.png"];
+        imageBGSelected.image = [UIImage imageNamed:@"titleHDB.png"];
         [cell setSelectedBackgroundView:imageBGSelected];
         imageBGSelected = nil;
         
         UIImageView *imageBG = [[UIImageView alloc ] initWithFrame:CGRectMake(0, 0.0, self.view.frame.size.width, cCellHeight)] ;
+        imageBG.tag = 10;
         imageBG.opaque = NO;
         //    imageBG.layer.cornerRadius = 10;
         //    imageBG.layer.masksToBounds = YES;
@@ -175,8 +207,8 @@
         [cell addSubview:activityView];
     }
     
-    cell.textLabel.text = [listItems objectAtIndex:indexPath.row];
-    cell.imageView.image = [listImages objectAtIndex:indexPath.row];
+    cell.textLabel.text = [listItems objectAtIndex:indexPath.section];
+    cell.imageView.image = [listImages objectAtIndex:indexPath.section];
     UILabel *labelNum = (UILabel*)[cell viewWithTag:1];
     if (labelNum == nil) {
         labelNum = [[UILabel alloc]init];
@@ -187,7 +219,7 @@
         [cell.contentView addSubview:labelNum];
     }
     if (!isload) {
-        NSInteger value = [(NSNumber*)[listNums objectAtIndex:indexPath.row]intValue ];
+        NSInteger value = [(NSNumber*)[listNums objectAtIndex:indexPath.section]intValue ];
         if (value >= 0) {
             labelNum.hidden = NO;
             labelNum.text = [NSString stringWithFormat:@"%d", value];
@@ -202,7 +234,7 @@
         NSInteger  wallID = 1;
         NSInteger countryID = 190;
         countryID = [SupportFunction GetCountryIdFromConutryName:[UserPAInfo sharedUserPAInfo].userCountryPA];
-        wallID = [SupportFunction getWallIdFromCountryID:countryID andItemName:[listItems objectAtIndex:indexPath.row]];
+        wallID = [SupportFunction getWallIdFromCountryID:countryID andItemName:[listItems objectAtIndex:indexPath.section]];
         UIActivityIndicatorView *activityView = (UIActivityIndicatorView*)[cell viewWithTag:2];
         if (wallID > 0) {
             activityView.hidden = NO;
@@ -218,8 +250,7 @@
 
     NSLog(@"lable NUM %@", labelNum);
     [cell.contentView bringSubviewToFront:labelNum];
-    //labelNum = nil;
-    //cell.detailTextLabel.text =[NSString stringWithFormat:@"%d", [(NSNumber*)[listNums objectAtIndex:indexPath.row]intValue ]];
+
     return cell;
 }
 
@@ -266,11 +297,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+//    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    if ([self showAddSubMenuAtIndexPath:indexPath]) {
+        [self insertSubMenuAtIndexPath:indexPath];
+        return;
+    }
     if (tableView.scrollEnabled == NO) {
         return;
     }
-     NSDictionary *dict = [NSDictionary dictionaryWithObject:[listItems objectAtIndex:indexPath.row] forKey:@"itemName"];
+     NSDictionary *dict = [NSDictionary dictionaryWithObject:[listItems objectAtIndex:indexPath.section] forKey:@"itemName"];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"showDetailFromSubView" object:nil userInfo:dict];
 }
 #pragma overwrite supper
@@ -298,6 +333,76 @@
 }
 
 #pragma mark - Implement
+- (BOOL)showAddSubMenuAtIndexPath:(NSIndexPath*)indexPath
+{
+    BOOL canAdd = NO;
+    if ([self.itemName isEqualToString:@"PROPERTY"]) {
+        if ([[listItems objectAtIndex:indexPath.section] rangeOfString:@"HDB"].length) {
+            canAdd = YES;
+        }
+        if ([[listItems objectAtIndex:indexPath.section] rangeOfString:@"Condos"].length) {
+            canAdd = YES;
+        }
+        if ([[listItems objectAtIndex:indexPath.section] rangeOfString:@"Landed Property"].length) {
+            canAdd = YES;
+        }
+        if ([[listItems objectAtIndex:indexPath.section] rangeOfString:@"Rooms For Rent"].length) {
+            canAdd = YES;
+        }
+    }
+    
+    return canAdd;
+}
+
+- (void)insertSubMenuAtIndexPath:(NSIndexPath*)indexPath
+{
+    if (listSubMemus.count < indexPath.section + 1) {
+        return;
+    }
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    if (cell) {
+        //dispatch_async(dispatch_get_main_queue(), ^{
+        //});
+    }
+    NSNumber *num = [listSubMemus objectAtIndex:indexPath.section];
+    
+    NSArray *indexPaths = [ NSArray arrayWithObjects:[NSIndexPath indexPathForRow:1 inSection:indexPath.section], nil];
+    NSMutableArray *indexPathsNeedToReload = [[NSMutableArray alloc]init];
+    [indexPathsNeedToReload addObject:indexPath];
+    if (num.intValue == 1) {
+//        delete subView
+        UIView *aView = [cell.contentView viewWithTag:1];
+        if (aView) {
+            aView.hidden = YES;
+        }
+        [listSubMemus replaceObjectAtIndex:indexPath.section withObject:[NSNumber numberWithInt:0]];
+        [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+    }else
+    {
+        
+//        remove current subView
+        for (int i = 0; i < listSubMemus.count; i++) {
+            NSNumber *currentNum = [listSubMemus objectAtIndex:i];
+            if (currentNum.intValue == 1) {
+                UIView *aView = [cell.contentView viewWithTag:1];
+                if (aView) {
+                    aView.hidden = YES;
+                }
+                [listSubMemus replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:0]];
+                [indexPathsNeedToReload addObject:[NSIndexPath indexPathForRow:0 inSection:i]];
+                [self.tableView deleteRowsAtIndexPaths:[ NSArray arrayWithObjects:[NSIndexPath indexPathForRow:1 inSection:i], nil] withRowAnimation:UITableViewRowAnimationFade];
+            }
+        }
+        [subItem setupForItemName:cell.textLabel.text];
+        subItem.view.tag = 1;
+//        add row
+        [listSubMemus replaceObjectAtIndex:indexPath.section withObject:[NSNumber numberWithInt:1]];
+        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+    }
+        //[self.tableView reloadData];
+//    [self.tableView reloadRowsAtIndexPaths:indexPathsNeedToReload withRowAnimation:UITableViewRowAnimationNone];
+}
+
 - (void) getSubNums
 {
     isload = YES;
@@ -319,6 +424,12 @@
         
     }
     isload = NO;
+    if (! listSubMemus.count) {
+        listSubMemus = [[NSMutableArray alloc]init];
+        for (int i = 0; i < listItems.count; i++) {
+            [listSubMemus addObject:[NSNumber numberWithInt:0]];
+        }
+    }
     listNums = new_listNums;
     [self stopLoading];
     [self.tableView reloadData];

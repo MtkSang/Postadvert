@@ -190,7 +190,6 @@
                               @"home_interior",
                               @"amenities",
                               @"restrictions",
-                              @"building_completion",
                               @"created",
                               @"monthly_rental",
                               @"psf",
@@ -230,7 +229,14 @@
             self.array_other_features = [[NSMutableArray alloc]initWithArray:[objectValue componentsSeparatedByString:@","]];
         }
     }
-    
+    index = [self.paraNames indexOfObject:@"special_features"];
+    if (index != NSIntegerMax) {
+        objectValue = [self.paraValues objectAtIndex:index];
+        if (![objectValue isEqualToString:@""] && [objectValue isKindOfClass:[NSString class]]) {
+            objectValue = [objectValue stringByReplacingOccurrencesOfString:@", " withString:@","];
+            self.array_other_features = [[NSMutableArray alloc]initWithArray:[objectValue componentsSeparatedByString:@","]];
+        }
+    }
     index = [self.paraNames indexOfObject:@"amenities"];
     if (index != NSIntegerMax) {
         objectValue = [self.paraValues objectAtIndex:index];
@@ -249,6 +255,14 @@
         }
     }
     index = [self.paraNames indexOfObject:@"fixtures_fittings"];
+    if (index != NSIntegerMax) {
+        objectValue = [self.paraValues objectAtIndex:index];
+        if (![objectValue isEqualToString:@""] && [objectValue isKindOfClass:[NSString class]]) {
+            objectValue = [objectValue stringByReplacingOccurrencesOfString:@", " withString:@","];
+            self.array_fixtures_fittings = [[NSMutableArray alloc]initWithArray:[objectValue componentsSeparatedByString:@","]];
+        }
+    }
+    index = [self.paraNames indexOfObject:@"home_interior"];
     if (index != NSIntegerMax) {
         objectValue = [self.paraValues objectAtIndex:index];
         if (![objectValue isEqualToString:@""] && [objectValue isKindOfClass:[NSString class]]) {

@@ -19,6 +19,9 @@
 #import "KTPhotoScrollViewController.h"
 #import "SDWebImageDataSource.h"
 #import "UploadImagesViewController.h"
+#import "NWViewLocationController.h"
+#import "LinkPreview.h"
+#define linkHeight 72
 @interface HDBResultDetailViewController ()
 
 @end
@@ -109,7 +112,7 @@ enum viewModeForDCADetail {
     //frame.size.height -= _tabBar.frame.size.height;
     [mapView.view setFrame:frame];
     mapView.delegate = self;
-
+    
 }
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -141,21 +144,23 @@ enum viewModeForDCADetail {
 {
     if (cellData) {
         if ([self.itemName isEqualToString:@"HDB Search"]) {
-            return 5;
+            return 7;
             // 0-Detail Ad
             // 1-contact Ad Owner
-            // 2-Feature
-            // 3-Hom Interior _ fixting
-            // 4-Commments
+            // 2-Videos
+            // 3-Website
+            // 4-Feature
+            // 5-Hom Interior _ fixting
+            // 6-Commments
         }
         if ([self.itemName isEqualToString:@"Condos Search"]) {
-            return 6;
+            return 8;
         }
         if ([self.itemName isEqualToString:@"Landed Property Search"]) {
-            return 6;
+            return 8;
         }
         if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
-            return 7;
+            return 9;
         }
 
     }
@@ -171,11 +176,31 @@ enum viewModeForDCADetail {
         if (section == 01) {
             return 2;
         }
+        if (section == 2) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"videos"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    return videos.count;
+                }
+            }
+            return 0;
+        }
+        if (section == 3) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"websites"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *websites = [cellData.paraValues objectAtIndex:index];
+                if ([websites isKindOfClass:[NSMutableArray class]] && websites.count) {
+                    return websites.count;
+                }
+            }
+            return 0;
+        }
 
-        if (section == 2) {//spectail Feature
+        if (section == 4) {//spectail Feature
             return cellData.array_other_features.count;
         }
-        if (section == 3) {//fixtures_fittings
+        if (section == 5) {//fixtures_fittings
             return cellData.array_fixtures_fittings.count;
         }
     }
@@ -186,14 +211,34 @@ enum viewModeForDCADetail {
         if (section == 01) {
             return 2;
         }
-
-        if (section == 2) {//spectail Feature
-            return cellData.array_other_features.count;
+        if (section == 2) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"videos"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    return videos.count;
+                }
+            }
+            return 0;
         }
         if (section == 3) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"websites"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *websites = [cellData.paraValues objectAtIndex:index];
+                if ([websites isKindOfClass:[NSMutableArray class]] && websites.count) {
+                    return websites.count;
+                }
+            }
+            return 0;
+        }
+
+        if (section == 4) {//spectail Feature
+            return cellData.array_other_features.count;
+        }
+        if (section == 5) {
             return cellData.array_amenities.count;
         }
-        if (section == 4) {//fixtures_fittings
+        if (section == 6) {//fixtures_fittings
             return cellData.array_fixtures_fittings.count;
         }
 
@@ -205,14 +250,34 @@ enum viewModeForDCADetail {
         if (section == 01) {
             return 2;
         }
-        
-        if (section == 2) {//spectail Feature
-            return cellData.array_other_features.count;
+        if (section == 2) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"videos"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    return videos.count;
+                }
+            }
+            return 0;
         }
         if (section == 3) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"websites"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *websites = [cellData.paraValues objectAtIndex:index];
+                if ([websites isKindOfClass:[NSMutableArray class]] && websites.count) {
+                    return websites.count;
+                }
+            }
+            return 0;
+        }
+
+        if (section == 4) {//spectail Feature
+            return cellData.array_other_features.count;
+        }
+        if (section == 5) {
             return cellData.array_amenities.count;
         }
-        if (section == 4) {//fixtures_fittings
+        if (section == 6) {//fixtures_fittings
             return cellData.array_fixtures_fittings.count;
         }
         
@@ -224,17 +289,37 @@ enum viewModeForDCADetail {
         if (section == 01) {
             return 2;
         }
-        
-        if (section == 2) {//spectail Feature
-            return cellData.array_other_features.count;
+        if (section == 2) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"videos"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    return videos.count;
+                }
+            }
+            return 0;
         }
         if (section == 3) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"websites"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *websites = [cellData.paraValues objectAtIndex:index];
+                if ([websites isKindOfClass:[NSMutableArray class]] && websites.count) {
+                    return websites.count;
+                }
+            }
+            return 0;
+        }
+
+        if (section == 4) {//spectail Feature
+            return cellData.array_other_features.count;
+        }
+        if (section == 5) {//amenities
             return cellData.array_amenities.count;
         }
-        if (section == 4) {//fixtures_fittings
+        if (section == 6) {//home interor
             return cellData.array_fixtures_fittings.count;
         }
-        if (section == 5) {//fixtures_fittings
+        if (section == 7) {//restriction
             return cellData.arry_restrictions.count;
         }
         
@@ -247,48 +332,124 @@ enum viewModeForDCADetail {
 {
     NSString *title = nil;
     if ([self.itemName isEqualToString:@"HDB Search"]) {
-        if (section == 2 && cellData.array_other_features.count) {
+        if (section == 2) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"videos"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    title = @"Videos";
+                }
+            }
+        }
+        if (section == 3) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"websites"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    title = @"Website";
+                }
+            }
+        }
+
+        if (section == 4 && cellData.array_other_features.count) {
             title = @"Special Features";
         }
-        if (section == 3 && cellData.array_fixtures_fittings.count) {
+        if (section == 5 && cellData.array_fixtures_fittings.count) {
             title = @"Feature & Fittings";
         }
     }
     if ([self.itemName isEqualToString:@"Condos Search"]) {
-        if (section == 2 && cellData.array_other_features.count) {
+        if (section == 2) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"videos"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    title = @"Videos";
+                }
+            }
+        }
+        if (section == 3) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"websites"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    title = @"Website";
+                }
+            }
+        }
+
+        if (section == 4 && cellData.array_other_features.count) {
             title = @"Special Features";
         }
-        if (section == 3 && cellData.array_amenities.count) {
+        if (section == 5 && cellData.array_amenities.count) {
             title = @"Amenities";
         }
-        if (section == 4 && cellData.array_fixtures_fittings.count) {
+        if (section == 6 && cellData.array_fixtures_fittings.count) {
             title = @"Interior and Fixtures & Fittings";
         }
     }
     
     if ([self.itemName isEqualToString:@"Landed Property Search"]) {
-        if (section == 2 && cellData.array_other_features.count) {
+        if (section == 2) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"videos"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    title = @"Videos";
+                }
+            }
+        }
+        if (section == 3) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"websites"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    title = @"Website";
+                }
+            }
+        }
+
+        if (section == 4 && cellData.array_other_features.count) {
             title = @"Special Features";
         }
-        if (section == 3 && cellData.array_amenities.count) {
+        if (section == 5 && cellData.array_amenities.count) {
             title = @"Indoor & Outdoors";
         }
-        if (section == 4 && cellData.array_fixtures_fittings.count) {
+        if (section == 6 && cellData.array_fixtures_fittings.count) {
             title = @"Fixtures & Fittings";
         }
     }
     
     if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
-        if (section == 2 && cellData.array_other_features.count) {
+        if (section == 2) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"videos"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    title = @"Videos";
+                }
+            }
+        }
+        if (section == 3) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"websites"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    title = @"Website";
+                }
+            }
+        }
+
+        if (section == 4 && cellData.array_other_features.count) {
             title = @"Special Features";
         }
-        if (section == 3 && cellData.array_amenities.count) {
+        if (section == 5 && cellData.array_amenities.count) {
             title = @"Amenities";
         }
-        if (section == 4 && cellData.array_fixtures_fittings.count) {
+        if (section == 6 && cellData.array_fixtures_fittings.count) {
             title = @"Home Interior";
         }
-        if (section == 5 && cellData.arry_restrictions.count) {
+        if (section == 7 && cellData.arry_restrictions.count) {
             title = @"Restrictions";
         }
     }
@@ -426,6 +587,7 @@ enum viewModeForDCADetail {
 {
 #pragma mark . HDB
     if ([self.itemName isEqualToString:@"HDB Search"]) {
+#pragma mark _ . s = 0
         if ((indexPath.section == 0) && (indexPath.row == 0)) {
             static NSString *CellIdentifier1 = @"HDBResultDetailCell1";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
@@ -558,7 +720,7 @@ enum viewModeForDCADetail {
             return cell;
             
         }
-        
+#pragma mark _ . s = 1
         if ((indexPath.section == 1)) {
             if ( ( indexPath.row == 0) ) {
                 static NSString *CellIdentifier2 = @"HDBResultDetailCell2";
@@ -617,7 +779,54 @@ enum viewModeForDCADetail {
             }
             
         }
+#pragma mark _ . s = 2
         if (indexPath.section == 2) {
+            static NSString *CellIdentifierVideos = @"CellVideos";
+            UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifierVideos];
+            
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierVideos];
+                cell.backgroundView = [[UIView alloc]init];
+                cell.backgroundColor = tableView.backgroundColor;
+                CGRect videoFrame = CGRectMake(10, 0, self.tableView.frame.size.width - 20, 71);
+                LinkPreview * linkView = [[LinkPreview alloc]initWithFrame:videoFrame];
+                linkView.tag = 1;
+                [cell addSubview:linkView];
+                linkView.autoresizesSubviews = YES;
+            }
+            LinkPreview * linkView =  (LinkPreview *)[cell viewWithTag:1];
+            NSInteger index = [cellData.paraNames indexOfObject:@"videos"];
+            if (linkView && index != NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                [linkView loadContentWithFrame:linkView.frame LinkInfo:[videos objectAtIndex:indexPath.row] Type:linkPreviewTypeYoutube];
+            }
+            return cell;
+        }
+#pragma mark _ . s = 3
+        if (indexPath.section == 3) {
+            static NSString *CellIdentifierVideos = @"CellWebsites";
+            UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifierVideos];
+            
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierVideos];
+                cell.backgroundView = [[UIView alloc]init];
+                cell.backgroundColor = tableView.backgroundColor;
+                CGRect videoFrame = CGRectMake(10, 0, self.tableView.frame.size.width - 20, 71);
+                LinkPreview * linkView = [[LinkPreview alloc]initWithFrame:videoFrame];
+                linkView.tag = 1;
+                [cell addSubview:linkView];
+                linkView.autoresizesSubviews = YES;
+            }
+            LinkPreview * linkView =  (LinkPreview *)[cell viewWithTag:1];
+            NSInteger index = [cellData.paraNames indexOfObject:@"websites"];
+            if (linkView && index != NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                [linkView loadContentWithFrame:linkView.frame LinkInfo:[videos objectAtIndex:indexPath.row] Type:linkPreviewTypeWebSite];
+            }
+            return cell;
+        }
+#pragma mark _ . s = 4
+        if (indexPath.section == 4) {
             static NSString *CellIdentifier2 = @"Cell";
             
             UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier2];
@@ -631,7 +840,8 @@ enum viewModeForDCADetail {
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             return cell;
         }
-        if (indexPath.section == 3) {
+#pragma mark _ . s = 5
+        if (indexPath.section == 5) {
             static NSString *CellIdentifier2 = @"Cell";
             
             UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier2];
@@ -645,7 +855,8 @@ enum viewModeForDCADetail {
             cell.textLabel.text = [cellData.array_fixtures_fittings objectAtIndex:indexPath.row];
             return cell;
         }
-        if (indexPath.section == 4) {
+#pragma mark _ . s = 6
+        if (indexPath.section == 6) {
             static NSString *CellIdentifier = @"UICommentCell";
             
             UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -685,6 +896,7 @@ enum viewModeForDCADetail {
     }
 #pragma mark . Condos
     if ([self.itemName isEqualToString:@"Condos Search"]) {
+#pragma mark _ . s = 0
         if ((indexPath.section == 0) && (indexPath.row == 0)) {
             static NSString *CellIdentifier1 = @"HDBResultDetailCell1";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
@@ -813,7 +1025,7 @@ enum viewModeForDCADetail {
             return cell;
             
         }
-        
+#pragma mark _ . s = 1
         if ((indexPath.section == 1)) {
             if ( ( indexPath.row == 0) ) {
                 static NSString *CellIdentifier2 = @"HDBResultDetailCell2";
@@ -872,7 +1084,54 @@ enum viewModeForDCADetail {
             }
             
         }
+#pragma mark _ . s = 2
         if (indexPath.section == 2) {
+            static NSString *CellIdentifierVideos = @"CellVideos";
+            UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifierVideos];
+            
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierVideos];
+                cell.backgroundView = [[UIView alloc]init];
+                cell.backgroundColor = tableView.backgroundColor;
+                CGRect videoFrame = CGRectMake(10, 0, self.tableView.frame.size.width - 20, 71);
+                LinkPreview * linkView = [[LinkPreview alloc]initWithFrame:videoFrame];
+                linkView.tag = 1;
+                [cell addSubview:linkView];
+                linkView.autoresizesSubviews = YES;
+            }
+            LinkPreview * linkView =  (LinkPreview *)[cell viewWithTag:1];
+            NSInteger index = [cellData.paraNames indexOfObject:@"videos"];
+            if (linkView && index != NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                [linkView loadContentWithFrame:linkView.frame LinkInfo:[videos objectAtIndex:indexPath.row] Type:linkPreviewTypeYoutube];
+            }
+            return cell;
+        }
+#pragma mark _ . s = 3
+        if (indexPath.section == 3) {
+            static NSString *CellIdentifierVideos = @"CellWebsites";
+            UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifierVideos];
+            
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierVideos];
+                cell.backgroundView = [[UIView alloc]init];
+                cell.backgroundColor = tableView.backgroundColor;
+                CGRect videoFrame = CGRectMake(10, 0, self.tableView.frame.size.width - 20, 71);
+                LinkPreview * linkView = [[LinkPreview alloc]initWithFrame:videoFrame];
+                linkView.tag = 1;
+                [cell addSubview:linkView];
+                linkView.autoresizesSubviews = YES;
+            }
+            LinkPreview * linkView =  (LinkPreview *)[cell viewWithTag:1];
+            NSInteger index = [cellData.paraNames indexOfObject:@"websites"];
+            if (linkView && index != NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                [linkView loadContentWithFrame:linkView.frame LinkInfo:[videos objectAtIndex:indexPath.row] Type:linkPreviewTypeWebSite];
+            }
+            return cell;
+        }
+#pragma mark _ . s = 4
+        if (indexPath.section == 4) {
             static NSString *CellIdentifier2 = @"Cell";
             
             UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier2];
@@ -886,7 +1145,7 @@ enum viewModeForDCADetail {
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             return cell;
         }
-        if (indexPath.section == 3) {
+        if (indexPath.section == 5) {
             static NSString *CellIdentifier2 = @"Cell";
             
             UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier2];
@@ -900,7 +1159,7 @@ enum viewModeForDCADetail {
             cell.textLabel.text = [cellData.array_amenities objectAtIndex:indexPath.row];
             return cell;
         }
-        if (indexPath.section == 4) {
+        if (indexPath.section == 6) {
             static NSString *CellIdentifier2 = @"Cell";
             
             UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier2];
@@ -914,7 +1173,7 @@ enum viewModeForDCADetail {
             cell.textLabel.text = [cellData.array_fixtures_fittings objectAtIndex:indexPath.row];
             return cell;
         }
-        if (indexPath.section == 5) {
+        if (indexPath.section == 7) {
             static NSString *CellIdentifier = @"UICommentCell";
             
             UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -1140,7 +1399,54 @@ enum viewModeForDCADetail {
             }
             
         }
+#pragma mark _ . s = 2
         if (indexPath.section == 2) {
+            static NSString *CellIdentifierVideos = @"CellVideos";
+            UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifierVideos];
+            
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierVideos];
+                cell.backgroundView = [[UIView alloc]init];
+                cell.backgroundColor = tableView.backgroundColor;
+                CGRect videoFrame = CGRectMake(10, 0, self.tableView.frame.size.width - 20, 71);
+                LinkPreview * linkView = [[LinkPreview alloc]initWithFrame:videoFrame];
+                linkView.tag = 1;
+                [cell addSubview:linkView];
+                linkView.autoresizesSubviews = YES;
+            }
+            LinkPreview * linkView =  (LinkPreview *)[cell viewWithTag:1];
+            NSInteger index = [cellData.paraNames indexOfObject:@"videos"];
+            if (linkView && index != NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                [linkView loadContentWithFrame:linkView.frame LinkInfo:[videos objectAtIndex:indexPath.row] Type:linkPreviewTypeYoutube];
+            }
+            return cell;
+        }
+#pragma mark _ . s = 3
+        if (indexPath.section == 3) {
+            static NSString *CellIdentifierVideos = @"CellWebsites";
+            UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifierVideos];
+            
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierVideos];
+                cell.backgroundView = [[UIView alloc]init];
+                cell.backgroundColor = tableView.backgroundColor;
+                CGRect videoFrame = CGRectMake(10, 0, self.tableView.frame.size.width - 20, 71);
+                LinkPreview * linkView = [[LinkPreview alloc]initWithFrame:videoFrame];
+                linkView.tag = 1;
+                [cell addSubview:linkView];
+                linkView.autoresizesSubviews = YES;
+            }
+            LinkPreview * linkView =  (LinkPreview *)[cell viewWithTag:1];
+            NSInteger index = [cellData.paraNames indexOfObject:@"websites"];
+            if (linkView && index != NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                [linkView loadContentWithFrame:linkView.frame LinkInfo:[videos objectAtIndex:indexPath.row] Type:linkPreviewTypeWebSite];
+            }
+            return cell;
+        }
+
+        if (indexPath.section == 4) {
             static NSString *CellIdentifier2 = @"Cell";
             
             UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier2];
@@ -1154,7 +1460,7 @@ enum viewModeForDCADetail {
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             return cell;
         }
-        if (indexPath.section == 3) {
+        if (indexPath.section == 5) {
             static NSString *CellIdentifier2 = @"Cell";
             
             UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier2];
@@ -1168,7 +1474,7 @@ enum viewModeForDCADetail {
             cell.textLabel.text = [cellData.array_amenities objectAtIndex:indexPath.row];
             return cell;
         }
-        if (indexPath.section == 4) {
+        if (indexPath.section == 6) {
             static NSString *CellIdentifier2 = @"Cell";
             
             UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier2];
@@ -1182,7 +1488,7 @@ enum viewModeForDCADetail {
             cell.textLabel.text = [cellData.array_fixtures_fittings objectAtIndex:indexPath.row];
             return cell;
         }
-        if (indexPath.section == 5) {
+        if (indexPath.section == 7) {
             static NSString *CellIdentifier = @"UICommentCell";
             
             UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -1401,7 +1707,54 @@ enum viewModeForDCADetail {
             }
             
         }
+#pragma mark _ . s = 2
         if (indexPath.section == 2) {
+            static NSString *CellIdentifierVideos = @"CellVideos";
+            UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifierVideos];
+            
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierVideos];
+                cell.backgroundView = [[UIView alloc]init];
+                cell.backgroundColor = tableView.backgroundColor;
+                CGRect videoFrame = CGRectMake(10, 0, self.tableView.frame.size.width - 20, 71);
+                LinkPreview * linkView = [[LinkPreview alloc]initWithFrame:videoFrame];
+                linkView.tag = 1;
+                [cell addSubview:linkView];
+                linkView.autoresizesSubviews = YES;
+            }
+            LinkPreview * linkView =  (LinkPreview *)[cell viewWithTag:1];
+            NSInteger index = [cellData.paraNames indexOfObject:@"videos"];
+            if (linkView && index != NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                [linkView loadContentWithFrame:linkView.frame LinkInfo:[videos objectAtIndex:indexPath.row] Type:linkPreviewTypeYoutube];
+            }
+            return cell;
+        }
+#pragma mark _ . s = 3
+        if (indexPath.section == 3) {
+            static NSString *CellIdentifierVideos = @"CellWebsites";
+            UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifierVideos];
+            
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierVideos];
+                cell.backgroundView = [[UIView alloc]init];
+                cell.backgroundColor = tableView.backgroundColor;
+                CGRect videoFrame = CGRectMake(10, 0, self.tableView.frame.size.width - 20, 71);
+                LinkPreview * linkView = [[LinkPreview alloc]initWithFrame:videoFrame];
+                linkView.tag = 1;
+                [cell addSubview:linkView];
+                linkView.autoresizesSubviews = YES;
+            }
+            LinkPreview * linkView =  (LinkPreview *)[cell viewWithTag:1];
+            NSInteger index = [cellData.paraNames indexOfObject:@"websites"];
+            if (linkView && index != NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                [linkView loadContentWithFrame:linkView.frame LinkInfo:[videos objectAtIndex:indexPath.row] Type:linkPreviewTypeWebSite];
+            }
+            return cell;
+        }
+
+        if (indexPath.section == 4) {
             static NSString *CellIdentifier2 = @"Cell";
             
             UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier2];
@@ -1415,7 +1768,7 @@ enum viewModeForDCADetail {
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             return cell;
         }
-        if (indexPath.section == 3) {
+        if (indexPath.section == 5) {
             static NSString *CellIdentifier2 = @"Cell";
             
             UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier2];
@@ -1429,7 +1782,7 @@ enum viewModeForDCADetail {
             cell.textLabel.text = [cellData.array_amenities objectAtIndex:indexPath.row];
             return cell;
         }
-        if (indexPath.section == 4) {
+        if (indexPath.section == 6) {
             static NSString *CellIdentifier2 = @"Cell";
             
             UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier2];
@@ -1444,7 +1797,7 @@ enum viewModeForDCADetail {
             return cell;
         }
 
-        if (indexPath.section == 5) {
+        if (indexPath.section == 7) {
             static NSString *CellIdentifier2 = @"Cell";
             
             UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier2];
@@ -1459,7 +1812,7 @@ enum viewModeForDCADetail {
             return cell;
         }
 
-        if (indexPath.section == 6) {
+        if (indexPath.section == 8) {
             static NSString *CellIdentifier = @"UICommentCell";
             
             UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -1528,6 +1881,9 @@ enum viewModeForDCADetail {
             }
         }
         if (indexPath.section == 2 || indexPath.section == 3) {
+            return linkHeight;
+        }
+        if (indexPath.section == 4 || indexPath.section == 5) {
             return cHeaderHeight;
         }
     }
@@ -1552,7 +1908,10 @@ enum viewModeForDCADetail {
                 return size.height + 28;
             }
         }
-        if (indexPath.section == 2 || indexPath.section == 3 || indexPath.section == 4) {
+        if (indexPath.section == 2 || indexPath.section == 3) {
+            return linkHeight;
+        }
+        if (indexPath.section == 4 || indexPath.section == 5 || indexPath.section == 6) {
             return cHeaderHeight;
         }
     }
@@ -1577,7 +1936,10 @@ enum viewModeForDCADetail {
                 return size.height + 28;
             }
         }
-        if (indexPath.section == 2 || indexPath.section == 3 || indexPath.section == 4) {
+        if (indexPath.section == 2 || indexPath.section == 3) {
+            return linkHeight;
+        }
+        if (indexPath.section == 4 || indexPath.section == 5 || indexPath.section == 6) {
             return cHeaderHeight;
         }
     }
@@ -1603,7 +1965,10 @@ enum viewModeForDCADetail {
                 return size.height + 28;
             }
         }
-        if (indexPath.section == 2 || indexPath.section == 3 || indexPath.section == 4 || indexPath.section == 5) {
+        if (indexPath.section == 2 || indexPath.section == 3) {
+            return linkHeight;
+        }
+        if (indexPath.section == 4 || indexPath.section == 5 || indexPath.section == 6 || indexPath.section == 7) {
             return cHeaderHeight;
         }
     }
@@ -1627,12 +1992,33 @@ enum viewModeForDCADetail {
             return CELL_COMMENTS_HEADER_HEIGHT;
         }
         if (section == 2) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"videos"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    return CELL_COMMENTS_HEADER_HEIGHT;
+                }
+            }
+            return 01;
+        }
+        if (section == 3) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"websites"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    return CELL_COMMENTS_HEADER_HEIGHT;
+                }
+            }
+            return 01;
+        }
+        
+        if (section == 4) {
             if (cellData.array_other_features.count) {
                 return CELL_COMMENTS_HEADER_HEIGHT;
             }else
                 return 1.0;
         }
-        if (section == 3) {
+        if (section == 5) {
             if (cellData.array_fixtures_fittings.count) {
                 return CELL_COMMENTS_HEADER_HEIGHT;
             }else
@@ -1647,18 +2033,38 @@ enum viewModeForDCADetail {
             return CELL_COMMENTS_HEADER_HEIGHT;
         }
         if (section == 2) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"videos"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    return CELL_COMMENTS_HEADER_HEIGHT;
+                }
+            }
+            return 01;
+        }
+        if (section == 3) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"websites"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    return CELL_COMMENTS_HEADER_HEIGHT;
+                }
+            }
+            return 01;
+        }
+        if (section == 4) {
             if (cellData.array_other_features.count) {
                 return CELL_COMMENTS_HEADER_HEIGHT;
             }else
                 return 1.0;
         }
-        if (section == 3) {
+        if (section == 5) {
             if (cellData.array_amenities.count) {
                 return CELL_COMMENTS_HEADER_HEIGHT;
             }else
                 return 1.0;
         }
-        if (section == 4) {
+        if (section == 6) {
             if (cellData.array_fixtures_fittings.count) {
                 return CELL_COMMENTS_HEADER_HEIGHT;
             }else
@@ -1673,18 +2079,38 @@ enum viewModeForDCADetail {
             return CELL_COMMENTS_HEADER_HEIGHT;
         }
         if (section == 2) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"videos"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    return CELL_COMMENTS_HEADER_HEIGHT;
+                }
+            }
+            return 01;
+        }
+        if (section == 3) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"websites"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    return CELL_COMMENTS_HEADER_HEIGHT;
+                }
+            }
+            return 01;
+        }
+        if (section == 4) {
             if (cellData.array_other_features.count) {
                 return CELL_COMMENTS_HEADER_HEIGHT;
             }else
                 return 1.0;
         }
-        if (section == 3) {
+        if (section == 5) {
             if (cellData.array_amenities.count) {
                 return CELL_COMMENTS_HEADER_HEIGHT;
             }else
                 return 1.0;
         }
-        if (section == 4) {
+        if (section == 6) {
             if (cellData.array_fixtures_fittings.count) {
                 return CELL_COMMENTS_HEADER_HEIGHT;
             }else
@@ -1705,19 +2131,45 @@ enum viewModeForDCADetail {
             }else
                 return 1.0;
         }
+        if (section == 2) {
+            NSInteger index = [cellData.paraNames indexOfObject:@"videos"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    return CELL_COMMENTS_HEADER_HEIGHT;
+                }
+            }
+            return 01;
+        }
         if (section == 3) {
-            if (cellData.array_amenities.count) {
-                return CELL_COMMENTS_HEADER_HEIGHT;
-            }else
-                return 1.0;
+            NSInteger index = [cellData.paraNames indexOfObject:@"websites"];
+            if (index !=NSIntegerMax) {
+                NSMutableArray *videos = [cellData.paraValues objectAtIndex:index];
+                if ([videos isKindOfClass:[NSMutableArray class]] && videos.count) {
+                    return CELL_COMMENTS_HEADER_HEIGHT;
+                }
+            }
+            return 01;
         }
         if (section == 4) {
-            if (cellData.array_fixtures_fittings.count) {
+            if (cellData.array_other_features.count) {
                 return CELL_COMMENTS_HEADER_HEIGHT;
             }else
                 return 1.0;
         }
         if (section == 5) {
+            if (cellData.array_amenities.count) {
+                return CELL_COMMENTS_HEADER_HEIGHT;
+            }else
+                return 1.0;
+        }
+        if (section == 6) {
+            if (cellData.array_fixtures_fittings.count) {
+                return CELL_COMMENTS_HEADER_HEIGHT;
+            }else
+                return 1.0;
+        }
+        if (section == 7) {
             if (cellData.arry_restrictions.count) {
                 return CELL_COMMENTS_HEADER_HEIGHT;
             }else
@@ -1780,12 +2232,23 @@ enum viewModeForDCADetail {
             if (mapView) {
                 [mapView.view removeFromSuperview];
             }
-            
+            if (streetView) {
+                [streetView.view removeFromSuperview];
+            }
             [UIView commitAnimations];
         }
         if ([item.title isEqualToString:@"Map"]) {
             //[hud showWhileExecuting:@selector(act_ShowMap:) onTarget:self withObject:self animated:YES];
             [self act_ShowMap:self];
+//            if (streetView) {
+//                [streetView.view removeFromSuperview];
+//            }
+        }
+        if ([item.title isEqualToString:@"Street View"]) {
+            [self act_ShowStreetView:self];
+//            if (mapView) {
+//                [mapView.view removeFromSuperview];
+//            }
         }
     }
 }
@@ -1955,7 +2418,11 @@ enum viewModeForDCADetail {
         if ([self.itemName isEqualToString:@"Landed Property Search"]) {
             functionName = @"createLanded";
         }
-
+        
+        if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+            functionName = @"createRoom";
+        }
+        
         data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:_paraNames parametterValue:_paraValues];
         
         NSDictionary *dict = [NSDictionary dictionaryWithDictionary:data];
@@ -2414,6 +2881,119 @@ enum viewModeForDCADetail {
             [cellData.images addObject:[NSArray arrayWithObjects:imageStr, imageStr, nil]];
         }
     }
+#pragma mark . Rooms For Rent
+    if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+        cellData = [[HBBResultCellData alloc]initWithItemName:self.itemName];
+        cellData.hdbID = 0;
+        cellData.timeCreated = @"N/A";
+        //author
+        cellData.userInfo = [UserPAInfo sharedUserPAInfo];
+//        @"max_id",
+        [cellData.paraValues addObject:@"0"];
+        //        @"id",
+        [cellData.paraValues addObject:@"0"];
+//        @"status",
+        [cellData.paraValues addObject:@"r"];
+//        @"address",
+        index = [sourceParaNames indexOfObject:@"address"];
+        [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//        @"room_type",
+        index = [sourceParaNames indexOfObject:@"room_type"];
+        [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//        @"attached_bathroom",
+        index = [sourceParaNames indexOfObject:@"attached_bathroom"];
+        [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//        @"description",
+        index = [sourceParaNames indexOfObject:@"description"];
+        objectValue = [sourceValues objectAtIndex:index];
+        objectValue = [NSData base64EncodedStringFromplainText:objectValue];
+        [cellData.paraValues addObject:objectValue];
+//        @"property_type",
+        index = [sourceParaNames indexOfObject:@"property_type"];
+        [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//        @"ad_owner",
+        index = [sourceParaNames indexOfObject:@"ad_owner"];
+        [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//        @"unit_level",
+        index = [sourceParaNames indexOfObject:@"unit_level"];
+        [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//        @"location",
+        index = [sourceParaNames indexOfObject:@"location"];
+        [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//        @"size",
+        index = [sourceParaNames indexOfObject:@"size"];
+        [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//        @"size_m",
+        index = [sourceParaNames indexOfObject:@"size"];
+        objectValue = [sourceValues objectAtIndex:index];
+        float size = [objectValue floatValue];
+        NSNumberFormatter * formatter = [NSNumberFormatter new];
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        [formatter setMaximumFractionDigits:2];
+        NSString *size_mStr = [formatter stringFromNumber:[NSNumber numberWithFloat:size * 0.092903]];
+        [cellData.paraValues addObject:size_mStr];
+//        @"furnishing",
+        index = [sourceParaNames indexOfObject:@"furnishing"];
+        [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//        @"condition",
+        index = [sourceParaNames indexOfObject:@"condition"];
+        [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//        @"special_features",
+        index = [sourceParaNames indexOfObject:@"special_features"];
+        [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//        @"home_interior",
+        index = [sourceParaNames indexOfObject:@"home_interior"];
+        [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//        @"amenities",
+        index = [sourceParaNames indexOfObject:@"amenities"];
+        [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//        @"restrictions",
+        index = [sourceParaNames indexOfObject:@"restrictions"];
+        [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//        @"created",
+        [cellData.paraValues addObject:@""];
+//        @"monthly_rental",
+        index = [sourceParaNames indexOfObject:@"price"];
+        [cellData.paraValues addObject:[sourceValues objectAtIndex:index]];
+//        @"psf",
+        index = [sourceParaNames indexOfObject:@"price"];
+        objectValue = [sourceValues objectAtIndex:index];
+        float price = [objectValue floatValue];
+        //index = [sourceParaNames indexOfObject:@"size"];
+        //objectValue = [sourceValues objectAtIndex:index];
+        //size = [objectValue floatValue];
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        [formatter setMaximumFractionDigits:2];
+        NSString *psftStr = [formatter stringFromNumber:[NSNumber numberWithFloat:price/size]];
+        [cellData.paraValues addObject:psftStr];
+//        @"lease_term",
+        index = [sourceParaNames indexOfObject:@"lease_term"];
+        objectValue = [SupportFunction stringFromShortYearMonthString:[sourceValues objectAtIndex:index]];
+        [cellData.paraValues addObject: objectValue];
+//        @"thumb",
+        [cellData.paraValues addObject:[UserPAInfo sharedUserPAInfo].avatarUrl];
+        //        @"author",
+        [cellData.paraValues addObject:[UserPAInfo sharedUserPAInfo]];
+        //        @"total_comments",
+        [cellData.paraValues addObject:@""];
+        //        @"clap_info",
+        [cellData.paraValues addObject:@""];
+        //        @"total_views",
+        [cellData.paraValues addObject:@"0"];
+        //        @"images",
+        [cellData.paraValues addObject:@""];
+        //        @"videos",
+        [cellData.paraValues addObject:@""];
+        //        @"websites",
+        [cellData.paraValues addObject:@""];
+        
+        [cellData parseFixtures_fittingAndFeatures];
+        
+        //
+        for (NSString *imageStr in _listImages) {
+            [cellData.images addObject:[NSArray arrayWithObjects:imageStr, imageStr, nil]];
+        }
+    }
 
 }
 
@@ -2591,7 +3171,7 @@ enum viewModeForDCADetail {
 #pragma mark . Show Map
 - (IBAction)act_ShowMap:(id)sender
 {
-    if (! mapView.listPlacemarks.count) {
+    if (! listPlacemarks.count) {
         [mbpMap show:YES];
         NSInteger index;
         NSString *value;
@@ -2616,10 +3196,11 @@ enum viewModeForDCADetail {
             index = [cellData.paraNames indexOfObject:@"address"];
             value = [cellData.paraValues objectAtIndex:index];
         }
-        [self getAllPlacemarksWithAddress:value];
+        [self getAllPlacemarksWithAddress:value andKey:@"act_ShowMap"];
     }
     else
     {
+        
         [UIView beginAnimations:@"View Flip" context:nil];
         [UIView setAnimationDuration:0.80];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
@@ -2630,25 +3211,38 @@ enum viewModeForDCADetail {
         [self.scrollView addSubview:mapView.view];
         
         [UIView commitAnimations];
+        if (! mapView.listPlacemarks.count) {
+            mapView.listPlacemarks = listPlacemarks;
+            [mapView centerMap];
+        }
     }
         
 }
 
-- (void) getAllPlacemarksWithAddress:(NSString*)addressString
+- (void) getAllPlacemarksWithAddress:(NSString*)addressString andKey:(NSString*)key
 {
-    NSMutableArray *listPlacemarks = [[NSMutableArray alloc]init];
+//    NSMutableArray *_listPlacemarks = [[NSMutableArray alloc]init];
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     [geocoder geocodeAddressString:addressString completionHandler:^(NSArray *placemarks, NSError *error) {
         if (error)
         {
             NSLog(@"Geocode failed with error: %@", error);
-            [listPlacemarks addObject:[NSNull null]];
+//            [_listPlacemarks addObject:[NSNull null]];
             [self displayError:error];
+            [mbpMap hide:YES];
+            return ;
         }
         
         NSLog(@"Received placemarks: %@", placemarks);
-        mapView.listPlacemarks = [[NSMutableArray alloc]initWithArray:placemarks];
-        
+        [self didReceivePlaceMarks:placemarks andKey:key];
+    }];
+}
+
+- (void) didReceivePlaceMarks:(NSArray*) placemarks andKey:(NSString*)key
+{
+    listPlacemarks = [[NSMutableArray alloc]initWithArray:placemarks];
+    if ([key isEqualToString:@"act_ShowMap"]) {
+        mapView.listPlacemarks = listPlacemarks;
         
         [UIView beginAnimations:@"View Flip" context:nil];
         [UIView setAnimationDuration:0.80];
@@ -2663,7 +3257,26 @@ enum viewModeForDCADetail {
         
         [mbpMap hide:YES];
         [mapView centerMap];
-    }];
+    }
+    if ([key isEqualToString:@"act_ShowStreetView"]) {
+        streetView = [[NWViewLocationController alloc]initWithPlacemark:[listPlacemarks objectAtIndex:0]];
+        CGRect frame = _scrollView.frame;
+        frame.origin.y = 0;
+        //frame.size.height -= _tabBar.frame.size.height;
+        [streetView.view setFrame:frame];
+        
+        [UIView beginAnimations:@"View Flip" context:nil];
+        [UIView setAnimationDuration:0.80];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        
+        [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight
+                               forView:_scrollView cache:NO];
+        
+        [self.scrollView addSubview:streetView.view];
+        
+        [UIView commitAnimations];
+        [mbpMap hide:YES];
+    }
 }
 
 // display a given NSError in an UIAlertView
@@ -2688,6 +3301,7 @@ enum viewModeForDCADetail {
                 break;
         }
         
+        message = @"Address not found";
         UIAlertView *alert =  [[UIAlertView alloc] initWithTitle:@"An error occurred."
                                                          message:message
                                                         delegate:nil
@@ -2697,6 +3311,57 @@ enum viewModeForDCADetail {
     });
 }
 
+#pragma mark . Street View
+- (void) act_ShowStreetView:(id) sender
+{
+    if (! listPlacemarks.count) {
+        [mbpMap show:YES];
+        NSInteger index;
+        NSString *value;
+        if ([self.itemName isEqualToString:@"HDB Search"]) {
+            index = [cellData.paraNames indexOfObject:@"block_no"];
+            value = [cellData.paraValues objectAtIndex:index];
+            
+            index = [cellData.paraNames indexOfObject:@"street_name"];
+            value = [NSString stringWithFormat:@"%@ %@",value, [cellData.paraValues objectAtIndex:index]];
+        }
+        if ([self.itemName isEqualToString:@"Condos Search"]) {
+            index = [cellData.paraNames indexOfObject:@"address"];
+            value = [cellData.paraValues objectAtIndex:index];
+        }
+        
+        if ([self.itemName isEqualToString:@"Landed Property Search"]) {
+            index = [cellData.paraNames indexOfObject:@"address"];
+            value = [cellData.paraValues objectAtIndex:index];
+        }
+        
+        if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
+            index = [cellData.paraNames indexOfObject:@"address"];
+            value = [cellData.paraValues objectAtIndex:index];
+        }
+        [self getAllPlacemarksWithAddress:value andKey:@"act_ShowStreetView"];
+    }
+    else
+    {
+        if (! streetView) {
+            streetView = [[NWViewLocationController alloc]initWithPlacemark:[listPlacemarks objectAtIndex:0]];
+            CGRect frame = _scrollView.frame;
+            frame.origin.y = 0;
+            //frame.size.height -= _tabBar.frame.size.height;
+            [streetView.view setFrame:frame];
+        }
+        [UIView beginAnimations:@"View Flip" context:nil];
+        [UIView setAnimationDuration:0.80];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        
+        [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight
+                               forView:_scrollView cache:NO];
+        
+        [self.scrollView addSubview:streetView.view];
+        
+        [UIView commitAnimations];
+    }
+}
 - (void)viewDidUnload {
     [self setTableView:nil];
     [self setBtnSend:nil];

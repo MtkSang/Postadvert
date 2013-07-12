@@ -624,12 +624,14 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     
     // - > website
     @try {
-        NSDictionary *website = [dict objectForKey:@"website"];
-        if ([website isKindOfClass:[NSDictionary class]]) {
-            [cellContent.listLinks addObject:[website objectForKey:@"url"]];
-            cellContent.linkWebsite = [NSDictionary dictionaryWithDictionary:website];
-            //description
-            //title
+        id websites = [dict objectForKey:@"website"];
+        if ([websites isKindOfClass:[NSArray class]]) {
+            for (id website in websites) {
+                if ([website isKindOfClass:[NSDictionary class]]) {
+                    [cellContent.listLinks addObject:website];
+                    cellContent.linkWebsite = [NSDictionary dictionaryWithDictionary:website];
+                }
+            }
         }
     }
     @catch (NSException *exception) {
@@ -639,10 +641,14 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     
     // - > yotube
     @try {
-        NSDictionary *youtube = [dict objectForKey:@"youtube"];
-        if ([youtube isKindOfClass:[NSDictionary class]]) {
-            cellContent.linkYoutube = [NSDictionary dictionaryWithDictionary:youtube];
-            [cellContent.listVideos addObject:[youtube objectForKey:@"url"]];
+        id youtubes = [dict objectForKey:@"youtube"];
+        if ([youtubes isKindOfClass:[NSArray class]]) {
+            for (id youtube in youtubes) {
+                if ([youtube isKindOfClass:[NSDictionary class]]) {
+                    [cellContent.listVideos addObject:youtube];
+                    cellContent.linkYoutube = [NSDictionary dictionaryWithDictionary:youtube];
+                }
+            }
         }
     }
     @catch (NSException *exception) {

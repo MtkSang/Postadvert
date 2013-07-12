@@ -1199,35 +1199,52 @@
         StartUpJobsViewController *startUpJobs = [[StartUpJobsViewController alloc]init];
         viewCtr = startUpJobs;
     }
-    
-    if ([itemName isEqualToString:@"HDB"]) {
-        HDBViewController *hdbSearch = [[HDBViewController alloc]init];
-        hdbSearch.navigationController = self.navigationController;
-        hdbSearch.navagationBarItem = self.navigationItem;
-        viewCtr = hdbSearch;
+    NSRange rangItem;
+    NSRange rangType;
+    rangItem = [itemName rangeOfString:@"HDB"];
+    if (rangItem.length) {
+        rangType = [itemName rangeOfString:@"Search"];
+        if (rangType.length) {
+            HDBViewController *hdbSearch = [[HDBViewController alloc]init];
+            hdbSearch.navigationController = self.navigationController;
+            hdbSearch.navagationBarItem = self.navigationItem;
+            viewCtr = hdbSearch;
+        }
     }
-    if ([itemName isEqualToString:@"Condos"]) {
-        HDBViewController *hdbSearch = [[HDBViewController alloc]init];
-        hdbSearch.itemName = @"Condos Search";
-        hdbSearch.navigationController = self.navigationController;
-        hdbSearch.navagationBarItem = self.navigationItem;
-        viewCtr = hdbSearch;
+    rangItem = [itemName rangeOfString:@"Condos"];
+    if (rangItem.length) {
+        rangType = [itemName rangeOfString:@"Search"];
+            if (rangType.length) {
+            HDBViewController *hdbSearch = [[HDBViewController alloc]init];
+            hdbSearch.itemName = @"Condos Search";
+            hdbSearch.navigationController = self.navigationController;
+            hdbSearch.navagationBarItem = self.navigationItem;
+            viewCtr = hdbSearch;
+            }
     }
-    if ([itemName isEqualToString:@"Landed Property"]) {
-        HDBViewController *hdbSearch = [[HDBViewController alloc]init];
-        hdbSearch.itemName = @"Landed Property Search";
-        hdbSearch.navigationController = self.navigationController;
-        hdbSearch.navagationBarItem = self.navigationItem;
-        viewCtr = hdbSearch;
+    rangItem = [itemName rangeOfString:@"Landed Property"];
+    if (rangItem.length) {
+        rangType = [itemName rangeOfString:@"Search"];
+        if (rangType.length) {
+            HDBViewController *hdbSearch = [[HDBViewController alloc]init];
+            hdbSearch.itemName = @"Landed Property Search";
+            hdbSearch.navigationController = self.navigationController;
+            hdbSearch.navagationBarItem = self.navigationItem;
+            viewCtr = hdbSearch;
+        }
     }
-    if ([itemName isEqualToString:@"Rooms For Rent"]) {
-        HDBViewController *hdbSearch = [[HDBViewController alloc]init];
-        hdbSearch.itemName = @"Rooms For Rent Search";
-        hdbSearch.navigationController = self.navigationController;
-        hdbSearch.navagationBarItem = self.navigationItem;
-        viewCtr = hdbSearch;
+    rangItem = [itemName rangeOfString:@"Rooms For Rent"];
+    if (rangItem.length) {
+        rangType = [itemName rangeOfString:@"Search"];
+        if (rangType.length) {
+            HDBViewController *hdbSearch = [[HDBViewController alloc]init];
+            hdbSearch.itemName = @"Rooms For Rent Search";
+            hdbSearch.navigationController = self.navigationController;
+            hdbSearch.navagationBarItem = self.navigationItem;
+            viewCtr = hdbSearch;
+        }
     }
-    
+
     if (!viewCtr) {
 #warning in progress
         return;

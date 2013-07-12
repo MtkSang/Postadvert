@@ -27,6 +27,8 @@ typedef enum{
     UIImageView *thumbnailView;
     BrowserViewController *br;
     ThumbnailViewController *thumbnail;
+    BOOL isLoaded;
+    NSString *currentLoadedURLString;
     //NSDictionary *linkInfo;
 }
 @property (nonatomic, strong)  UIWebView *webView;;
