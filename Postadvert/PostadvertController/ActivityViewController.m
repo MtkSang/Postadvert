@@ -299,7 +299,7 @@
 - (void) loadCellAtIndex:(NSNumber*)num
 {
     NSInteger index = [num integerValue];
-    UIActivityCell *cell = [listActivityCell objectAtIndex:index];
+    UIActivityCell *cell;// = [listActivityCell objectAtIndex:index];
     NSArray *nib = nil;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
         nib = [[NSBundle mainBundle] loadNibNamed:@"UIActivityCell" owner:self options:nil];

@@ -153,6 +153,8 @@
 }
 
 - (void)startLoading {
+    
+    
     isLoading = YES;
 
     // Show the header

@@ -1206,6 +1206,7 @@
             [paraValues addObject:@"0"];
         }
         //lease_term_from
+        //lease_term_to
         index = [mainFiles indexOfObject:@"Lease Term"];
         if (index == NSIntegerMax) {
             [paraValues addObject:@"0"];
@@ -1222,18 +1223,21 @@
             }
         }
         
-        //lease_term_to
         
         
         //completion_from
-        index = [mainFiles indexOfObject:@"Constructed"];
-        if (from_to.count == 2) {
-            [paraValues addObjectsFromArray:from_to];
-        }else{
-            [paraValues addObject:@"0"];
-            [paraValues addObject:@"0"];
-        }
         //completion_to
+        index = [mainFiles indexOfObject:@"Constructed"];
+        if (index != NSIntegerMax) {
+            value = [mainFilesValues objectAtIndex:index];
+            from_to = [value componentsSeparatedByString:@"____"];
+            if (from_to.count == 2) {
+                [paraValues addObjectsFromArray:from_to];
+            }else{
+                [paraValues addObject:@"0"];
+                [paraValues addObject:@"0"];
+            }
+        }
         //unit_level
         index = [mainFiles indexOfObject:@"Unit Level"];
         value = [mainFilesValues objectAtIndex:index];
@@ -1495,14 +1499,18 @@
         
         
         //completion_from
-        index = [mainFiles indexOfObject:@"Constructed"];
-        if (from_to.count == 2) {
-            [paraValues addObjectsFromArray:from_to];
-        }else{
-            [paraValues addObject:@"0"];
-            [paraValues addObject:@"0"];
-        }
         //completion_to
+        index = [mainFiles indexOfObject:@"Constructed"];
+        if (index != NSIntegerMax) {
+            value = [mainFilesValues objectAtIndex:index];
+            from_to = [value componentsSeparatedByString:@"____"];
+            if (from_to.count == 2) {
+                [paraValues addObjectsFromArray:from_to];
+            }else{
+                [paraValues addObject:@"0"];
+                [paraValues addObject:@"0"];
+            }
+        }
         //unit_level
         index = [mainFiles indexOfObject:@"Unit Level"];
         value = [mainFilesValues objectAtIndex:index];
@@ -1762,14 +1770,18 @@
         
         
         //completion_from
-        index = [mainFiles indexOfObject:@"Constructed"];
-        if (from_to.count == 2) {
-            [paraValues addObjectsFromArray:from_to];
-        }else{
-            [paraValues addObject:@"0"];
-            [paraValues addObject:@"0"];
-        }
         //completion_to
+        index = [mainFiles indexOfObject:@"Constructed"];
+        if (index != NSIntegerMax) {
+            value = [mainFilesValues objectAtIndex:index];
+            from_to = [value componentsSeparatedByString:@"____"];
+            if (from_to.count == 2) {
+                [paraValues addObjectsFromArray:from_to];
+            }else{
+                [paraValues addObject:@"0"];
+                [paraValues addObject:@"0"];
+            }
+        }
         //furnishing
         index = [mainFiles indexOfObject:@"Furnishing"];
         value = [mainFilesValues objectAtIndex:index];
@@ -2497,7 +2509,7 @@
     UIButton *_dotBtn = (UIButton*)[cell viewWithTag:9];
     UIImageView *_commentIcon = (UIImageView*)[cell viewWithTag:13];
     UIImageView *_clapIcon = (UIImageView*)[cell viewWithTag:11];
-    NSInteger totalClap = 0, totalComment = 0, totalView = 0, index;
+    NSInteger totalClap = 0, totalComment = 0, index;
     BOOL isClap = NO;
     NSString *value = @"";
     //clap_info
@@ -2512,9 +2524,9 @@
     value = [cellData.paraValues objectAtIndex:index];
     totalComment = [value integerValue];
     //total_views
-    index = [cellData.paraNames indexOfObject:@"total_views"];
-    value = [cellData.paraValues objectAtIndex:index];
-    totalView = [value integerValue];
+//    index = [cellData.paraNames indexOfObject:@"total_views"];
+//    value = [cellData.paraValues objectAtIndex:index];
+//    totalView = [value integerValue];
     
     numClap.text = [NSString stringWithFormat:@"%d", totalClap];
     NSString *clapBtTitle = isClap ? @"Unclap" : @"Clap";

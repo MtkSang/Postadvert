@@ -16,7 +16,7 @@
 @private
    SDWebImageDataSource *images_;
    UIActivityIndicatorView *activityIndicatorView_;
-   UIWindow *window_;
+//   UIWindow *window_;
 }
 @property (nonatomic, assign) UINavigationController *navigationController;
 - (id) initWithFrame:(CGRect) frame;

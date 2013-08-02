@@ -409,7 +409,7 @@
     if (![str isEqualToString:@""] ) {
         constraint = CGSizeMake(cellFrame.size.width - 20 - leftMarginContent - CELL_CONTENT_MARGIN_RIGHT, 20000.0f);
         size = [str sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-        frame = CGRectMake(leftMarginContent, cellHeight, size.width, size.height);
+//        frame = CGRectMake(leftMarginContent, cellHeight, size.width, size.height);
         cellHeight += size.height + CELL_MARGIN_BETWEEN_CONTROLL;
     }
 //    //Add Image
@@ -423,7 +423,7 @@
                 imageZize = [SupportFunction sizeForScaleWithMaxWidth:videoFrame.size.width fromWidth:numW.floatValue andHeight:numH.floatValue];
             }
             else
-                imageZize = CGSizeMake(imageZize.width, imageZize.height);
+                imageZize = CGSizeMake(videoFrame.size.width, videoFrame.size.width);
         }else
         {
             imageZize = CGSizeMake(videoFrame.size.width, videoFrame.size.width);

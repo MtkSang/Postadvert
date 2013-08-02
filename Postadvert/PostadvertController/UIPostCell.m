@@ -611,7 +611,7 @@
         NSLog(@"%d", [UIPostCell limitText:content.text].length);
     }
     Float32 cellHeight = 0;
-    CGRect cellFrame, videoFrame, frame;
+    CGRect cellFrame, videoFrame;
     CGSize constraint;
     CGSize size;
     if ([[UIApplication sharedApplication]statusBarOrientation] == UIInterfaceOrientationLandscapeLeft || [[UIApplication sharedApplication]statusBarOrientation] == UIInterfaceOrientationLandscapeRight)
@@ -664,7 +664,7 @@
             str = content.text;
         }
         size = [str sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-        frame = CGRectMake(leftMarginContent, cellHeight, size.width, size.height);
+//        frame = CGRectMake(leftMarginContent, cellHeight, size.width, size.height);
         cellHeight += size.height + CELL_MARGIN_BETWEEN_CONTROLL;
     }
     //Add Image
@@ -678,7 +678,7 @@
                 imageZize = [SupportFunction sizeForScaleWithMaxWidth:videoFrame.size.width fromWidth:numW.floatValue andHeight:numH.floatValue];
             }
             else
-                imageZize = CGSizeMake(imageZize.width, imageZize.height);
+                imageZize = CGSizeMake(videoFrame.size.width, videoFrame.size.width);
         }else
         {
             imageZize = CGSizeMake(videoFrame.size.width, videoFrame.size.width);

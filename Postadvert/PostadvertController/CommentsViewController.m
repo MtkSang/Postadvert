@@ -492,9 +492,8 @@
     NSDictionary *userInfo = [aNotification userInfo];
     CGRect frame = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
     frame = [self.scrollView convertRect:frame fromView:nil];
-    CGPoint pt = CGPointZero;
     self.scrollView.scrollEnabled = YES;
-    pt = CGPointMake(0.0, frame.size.height);
+//    pt = CGPointMake(0.0, frame.size.height);
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.2];
     [UIView setAnimationDelay:0.03];

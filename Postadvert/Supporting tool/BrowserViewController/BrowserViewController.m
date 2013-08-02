@@ -1,27 +1,6 @@
 //
 //  BrowserViewController.m
 //
-//  This software is licensed under the MIT Software License
-//
-//  Copyright (c) 2011 Nathan Buggia
-//  http://nathanbuggia.com/posts/browser-view-controller/
-//
-//  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-//  documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-//  the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
-//  to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-//  The above copyright notice and this permission notice shall be included in all copies or substantial portions of 
-//  the Software.
-//
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO 
-//  THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
-//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
-//  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
-//  SOFTWARE.
-//
-//  Artwork generously contributed by Joseph Wain of http://glyphish.com (buy his Pro pack of icons!)
-//
 
 
 #import "BrowserViewController.h"
@@ -70,22 +49,6 @@
 #pragma mark - Object lifecycle
 
 
-- (void)dealloc
-{
-    [webView setDelegate:nil];
-    [webView release];
-    [url release];
-    [activityIndicator release];
-    
-    [forwardButton release];
-    [backButton release];
-    [stopButton release];
-    [reloadButton release];
-    [actionButton release];
-
-    [super dealloc];
-}
-
 
 - (id)initWithUrls:(NSURL*)u
 {
@@ -120,8 +83,8 @@
                                                                           target:self
                                                                           action:@selector(actionButtonPressed:)];
         
-        self.linkView = [[UITextView alloc]initWithFrame:CGRectMake(0.0, (cCellHeight - 30) / 2.0,  CELL_CONTENT_WIDTH * 5 / 9 , 30.0)];
-        self.linkView.text = [url absoluteString];
+        self.linkView.frame = CGRectMake(0.0, (cCellHeight - 30) / 2.0,  CELL_CONTENT_WIDTH * 5 / 9 , 30.0);
+        self.linkView.text = [self.url absoluteString];
         self.linkView.layer.borderWidth = 1.0;
         self.linkView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         self.linkView.layer.cornerRadius = 5.0;
@@ -131,7 +94,7 @@
         [self.linkView setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
         self.linkButton = [[UIBarButtonItem alloc] initWithCustomView:linkView];
         
-        rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(30, 0, 30, 30)];
+        rightBtn.frame = CGRectMake(30, 0, 30, 30);
         rightBtn.layer.cornerRadius = 3.5;
         rightBtn.layer.borderWidth = 0.2;
         rightBtn.layer.masksToBounds = YES;
@@ -162,8 +125,6 @@
     if([activityIndicator isAnimating]) [toolbarButtons replaceObjectAtIndex:4 withObject:self.stopButton];
     
     [self.toolbar setItems:toolbarButtons animated:YES];
-    [toolbarButtons release];
-    [flexibleSpace release];
     
     // page title
     //NSString *pageTitle = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
@@ -178,7 +139,7 @@
     toolbar.hidden = YES;
     toolbar.backgroundColor = [UIColor grayColor];
     toolbar.alpha = 0.9;
-    CGRect frame = toolbar.frame;
+    CGRect frame ;//= toolbar.frame;
     //frame.origin.y = cStatusAndNavBar;
     //toolbar.frame = frame;
     
@@ -200,8 +161,7 @@
     UIView *rightViewButton = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 30 * 2, 30)];
     [rightViewButton addSubview:activityIndicator];
     [rightViewButton addSubview:rightBtn];
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:rightViewButton] autorelease];
-    [rightViewButton release];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightViewButton];
     [self.webView loadRequest:[NSURLRequest requestWithURL:self.url]];
     [self updateToolbar];
     NSLog(@"WebView Loaded");
@@ -312,7 +272,6 @@
                                              otherButtonTitles:ACTION_OPEN_IN_SAFARI, @"Copy URL", nil];
     
     [uias showInView:self.view];
-    [uias release];
 }
 
 

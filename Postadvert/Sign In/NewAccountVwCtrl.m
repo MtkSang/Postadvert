@@ -138,7 +138,7 @@
     if (frame.size.height != 0 ) {
         keyboardFrame = frame;
     }
-    frame = keyboardFrame;
+//    frame = keyboardFrame;
     CGRect viewFrame = self.view.frame;
     viewFrame.size.height = mainFrame.size.height - keyboardFrame.size.height;
     //self.view.frame = viewFrame;

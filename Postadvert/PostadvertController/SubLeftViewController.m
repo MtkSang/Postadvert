@@ -61,7 +61,7 @@
     if (!listNums) {
         listNums = [[NSMutableArray alloc]init];
     }
-    
+
 }
 
 - (void)viewDidUnload
@@ -78,6 +78,12 @@
     [self addTitle];
     [super viewWillAppear:animated];
     isload = YES;
+    if (! listSubMemus.count) {
+        listSubMemus = [[NSMutableArray alloc]init];
+        for (int i = 0; i < listItems.count; i++) {
+            [listSubMemus addObject:[NSNumber numberWithInt:0]];
+        }
+    }
     [self performSelectorInBackground:@selector(getSubNums) withObject:nil];
     //Set up title
     
@@ -347,6 +353,9 @@
             canAdd = YES;
         }
         if ([[listItems objectAtIndex:indexPath.section] rangeOfString:@"Rooms For Rent"].length) {
+            canAdd = YES;
+        }
+        if ([[listItems objectAtIndex:indexPath.section] rangeOfString:@"Commercial"].length) {
             canAdd = YES;
         }
     }

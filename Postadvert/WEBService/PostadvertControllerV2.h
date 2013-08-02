@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "UserPAInfo.h"
 @class Reachability;
 @class PostCellContent;
 @class CredentialInfo;

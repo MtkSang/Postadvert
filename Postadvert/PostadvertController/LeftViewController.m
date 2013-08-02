@@ -541,9 +541,9 @@
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     imageView.frame = CGRectMake(5, 0.0, 110, self.navigationController.navigationBar.frame.size.height);
     [menu addSubview:imageView];
-    UIButton *btn2 = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIButton *btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIButton *btnDiv = [UIButton buttonWithType:UIButtonTypeCustom];
+//    UIButton *btn2 = [UIButton buttonWithType:UIButtonTypeCustom];
+//    UIButton *btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
+//    UIButton *btnDiv = [UIButton buttonWithType:UIButtonTypeCustom];
 //    if ([UserPAInfo sharedUserPAInfo].registrationID) {//Login OK
 //        btn2.layer.borderColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"normal_state.png"]].CGColor ;
 //        [btn2.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:11]];
@@ -633,9 +633,9 @@
     btn3.autoresizingMask =  UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin;
     [menu setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin];
     country = nil;
-    btn1 = nil;
-    btnDiv = nil;
-    btn2 = nil;
+//    btn1 = nil;
+//    btnDiv = nil;
+//    btn2 = nil;
     btn3 = nil;
     btnFlag = nil;
     imageView = nil;
@@ -654,8 +654,8 @@
             [subItem addObject:@"Condos"];
             [subItem addObject:@"Landed Property"];
             [subItem addObject:@"Rooms For Rent"];
+            [subItem addObject:@"Commercial"];
             [subItem addObject:@"Co-Broke Xpress"];
-            //[subItem addObject:@"Property Xchange"];
             break;
         case 2:
             [subItem addObject:@"Mobile Xpress"];
@@ -705,7 +705,7 @@
             [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
             [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
             [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
-            //[subItem addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
+            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
             break;
         case 2:
             [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];

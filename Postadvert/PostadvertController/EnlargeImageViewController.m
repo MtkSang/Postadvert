@@ -805,6 +805,7 @@
             view =rightImageView;
         }
     }
+    frame = view.frame;
     [UIView beginAnimations:@"EnlargeImageListenMoveEnd" context:(__bridge void *)view];
     if (currentCenter == currentCenterImage_centerImage) {
         frame = defaultFrame;
@@ -849,6 +850,7 @@
             view =rightImageView;
         }
     }
+    frame = view.frame;
     [UIView beginAnimations:@"EnlargeImageListenMoveEnd" context:(__bridge void *)view];
     if (currentCenter == currentCenterImage_centerImage) {
         frame = defaultFrame;

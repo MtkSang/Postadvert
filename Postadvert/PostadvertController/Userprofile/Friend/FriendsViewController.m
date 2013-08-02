@@ -328,11 +328,11 @@
     if(sectionedListContent == nil)
         sectionedListContent = [[NSMutableArray alloc] init];
     [sectionedListContent removeAllObjects];
-    NSInteger count = 20;
-    count = 20 < totalFriends ? 20 : totalFriends;
-    if (!count) {
-        count = 1;
-    }
+//    NSInteger count = 20;
+//    count = 20 < totalFriends ? 20 : totalFriends;
+//    if (!count) {
+//        count = 1;
+//    }
     NSMutableArray *friends = [self getFriendsFrom:0 count:0];
     for (CredentialInfo *friend in friends) {
         [listFriendCellContent addObject:friend];

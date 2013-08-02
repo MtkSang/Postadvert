@@ -262,7 +262,21 @@
             }else
                 internalID = 8;//rent off
     }
-    
+
+    if ([itemName isEqualToString:@"Rooms For Rent Search"]) {
+        if (currentButton == leftButton) {
+            if (isMoreOptionOn) {
+                internalID = 109;//sale on
+            }
+            else
+                internalID = 9;//sale off
+        }else
+            if (isMoreOptionOn) {
+                internalID = 110;//rent on
+            }else
+                internalID = 10;//rent off
+    }
+
     return internalID;
 }
 
@@ -283,6 +297,9 @@
     }
     if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
         staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Rooms For Rent Search"]];
+    }
+    if ([self.itemName isEqualToString:@"Commercial Search"]) {
+        staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Commercial Search"]];
     }
     NSDictionary *dict;
     //NSUserDefaults *database = [[NSUserDefaults alloc]init];

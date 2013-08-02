@@ -74,6 +74,8 @@ static NSString * const ItemTitleIdentifier = @"ItemTitle";
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
+#warning prepare to upload to appstore
+//    return 1;
     return self.listItems.count;
 }
 
@@ -153,14 +155,20 @@ static NSString * const ItemTitleIdentifier = @"ItemTitle";
     rang = [itemName_ rangeOfString:@"Landed Property"];
     if (rang.length) {
         self.listItems = [[NSMutableArray alloc]initWithObjects:
-                          [NSArray arrayWithObjects: @"Landed-Property_Search.png", @"Landed Property Search", nil],
-                          [NSArray arrayWithObjects: @"HDB_Q-A.png", @"Landed Property Q&A", nil], nil];
+                          [NSArray arrayWithObjects: @"Landed-Property_Search.png", @"Landed Search", nil],
+                          [NSArray arrayWithObjects: @"HDB_Q-A.png", @"Landed Q&A", nil], nil];
     }
     rang = [itemName_ rangeOfString:@"Rooms For Rent"];
     if (rang.length) {
         self.listItems = [[NSMutableArray alloc]initWithObjects:
-                          [NSArray arrayWithObjects: @"Room-For-Rent_Search.png", @"Rooms For Rent Search", nil],
-                          [NSArray arrayWithObjects: @"HDB_Q-A.png", @"Rooms For Rent Q&A", nil], nil];
+                          [NSArray arrayWithObjects: @"Room-For-Rent_Search.png", @"Rooms Search", nil],
+                          [NSArray arrayWithObjects: @"HDB_Q-A.png", @"Rooms Q&A", nil], nil];
+    }
+    rang = [itemName_ rangeOfString:@"Commercial"];
+    if (rang.length) {
+        self.listItems = [[NSMutableArray alloc]initWithObjects:
+                          [NSArray arrayWithObjects: @"Commercial_Search.png", @"Commercial Search", nil],
+                          [NSArray arrayWithObjects: @"HDB_Q-A.png", @"Commercial Q&A", nil], nil];
     }
 
     self.view.hidden = NO;

@@ -1,27 +1,6 @@
 //
 //  BrowserViewController.h
 //
-//  This software is licensed under the MIT Software License
-//
-//  Copyright (c) 2011 Nathan Buggia
-//  http://nathanbuggia.com/posts/browser-view-controller/
-//
-//  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-//  documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-//  the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
-//  to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-//  The above copyright notice and this permission notice shall be included in all copies or substantial portions of 
-//  the Software.
-//
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO 
-//  THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
-//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
-//  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
-//  SOFTWARE.
-//
-//  Artwork generously contributed by Joseph Wain of http://glyphish.com (buy his Pro pack of icons!)
-//
 
 
 #import <UIKit/UIKit.h>
@@ -35,11 +14,7 @@
 #define ACTION_CANCEL           @"Cancel"
 #define ACTION_OPEN_IN_SAFARI   @"Open in Safari"
 
-@interface BrowserViewController : UIViewController 
-<
-UIWebViewDelegate,
-UIActionSheetDelegate
->
+@interface BrowserViewController : UIViewController < UIWebViewDelegate, UIActionSheetDelegate >
 {
     // the current URL of the UIWebView
     NSURL *url;
@@ -69,22 +44,22 @@ UIActionSheetDelegate
     UIButton *rightBtn;
 }
 
-@property(nonatomic, retain) NSURL *url;
-@property(nonatomic, retain) UIWebView *webView;
-@property(nonatomic, retain) UIToolbar *toolbar;
-@property(nonatomic, retain) UIView *toolView;
-@property(nonatomic, retain) UIBarButtonItem *backButton;
-@property(nonatomic, retain) UIBarButtonItem *forwardButton;
-@property(nonatomic, retain) UIBarButtonItem *stopButton;
-@property(nonatomic, retain) UIBarButtonItem *reloadButton;
-@property(nonatomic, retain) UIBarButtonItem *actionButton;
-@property(nonatomic, retain) UIBarButtonItem *linkButton;
-@property(nonatomic, retain) UIButton *back_button;
-@property(nonatomic, retain) UIButton *forward_button;
-@property(nonatomic, retain) UIButton *stop_button;
-@property(nonatomic, retain) UIButton *reload_button;
-@property(nonatomic, retain) UIButton *action_button;
-@property(nonatomic, retain) UITextView *linkView;
+@property(nonatomic, strong) NSURL *url;
+@property(nonatomic, strong) UIWebView *webView;
+@property(nonatomic, strong) UIToolbar *toolbar;
+@property(nonatomic, strong) UIView *toolView;
+@property(nonatomic, strong) UIBarButtonItem *backButton;
+@property(nonatomic, strong) UIBarButtonItem *forwardButton;
+@property(nonatomic, strong) UIBarButtonItem *stopButton;
+@property(nonatomic, strong) UIBarButtonItem *reloadButton;
+@property(nonatomic, strong) UIBarButtonItem *actionButton;
+@property(nonatomic, strong) UIBarButtonItem *linkButton;
+@property(nonatomic, strong) UIButton *back_button;
+@property(nonatomic, strong) UIButton *forward_button;
+@property(nonatomic, strong) UIButton *stop_button;
+@property(nonatomic, strong) UIButton *reload_button;
+@property(nonatomic, strong) UIButton *action_button;
+@property(nonatomic, strong) UITextView *linkView;
 
 // Initializes the BrowserViewController with a specific URL 
 - (id)initWithUrls:(NSURL*)u;

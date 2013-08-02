@@ -41,6 +41,7 @@
 #import "StartUpJobsViewController.h"
 #import "HDBViewController.h"
 #import "HDBPostViewController.h"
+#import "Q_AViewController.h"
 @interface DetailViewController ()
 - (void) showDetailFromSubView:(NSNotification*)notifi;
 - (IBAction)showHideSidebar:(id)sender;
@@ -1210,6 +1211,13 @@
             hdbSearch.navagationBarItem = self.navigationItem;
             viewCtr = hdbSearch;
         }
+        rangType = [itemName rangeOfString:@"Q&A"];
+        if (rangType.length) {
+            Q_AViewController *q_aViewCtr = [[Q_AViewController alloc]init];
+            q_aViewCtr.navigationController = self.navigationController;
+            q_aViewCtr.itemName = itemName;
+            viewCtr = q_aViewCtr;
+        }
     }
     rangItem = [itemName rangeOfString:@"Condos"];
     if (rangItem.length) {
@@ -1222,7 +1230,7 @@
             viewCtr = hdbSearch;
             }
     }
-    rangItem = [itemName rangeOfString:@"Landed Property"];
+    rangItem = [itemName rangeOfString:@"Landed"];
     if (rangItem.length) {
         rangType = [itemName rangeOfString:@"Search"];
         if (rangType.length) {
@@ -1233,12 +1241,24 @@
             viewCtr = hdbSearch;
         }
     }
-    rangItem = [itemName rangeOfString:@"Rooms For Rent"];
+    rangItem = [itemName rangeOfString:@"Rooms"];
     if (rangItem.length) {
         rangType = [itemName rangeOfString:@"Search"];
         if (rangType.length) {
             HDBViewController *hdbSearch = [[HDBViewController alloc]init];
             hdbSearch.itemName = @"Rooms For Rent Search";
+            hdbSearch.navigationController = self.navigationController;
+            hdbSearch.navagationBarItem = self.navigationItem;
+            viewCtr = hdbSearch;
+        }
+    }
+
+    rangItem = [itemName rangeOfString:@"Commercial"];
+    if (rangItem.length) {
+        rangType = [itemName rangeOfString:@"Search"];
+        if (rangType.length) {
+            HDBViewController *hdbSearch = [[HDBViewController alloc]init];
+            hdbSearch.itemName = @"Commercial Search";
             hdbSearch.navigationController = self.navigationController;
             hdbSearch.navagationBarItem = self.navigationItem;
             viewCtr = hdbSearch;

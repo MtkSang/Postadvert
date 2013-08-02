@@ -62,7 +62,7 @@
         NSString *currentLine = [self.text substringWithRange:NSMakeRange(currentLineStartsOn, currentCurrentLineLength)];
         
         CGSize currentSize = [currentLine sizeWithFont:self.font constrainedToSize:CGSizeMake(self.frame.size.width, 1000) lineBreakMode:self.lineBreakMode];
-        currentWidth = currentSize.width;
+//        currentWidth = currentSize.width;
         
         if ( currentSize.height > self.font.lineHeight )
         {

@@ -1407,11 +1407,11 @@
 
 - (IBAction)submitAdClicked:(id)sender {
     //id data;
-    NSString *functionName;
+//    NSString *functionName;
     NSMutableArray *paraNames;
     NSMutableArray *paraValues;
     NSMutableArray *pararNamesOnView;
-    functionName = @"createHDB";
+//    functionName = @"createHDB";
     NSArray *para = [self addValueForArrays];
     paraNames = [para objectAtIndex:0];
     paraValues = [para objectAtIndex:1];
@@ -2228,7 +2228,7 @@
 }
 - (void) resetValue
 {
-    //return;
+    return;
     NSUserDefaults *database = [NSUserDefaults standardUserDefaults];
     //property_status
     [database setValue:@"Select One" forKey:@"Property Status *"];

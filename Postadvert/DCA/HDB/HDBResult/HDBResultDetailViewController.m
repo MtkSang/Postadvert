@@ -116,6 +116,13 @@ enum viewModeForDCADetail {
 }
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    if (_viewMode == modePreview) {
+//        [self.navigationItem.backBarButtonItem setTitle:@"Close Preview"];
+//        [self.navigationController.navigationItem.backBarButtonItem setTitle:@"asdsa"];
+//        [self.navigationController.navigationItem.leftBarButtonItem setTitle:@"left"];
+        UIBarButtonItem *backBtn = [[UIBarButtonItem alloc]initWithTitle:@"Close" style:UIBarButtonItemStyleDone target:self action:@selector(closePreview:)];
+        self.navigationItem.leftBarButtonItem = backBtn;
+    }
     [self.tabBar setSelectedItem:currentItem];
 }
 
@@ -2322,9 +2329,9 @@ enum viewModeForDCADetail {
     NSDictionary *userInfo = [aNotification userInfo];
     CGRect frame = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
     frame = [self.scrollView convertRect:frame fromView:nil];
-    CGPoint pt = CGPointZero;
+//    CGPoint pt = CGPointZero;
     self.scrollView.scrollEnabled = YES;
-    pt = CGPointMake(0.0, frame.size.height);
+//    pt = CGPointMake(0.0, frame.size.height);
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.2];
     [UIView setAnimationDelay:0.03];
@@ -2427,6 +2434,11 @@ enum viewModeForDCADetail {
         
         NSDictionary *dict = [NSDictionary dictionaryWithDictionary:data];
         if (dict.allKeys.count) {
+            
+           dispatch_async(dispatch_get_main_queue(),^ {
+               
+               [[PostadvertControllerV2 sharedPostadvertController]showAlertWithMessage:@"Your ad has been successfully published" andTitle:@"Post a Classified Ad"];
+           });
             cellData = [[HBBResultCellData alloc]initWithItemName:self.itemName];
             cellData.hdbID = [[dict objectForKey:@"id"] integerValue];
             cellData.timeCreated = [NSData stringDecodeFromBase64String:[dict objectForKey:@"created"]];
@@ -2459,7 +2471,10 @@ enum viewModeForDCADetail {
             [self performSelectorOnMainThread:@selector(uploadImagesToAd) withObject:nil waitUntilDone:NO];
         }else
         {
-            
+            dispatch_async(dispatch_get_main_queue(),^ {
+                
+                [[PostadvertControllerV2 sharedPostadvertController]showAlertWithMessage:@"Your ad has been successfully published" andTitle:@"Post a Classified Ad"];
+            });
         }
         
         [self.tableView reloadData];
@@ -3285,21 +3300,21 @@ enum viewModeForDCADetail {
     dispatch_async(dispatch_get_main_queue(),^ {
         
         NSString *message;
-        switch ([error code])
-        {
-            case kCLErrorGeocodeFoundNoResult:
-                message = @"kCLErrorGeocodeFoundNoResult";
-                break;
-            case kCLErrorGeocodeCanceled:
-                message = @"kCLErrorGeocodeCanceled";
-                break;
-            case kCLErrorGeocodeFoundPartialResult:
-                message = @"kCLErrorGeocodeFoundNoResult";
-                break;
-            default:
-                message = [error description];
-                break;
-        }
+//        switch ([error code])
+//        {
+//            case kCLErrorGeocodeFoundNoResult:
+//                message = @"kCLErrorGeocodeFoundNoResult";
+//                break;
+//            case kCLErrorGeocodeCanceled:
+//                message = @"kCLErrorGeocodeCanceled";
+//                break;
+//            case kCLErrorGeocodeFoundPartialResult:
+//                message = @"kCLErrorGeocodeFoundNoResult";
+//                break;
+//            default:
+//                message = [error description];
+//                break;
+//        }
         
         message = @"Address not found";
         UIAlertView *alert =  [[UIAlertView alloc] initWithTitle:@"An error occurred."
@@ -3361,6 +3376,13 @@ enum viewModeForDCADetail {
         
         [UIView commitAnimations];
     }
+}
+
+#pragma mark - implement
+
+- (IBAction)closePreview:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)viewDidUnload {
     [self setTableView:nil];

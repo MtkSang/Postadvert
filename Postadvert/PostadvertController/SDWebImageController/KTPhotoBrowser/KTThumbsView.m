@@ -113,7 +113,7 @@
     }
     
     if (itemsPerRow < 1) itemsPerRow = 1;  // Ensure at least one per row.
-    int spaceWidth = round((visibleWidth - thumbSize_.width * itemsPerRow) / (itemsPerRow + 1));
+    int spaceWidth;// = round((visibleWidth - thumbSize_.width * itemsPerRow) / (itemsPerRow + 1));
     spaceWidth = CELL_MARGIN_BETWEEN_IMAGE;
     //int spaceHeight = spaceWidth;
     
@@ -229,7 +229,7 @@
     
     if (itemsPerRow < 1) itemsPerRow = 1;  // Ensure at least one per row.
     
-    int spaceWidth = round((visibleWidth - thumbSize_.width * itemsPerRow) / (itemsPerRow + 1));
+    int spaceWidth;// = round((visibleWidth - thumbSize_.width * itemsPerRow) / (itemsPerRow + 1));
     spaceWidth = CELL_MARGIN_BETWEEN_IMAGE;
     int spaceHeight = spaceWidth;
     

@@ -314,7 +314,7 @@
 - (void) loadCellAtIndex:(NSNumber*)num
 {
     NSInteger index = [num integerValue];
-    UIPostCell *cell = [listPostCell objectAtIndex:index];
+    UIPostCell *cell;// = [listPostCell objectAtIndex:index];
     NSArray *nib = nil;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
         if (self.optionView) {
