@@ -1208,7 +1208,7 @@
         if (rangType.length) {
             HDBViewController *hdbSearch = [[HDBViewController alloc]init];
             hdbSearch.navigationController = self.navigationController;
-            hdbSearch.navagationBarItem = self.navigationItem;
+//            hdbSearch.navagationBarItem = self.navigationItem;
             viewCtr = hdbSearch;
         }
         rangType = [itemName rangeOfString:@"Q&A"];

@@ -1,12 +1,12 @@
 //
-//  Q_AViewController.m
+//  MyQ_AViewController.h
 //  Stroff
 //
 //  Created by Ray on 7/11/13.
 //  Copyright (c) 2013 Futureworkz. All rights reserved.
 //
 
-#import "Q_AViewController.h"
+#import "MyQ_AViewController.h"
 #import "Constants.h"
 #import "PostadvertControllerV2.h"
 #import "MBProgressHUD.h"
@@ -14,69 +14,48 @@
 #import "CredentialInfo.h"
 #import "UIImageView+URL.h"
 #import "NSData+Base64.h"
+#import "UILable_Margin.h"
 #import <QuartzCore/QuartzCore.h>
-#import "MyQ_AViewController.h"
-@interface Q_AViewController ()
+
+#import "UIPlaceHolderTextView.h"
+@interface MyQ_AViewController ()
 
 @end
 
-@implementation Q_AViewController
+
+@implementation MyQ_AViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        _type = myQ_A;
     }
     return self;
 }
 
 - (void)viewDidLoad
 {
+    NSRange rang = [self.itemBarName rangeOfString:@"Ask Qn"];
+    if (rang.length) {
+        _type = askQ_A;
+    }
+    
     [super viewDidLoad];
-    listLastestAnswers = [[NSMutableArray alloc]init];
+    [_placeTextAskQn setPlaceholder:@"What would you like to ask ?"];
+    listMyQ_A = [[NSMutableArray alloc]init];
     UIImage *image = [UIImage imageNamed:@"titleHDB.png"];
     //image = [image resizedImage:self.lbTitle.frame.size interpolationQuality:0];
     [self.lbTitle setBackgroundColor:[UIColor colorWithPatternImage:image]];
-    [self.lbTitle setText:self.itemName];
-
-    self.headerView.frame = CGRectMake(0, 0, self.view.frame.size.width, 80);
-    _headerView.backgroundColor = [UIColor colorWithRed:57.0/255 green:60.0/255.0 blue:38.0/255 alpha:1];
-    _leftButton.frame = CGRectMake(10, 50, 149, 30);
-    [_leftButton addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [_leftButton setTitle:@"Lastest Answers" forState:UIControlStateNormal];
-    _rightButton.frame = CGRectMake(161, 50, 149, 30);
-    [_rightButton addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [_rightButton setTitle:@"Most Popular" forState:UIControlStateNormal];
-    currentButton = _leftButton;
-    
-    [self updateButtonSelected];
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(20, 50, 280, 30)];
-    view.backgroundColor = [UIColor colorWithRed:183.0/255 green:220.0/255 blue:223.0/255 alpha:1];
-    [_headerView addSubview:view];
-    [_headerView sendSubviewToBack:view];
-    
-    self.tableView.tableHeaderView = _headerView;
+    NSString *title = [self.itemName stringByReplacingOccurrencesOfString:@" Q&A" withString:@""];
+    [self.lbTitle setText:title];
+    _lbQ_A.insets = UIEdgeInsetsMake(0, 10, 0, 0);
+    _lbQ_A.text = self.itemBarName;
+    _lbQ_A.backgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"BG_My-Q&A.png"]];
+//    [UIColor colorWithRed:57.0/255 green:60.0/255.0 blue:38.0/255 alpha:1];
     self.tableView.separatorColor = [UIColor colorWithRed:79.0/255 green:177.0/255 blue:190.0/255 alpha:1];
-    
-    
-    for(UIView *subView in self.searchBar.subviews) {
-        if([subView conformsToProtocol:@protocol(UITextInputTraits)]) {
-            @try {
-                [(UITextField *)subView setKeyboardAppearance: UIKeyboardAppearanceAlert];
-                [(UITextField *)subView setReturnKeyType:UIReturnKeyDone];
-                [(UITextField *)subView setEnablesReturnKeyAutomatically:NO];
-            }
-            @catch (NSException *exception) {
-                
-            }
-        }
-    }
-    
-    mbpLastest = [[MBProgressHUD alloc]initWithView:self.view];
-    [self.view addSubview:mbpLastest];
-    [mbpLastest showWhileExecuting:@selector(getLatestAnswer) onTarget:self withObject:nil animated:YES];
-    
+//    footerView
     UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44)];
     [footerView setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth];
     footerView.autoresizesSubviews = YES;
@@ -90,9 +69,25 @@
     footerLoading.autoresizingMask = footerView.autoresizingMask;
     footerLoading.autoresizesSubviews = YES;
     footerView = nil;
+    
+//    init for load new My Q_A
+    [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"question_id"];
 
 }
 
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    mbpLoadQ_A = [[MBProgressHUD alloc]initWithView:self.view];
+    [self.view addSubview:mbpLoadQ_A];
+    if (_type == myQ_A) {
+        [mbpLoadQ_A showWhileExecuting:@selector(getMyQ_A) onTarget:self withObject:nil animated:YES];
+    }
+    if (_type == askQ_A) {
+        
+    }
+    
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -101,45 +96,10 @@
 
 - (void)viewDidUnload {
     [self setLbTitle:nil];
-    [self setTableView:nil];
-    [self setHeaderView:nil];
-    [self setSearchBar:nil];
-    [self setLeftButton:nil];
-    [self setRightButton:nil];
+    [self setLbQ_A:nil];
+    [self setAskQnCell:nil];
+    [self setPlaceTextAskQn:nil];
     [super viewDidUnload];
-}
-#pragma mark - Action
-- (void) btnClicked:(id) sender
-{
-    if (sender == currentButton) {
-        return;
-    }else
-        currentButton = sender;
-    [self performSelectorOnMainThread:@selector(updateButtonSelected) withObject:nil waitUntilDone:NO];
-    //Update value for sort by
-    
-    [self.tableView reloadData];
-}
-
-
-#pragma  mark - UItabBarDelegate
-
-- (void) tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
-{
-    if ([item.title isEqualToString:@"My Q&A"]) {
-        myQ_A = [[MyQ_AViewController alloc]init];
-        myQ_A.navigationController = self.navigationController;
-        myQ_A.itemName = self.itemName;
-        myQ_A.itemBarName = item.title;
-        [_navigationController pushViewController:myQ_A animated:YES];
-    }
-    if ([item.title isEqualToString:@"Ask Qn"]) {
-        myQ_A = [[MyQ_AViewController alloc]init];
-        myQ_A.navigationController = self.navigationController;
-        myQ_A.itemName = self.itemName;
-        myQ_A.itemBarName = item.title;
-        [_navigationController pushViewController:myQ_A animated:YES];
-    }
 }
 
 #pragma mark - Table view data source
@@ -151,124 +111,35 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    NSInteger numberOfseclection = 0;
+    if (_type == myQ_A) {
+        numberOfseclection =1;
+    }
+    if (_type == askQ_A) {
+        numberOfseclection = 1;
+    }
+    return numberOfseclection;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return listLastestAnswers.count;
+    NSInteger numberOfRowsInSection =0;
+    if (_type == myQ_A) {
+        numberOfRowsInSection = listMyQ_A.count;
+    }
+    if (_type == askQ_A) {
+        numberOfRowsInSection = 3;
+    }
+    return numberOfRowsInSection;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (q_aType) {
-        case Q_ALastestAnswer:
-            return [self loadQ_ACellForTableView:tableView AtIndexPath:indexPath];
-            break;
-        case Q_APopularQuestion:
-            return [self loadQ_AMostPopularCellForTableView:tableView AtIndexPath:indexPath];
-        default:
-            break;
-    }
     
-    
-    return [[UITableViewCell alloc]init];
-}
-
-
-- (float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSDictionary *dict = [listLastestAnswers objectAtIndex:indexPath.row];
-    if (![dict isKindOfClass:[NSDictionary class]]) {
-        return 0;
+    if (_type == askQ_A) {
+        return [self loadQ_AAskQCellForTableView:tableView AtIndexPath:indexPath];
     }
-    float y = 20.0f;
-    if (q_aType == Q_ALastestAnswer) {
-        NSString *question = @"Q: ";
-        question = [question stringByAppendingString:[NSData stringDecodeFromBase64String: [dict objectForKey:@"content"]]];
-        
-        CGSize constraint = CGSizeMake(220, 20000.0f);
-        CGSize size = [question sizeWithFont:[UIFont fontWithName:FONT_NAME size:10.0f] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-        
-        y += size.height + CELL_CONTENT_MARGIN_TOP;
-        
-        NSString *answerBy = [dict objectForKey:@"created"];
-        NSString *replies = [dict objectForKey:@"total_answer"];
-        NSString *cat_name = [NSData stringDecodeFromBase64String:[dict objectForKey:@"cat_name"]];
-        NSString *text = [NSString stringWithFormat:@"Answered by on %@ | %@ Replies \nCategogy: %@", answerBy, replies, cat_name];
-        
-        size = [text sizeWithFont:[UIFont fontWithName:FONT_NAME size:10.0f] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-        y += size.height + CELL_CONTENT_MARGIN_TOP;
-        
-        NSDictionary *dict_Answer = [dict objectForKey:@"answer"];
-        NSString *answer = @"A: ";
-        answer = [answer stringByAppendingString: [NSData stringDecodeFromBase64String:[dict_Answer objectForKey:@"content"]]];
-        
-        size = [answer sizeWithFont:[UIFont fontWithName:FONT_NAME size:10.0f] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-        y += size.height + CELL_CONTENT_MARGIN_TOP;
-    }
-    
-    if (q_aType == Q_APopularQuestion) {
-        NSString *question = @"Q: ";
-        question = [question stringByAppendingString:[NSData stringDecodeFromBase64String: [dict objectForKey:@"content"]]];
-        
-        CGSize constraint = CGSizeMake(220, 20000.0f);
-        CGSize size = [question sizeWithFont:[UIFont fontWithName:FONT_NAME size:10.0f] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-        
-        y += size.height + CELL_CONTENT_MARGIN_TOP;
-    }
-
-    
-    //Claps_commnets
-    y += 26;
-    if (y < 106) {
-        y =106;
-    }
-    return y;
-}
-#pragma mark - TableView Delegate
-
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self.navigationController pushViewController: [[Q_AViewController alloc] init] animated:YES];
-}
-
-
-#pragma mark - implement
-
-- (void) updateButtonSelected
-{
-    if (currentButton == _leftButton) {
-        [_leftButton setBackgroundImage:[UIImage imageNamed:@"leftPressed.png"]  forState:UIControlStateNormal];
-        [_rightButton setBackgroundImage:[UIImage imageNamed:@"rightUnPress.png"] forState:UIControlStateNormal];
-        q_aType = Q_ALastestAnswer;
-    }else
-    {
-        //rightButton
-        [_leftButton setBackgroundImage:[UIImage imageNamed:@"leftUnPress.png"]  forState:UIControlStateNormal];
-        [_rightButton setBackgroundImage:[UIImage imageNamed:@"rightPressed.png"] forState:UIControlStateNormal];
-        q_aType = Q_APopularQuestion;
-    }
-//    set For first loading
-    [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"start_getLatestAnswert"];
-    [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"max_id_getLatestAnswer"];
-    [[NSUserDefaults standardUserDefaults] setValue:@"up" forKey:@"scroll"];
-    [listLastestAnswers removeAllObjects];
-    switch (q_aType) {
-        case Q_ALastestAnswer:
-            [mbpLastest showWhileExecuting:@selector(getLatestAnswer) onTarget:self withObject:nil animated:YES];
-            break;
-        case Q_APopularQuestion:
-            [mbpLastest showWhileExecuting:@selector(getPopularQuestion) onTarget:self withObject:nil animated:YES];
-            break;
-        default:
-            break;
-    }
-}
-
-- (UITableViewCell*) loadQ_ACellForTableView:(UITableView*)tableView AtIndexPath:(NSIndexPath*)indexPath
-{
-    static NSString *CellIdentifierQ_ACell = @"Q_ACellListLastestAnswer";
+    static NSString *CellIdentifierQ_ACell = @"Q_ACellListMostPupolar";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierQ_ACell];
     if (cell == nil) {
         NSArray *nib = nil;
@@ -280,21 +151,28 @@
         }
         cell = (UITableViewCell*)[nib objectAtIndex:0];
     }
-    NSDictionary *dict = [listLastestAnswers objectAtIndex:indexPath.row];
+    NSDictionary *dict = [listMyQ_A objectAtIndex:indexPath.row];
     if (![dict isKindOfClass:[NSDictionary class]]) {
         return cell;
     }
     @try {
         //Background
         UIView *backgroundView = [cell viewWithTag:100];
-        backgroundView.layer.cornerRadius = 5.0f;
+        backgroundView.layer.cornerRadius = 3.0f;
         
-    //    User
-        CredentialInfo *author = [[CredentialInfo alloc]initWithDictionary:[dict objectForKey:@"author"]];
+        //    User
+        //        CredentialInfo *author = [[CredentialInfo alloc]initWithDictionary:[dict objectForKey:@"author"]];
         UILabel *userName = (UILabel*)[cell viewWithTag:1];
-        userName.text = author.usernamePU;
+        userName.text = @"Views";
+        userName.frame = CGRectMake(0, 35, 80, 21);
         UIImageView *avatar = (UIImageView*)[cell viewWithTag:2];
-        [avatar setImageWithURL:[NSURL URLWithString:author.avatarUrl] placeholderImage:[UIImage imageNamed:@"user_default_thumb.png" ]];
+        //        [avatar setImageWithURL:[NSURL URLWithString:author.avatarUrl] placeholderImage:[UIImage imageNamed:@"user_default_thumb.png" ]];
+        avatar.hidden = YES;
+        
+        UILabel *lbTotalView = (UILabel*)[cell viewWithTag:9];
+        lbTotalView.hidden = NO;
+        lbTotalView.text = @"12345";
+        
         UILabel *created = (UILabel*)[cell viewWithTag:4];
         created.text =  [NSData stringDecodeFromBase64String: [dict objectForKey:@"created_on_lapseTime"]];
         
@@ -326,23 +204,25 @@
         y += frame.size.height + CELL_CONTENT_MARGIN_TOP;
         
         UILabel *lbAnswer = (UILabel*)[cell viewWithTag:7];
-        NSDictionary *dict_Answer = [dict objectForKey:@"answer"];
-        NSString *answer = @"A: ";
-        answer = [answer stringByAppendingString: [NSData stringDecodeFromBase64String:[dict_Answer objectForKey:@"content"]]];
-        lbAnswer.text = answer;
-        
-        size = [lbAnswer.text sizeWithFont:lbAnswer.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-        frame = lbAnswer.frame;
-        frame.size = size;
-        frame.origin.y = y;
-        lbAnswer.frame = frame;
-        y += frame.size.height + CELL_CONTENT_MARGIN_TOP;
+        lbAnswer.hidden = YES;
+        //
+        //        NSDictionary *dict_Answer = [dict objectForKey:@"answer"];
+        //        NSString *answer = @"A: ";
+        //        answer = [answer stringByAppendingString: [NSData stringDecodeFromBase64String:[dict_Answer objectForKey:@"content"]]];
+        //        lbAnswer.text = answer;
+        //
+        //        size = [lbAnswer.text sizeWithFont:lbAnswer.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+        //        frame = lbAnswer.frame;
+        //        frame.size = size;
+        //        frame.origin.y = y;
+        //        lbAnswer.frame = frame;
+        //        y += frame.size.height + CELL_CONTENT_MARGIN_TOP;
         
         //Claps_commnets
         UIView *aView = [cell viewWithTag:8];
-//        frame = aView.frame;
-//        frame.origin.y = y;
-//        aView.frame = frame;
+        //        frame = aView.frame;
+        //        frame.origin.y = y;
+        //        aView.frame = frame;
         [self setClapCommentForCell:[aView viewWithTag:1] withDict:dict];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
@@ -352,6 +232,147 @@
     }
     
     return cell;
+}
+
+
+- (float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    float heightForRow = 0;
+    if (_type == askQ_A) {
+        switch (indexPath.row) {
+            case 0:
+            case 1:
+                heightForRow = cCellHeight;
+                break;
+            case 2:
+                heightForRow = 125 + cCellHeight;
+                break;
+            default:
+                break;
+        }
+        return heightForRow;
+    }
+    NSDictionary *dict = [listMyQ_A objectAtIndex:indexPath.row];
+    if (![dict isKindOfClass:[NSDictionary class]]) {
+        return 0;
+    }
+    float y = 20.0f;
+    NSString *question = @"Q: ";
+    question = [question stringByAppendingString:[NSData stringDecodeFromBase64String: [dict objectForKey:@"content"]]];
+    
+    CGSize constraint = CGSizeMake(220, 20000.0f);
+    CGSize size = [question sizeWithFont:[UIFont fontWithName:FONT_NAME size:10.0f] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    
+    y += size.height + CELL_CONTENT_MARGIN_TOP;
+    
+    NSString *answerBy = [dict objectForKey:@"created"];
+    NSString *replies = [dict objectForKey:@"total_answer"];
+    NSString *cat_name = [NSData stringDecodeFromBase64String:[dict objectForKey:@"cat_name"]];
+    NSString *text = [NSString stringWithFormat:@"Answered by on %@ | %@ Replies \nCategogy: %@", answerBy, replies, cat_name];
+    
+    size = [text sizeWithFont:[UIFont fontWithName:FONT_NAME size:10.0f] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    y += size.height + CELL_CONTENT_MARGIN_TOP;
+    
+    //Claps_commnets
+    y += 26;
+    if (y < 106) {
+        y =106;
+    }
+    return y;
+}
+#pragma mark - TableView Delegate
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+}
+
+
+#pragma mark - implement
+
+- (UITableViewCell*) loadQ_AAskQCellForTableView:(UITableView*)tableView AtIndexPath:(NSIndexPath*)indexPath
+{
+    
+    if (indexPath.row <= 1) {
+        static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier1];
+            [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
+            [cell.textLabel setTextColor:[UIColor whiteColor]];
+            [cell.detailTextLabel setTextColor:[UIColor blackColor]];
+            [cell.detailTextLabel setNumberOfLines:2];
+            [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+            UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"accessoryView.png"] highlightedImage:[UIImage imageNamed:@"accessoryViewSelected.png"]];
+            imgView.tag = indexPath.row;
+            imgView.userInteractionEnabled = YES;
+            UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(accessoryClicked:)];;
+            gesture.numberOfTapsRequired = 1;
+            [imgView addGestureRecognizer:gesture];
+            [cell bringSubviewToFront:imgView];
+            [cell setAccessoryView:imgView];
+        }
+        NSString *text = @"";
+        switch (indexPath.row) {
+            case 0:
+                text = @"Select Category *";
+                break;
+            case 1:
+                text = @"Select Location";
+                break;
+            case 2:
+                text = @"Enter Your Question *";
+                break;
+            default:
+                text = @"";
+                break;
+        }
+        
+        cell.textLabel.text = text;
+        
+        NSString *textDetail = @"";
+        NSRange rang = [text rangeOfString:@"Category"];
+        if (rang.length) {
+            textDetail = [[NSUserDefaults standardUserDefaults] objectForKey:@"Category"];
+            if (!textDetail) {
+                textDetail = @"";
+            }
+        }
+        rang = [text rangeOfString:@"Location"];
+        if (rang.length) {
+            textDetail = [[NSUserDefaults standardUserDefaults] objectForKey:@"Location"];
+            if (!textDetail) {
+                textDetail = @"";
+            }
+        }
+        cell.detailTextLabel.text = textDetail;
+        [cell.detailTextLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
+        if ([cell.detailTextLabel.text isEqualToString:@"Any"] || [cell.detailTextLabel.text isEqualToString:@"Select One"] || [cell.detailTextLabel.text isEqualToString:@""]) {
+            UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+            if (accessoryView) {
+                accessoryView.image = [UIImage imageNamed:@"accessoryView.png"];
+                accessoryView.highlightedImage = [UIImage imageNamed:@"accessoryView.png"];
+                [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+            }
+            //cell.detailTextLabel.text = @"Any";
+        }
+        else
+        {
+            UIImageView *accessoryView = (UIImageView*)[cell accessoryView];
+            if (accessoryView) {
+                accessoryView.image = [UIImage imageNamed:@"eraseIcon.png"];
+                accessoryView.highlightedImage = [UIImage imageNamed:@"eraseIcon.png"];
+                [accessoryView setFrame:CGRectMake(0, 0, 30, 30)];
+                [cell bringSubviewToFront:accessoryView];
+            }
+        }
+        return cell;
+    }
+    
+    if (indexPath.row > 1) {
+        return _askQnCell;
+    }
+    return [[UITableViewCell alloc]init];
 }
 - (UITableViewCell*) loadQ_AMostPopularCellForTableView:(UITableView*)tableView AtIndexPath:(NSIndexPath*)indexPath
 {
@@ -367,7 +388,7 @@
         }
         cell = (UITableViewCell*)[nib objectAtIndex:0];
     }
-    NSDictionary *dict = [listLastestAnswers objectAtIndex:indexPath.row];
+    NSDictionary *dict = [listMyQ_A objectAtIndex:indexPath.row];
     if (![dict isKindOfClass:[NSDictionary class]]) {
         return cell;
     }
@@ -594,10 +615,10 @@
         type = @"room";
     }
     
-    if (listLastestAnswers.count <= indexPath.row) {
+    if (listMyQ_A.count <= indexPath.row) {
         return;
     }
-    NSDictionary *dict = [listLastestAnswers objectAtIndex:indexPath.row];
+    NSDictionary *dict = [listMyQ_A objectAtIndex:indexPath.row];
     
     paraNames = [NSArray arrayWithObjects:@"user_id", @"type", @"id", nil];
     paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], type, [dict objectForKey:@"id"], nil];
@@ -611,7 +632,7 @@
         [clap_info setValue:[NSString stringWithFormat:@"%d", totalClap] forKey:@"total_claps"];
         [clap_info setValue:[NSString stringWithFormat:@"%d", isClap] forKey:@"is_clap"];
         [dict setValue:clap_info forKey:@"clap_info"];
-        [listLastestAnswers replaceObjectAtIndex:indexPath.row withObject:dict];
+        [listMyQ_A replaceObjectAtIndex:indexPath.row withObject:dict];
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     @catch (NSException *exception) {
@@ -644,15 +665,23 @@
 
 #pragma mark PullTableView
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    if (_type == askQ_A) {
+        return;
+    }
     [_pullTableViewCtrl scrollViewWillBeginDragging:scrollView];
 }
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    
+    if (_type == askQ_A) {
+        return;
+    }
     [_pullTableViewCtrl scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (_type == askQ_A) {
+        return;
+    }
     if (isLoadData) {
         return;
     }
@@ -678,6 +707,9 @@
 }
 - (void) pullToUpdate
 {
+    if (_type == askQ_A) {
+        return;
+    }
     if (!loadingHideView) {
         loadingHideView = [[MBProgressHUD alloc]init];
         loadingHideView.hasBackground = NO;
@@ -713,12 +745,12 @@
     if (data.count) {
         NSString *scroll = [[NSUserDefaults standardUserDefaults] objectForKey:@"scroll"];
         if ([scroll isEqualToString:@"down"]) {
-            [listLastestAnswers addObjectsFromArray:data];
+            [listMyQ_A addObjectsFromArray:data];
         }else
         {
 //            NSIndexSet *indexSets = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, data.count)];
 //            [listLastestAnswers insertObjects:data atIndexes:indexSets];
-            listLastestAnswers = [[NSMutableArray alloc]initWithArray:data];
+            listMyQ_A = [[NSMutableArray alloc]initWithArray:data];
         }
         NSDictionary *dict = [data objectAtIndex:0];
         maxID = [dict objectForKey:@"max_id"];
@@ -728,9 +760,9 @@
     isLoadData = NO;
     [_tableView reloadData];
 }
-- (void) getLatestAnswer
+- (void) getMyQ_A
 {
-    //    getLatestAnswer($user_id, $type = "hdb", $start = 0, $limit = 0, $max_id = 0, $base64_image = false)
+//   myQA($user_id, $type, $limit = 0, $question_id = 0, $base64_image = false) 
     
     NSArray *data;
     NSString *functionName;
@@ -738,28 +770,59 @@
     NSArray *paraValues;
     
     NSString *type = @"hdb";
-    NSString *start = @"0";
-    NSString *maxID =@"0";
-    functionName = @"getLatestAnswer";
-    start = [[NSUserDefaults standardUserDefaults] objectForKey:@"start_getLatestAnswert"];
-    maxID =[[NSUserDefaults standardUserDefaults] objectForKey:@"max_id_getLatestAnswer"];
-    paraNames = [NSArray arrayWithObjects:@"user_id", @"type", @"start", @"limit", @"max_id", nil];
-    paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], type, start, @"5", maxID, nil];
+    NSString *question_id = [[NSUserDefaults standardUserDefaults]objectForKey:@"question_id"];
+    functionName = @"myQA";
+    if (! question_id) {
+        question_id = @"0";
+    }
+    paraNames = [NSArray arrayWithObjects:@"user_id", @"type", @"limit", @"question_id", nil];
+    paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], type, @"5", question_id, nil];
     
     data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
     if (data.count) {
-        NSString *scroll = [[NSUserDefaults standardUserDefaults] objectForKey:@"scroll"];
-        if ([scroll isEqualToString:@"down"]) {
-            [listLastestAnswers addObjectsFromArray:data];
+        if (listMyQ_A.count) {
+            [listMyQ_A addObjectsFromArray:data];
         }else
         {
-            //            NSIndexSet *indexSets = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, data.count)];
-            //            [listLastestAnswers insertObjects:data atIndexes:indexSets];
-            listLastestAnswers = [[NSMutableArray alloc]initWithArray:data];
+            listMyQ_A = [[NSMutableArray alloc]initWithArray:data];
         }
-        NSDictionary *dict = [data objectAtIndex:0];
-        maxID = [dict objectForKey:@"max_id"];
-        [[NSUserDefaults standardUserDefaults] setValue:maxID forKey:@"max_id_getLatestAnswer"];
+        NSDictionary *dict = [data lastObject];
+        question_id = [dict objectForKey:@"id"];
+        [[NSUserDefaults standardUserDefaults] setValue:question_id forKey:@"question_id"];
+    }
+    
+    isLoadData = NO;
+    [_tableView reloadData];
+}
+- (void) getMyQ_Aa
+{
+    //   myQA($user_id, $type, $limit = 0, $question_id = 0, $base64_image = false)
+    
+    NSArray *data;
+    NSString *functionName;
+    NSArray *paraNames;
+    NSArray *paraValues;
+    
+    NSString *type = @"hdb";
+    NSString *question_id = [[NSUserDefaults standardUserDefaults]objectForKey:@"question_id"];
+    functionName = @"myQA";
+    if (! question_id) {
+        question_id = @"0";
+    }
+    paraNames = [NSArray arrayWithObjects:@"user_id", @"type", @"limit", @"question_id", nil];
+    paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], type, @"5", question_id, nil];
+    
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+    if (data.count) {
+        if (listMyQ_A.count) {
+            [listMyQ_A addObjectsFromArray:data];
+        }else
+        {
+            listMyQ_A = [[NSMutableArray alloc]initWithArray:data];
+        }
+        NSDictionary *dict = [data lastObject];
+        question_id = [dict objectForKey:@"id"];
+        [[NSUserDefaults standardUserDefaults] setValue:question_id forKey:@"question_id"];
     }
     
     isLoadData = NO;
@@ -768,11 +831,8 @@
 - (void) addNewData
 {
     isLoadData = YES;
-    NSUserDefaults *database = [NSUserDefaults standardUserDefaults];
-    NSString *start = [NSString stringWithFormat:@"%d", 0];
-    [database setValue:start forKey:@"start_getLatestAnswert"];
-    [database setValue:@"up" forKey:@"scroll"];
-    [self getLatestAnswer];
+//    [listMyQ_A removeAllObjects];
+    [self getMyQ_A];
 //    [self.tableView reloadData];
     [self.pullTableViewCtrl performSelector:@selector(stopLoading)];
 }
@@ -781,11 +841,7 @@
 - (void) loadMoreData
 {
     isLoadData = YES;
-    NSUserDefaults *database = [NSUserDefaults standardUserDefaults];
-    NSString *start = [NSString stringWithFormat:@"%d", listLastestAnswers.count];
-    [database setValue:start forKey:@"start_getLatestAnswert"];
-    [database setValue:@"down" forKey:@"scroll"];
-    [self getLatestAnswer];
+    [self getMyQ_A];
 //    [self.tableView reloadData];
 }
 

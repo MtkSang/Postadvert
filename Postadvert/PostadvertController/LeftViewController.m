@@ -14,15 +14,6 @@
 #import "SubLeftViewController.h"
 #import "FlagViewController.h"
 #import "UIBarButtonItem+WEPopover.h"
-
-#import "LeftViewController.h"
-#import "SignInVwCtrl.h"
-#import "NewAccountVwCtrl.h"
-#import <QuartzCore/QuartzCore.h>
-#import "Constants.h"
-#import "SubLeftViewController.h"
-#import "FlagViewController.h"
-#import "UIBarButtonItem+WEPopover.h"
 #import "UserPAInfo.h"
 #import "Userprofile/UserProfileViewController.h"
 
@@ -211,6 +202,7 @@
             return listItemsFavorites.count;
             break;
         case 02:
+            return 1;
             return listItems.count;
             break;
         case 03:
@@ -294,8 +286,17 @@
     }
     //default
     if (indexPath.section == 2) {
-        cell.imageView.image = [listImages objectAtIndex:indexPath.row];
-        cell.textLabel.text = [listItems objectAtIndex:indexPath.row];
+        subLeftView = [[SubLeftViewController alloc] init];
+        //set title
+        //[nextSideController setTitle:[listItems objectAtIndex:indexPath.row]];
+        [subLeftView setItemName:[listItems objectAtIndex:1]];
+        //nextSideController.view.backgroundColor =[UIColor grayColor];
+        subLeftView.detailVw = detailVw;
+        subLeftView.listItems = [self getSubItem:1];
+        subLeftView.listImages = [self getSubImage:1];
+        [cell addSubview:subLeftView.view];
+//        cell.imageView.image = [listImages objectAtIndex:indexPath.row];
+//        cell.textLabel.text = [listItems objectAtIndex:indexPath.row];
         return cell;
     }
     //Settings
@@ -352,6 +353,9 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == 2) {
+        return subLeftView.listItems.count * cCellHeight;
+    }
     return cCellHeight;
 }
 //- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {

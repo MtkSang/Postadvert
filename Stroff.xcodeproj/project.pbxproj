@@ -19,7 +19,12 @@
 		D403B128178C0679001FA0BF /* HDB_Search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D403B11E178C0679001FA0BF /* HDB_Search@2x.png */; };
 		D405001817321BEE00B3DF61 /* hdb_post_validate_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = D405001617321BEE00B3DF61 /* hdb_post_validate_normal.png */; };
 		D405001917321BEE00B3DF61 /* hdb_post_validate_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D405001717321BEE00B3DF61 /* hdb_post_validate_normal@2x.png */; };
+		D4069D0F17B1D4C1008CB587 /* BG_My-Q&A.png in Resources */ = {isa = PBXBuildFile; fileRef = D4069D0D17B1D4C1008CB587 /* BG_My-Q&A.png */; };
+		D4069D1017B1D4C1008CB587 /* BG_My-Q&A@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4069D0E17B1D4C1008CB587 /* BG_My-Q&A@2x.png */; };
+		D4069D1617B1E30E008CB587 /* UILable_Margin.m in Sources */ = {isa = PBXBuildFile; fileRef = D4069D1517B1E30E008CB587 /* UILable_Margin.m */; };
 		D408AAE31740A78600E05C63 /* HDBListResultCell1ListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D408AAE21740A78600E05C63 /* HDBListResultCell1ListView.xib */; };
+		D40B4A5D17AFBB1500570119 /* MyQ_AViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D40B4A5A17AFBB1400570119 /* MyQ_AViewController.m */; };
+		D40B4A5E17AFBB1500570119 /* MyQ_AViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D40B4A5C17AFBB1500570119 /* MyQ_AViewController.xib */; };
 		D40DFD6D1688557D002FF3F9 /* allDay_icon_uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = D40DFD6B1688557D002FF3F9 /* allDay_icon_uncheck.png */; };
 		D40DFD6E1688557D002FF3F9 /* allDay_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D40DFD6C1688557D002FF3F9 /* allDay_icon.png */; };
 		D4101AD3179ED30C00BBC473 /* Commercial_Search.png in Resources */ = {isa = PBXBuildFile; fileRef = D4101AD1179ED30C00BBC473 /* Commercial_Search.png */; };
@@ -713,7 +718,14 @@
 		D403B11E178C0679001FA0BF /* HDB_Search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HDB_Search@2x.png"; sourceTree = "<group>"; };
 		D405001617321BEE00B3DF61 /* hdb_post_validate_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hdb_post_validate_normal.png; sourceTree = "<group>"; };
 		D405001717321BEE00B3DF61 /* hdb_post_validate_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hdb_post_validate_normal@2x.png"; sourceTree = "<group>"; };
+		D4069D0D17B1D4C1008CB587 /* BG_My-Q&A.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BG_My-Q&A.png"; sourceTree = "<group>"; };
+		D4069D0E17B1D4C1008CB587 /* BG_My-Q&A@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BG_My-Q&A@2x.png"; sourceTree = "<group>"; };
+		D4069D1417B1E30E008CB587 /* UILable_Margin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UILable_Margin.h; sourceTree = "<group>"; };
+		D4069D1517B1E30E008CB587 /* UILable_Margin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UILable_Margin.m; sourceTree = "<group>"; };
 		D408AAE21740A78600E05C63 /* HDBListResultCell1ListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HDBListResultCell1ListView.xib; sourceTree = "<group>"; };
+		D40B4A5A17AFBB1400570119 /* MyQ_AViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyQ_AViewController.m; sourceTree = "<group>"; };
+		D40B4A5B17AFBB1400570119 /* MyQ_AViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyQ_AViewController.h; sourceTree = "<group>"; };
+		D40B4A5C17AFBB1500570119 /* MyQ_AViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyQ_AViewController.xib; sourceTree = "<group>"; };
 		D40DFD6B1688557D002FF3F9 /* allDay_icon_uncheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = allDay_icon_uncheck.png; sourceTree = "<group>"; };
 		D40DFD6C1688557D002FF3F9 /* allDay_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = allDay_icon.png; sourceTree = "<group>"; };
 		D4101AD1179ED30C00BBC473 /* Commercial_Search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Commercial_Search.png; sourceTree = "<group>"; };
@@ -1617,6 +1629,11 @@
 		D4145431178F15830046C359 /* Q&A */ = {
 			isa = PBXGroup;
 			children = (
+				D4069D0D17B1D4C1008CB587 /* BG_My-Q&A.png */,
+				D4069D0E17B1D4C1008CB587 /* BG_My-Q&A@2x.png */,
+				D40B4A5B17AFBB1400570119 /* MyQ_AViewController.h */,
+				D40B4A5A17AFBB1400570119 /* MyQ_AViewController.m */,
+				D40B4A5C17AFBB1500570119 /* MyQ_AViewController.xib */,
 				D4145432178F15AA0046C359 /* Q_AViewController.h */,
 				D4145433178F15AA0046C359 /* Q_AViewController.m */,
 				D4145434178F15AA0046C359 /* Q_AViewController.xib */,
@@ -2979,6 +2996,8 @@
 				FAA902D915E39222009D9DD6 /* OHAttributedLabel.m */,
 				FAA902DD15E39285009D9DD6 /* UILabel+RectForLetter.h */,
 				FAA902DE15E39285009D9DD6 /* UILabel+RectForLetter.m */,
+				D4069D1417B1E30E008CB587 /* UILable_Margin.h */,
+				D4069D1517B1E30E008CB587 /* UILable_Margin.m */,
 			);
 			path = "Label tool";
 			sourceTree = "<group>";
@@ -3626,6 +3645,9 @@
 				D413A77817951E16008EF92B /* Q_ACellList.xib in Resources */,
 				D4101AD3179ED30C00BBC473 /* Commercial_Search.png in Resources */,
 				D4101AD4179ED30C00BBC473 /* Commercial_Search@2x.png in Resources */,
+				D40B4A5E17AFBB1500570119 /* MyQ_AViewController.xib in Resources */,
+				D4069D0F17B1D4C1008CB587 /* BG_My-Q&A.png in Resources */,
+				D4069D1017B1D4C1008CB587 /* BG_My-Q&A@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3836,6 +3858,8 @@
 				D4FE7049178A809C00DF8B5F /* HDBSubItemImageCollectionViewCell.m in Sources */,
 				D4145435178F15AA0046C359 /* Q_AViewController.m in Sources */,
 				D413A77B179533CC008EF92B /* Q_ACellList.m in Sources */,
+				D40B4A5D17AFBB1500570119 /* MyQ_AViewController.m in Sources */,
+				D4069D1617B1E30E008CB587 /* UILable_Margin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

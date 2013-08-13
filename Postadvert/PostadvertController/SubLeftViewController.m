@@ -224,7 +224,7 @@
         [labelNum setTag:1];
         [cell.contentView addSubview:labelNum];
     }
-    if (!isload) {
+    if (!isload && listNums.count > indexPath.section) {
         NSInteger value = [(NSNumber*)[listNums objectAtIndex:indexPath.section]intValue ];
         if (value >= 0) {
             labelNum.hidden = NO;

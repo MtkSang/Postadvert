@@ -5,6 +5,7 @@
 #import <UIKit/UIKit.h>
 #import "WEPopoverController.h"
 @class DetailViewController;
+@class SubLeftViewController;
 @interface LeftViewController : UIViewController<WEPopoverControllerDelegate, UIPopoverControllerDelegate, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate>
 
 {
@@ -16,6 +17,7 @@
     BOOL isHideSideBar;
     CGPoint previousPoint;
     NSArray *appSettings;
+    SubLeftViewController *subLeftView;
 }
 @property (nonatomic, strong) UIView             *overlay;
 @property (nonatomic, strong) NSMutableArray     *listItems;

@@ -9,12 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "PullRefreshTableViewController.h"
 @class MBProgressHUD;
+@class MyQ_AViewController;
 enum Q_AType {
     Q_ALastestAnswer = 0,
     Q_APopularQuestion = 1
 }; 
 
-@interface Q_AViewController :  UIViewController<UITableViewDataSource, UITableViewDelegate, PullRefreshTableViewControllerDelegate, UITabBarDelegate>
+@interface Q_AViewController :  UIViewController<UITableViewDataSource, UITableViewDelegate, UITabBarDelegate>
 {
     MBProgressHUD *hud;
     UIButton *currentButton;
@@ -24,9 +25,11 @@ enum Q_AType {
     MBProgressHUD *loadingHideView;
     enum Q_AType q_aType;
     MBProgressHUD *mbpLastest;
+    
+    MyQ_AViewController *myQ_A;
 }
 @property (strong, nonatomic) NSString *itemName;
-@property (nonatomic, weak) UINavigationController *navigationController;
+@property (nonatomic, strong) UINavigationController *navigationController;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *lbTitle;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
