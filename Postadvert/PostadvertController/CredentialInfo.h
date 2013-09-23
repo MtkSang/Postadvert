@@ -110,6 +110,7 @@
 - (long) getRegistrationId;
 - (NSString*) getUserNamePU;
 - (NSString*) getPwdNamePU;
+- (NSString*) getRegistrationIDString;
 - (int)getAge;
 
 @end

@@ -143,6 +143,8 @@
             return @"Room Type";
         case DCAOptionRoomsAttachedBathroom:
             return @"Attached Bathroom";
+        case DCAOptionQAAskQn:
+            return @"Category";
         default:
             return @"";
             break;

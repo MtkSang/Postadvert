@@ -16,6 +16,7 @@
 #import "UIBarButtonItem+WEPopover.h"
 #import "UserPAInfo.h"
 #import "Userprofile/UserProfileViewController.h"
+#import "HDBSubItemsViewController.h"
 
 @interface LeftViewController ()
 - (NSMutableArray*) getSubItem:(NSInteger) index;
@@ -83,6 +84,8 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disableScrollTable) name:@"disableScrollTable" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enableScrollTable) name:@"enableScrollTable" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationForReloadLeftView) name:@"notificationForReloadLeftView" object:nil];
     // Do any additional setup after loading the view from its nib.
     //[self.view addSubview:[self drawPostAdvertTopMenu]];
     menuView = [self drawPostAdvertTopMenu];
@@ -118,6 +121,15 @@
     //[self.navigationController.navigationBar addGestureRecognizer:[self addGesture:self]];
     
     //[self.tableView addGestureRecognizer:[self addSwipeGesture:self]];
+    
+    subLeftView = [[SubLeftViewController alloc] init];
+    //set title
+    //[nextSideController setTitle:[listItems objectAtIndex:indexPath.row]];
+    [subLeftView setItemName:[listItems objectAtIndex:1]];
+    //nextSideController.view.backgroundColor =[UIColor grayColor];
+    subLeftView.detailVw = detailVw;
+    subLeftView.listItems = [self getSubItem:1];
+    subLeftView.listImages = [self getSubImage:1];
 }
 - (void)viewWillAppear:(BOOL)animated{
     if( self.navigationController.viewControllers.count < 02)
@@ -202,8 +214,8 @@
             return listItemsFavorites.count;
             break;
         case 02:
-            return 1;
-            return listItems.count;
+            return subLeftView.listItems.count;
+//            return listItems.count;
             break;
         case 03:
             return appSettings.count;
@@ -286,17 +298,24 @@
     }
     //default
     if (indexPath.section == 2) {
-        subLeftView = [[SubLeftViewController alloc] init];
-        //set title
-        //[nextSideController setTitle:[listItems objectAtIndex:indexPath.row]];
-        [subLeftView setItemName:[listItems objectAtIndex:1]];
-        //nextSideController.view.backgroundColor =[UIColor grayColor];
-        subLeftView.detailVw = detailVw;
-        subLeftView.listItems = [self getSubItem:1];
-        subLeftView.listImages = [self getSubImage:1];
-        [cell addSubview:subLeftView.view];
-//        cell.imageView.image = [listImages objectAtIndex:indexPath.row];
-//        cell.textLabel.text = [listItems objectAtIndex:indexPath.row];
+//        cell = nil;
+//        static NSString *CellForProperty = @"CellForProperty";
+//        
+//        UITableViewCell *cell ;
+//        cell = [tableView dequeueReusableCellWithIdentifier:CellForProperty];
+//        if (cell == nil) {
+//            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellForProperty];
+//            subLeftView.view.tag = 1;
+//            [cell addSubview:subLeftView.view];
+//        }
+//        if (![cell viewWithTag:1]) {
+//            subLeftView.view.tag = 1;
+//            [subLeftView.view removeFromSuperview];
+//            [cell addSubview:subLeftView.view];
+//        }
+        
+        cell.imageView.image = [subLeftView.listImages objectAtIndex:indexPath.row];
+        cell.textLabel.text = [subLeftView.listItems objectAtIndex:indexPath.row];
         return cell;
     }
     //Settings
@@ -334,7 +353,7 @@
         headerLabel.text = @"FAVORITES";
     }
     if (section == 2) {
-        headerLabel.text = @"E-COMMERCE & DISCUSSIONS";
+        headerLabel.text = @"PROPERTY & DISCUSSIONS";
     }
 	[customView addSubview:headerLabel];
     
@@ -353,9 +372,6 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 2) {
-        return subLeftView.listItems.count * cCellHeight;
-    }
     return cCellHeight;
 }
 //- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -409,18 +425,31 @@
         if (menuView.superview) {
             [menuView removeFromSuperview];
         }
-        
-        SubLeftViewController *nextSideController = [[SubLeftViewController alloc] init];
-        //set title
-        //[nextSideController setTitle:[listItems objectAtIndex:indexPath.row]];
-        [nextSideController setItemName:[listItems objectAtIndex:indexPath.row]];
-        //nextSideController.view.backgroundColor =[UIColor grayColor];
-        nextSideController.detailVw = detailVw;
-        nextSideController.listItems = [self getSubItem:indexPath.row];
-        nextSideController.listImages = [self getSubImage:indexPath.row];
-        //[nextSideController getSubNums];
-        [self.navigationController pushViewController:nextSideController animated:YES];
-        nextSideController.navigationController.navigationBarHidden = NO;
+        if (indexPath.row == 5) {
+            NSDictionary *dict = [NSDictionary dictionaryWithObject:[subLeftView.listItems objectAtIndex:indexPath.row] forKey:@"itemName"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"showDetailFromSubView" object:nil userInfo:dict];
+            return;
+        }
+        HDBSubItemsViewController *subItems = [[HDBSubItemsViewController alloc]initWithItems:nil];
+        [subItems setupForItemName:[subLeftView.listItems objectAtIndex:indexPath.row]];
+        [subItems setTitle:[subLeftView.listItems objectAtIndex:indexPath.row]];
+        [self.navigationController pushViewController:subItems animated:YES];
+        subItems.navigationController.navigationBarHidden = NO;
+//        if (menuView.superview) {
+//            [menuView removeFromSuperview];
+//        }
+//
+//        SubLeftViewController *nextSideController = [[SubLeftViewController alloc] init];
+//        //set title
+//        //[nextSideController setTitle:[listItems objectAtIndex:indexPath.row]];
+//        [nextSideController setItemName:[listItems objectAtIndex:indexPath.row]];
+//        //nextSideController.view.backgroundColor =[UIColor grayColor];
+//        nextSideController.detailVw = detailVw;
+//        nextSideController.listItems = [self getSubItem:indexPath.row];
+//        nextSideController.listImages = [self getSubImage:indexPath.row];
+//        //[nextSideController getSubNums];
+//        [self.navigationController pushViewController:nextSideController animated:YES];
+//        nextSideController.navigationController.navigationBarHidden = NO;
     }
     if (indexPath.section == 3) {
         if (indexPath.row == 1) {
@@ -648,147 +677,147 @@
 
 - (NSMutableArray*) getSubItem:(NSInteger)index
 {
-    NSMutableArray *subItem = [[NSMutableArray alloc] init];
+    NSMutableArray *subItems = [[NSMutableArray alloc] init];
     switch (index) {
         case 0:
-            [subItem addObject:@"Blogshop Xpress"];
+            [subItems addObject:@"Blogshop Xpress"];
             break;
         case 1:
-            [subItem addObject:@"HDB"];
-            [subItem addObject:@"Condos"];
-            [subItem addObject:@"Landed Property"];
-            [subItem addObject:@"Rooms For Rent"];
-            [subItem addObject:@"Commercial"];
-            [subItem addObject:@"Co-Broke Xpress"];
+            [subItems addObject:@"HDB"];
+            [subItems addObject:@"Condos"];
+            [subItems addObject:@"Landed Property"];
+            [subItems addObject:@"Rooms For Rent"];
+            [subItems addObject:@"Commercial"];
+            [subItems addObject:@"Co-Broke Xpress"];
             break;
         case 2:
-            [subItem addObject:@"Mobile Xpress"];
-            [subItem addObject:@"Tech Xchange"];
+            [subItems addObject:@"Mobile Xpress"];
+            [subItems addObject:@"Tech Xchange"];
             break;
         case 3:
-            [subItem addObject:@"Cars Xpress"];
-            [subItem addObject:@"Cars Xchange"];
+            [subItems addObject:@"Cars Xpress"];
+            [subItems addObject:@"Cars Xchange"];
             break;
         case 4:
-            [subItem addObject:@"Pets Xpress"];
-            [subItem addObject:@"Pets Xchange"];
+            [subItems addObject:@"Pets Xpress"];
+            [subItems addObject:@"Pets Xchange"];
             break;
         case 5:
-            [subItem addObject:@"Jobs Xpress"];
-            [subItem addObject:@"Freelance Jobs"];
-            [subItem addObject:@"Bid for Tasks"];
+            [subItems addObject:@"Jobs Xpress"];
+            [subItems addObject:@"Freelance Jobs"];
+            [subItems addObject:@"Bid for Tasks"];
             break;
         case 6:
-            [subItem addObject:@"StartUp Jobs"];
-            [subItem addObject:@"Business Xchange"];
+            [subItems addObject:@"StartUp Jobs"];
+            [subItems addObject:@"Business Xchange"];
             break;
         case 7:
-            [subItem addObject:@"Travel Xchange"];
+            [subItems addObject:@"Travel Xchange"];
             break;
         case 8:
-            [subItem addObject:@"Sports Xchange"];
+            [subItems addObject:@"Sports Xchange"];
             break;
             
         default:
             break;
     }
     
-    return subItem;
+    return subItems;
 }
 
 - (NSMutableArray*) getSubImage:(NSInteger)index
 {
-    NSMutableArray *subItem = [[NSMutableArray alloc] init];
+    NSMutableArray *subItems = [[NSMutableArray alloc] init];
     switch (index) {
         case 0:
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
+            [subItems addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
             break;
         case 1:
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
+            [subItems addObject:[UIImage imageNamed:@"icon_HDB.png"]];
+            [subItems addObject:[UIImage imageNamed:@"icon_Condos.png"]];
+            [subItems addObject:[UIImage imageNamed:@"icon_Landed-Property.png"]];
+            [subItems addObject:[UIImage imageNamed:@"icon_Rooms.png"]];
+            [subItems addObject:[UIImage imageNamed:@"icon_Commercial.png"]];
+            [subItems addObject:[UIImage imageNamed:@"icon_Co-Broke-Xpress.png"]];
             break;
         case 2:
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
+            [subItems addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
+            [subItems addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
             break;
         case 3:
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
+            [subItems addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
+            [subItems addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
             break;
         case 4:
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
+            [subItems addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
+            [subItems addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
             break;
         case 5:
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
+            [subItems addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
+            [subItems addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
+            [subItems addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
             break;
         case 6:
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
+            [subItems addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
+            [subItems addObject:[UIImage imageNamed:@"sub_icon_2.png"]];
             break;
         case 7:
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
+            [subItems addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
             break;
         case 8:
-            [subItem addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
+            [subItems addObject:[UIImage imageNamed:@"sub_icon_1.png"]];
             break;
             
         default:
             break;
     }
     
-    return subItem;
+    return subItems;
 }
 
 
 - (NSMutableArray*) getSubNum:(NSInteger)index
 {
-    NSMutableArray *subItem = [[NSMutableArray alloc] init];
+    NSMutableArray *subItems = [[NSMutableArray alloc] init];
     switch (index) {
         case 0:
-            [subItem addObject:[NSNumber numberWithInt:rand()%1000]];
+            [subItems addObject:[NSNumber numberWithInt:rand()%1000]];
             break;
         case 1:
-            [subItem addObject:[NSNumber numberWithInt:rand()%1000]];
-            [subItem addObject:[NSNumber numberWithInt:rand()%1000]];
+            [subItems addObject:[NSNumber numberWithInt:rand()%1000]];
+            [subItems addObject:[NSNumber numberWithInt:rand()%1000]];
             break;
         case 2:
-            [subItem addObject:[NSNumber numberWithInt:rand()%1000]];
-            [subItem addObject:[NSNumber numberWithInt:rand()%1000]];
+            [subItems addObject:[NSNumber numberWithInt:rand()%1000]];
+            [subItems addObject:[NSNumber numberWithInt:rand()%1000]];
             break;
         case 3:
-            [subItem addObject:[NSNumber numberWithInt:rand()%1000]];
-            [subItem addObject:[NSNumber numberWithInt:rand()%1000]];
+            [subItems addObject:[NSNumber numberWithInt:rand()%1000]];
+            [subItems addObject:[NSNumber numberWithInt:rand()%1000]];
             break;
         case 4:
-            [subItem addObject:[NSNumber numberWithInt:rand()%1000]];
-            [subItem addObject:[NSNumber numberWithInt:rand()%1000]];
+            [subItems addObject:[NSNumber numberWithInt:rand()%1000]];
+            [subItems addObject:[NSNumber numberWithInt:rand()%1000]];
             break;
         case 5:
-            [subItem addObject:[NSNumber numberWithInt:rand()%1000]];
-            [subItem addObject:[NSNumber numberWithInt:rand()%1000]];
+            [subItems addObject:[NSNumber numberWithInt:rand()%1000]];
+            [subItems addObject:[NSNumber numberWithInt:rand()%1000]];
             break;
         case 6:
-            [subItem addObject:[NSNumber numberWithInt:rand()%1000]];
+            [subItems addObject:[NSNumber numberWithInt:rand()%1000]];
             break;
         case 7:
-            [subItem addObject:[NSNumber numberWithInt:rand()%1000]];
+            [subItems addObject:[NSNumber numberWithInt:rand()%1000]];
             break;
         case 8:
-            [subItem addObject:[NSNumber numberWithInt:rand()%1000]];
+            [subItems addObject:[NSNumber numberWithInt:rand()%1000]];
             break;
             
         default:
             break;
     }
     
-    return subItem;
+    return subItems;
 }
 
 - (void) getList
@@ -1141,6 +1170,14 @@
         return YES;
     }
     return NO;
+}
+
+- (void) notificationForReloadLeftView
+{
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:2];
+    [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    NSIndexSet *indexSet = [[NSIndexSet alloc]initWithIndex:3];
+    [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 @end

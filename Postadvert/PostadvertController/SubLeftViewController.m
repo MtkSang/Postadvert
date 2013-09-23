@@ -408,6 +408,8 @@
         [listSubMemus replaceObjectAtIndex:indexPath.section withObject:[NSNumber numberWithInt:1]];
         [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
     }
+    [self postNotificationReload];
+//    [self performSelector:@selector(postNotificationReload) withObject:nil afterDelay:1];
         //[self.tableView reloadData];
 //    [self.tableView reloadRowsAtIndexPaths:indexPathsNeedToReload withRowAnimation:UITableViewRowAnimationNone];
 }
@@ -566,4 +568,22 @@
     return NO;
 }
 
+- (CGSize) viewContentSize
+{
+    CGSize size = CGSizeZero;
+    size.width = self.view.frame.size.width;
+    float h = self.listItems.count * cCellHeight;
+    for (int i =0; i < listSubMemus.count; i++) {
+        NSNumber *num = [listSubMemus objectAtIndex:i];
+        if (num.intValue == 1) {
+            h += [subItem getSizeToFit].height;
+        }
+    }
+    size.height = h;
+    return size;
+}
+- (void) postNotificationReload
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"notificationForReloadLeftView" object:nil];
+}
 @end

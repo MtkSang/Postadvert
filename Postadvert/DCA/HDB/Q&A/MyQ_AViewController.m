@@ -16,6 +16,7 @@
 #import "NSData+Base64.h"
 #import "UILable_Margin.h"
 #import <QuartzCore/QuartzCore.h>
+#import "DCAOptionsViewController.h"
 
 #import "UIPlaceHolderTextView.h"
 @interface MyQ_AViewController ()
@@ -31,6 +32,18 @@
     if (self) {
         // Custom initialization
         _type = myQ_A;
+        listValues = [[NSMutableArray alloc]init];
+        
+    }
+    return self;
+}
+- (id) initForBrowseWithData:(id)data
+{
+    self = [super init];
+    if (self) {
+        _type = browseByCategory;
+        listValues = [[NSMutableArray alloc]initWithArray:data];
+        
     }
     return self;
 }
@@ -41,7 +54,15 @@
     if (rang.length) {
         _type = askQ_A;
     }
-    
+    rang = [self.itemBarName rangeOfString:@"Browse Q&A"];
+    if (rang.length) {
+        _type = browse;
+        dictBrowse = [[NSDictionary alloc]init];
+    }
+
+    if (_type == askQ_A) {
+        listValues = [[NSMutableArray alloc]initWithObjects:@"", @"", @"", nil];
+    }
     [super viewDidLoad];
     [_placeTextAskQn setPlaceholder:@"What would you like to ask ?"];
     listMyQ_A = [[NSMutableArray alloc]init];
@@ -70,6 +91,10 @@
     footerLoading.autoresizesSubviews = YES;
     footerView = nil;
     
+//    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(makeKeyboardGoAway:)];
+//    [self.view addGestureRecognizer:tapGesture];
+//    tapGesture = nil;
+    
 //    init for load new My Q_A
     [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"question_id"];
 
@@ -83,8 +108,8 @@
     if (_type == myQ_A) {
         [mbpLoadQ_A showWhileExecuting:@selector(getMyQ_A) onTarget:self withObject:nil animated:YES];
     }
-    if (_type == askQ_A) {
-        
+    if (_type == browse && ! dictBrowse.allKeys.count) {
+        [mbpLoadQ_A showWhileExecuting:@selector(getQABrowserValue) onTarget:self withObject:nil animated:YES];
     }
     
 }
@@ -105,7 +130,15 @@
 #pragma mark - Table view data source
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{    
+{
+    if (_type == browse) {
+        NSArray *headerTitles = [dictBrowse allKeys];
+        if (headerTitles.count > section) {
+            NSString *title = @"Browse Questions by ";
+            title = [title stringByAppendingString:[[headerTitles objectAtIndex:section] capitalizedString]];
+            return title;
+        }
+    }
     return nil;
 }
 
@@ -113,9 +146,15 @@
 {
     NSInteger numberOfseclection = 0;
     if (_type == myQ_A) {
-        numberOfseclection =1;
+        numberOfseclection = 1;
     }
     if (_type == askQ_A) {
+        numberOfseclection = 2;
+    }
+    if (_type == browse) {
+        numberOfseclection = dictBrowse.count;
+    }
+    if (_type == browseByCategory) {
         numberOfseclection = 1;
     }
     return numberOfseclection;
@@ -128,7 +167,29 @@
         numberOfRowsInSection = listMyQ_A.count;
     }
     if (_type == askQ_A) {
-        numberOfRowsInSection = 3;
+        if (section == 0) {
+            numberOfRowsInSection = 3;
+        }
+        else
+            numberOfRowsInSection = 1;
+
+    }
+    if (_type == browse) {
+        NSString *headerTitle = [[dictBrowse allKeys] objectAtIndex:section];//section
+        NSDictionary *aBrowse = [dictBrowse objectForKey:headerTitle];
+        NSArray *arrayTypeValue = [aBrowse allKeys];
+        NSString *value =@"";
+        for (NSString *object in arrayTypeValue) {
+            if ([object rangeOfString:@"array"].length) {
+                value = object;
+                break;
+            }
+        }
+        NSArray *arrayValue = [aBrowse objectForKey:value];
+        numberOfRowsInSection = arrayValue.count;
+    }
+    if (_type == browseByCategory) {
+        numberOfRowsInSection = listValues.count;
     }
     return numberOfRowsInSection;
 }
@@ -138,6 +199,12 @@
     
     if (_type == askQ_A) {
         return [self loadQ_AAskQCellForTableView:tableView AtIndexPath:indexPath];
+    }
+    if (_type == browse) {
+        return [self loadQ_ABrowseCellForTableView:tableView AtIndexPath:indexPath];
+    }
+    if (_type == browseByCategory) {
+        return [self loadQ_ABrowseByCellForTableView:tableView AtIndexPath:indexPath];
     }
     static NSString *CellIdentifierQ_ACell = @"Q_ACellListMostPupolar";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierQ_ACell];
@@ -252,7 +319,10 @@
         }
         return heightForRow;
     }
-    NSDictionary *dict = [listMyQ_A objectAtIndex:indexPath.row];
+    if (_type == browse) {
+        return cCellHeight;
+    }
+    NSDictionary *dict = [listValues objectAtIndex:indexPath.row];
     if (![dict isKindOfClass:[NSDictionary class]]) {
         return 0;
     }
@@ -284,13 +354,252 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self makeKeyboardGoAway:nil];
+    
+    if (_type == askQ_A) {
+        [self tableViewAskQn:tableView didSelectRowAtIndexPath:indexPath];
+    }
+    if (_type == browse) {
+        [mbpLoadQ_A showWhileExecuting:@selector(tableViewBrowseDidSelectRowAtIndexPath:) onTarget:self withObject:indexPath animated:YES];
+//        [self tableViewBrowse:tableView didSelectRowAtIndexPath:indexPath];
+    }
+}
+#pragma mark DCAPOptionViewController Delegate
+- (void) didSelectRowOfDCAOptionViewController:(DCAOptionsViewController *)dcaViewCtr
+{
+    if (dcaViewCtr.sourceType == DCAOptionQAAskQn) {
+        [listValues replaceObjectAtIndex:0 withObject:[dcaViewCtr.selectedValues objectAtIndex:0]];
+    }
+    if (dcaViewCtr.sourceType == DCAOptionsLocation) {
+        [listValues replaceObjectAtIndex:1 withObject:[dcaViewCtr.selectedValues objectAtIndex:0]];
+    }
+    
+    [dcaViewCtr.navigationController popViewControllerAnimated:YES];
+
+    [self.tableView reloadData];
+}
+
+#pragma mark - implement
+- (void) tableViewAskQn:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    NSRange rang = [cell.textLabel.text rangeOfString:@"Category"];
+    if (rang.length) {
+        if (!listCategoriesAskQ_A || listCategoriesAskQ_A.count < 1) {
+            [self AskQnLoadCategory];
+        }
+        if (listCategoriesAskQ_A.count < 1) {
+            return;
+        }
+        NSInteger selectedIndex = -1;
+        NSString *Category = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
+        NSMutableArray *listArray = [self simplDataFromArray:listCategoriesAskQ_A];
+        if (![Category isEqualToString:@"Any"]) {
+            selectedIndex = [listArray indexOfObject:Category];
+        }
+        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:listArray DCAOptionType:DCAOptionQAAskQn selectedIndex:selectedIndex];
+        dcaOptionViewCtr.delegate = self;
+        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+        return;
+    }
+    rang = [cell.textLabel.text rangeOfString:@"Location"];
+    if (rang.length) {
+        
+        if (!listLocationsAskQ_A) {
+            [self AskQnLoadLocation];
+        }
+        if (listLocationsAskQ_A.count < 1) {
+            return;
+        }
+        NSInteger selectedIndex = -1;
+        NSString *Category = [(UITableViewCell*)[tableView cellForRowAtIndexPath:indexPath] detailTextLabel].text;
+        NSMutableArray *listArray = [self simplDataFromArray:listLocationsAskQ_A];
+        if (![Category isEqualToString:@"Any"]) {
+            selectedIndex = [listArray indexOfObject:Category];
+        }
+        DCAOptionsViewController *dcaOptionViewCtr = [[DCAOptionsViewController alloc]initWithArray:listArray DCAOptionType:DCAOptionsLocation selectedIndex:selectedIndex];
+        dcaOptionViewCtr.delegate = self;
+        [self.navigationController pushViewController:dcaOptionViewCtr animated:YES];
+        return;
+    }
+}
+- (void) tableViewBrowseDidSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *text = @"";
+    NSString *headerTitle = [[dictBrowse allKeys] objectAtIndex:indexPath.section];//section
+    NSDictionary *aBrowse = [dictBrowse objectForKey:headerTitle];
+    NSArray *arrayTypeValue = [aBrowse allKeys];
+    NSString *value =@"";
+    for (NSString *object in arrayTypeValue) {
+        if ([object rangeOfString:@"value"].length) {
+            value = object;
+            break;
+        }
+    }
+    NSArray *arrayValue = [aBrowse objectForKey:value];
+    text = [arrayValue objectAtIndex:indexPath.row];
+    NSRange rang = [headerTitle rangeOfString:@"category"];
+    if (rang.length) {
+        [self getCategoryQuestionsWithId:text];
+    }
+    rang = [headerTitle rangeOfString:@"location"];
+    if (rang.length) {
+        
+    }
 }
 
 
-#pragma mark - implement
+- (void) getCategoryQuestionsWithId:(NSString*)cate_id
+{
+    
+    //getCategoryQuestions($user_id, $cate_id, $limit = 0, $question_id = 0, $base64_image = false)
+    NSArray *data;
+    NSString *functionName;
+    NSArray *paraNames;
+    NSArray *paraValues;
+    functionName = @"getCategoryQuestions";
+    paraNames = [NSArray arrayWithObjects:@"user_id",@"cate_id", @"limit",@"question_id", nil];
+    paraValues = [NSArray arrayWithObjects:[[UserPAInfo sharedUserPAInfo] getRegistrationIDString],cate_id, @"10",@"0",nil];
+    
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+    if (data.count) {
+        
+        [self performSelectorOnMainThread:@selector(showBrowseByCategoryWithData:) withObject:data waitUntilDone:NO];
+    }
+    
+}
+
+- (void) getLocationQuestionsWithId:(NSString*)location_id
+{
+    
+    //getLocationQuestions($user_id, $location_id, $limit = 0, $question_id = 0, $base64_image = false) 
+    NSArray *data;
+    NSString *functionName;
+    NSArray *paraNames;
+    NSArray *paraValues;
+    functionName = @"getLocationQuestions";
+    paraNames = [NSArray arrayWithObjects:@"user_id",@"cate_id", @"limit",@"question_id", nil];
+    paraValues = [NSArray arrayWithObjects:[[UserPAInfo sharedUserPAInfo] getRegistrationIDString],location_id, @"10",@"0",nil];
+    
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+    if (data.count) {
+        [self performSelectorOnMainThread:@selector(showBrowseByCategoryWithData:) withObject:data waitUntilDone:NO];
+    }
+    
+}
+
+- (void)showBrowseByCategoryWithData:(id)data
+{
+    browseView = [[MyQ_AViewController alloc]initForBrowseWithData:data];
+    browseView.navigationController = self.navigationController;
+    [_navigationController pushViewController:browseView animated:YES];
+}
+- (IBAction)makeKeyboardGoAway:(id)sender
+{
+    if ([_placeTextAskQn isFirstResponder]) {
+            [_placeTextAskQn resignFirstResponder];
+        [listValues replaceObjectAtIndex:2 withObject:_placeTextAskQn.text];
+    }
+
+}
+
+- (NSMutableArray*) AskQnLoadCategory
+{
+    listCategoriesAskQ_A = [[NSMutableArray alloc]init];
+    NSArray *data;
+    NSString *functionName;
+    NSArray *paraNames;
+    NSArray *paraValues;
+//    getQACategories($dca_type, $from = "app")
+    NSString *type = @"hdb";
+    functionName = @"getQACategories";
+    paraNames = [NSArray arrayWithObjects:@"dca_type", nil];
+    paraValues = [NSArray arrayWithObjects:type, nil];
+    
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+    if (data.count) {
+        listCategoriesAskQ_A = nil;
+        listCategoriesAskQ_A = [[NSMutableArray alloc]initWithArray:data];
+    }
+
+    return listCategoriesAskQ_A;
+}
+- (NSMutableArray*) simplDataFromArray:(NSArray*)inputArray
+{
+    NSMutableArray *mutiArray = [[NSMutableArray alloc]init];
+    for (NSDictionary *dict in inputArray) {
+        if ([dict isKindOfClass:[NSDictionary class]]) {
+            NSString *value = [dict objectForKey:@"title"];
+            if (!value) {
+                value = @"";
+            }
+            value = [NSData stringDecodeFromBase64String:value];
+            [mutiArray addObject:value];
+        }
+    }
+    return mutiArray;
+}
+- (NSString*) getIDFromArray:(NSArray*)array WithValue:(NSString*)value
+{
+    NSString *strID = @"0";
+    for (NSDictionary *dict in array) {
+        if ([dict isKindOfClass:[NSDictionary class]]) {
+            NSString *str = [dict objectForKey:@"title"];
+            if (!str) {
+                str = @"";
+            }
+            str = [NSData stringDecodeFromBase64String:str];
+            if ([str isEqualToString:value]) {
+                strID = [dict objectForKey:@"id"];
+                break;
+            }
+        }
+    }
+    return strID;
+}
+- (NSMutableArray*) AskQnLoadLocation
+{
+    listLocationsAskQ_A = [[NSMutableArray alloc]init];
+    NSArray *data;
+    NSString *functionName;
+    NSArray *paraNames;
+    NSArray *paraValues;
+    //    getQALocations($dca_type, $from = "app")
+    NSString *type = @"hdb";
+    functionName = @"getQALocations";
+    paraNames = [NSArray arrayWithObjects:@"dca_type", nil];
+    paraValues = [NSArray arrayWithObjects:type, nil];
+    
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
+    if (data.count) {
+        listLocationsAskQ_A = nil;
+        listLocationsAskQ_A = [[NSMutableArray alloc]initWithArray:data];
+    }
+    
+    return listLocationsAskQ_A;
+}
 
 - (UITableViewCell*) loadQ_AAskQCellForTableView:(UITableView*)tableView AtIndexPath:(NSIndexPath*)indexPath
 {
+    if (indexPath.section == 1) {
+//        return BtnSubmit
+        static NSString *postQuestionBtn = @"CellPostQuestionBtn";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:postQuestionBtn];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:postQuestionBtn];
+            UIView *backgroundView = [[UIView alloc]init];
+            //[backgroundView setBackgroundColor:[UIColor colorWithRed:90.0/255 green:80.0/255 blue:65.5/255 alpha:1]];
+            [cell setBackgroundView:backgroundView];
+            
+            UIButton *btnSubmit = [[UIButton alloc]initWithFrame:CGRectMake(10, 0, 300, cCellHeight)];
+            btnSubmit.tag = 1;
+            [btnSubmit setBackgroundImage:[UIImage imageNamed:@"btnHDBUnormal.png"] forState:UIControlStateNormal];
+            [btnSubmit addTarget:self action:@selector(submitQuestion:) forControlEvents:UIControlEventTouchUpInside];
+            [btnSubmit setTitle:@"Post Question" forState:UIControlStateNormal];
+            [cell addSubview:btnSubmit];
+        }
+        return cell;
+    }
     
     if (indexPath.row <= 1) {
         static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
@@ -345,6 +654,7 @@
                 textDetail = @"";
             }
         }
+        textDetail = [listValues objectAtIndex:indexPath.row];
         cell.detailTextLabel.text = textDetail;
         [cell.detailTextLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE]];
         if ([cell.detailTextLabel.text isEqualToString:@"Any"] || [cell.detailTextLabel.text isEqualToString:@"Select One"] || [cell.detailTextLabel.text isEqualToString:@""]) {
@@ -374,6 +684,46 @@
     }
     return [[UITableViewCell alloc]init];
 }
+- (UITableViewCell*) loadQ_ABrowseCellForTableView:(UITableView*)tableView AtIndexPath:(NSIndexPath*)indexPath
+{
+    static NSString *CellForBrowseQA = @"CellForBrowseQA";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellForBrowseQA];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellForBrowseQA];
+        [cell.textLabel setFont:[UIFont fontWithName:FONT_NAME_BOLD size:FONT_SIZE]];
+        [cell.textLabel setTextColor:[UIColor whiteColor]];
+        [cell.detailTextLabel setTextColor:[UIColor blackColor]];
+        [cell.detailTextLabel setNumberOfLines:2];
+        [cell setBackgroundColor:[UIColor colorWithRed:140.0/255 green:204.0/255 blue:211.0/255 alpha:1]];
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"accessoryView.png"] highlightedImage:[UIImage imageNamed:@"accessoryViewSelected.png"]];
+        imgView.tag = indexPath.row;
+        imgView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(accessoryClicked:)];;
+        gesture.numberOfTapsRequired = 1;
+        [imgView addGestureRecognizer:gesture];
+        [cell bringSubviewToFront:imgView];
+        [cell setAccessoryView:imgView];
+    }
+    NSString *text = @"";
+    NSString *headerTitle = [[dictBrowse allKeys] objectAtIndex:indexPath.section];//section
+    NSDictionary *aBrowse = [dictBrowse objectForKey:headerTitle];
+    NSArray *arrayTypeValue = [aBrowse allKeys];
+    NSString *value =@"";
+    for (NSString *object in arrayTypeValue) {
+        if ([object rangeOfString:@"array"].length) {
+            value = object;
+            break;
+        }
+    }
+    NSArray *arrayValue = [aBrowse objectForKey:value];
+    text = [arrayValue objectAtIndex:indexPath.row];
+    text = [NSData stringDecodeFromBase64String:text];
+    cell.textLabel.text = text;
+    
+    return cell;
+}
+
 - (UITableViewCell*) loadQ_AMostPopularCellForTableView:(UITableView*)tableView AtIndexPath:(NSIndexPath*)indexPath
 {
     static NSString *CellIdentifierQ_ACell = @"Q_ACellListMostPupolar";
@@ -471,6 +821,101 @@
     return cell;
 }
 
+- (UITableViewCell*) loadQ_ABrowseByCellForTableView:(UITableView*)tableView AtIndexPath:(NSIndexPath*)indexPath
+{
+    static NSString *CellIdentifierQ_ACell = @"Q_ACellListMostPupolar";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierQ_ACell];
+    if (cell == nil) {
+        NSArray *nib = nil;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
+            nib = [[NSBundle mainBundle] loadNibNamed:@"Q_ACellList" owner:self options:nil];
+        }
+        else{
+            nib = [[NSBundle mainBundle] loadNibNamed:@"Q_ACellList" owner:self options:nil];
+        }
+        cell = (UITableViewCell*)[nib objectAtIndex:0];
+    }
+    NSDictionary *dict = [listValues objectAtIndex:indexPath.row];
+    if (![dict isKindOfClass:[NSDictionary class]]) {
+        return cell;
+    }
+    @try {
+        //Background
+        UIView *backgroundView = [cell viewWithTag:100];
+        backgroundView.layer.cornerRadius = 3.0f;
+        
+        //    User
+        CredentialInfo *author = [[CredentialInfo alloc]initWithDictionary:[dict objectForKey:@"author"]];
+        UILabel *userName = (UILabel*)[cell viewWithTag:1];
+        userName.text = author.usernamePU;
+        userName.frame = CGRectMake(0, 70, 80, 21);
+        UIImageView *avatar = (UIImageView*)[cell viewWithTag:2];
+        [avatar setImageWithURL:[NSURL URLWithString:author.avatarUrl] placeholderImage:[UIImage imageNamed:@"user_default_thumb.png" ]];
+        avatar.hidden = NO;
+        
+        UILabel *lbTotalView = (UILabel*)[cell viewWithTag:9];
+        lbTotalView.hidden = YES;
+        
+        UILabel *created = (UILabel*)[cell viewWithTag:4];
+        created.text =  [NSData stringDecodeFromBase64String: [dict objectForKey:@"created_on_lapseTime"]];
+        
+        UILabel *lbQuestion = (UILabel*)[cell viewWithTag:5];
+        NSString *question = @"Q: ";
+        question = [question stringByAppendingString:[NSData stringDecodeFromBase64String: [dict objectForKey:@"content"]]];
+        lbQuestion.text = question;
+        
+        CGRect frame;
+        float y = 20;
+        CGSize constraint = CGSizeMake(220, 20000.0f);
+        CGSize size = [question sizeWithFont:lbQuestion.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+        frame = lbQuestion.frame;
+        frame.size = size;
+        frame.origin.y = y;
+        lbQuestion.frame = frame;
+        y += frame.size.height + CELL_CONTENT_MARGIN_TOP;
+        UILabel *answerBy_catelogy = (UILabel*)[cell viewWithTag:6];
+        NSString *answerBy = [dict objectForKey:@"created"];
+        NSString *replies = [dict objectForKey:@"total_answer"];
+        NSString *cat_name = [NSData stringDecodeFromBase64String:[dict objectForKey:@"cat_name"]];
+        answerBy_catelogy.text = [NSString stringWithFormat:@"Answered by on %@ | %@ Replies \nCategogy: %@", answerBy, replies, cat_name];
+        
+        size = [answerBy_catelogy.text sizeWithFont:answerBy_catelogy.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+        frame = answerBy_catelogy.frame;
+        frame.size = size;
+        frame.origin.y = y;
+        answerBy_catelogy.frame = frame;
+        y += frame.size.height + CELL_CONTENT_MARGIN_TOP;
+        
+        UILabel *lbAnswer = (UILabel*)[cell viewWithTag:7];
+        lbAnswer.hidden = YES;
+        //
+        //        NSDictionary *dict_Answer = [dict objectForKey:@"answer"];
+        //        NSString *answer = @"A: ";
+        //        answer = [answer stringByAppendingString: [NSData stringDecodeFromBase64String:[dict_Answer objectForKey:@"content"]]];
+        //        lbAnswer.text = answer;
+        //
+        //        size = [lbAnswer.text sizeWithFont:lbAnswer.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+        //        frame = lbAnswer.frame;
+        //        frame.size = size;
+        //        frame.origin.y = y;
+        //        lbAnswer.frame = frame;
+        //        y += frame.size.height + CELL_CONTENT_MARGIN_TOP;
+        
+        //Claps_commnets
+        UIView *aView = [cell viewWithTag:8];
+        //        frame = aView.frame;
+        //        frame.origin.y = y;
+        //        aView.frame = frame;
+        [self setClapCommentForCell:[aView viewWithTag:1] withDict:dict];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    }
+    @catch (NSException *exception) {
+        return cell;
+    }
+    
+    return cell;
+}
 
 - (void) setClapCommentForCell:(UIView*)view withDict:(NSDictionary*)dict
 {
@@ -663,6 +1108,38 @@
 //    [self.navigationController pushViewController:detailViewCtr animated:YES];
 }
 
+- (void) submitQuestion:(id) sender
+{
+//    createQuestion($user_id, $cat_id, $location_id, $content, $base64_image = false)
+    if ([listValues[0] isEqualToString:@""] || listValues[0] == nil) {
+        [[PostadvertControllerV2 sharedPostadvertController]showAlertWithMessage:@"Please select Category" andTitle:@"Post Question"];
+        return;
+    }
+    NSString *content = listValues[2];
+    content = [content stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if ([content isEqualToString:@""] || content == nil) {
+        [[PostadvertControllerV2 sharedPostadvertController]showAlertWithMessage:@"Please enter your Question" andTitle:@"Post Question"];
+        return;
+    }
+    id data;
+    NSString *functionName;
+    NSArray *paraNames;
+    NSArray *paraValues;
+    NSString *cat_id;
+    NSString *location_id;
+    cat_id = [self getIDFromArray:listCategoriesAskQ_A WithValue:listValues[0]];
+    location_id = [self getIDFromArray:listLocationsAskQ_A WithValue:listValues[1]];
+    functionName = @"createQuestion";
+    paraNames = [NSArray arrayWithObjects:@"user_id", @"cat_id", @"location_id", @"content", nil];
+    paraValues = [NSArray arrayWithObjects:[[UserPAInfo sharedUserPAInfo]getRegistrationIDString], cat_id, location_id, listValues[2], nil];
+    data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName:functionName parametterName:paraNames parametterValue:paraValues];
+    
+    
+}
+- (void) tapAction
+{
+    [self.placeTextAskQn resignFirstResponder];
+}
 #pragma mark PullTableView
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     if (_type == askQ_A) {
@@ -794,35 +1271,28 @@
     isLoadData = NO;
     [_tableView reloadData];
 }
-- (void) getMyQ_Aa
+- (void) getQABrowserValue
 {
-    //   myQA($user_id, $type, $limit = 0, $question_id = 0, $base64_image = false)
+//    getQABrowserValue($dca_type)
     
-    NSArray *data;
+    id data;
     NSString *functionName;
     NSArray *paraNames;
     NSArray *paraValues;
     
     NSString *type = @"hdb";
     NSString *question_id = [[NSUserDefaults standardUserDefaults]objectForKey:@"question_id"];
-    functionName = @"myQA";
+    functionName = @"getQABrowserValue";
     if (! question_id) {
         question_id = @"0";
     }
-    paraNames = [NSArray arrayWithObjects:@"user_id", @"type", @"limit", @"question_id", nil];
-    paraValues = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%ld", [UserPAInfo sharedUserPAInfo].registrationID], type, @"5", question_id, nil];
+    paraNames = [NSArray arrayWithObjects:@"dca_type", nil];
+    paraValues = [NSArray arrayWithObjects:type, nil];
     
     data = [[PostadvertControllerV2 sharedPostadvertController] jsonObjectFromWebserviceWithFunctionName: functionName parametterName:paraNames parametterValue:paraValues];
-    if (data.count) {
-        if (listMyQ_A.count) {
-            [listMyQ_A addObjectsFromArray:data];
-        }else
-        {
-            listMyQ_A = [[NSMutableArray alloc]initWithArray:data];
-        }
-        NSDictionary *dict = [data lastObject];
-        question_id = [dict objectForKey:@"id"];
-        [[NSUserDefaults standardUserDefaults] setValue:question_id forKey:@"question_id"];
+    if ([data isKindOfClass:[NSDictionary class]]) {
+        dictBrowse = nil;
+        dictBrowse = [[NSDictionary alloc]initWithDictionary:data];
     }
     
     isLoadData = NO;

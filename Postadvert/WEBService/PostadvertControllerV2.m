@@ -453,7 +453,7 @@ static PostadvertControllerV2* _sharedMySingleton = nil;
     
     //NSLog(@"The request format is: \n%@",soapFormat);
     
-    NSURL *locationOfWebService = [NSURL URLWithString:@"http://stroff.com/ws/server_side/api.php?wsdl"];//http://jmobile.futureworkz.com.sg/fwz_service/fwz_server_wsdl.php?wsdl
+    NSURL *locationOfWebService = [NSURL URLWithString:@"http://www.stroff.com/ws/server_side/api.php?wsdl"];//http://jmobile.futureworkz.com.sg/fwz_service/fwz_server_wsdl.php?wsdl
     
     //NSLog(@"web url = %@",locationOfWebService);
     

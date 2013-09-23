@@ -28,7 +28,8 @@ enum DCAOptionsType {
     DCAOptionCondosTenure = 16,
     DCAOptionRoomsRoomType = 17,
     DCAOptionRoomsAttachedBathroom = 18,
-    DCAOptionsLocation = 20
+    DCAOptionsLocation = 20,
+    DCAOptionQAAskQn = 21
     
 };
 

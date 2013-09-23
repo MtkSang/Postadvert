@@ -6883,5 +6883,3001 @@
 			<string></string>
 		</array>
 	</dict>
+	<key>Commercial Search</key>
+	<dict>
+		<key>Sale</key>
+		<dict>
+			<key>Main Fields</key>
+			<array>
+				<string>Property Type</string>
+				<string>District</string>
+				<string>Price</string>
+				<string>Size</string>
+				<string>PSF</string>
+			</array>
+			<key>DefaultValues</key>
+			<array>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Select One</string>
+				<string>Select One</string>
+			</array>
+			<key>More Options</key>
+			<array>
+				<string>Ad Owner</string>
+				<string>Val&apos;n Price</string>
+				<string>Tenure</string>
+				<string>Constructed</string>
+				<string>Furnishing</string>
+				<string>Condition</string>
+			</array>
+			<key>Sort By</key>
+			<array>
+				<string>Date (new to old)</string>
+				<string>Date (old to new)</string>
+				<string>Price (low to high)</string>
+				<string>Price (high to low)</string>
+				<string>Size (low to high)</string>
+				<string>Size (high to low)</string>
+				<string>PSF (low to high)</string>
+				<string>PSF (high to low)</string>
+			</array>
+			<key>Sort By V2</key>
+			<array>
+				<string>Date - Descending</string>
+				<string>Date - Ascending</string>
+				<string>Price - Ascending</string>
+				<string>Price - Descending</string>
+				<string>Size - Ascending</string>
+				<string>Size - Descending</string>
+				<string>PSF - Ascending</string>
+				<string>PSF - Descending</string>
+			</array>
+			<key>Sort By V3</key>
+			<array>
+				<string>date_new</string>
+				<string>date_old</string>
+				<string>price_high</string>
+				<string>price_low</string>
+				<string>size_high</string>
+				<string>size_low</string>
+				<string>psf_high</string>
+				<string>psf_low</string>
+			</array>
+			<key>Filters</key>
+			<array>
+				<string>With Photos</string>
+				<string>With Videos</string>
+			</array>
+		</dict>
+		<key>Rent</key>
+		<dict>
+			<key>Main Fields</key>
+			<array>
+				<string>Property Type</string>
+				<string>District</string>
+				<string>Monthly Rental</string>
+				<string>Size</string>
+				<string>PSF</string>
+			</array>
+			<key>DefaultValues</key>
+			<array>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Any</string>
+				<string>Select One</string>
+				<string>Select One</string>
+			</array>
+			<key>More Options</key>
+			<array>
+				<string>Ad Owner</string>
+				<string>Lease Term</string>
+				<string>Tenure</string>
+				<string>Constructed</string>
+				<string>Furnishing</string>
+				<string>Condition</string>
+			</array>
+			<key>Sort By</key>
+			<array>
+				<string>Date (new to old)</string>
+				<string>Date (old to new)</string>
+				<string>Monthly Rental (low to high)</string>
+				<string>Monthly Rental (high to low)</string>
+				<string>Size (low to high)</string>
+				<string>Size (high to low)</string>
+				<string>PSF (low to high)</string>
+				<string>PSF (high to low)</string>
+			</array>
+			<key>Sort By V2</key>
+			<array>
+				<string>Date - Descending</string>
+				<string>Date - Ascending</string>
+				<string>Monthly Rental  - Ascending</string>
+				<string>Monthly Rental  - Descending</string>
+				<string>Size - Ascending</string>
+				<string>Size - Descending</string>
+				<string>PSF - Ascending</string>
+				<string>PSF - Descending</string>
+			</array>
+			<key>Sort By V3</key>
+			<array>
+				<string>date_new</string>
+				<string>date_old</string>
+				<string>price_high</string>
+				<string>price_low</string>
+				<string>size_high</string>
+				<string>size_low</string>
+				<string>psf_high</string>
+				<string>psf_low</string>
+			</array>
+			<key>Filters</key>
+			<array>
+				<string>With Photos</string>
+				<string>With Videos</string>
+			</array>
+		</dict>
+		<key>PropertyType</key>
+		<array>
+			<string>Studio Apt</string>
+			<string>1-Room HDB</string>
+			<string>2-Room HDB</string>
+			<string>3-Room HDB</string>
+			<string>4-Room HDB</string>
+			<string>5-Room HDB</string>
+			<string>DBSS Flats</string>
+			<string>Exec Flats</string>
+			<string>Exec Condos</string>
+			<string>Jumbo/Maisonette</string>
+		</array>
+		<key>HDBEstate</key>
+		<array>
+			<string>Ang Mo Kio</string>
+			<string>Bedok</string>
+			<string>Bishan</string>
+			<string>Bukit Batok</string>
+			<string>Bukit Merah</string>
+			<string>Bukit Panjang</string>
+			<string> Bukit Timah</string>
+			<string>Central Area</string>
+			<string>Choa Chu Kang</string>
+			<string>Clementi</string>
+			<string>Geylang</string>
+			<string>Hougang</string>
+			<string>Jurong East</string>
+			<string>Jurong West</string>
+			<string>Kallang/Whampoa</string>
+			<string>Lim Chu Kang</string>
+			<string>Marine Parade</string>
+			<string>Pasir Ris</string>
+			<string>Punggol</string>
+			<string>Queenstown</string>
+			<string>Sembawang</string>
+			<string>Sengkang</string>
+			<string>Serangoon</string>
+			<string>Simei</string>
+			<string>Tampines</string>
+			<string>Toa Payoh</string>
+			<string>Woodlands</string>
+			<string>Yio Chu Kang</string>
+			<string>Yishun</string>
+		</array>
+		<key>Price</key>
+		<array>
+			<string>S$ 200,000</string>
+			<string>S$ 300,000</string>
+			<string>S$ 400,000</string>
+			<string>S$ 500,000</string>
+			<string>S$ 600,000</string>
+			<string>S$ 700,000</string>
+			<string>S$ 800,000</string>
+			<string>S$ 900,000</string>
+			<string>S$ 1,000,000</string>
+			<string>S$ 1,250,000</string>
+			<string>S$1,500,000</string>
+			<string>S$ 2,000,000</string>
+			<string>S$ 2,500,000</string>
+			<string>S$ 3,000,000</string>
+			<string>S$ 4,000,000</string>
+			<string>S$ 5,000,000</string>
+			<string>S$ 6,000,000</string>
+			<string>S$ 8,000,000</string>
+			<string>S$ 9,000,000</string>
+		</array>
+		<key>Bedrooms</key>
+		<array>
+			<string>1 Bedroom</string>
+			<string>2 Bedrooms</string>
+			<string>3 Bedrooms</string>
+			<string>4 Bedrooms</string>
+			<string>5 Bedrooms</string>
+			<string>6 Bedrooms</string>
+			<string>7 Bedrooms</string>
+			<string>8 Bedrooms</string>
+			<string>9 Bedrooms</string>
+			<string>10+ Bedrooms</string>
+		</array>
+		<key>PSF</key>
+		<array>
+			<string>S$300</string>
+			<string>S$400</string>
+			<string>S$500</string>
+			<string>S$600</string>
+			<string>S$700</string>
+			<string>S$800</string>
+			<string>S$900</string>
+			<string>S$1,000</string>
+			<string>S$1,250</string>
+			<string>S$1,750</string>
+			<string>S$2,000</string>
+			<string>S$2,500</string>
+			<string>S$3,000</string>
+			<string>S$3,500</string>
+			<string>S$4,000</string>
+			<string>S$4,500</string>
+			<string>S$5,000</string>
+		</array>
+		<key>Size</key>
+		<array>
+			<string>500 sqft (46 sqm)</string>
+			<string>750 sqft (70 sqm)</string>
+			<string>1,000 sqft (93 sqm)</string>
+			<string>1,200 sqft (112 sqm)</string>
+			<string>1,500 sqft (139 sqm)</string>
+			<string>2,000 sqft (186 sqm)</string>
+			<string>2,500 sqft (232 sqm)</string>
+			<string>3,000 sqft (279 sqm)</string>
+			<string>4,000 sqft (372 sqm)</string>
+			<string>5,000 sqft (465 sqm)</string>
+			<string>7,500 sqft (697 sqm)</string>
+			<string>10,000 sqft ( 929 sqm)</string>
+		</array>
+		<key>SizeSqm</key>
+		<array>
+			<string>50 sqm (538 sqft)</string>
+			<string>70 sqm (753 sqft)</string>
+			<string>90 sqm (969 sqft)</string>
+			<string>100 sqm (1,076 sqft)</string>
+			<string>120 sqm (1,292 sqft)</string>
+			<string>150 sqm (1,615 sqft)</string>
+			<string>200 sqm (2,153 sqft)</string>
+			<string>250 sqm (2,691 sqft)</string>
+			<string>300 sqm (3,229 sqft)</string>
+			<string>400 sqm (4,306 sqft)</string>
+			<string>500 sqm (5,382 sqft)</string>
+			<string>700 sqm (7,535 sqft)</string>
+			<string>1,000 sqm (10,764 sqft)</string>
+		</array>
+		<key>AdOwner</key>
+		<array>
+			<string>Property Agent</string>
+			<string>Direct Owner</string>
+		</array>
+		<key>UnitLevel</key>
+		<array>
+			<string>Ground Level</string>
+			<string>Low Floor</string>
+			<string>Mid Floor</string>
+			<string>Hight Floor</string>
+			<string>Penthouse</string>
+		</array>
+		<key>Furnishing</key>
+		<array>
+			<string>Patial Furnishing</string>
+			<string>Fully Furnished</string>
+			<string>Not Furnished</string>
+		</array>
+		<key>Condition</key>
+		<array>
+			<string>Brand New</string>
+			<string>Original</string>
+			<string>Renovated</string>
+			<string>Newly</string>
+		</array>
+		<key>Washrooms</key>
+		<array>
+			<string>1 Washroom</string>
+			<string>2 Washrooms</string>
+			<string>3 Washrooms</string>
+			<string>4 Washrooms</string>
+			<string>5 Washrooms</string>
+			<string>6 Washrooms</string>
+			<string>7 Washrooms</string>
+			<string>8 Washrooms</string>
+			<string>9 Washrooms</string>
+			<string>10+ Washrooms</string>
+		</array>
+		<key>Constructed</key>
+		<array>
+			<string>1960</string>
+			<string>1961</string>
+			<string>1962</string>
+			<string>1963</string>
+			<string>1964</string>
+			<string>1965</string>
+			<string>1966</string>
+			<string>1967</string>
+			<string>1968</string>
+			<string>1969</string>
+			<string>1970</string>
+			<string>1971</string>
+			<string>1972</string>
+			<string>1973</string>
+			<string>1974</string>
+			<string>1975</string>
+			<string>1976</string>
+			<string>1977</string>
+			<string>1978</string>
+			<string>1979</string>
+			<string>1980</string>
+			<string>1981</string>
+			<string>1982</string>
+			<string>1983</string>
+			<string>1984</string>
+			<string>1985</string>
+			<string>1986</string>
+			<string>1987</string>
+			<string>1988</string>
+			<string>1989</string>
+			<string>1990</string>
+			<string>1991</string>
+			<string>1992</string>
+			<string>1993</string>
+			<string>1994</string>
+			<string>1995</string>
+			<string>1996</string>
+			<string>1997</string>
+			<string>1998</string>
+			<string>1999</string>
+			<string>2000</string>
+			<string>2001</string>
+			<string>2002</string>
+			<string>2003</string>
+			<string>2004</string>
+			<string>2005</string>
+			<string>2006</string>
+			<string>2007</string>
+			<string>2008</string>
+			<string>2009</string>
+			<string>2010</string>
+			<string>2011</string>
+			<string>2012</string>
+			<string>2013</string>
+			<string>2014</string>
+			<string>2015</string>
+			<string>2016</string>
+			<string>2016</string>
+			<string>2018</string>
+			<string>2019</string>
+			<string>2020</string>
+			<string>2021</string>
+			<string>2022</string>
+			<string>2023</string>
+			<string>2024</string>
+			<string>2025</string>
+			<string>2026</string>
+			<string>2027</string>
+			<string>2028</string>
+			<string>2029</string>
+			<string>2030</string>
+			<string>2031</string>
+			<string>2032</string>
+			<string>2033</string>
+			<string>2034</string>
+			<string>2035</string>
+			<string>2036</string>
+			<string>2037</string>
+			<string>2038</string>
+			<string>2039</string>
+			<string>2040</string>
+		</array>
+		<key>LeaseTerm</key>
+		<array>
+			<string>1 Month</string>
+			<string>2 Months</string>
+			<string>3 Months</string>
+			<string>4 Months</string>
+			<string>5 Months</string>
+			<string>6 Months</string>
+			<string>8 Months</string>
+			<string>10 Months</string>
+			<string>1 Year</string>
+			<string>1.5 Years</string>
+			<string>2 Years</string>
+			<string>2.5 Years</string>
+			<string>3 Years</string>
+			<string>3.5 Years</string>
+			<string>4 Years</string>
+			<string>4.5 Years</string>
+			<string>5 Years</string>
+		</array>
+		<key>OthersFeatures</key>
+		<array>
+			<string>Near Hawker Centre</string>
+			<string>Sea View</string>
+			<string>Breezy/Windy</string>
+			<string>Good Views</string>
+			<string>Near Bus Interchange</string>
+			<string>Near Good Schools</string>
+			<string>Near Market / Supermarket</string>
+			<string>Near Park / Resevoir</string>
+			<string>Greenery View</string>
+			<string>No Afternoon Sun</string>
+			<string>Near Shopping Mall</string>
+			<string>Near MRT</string>
+			<string>Corner Unit</string>
+			<string>Unblocked View</string>
+			<string>Morning Sun</string>
+		</array>
+		<key>PropertyStatus</key>
+		<array>
+			<string>For Sale</string>
+			<string>For Rent</string>
+		</array>
+		<key>Project Name</key>
+		<array>
+			<string>1919</string>
+			<string>1 Canberra</string>
+			<string>1 King Albert Park</string>
+			<string>1 Moulmein Rise</string>
+			<string>10 Shelford</string>
+			<string>1 Moulmein Rise</string>
+			<string>11 Amber Road</string>
+			<string>111 Emerald Hill</string>
+			<string>16 @ Amber</string>
+			<string>18 Shelford</string>
+			<string>18 Woodsville</string>
+			<string>2 RVG</string>
+			<string>21 Richards</string>
+			<string>26 Newton</string>
+			<string>28 Imperial Residences</string>
+			<string>28 Shelford</string>
+			<string>283 Studio</string>
+			<string>38 I Suites</string>
+			<string>3@Phillips</string>
+			<string>3@Sandilands</string>
+			<string>3BHC</string>
+			<string>448@East Coast</string>
+			<string>57 @ Kovan</string>
+			<string>76 Shenton</string>
+			<string>8 @ Mount Sophia</string>
+			<string>8 @ Stratton</string>
+			<string>8 Bassein</string>
+			<string>8 Eden Grove</string>
+			<string>8 Napier</string>
+			<string>8 On Chuan</string>
+			<string>8 Rodyk</string>
+			<string>833 M B Residences</string>
+			<string>8@Woodleigh</string>
+			<string>8M Residences</string>
+			<string>91 Marshall</string>
+			<string>A Treasure Trove</string>
+			<string>AA Centre</string>
+			<string>Aalto</string>
+			<string>Adam Park Condominium</string>
+			<string>Adam Place</string>
+			<string>Adelphi Park Estate</string>
+			<string>Adria</string>
+			<string>Advance Apartments</string>
+			<string>Affluence Court</string>
+			<string>Airstream</string>
+			<string>Airview Park</string>
+			<string>Akyab Apartments</string>
+			<string>Alba</string>
+			<string>Alegria</string>
+			<string>Alessandrea</string>
+			<string>Alexis</string>
+			<string>Allamanda Grove</string>
+			<string>Allsworth Park</string>
+			<string>Alpha Apartments</string>
+			<string>Altez</string>
+			<string>Amaranda Gardens</string>
+			<string>Amaryllis Ville</string>
+			<string>Amber Park</string>
+			<string>Amber Point</string>
+			<string>Amber Residences</string>
+			<string>Amber Towers</string>
+			<string>Amberglades</string>
+			<string>Ampas Apartment</string>
+			<string>Apartment 8</string>
+			<string>Apleton View</string>
+			<string>Apollo Gardens</string>
+			<string>Aquarine Gardens</string>
+			<string>Aquarius By The Park</string>
+			<string>Aquene</string>
+			<string>Arc At Tampines</string>
+			<string>Archipelago</string>
+			<string>Ardisia Garden</string>
+			<string>Ardmore 3</string>
+			<string>Ardmore II</string>
+			<string>Ardmore Park</string>
+			<string>Aroozoo Centre</string>
+			<string>Arthur 118</string>
+			<string>Arthur Mansions</string>
+			<string>Ascentia Sky</string>
+			<string>Asia Gardens</string>
+			<string>Asimont @ Barker</string>
+			<string>Aspen Heights</string>
+			<string>Aspen Linq</string>
+			<string>Aspen Loft</string>
+			<string>Aston Green</string>
+			<string>Aston Lodge</string>
+			<string>Aston Mansions</string>
+			<string>Aston Residence</string>
+			<string>Astor</string>
+			<string>Astor Green</string>
+			<string>Astoria Apartments</string>
+			<string>Astoria Park</string>
+			<string>Astrid Meadows</string>
+			<string>Astridville</string>
+			<string>Atelier Villas</string>
+			<string>Atrium Residences</string>
+			<string>Attitude At Kim Yam</string>
+			<string>Aura 83</string>
+			<string>Auralis</string>
+			<string>Austral View</string>
+			<string>Austville Residences</string>
+			<string>AVA Towers</string>
+			<string>Avalon</string>
+			<string>Avenue Villas</string>
+			<string>Avila Gardens</string>
+			<string>Avila Terrace</string>
+			<string>Avon Park</string>
+			<string>Axis @ Siglap</string>
+			<string>Azalea Park Condominium</string>
+			<string>Bagnall Court</string>
+			<string>Balcon East</string>
+			<string>Balestier 288</string>
+			<string>Balestier Plaza</string>
+			<string>Balestier Point</string>
+			<string>Balestier Regency</string>
+			<string>Balestier Towers</string>
+			<string>Ballota Park Condominium</string>
+			<string>Balmoral 8</string>
+			<string>Balmoral Condominium</string>
+			<string>Balmoral Crest</string>
+			<string>Balmoral Gate</string>
+			<string>Balmoral Heights</string>
+			<string>Balmoral Hills</string>
+			<string>Balmoral Plaza</string>
+			<string>Balmoral Point</string>
+			<string>Balmoral Residences</string>
+			<string>Balmy Court</string>
+			<string>Ban Guan Park</string>
+			<string>Banyan Condominium</string>
+			<string>Banyan Park</string>
+			<string>Banyan Villas</string>
+			<string>Baode Building</string>
+			<string>Barker 9</string>
+			<string>Barker Terraces</string>
+			<string>Barker Ville</string>
+			<string>Bartley Court</string>
+			<string>Bartley Grove</string>
+			<string>Bartley Residences</string>
+			<string>Bartley Ridge</string>
+			<string>Bartley Rise Estate</string>
+			<string>Bartley Terrace</string>
+			<string>Bartley Villas</string>
+			<string>Bassein Court</string>
+			<string>Bayou Residence</string>
+			<string>Bayshore Park</string>
+			<string>Bayville Condominium</string>
+			<string>Baywater</string>
+			<string>Beacon Heights</string>
+			<string>Beau Vista</string>
+			<string>Beaufort On Nassim</string>
+			<string>Beauty Garden</string>
+			<string>Beaverton Court</string>
+			<string>Bedok Court</string>
+			<string>Bedok Grove</string>
+			<string>Bedok Park</string>
+			<string>Bedok Pesari</string>
+			<string>Bedok Residences</string>
+			<string>Bedok Ria</string>
+			<string>Bedok Shopping Complex</string>
+			<string>Bedokville</string>
+			<string>Beechwood Terrace</string>
+			<string>Belgravia Park</string>
+			<string>Bella Casita</string>
+			<string>Bella Vista</string>
+			<string>Bellaville</string>
+			<string>Belle Vue Residences</string>
+			<string>Bellerive</string>
+			<string>Bellezza @ Katong</string>
+			<string>Belmond Green</string>
+			<string>Belmondo View</string>
+			<string>Belysa</string>
+			<string>Bena Park</string>
+			<string>Beng Tong Mansion</string>
+			<string>Beta Grove</string>
+			<string>Beverly Hill</string>
+			<string>Binjai Crest</string>
+			<string>Binjai Park</string>
+			<string>Birmingham Mansions</string>
+			<string>Bishan 8</string>
+			<string>Bishan Loft</string>
+			<string>Bishan Park Condominium</string>
+			<string>Bishan Point</string>
+			<string>Bishopsgate Residences</string>
+			<string>Blair Plain Conservation Area</string>
+			<string>Bleu @ East Coast</string>
+			<string>Bliss Loft</string>
+			<string>Bliss Regalia</string>
+			<string>Bliss Residences</string>
+			<string>Bliss Ville</string>
+			<string>Bliss@Kovan</string>
+			<string>Blossom Gardens</string>
+			<string>Blossom Residences</string>
+			<string>Blossom View</string>
+			<string>Blossoms @ Woodleigh</string>
+			<string>Blu Coral</string>
+			<string>Blue Horizon</string>
+			<string>Bluwaters</string>
+			<string>Bluwaters 2</string>
+			<string>Boathouse Residences</string>
+			<string>Boon Court</string>
+			<string>Boon Gardens</string>
+			<string>Boon Sing Building</string>
+			<string>Boon Teck Apartments</string>
+			<string>Boon Teck Towers</string>
+			<string>Boon Teck View</string>
+			<string>Boonview</string>
+			<string>Botanic Gardens Mansion</string>
+			<string>Botanic Gardens View</string>
+			<string>Botanika</string>
+			<string>Botannia</string>
+			<string>Bougainvilla Apartments</string>
+			<string>Boulevard Vue</string>
+			<string>Bowmont Centre</string>
+			<string>Braddell Heights Estate</string>
+			<string>Braddell Park</string>
+			<string>Braddell Regalia</string>
+			<string>Braddell View</string>
+			<string>Breeze By The East</string>
+			<string>Breezeways</string>
+			<string>Breezy Mansions</string>
+			<string>Bright Garden</string>
+			<string>Brighton Crest</string>
+			<string>Brightview Apartments</string>
+			<string>Bristol Lodge</string>
+			<string>Brookvale Park</string>
+			<string>Buckley 18</string>
+			<string>Buckley Classique</string>
+			<string>Buckley Residence</string>
+			<string>Bukit Loyang Estate</string>
+			<string>Bukit Regency</string>
+			<string>Bullion Park</string>
+			<string>Buona Lodge</string>
+			<string>Buona Vista Gardens</string>
+			<string>Burgundy Hill</string>
+			<string>Burlington Square</string>
+			<string>Butterworth 33</string>
+			<string>Butterworth 8</string>
+			<string>Butterworth View</string>
+			<string>Cabana</string>
+			<string>Cactus Green</string>
+			<string>Cadence Light</string>
+			<string>Cai Garden</string>
+			<string>Cairnhill Conservation Area</string>
+			<string>Cairnhill Crest</string>
+			<string>Cairnhill Heights</string>
+			<string>Cairnhill Mansions</string>
+			<string>Cairnhill Plaza</string>
+			<string>Cairnhill Residences</string>
+			<string>Calarasi</string>
+			<string>Caldecott Hill Estate</string>
+			<string>Callidora Ville</string>
+			<string>Camay Court</string>
+			<string>Cambridge Village</string>
+			<string>Camelia Park</string>
+			<string>Camellia Lodge</string>
+			<string>Camelodge</string>
+			<string>Camelot By-The-Water</string>
+			<string>Camwood Park</string>
+			<string>Canary Park</string>
+			<string>Canary Ville</string>
+			<string>Canberlin Apartments</string>
+			<string>Canberlin Lodge</string>
+			<string>Canberra Residences</string>
+			<string>Candeville</string>
+			<string>Cannaville</string>
+			<string>Canne Lodge</string>
+			<string>Cantiz @ Rambai</string>
+			<string>Capitol Park</string>
+			<string>Carabelle</string>
+			<string>Cardiff Court</string>
+			<string>The Shore Residences</string>
+			<string>The Shoreline Residences I</string>
+			<string>The Shoreline Residences II</string>
+			<string>The Sierra</string>
+			<string>The Silva Gardens</string>
+			<string>The Silver Fir</string>
+			<string>The Silver Spurz</string>
+			<string>The Silverton</string>
+			<string>The Sixth Avenue Residences</string>
+			<string>The Solitaire</string>
+			<string>The Sound</string>
+			<string>The Sovereign</string>
+			<string>The Spectrum</string>
+			<string>The Spinnaker</string>
+			<string>The Springbloom</string>
+			<string>The Springfield</string>
+			<string>The Springs</string>
+			<string>The Springside</string>
+			<string>The Stellar</string>
+			<string>The Sterling</string>
+			<string>The Stradia</string>
+			<string>The Suites At Central</string>
+			<string>The Summit</string>
+			<string>The Sunflower</string>
+			<string>The Sunnidora</string>
+			<string>The Sunniflora</string>
+			<string>The Sunny Legend</string>
+			<string>The Sunny Spring</string>
+			<string>The Sunnydale</string>
+			<string>The Sunshine</string>
+			<string>The Taipan</string>
+			<string>The Tampines Trilliant</string>
+			<string>The Tanamera</string>
+			<string>The Tate Residences</string>
+			<string>The Tembusu</string>
+			<string>The Teneriffe</string>
+			<string>The Tennery</string>
+			<string>The Tessarina</string>
+			<string>The Thomson Duplex</string>
+			<string>The Tier</string>
+			<string>The Tomlinson</string>
+			<string>The Top Residence</string>
+			<string>The Treeline</string>
+			<string>The Tresor</string>
+			<string>The Trevose</string>
+			<string>The Trillium</string>
+			<string>The Trizon</string>
+			<string>The Tropic Gardens</string>
+			<string>The Tropica</string>
+			<string>The Trumps</string>
+			<string>The Twins</string>
+			<string>The Urbanite</string>
+			<string>The Vanderlint</string>
+			<string>The Vermont On Cairnhill</string>
+			<string>The Verte</string>
+			<string>The Verv @ RV</string>
+			<string>The Verve</string>
+			<string>The Vesta</string>
+			<string>The View @ Meyer</string>
+			<string>The Village</string>
+			<string>The Villas @ Sentosa Cove</string>
+			<string>The Vines</string>
+			<string>The Viridian</string>
+			<string>The Vision</string>
+			<string>The Vue</string>
+			<string>The Warren</string>
+			<string>The Water Edge</string>
+			<string>The Waterina</string>
+			<string>The Waterline</string>
+			<string>The Waterside</string>
+			<string>The Westridge</string>
+			<string>The Wharf Residence</string>
+			<string>The Whitley Residences</string>
+			<string>The Wilshire</string>
+			<string>The Windsor</string>
+			<string>The Woodgrove</string>
+			<string>The Woods</string>
+			<string>The Yardley</string>
+			<string>Thomson 800</string>
+			<string>Thomson Euro-Asia</string>
+			<string>Thomson Garden Estate</string>
+			<string>Thomson Grand</string>
+			<string>Thomson Grove</string>
+			<string>Thomson Hills</string>
+			<string>Thomson Hills Estate</string>
+			<string>Thomson Imperial Court</string>
+			<string>Thomson Park</string>
+			<string>Thomson Plaza</string>
+			<string>Thomson Ridge Estate</string>
+			<string>Thomson Rise Estate</string>
+			<string>Thomson V One</string>
+			<string>Thomson V Two</string>
+			<string>Thomson Vale</string>
+			<string>Thomson View Condominium</string>
+			<string>Thong Sia Building</string>
+			<string>Three Balmoral</string>
+			<string>Three Three Robin</string>
+			<string>Tiara</string>
+			<string>Tierra Vue</string>
+			<string>Tiong Bahru Estate</string>
+			<string>Tivoli Gardens</string>
+			<string>Tivoli Grande</string>
+			<string>Tivoli Lodge</string>
+			<string>Toh Estate</string>
+			<string>Toh Tuck Lodge</string>
+			<string>Toho Green</string>
+			<string>Tomlinson Heights</string>
+			<string>Top Ten</string>
+			<string>Topaz Mansions</string>
+			<string>Torie Mansions</string>
+			<string>Torieview Mansions</string>
+			<string>Torieville</string>
+			<string>Townhouse Apartments</string>
+			<string>Treasure Gardens</string>
+			<string>Treasure Mansions</string>
+			<string>Treasure on Balmoral</string>
+			<string>Treasure Place</string>
+			<string>Treasures@G19</string>
+			<string>Tree House</string>
+			<string>Treescape</string>
+			<string>Trellis Towers</string>
+			<string>Trendale Tower</string>
+			<string>Tresalveo</string>
+			<string>Trevista</string>
+			<string>Trevose 12</string>
+			<string>Trevose Park</string>
+			<string>Tribeca</string>
+			<string>Trilight</string>
+			<string>Trilinq</string>
+			<string>Tropical Spring</string>
+			<string>Tropicana Condominium</string>
+			<string>Tropics @ Haigsville</string>
+			<string>Tropika East</string>
+			<string>Tuan Sing Park</string>
+			<string>Tudor Ten</string>
+			<string>Tudor View</string>
+			<string>Tulip Garden</string>
+			<string>Turquoise</string>
+			<string>Twentyone Angullia Park</string>
+			<string>Twin Heights</string>
+			<string>Twin Peaks</string>
+			<string>Twin Regency</string>
+			<string>Twin Waterfalls</string>
+			<string>Two8one Studio</string>
+			<string>Tyrwhitt 139</string>
+			<string>Uber 388</string>
+			<string>UE Square</string>
+			<string>Uni Building</string>
+			<string>United Mansion</string>
+			<string>University Park</string>
+			<string>UP@Robertson Quay</string>
+			<string>Upper Serangoon Shopping Centre</string>
+			<string>Urban Edge @ Holland V</string>
+			<string>Urban Heritage</string>
+			<string>Urban Lofts</string>
+			<string>Urban Residences</string>
+			<string>Urban Resort Condominium</string>
+			<string>Urban Suites</string>
+			<string>Urban Vista</string>
+			<string>Urbana</string>
+			<string>V On Shenton</string>
+			<string>Vacanza @ East</string>
+			<string>Valley Park</string>
+			<string>Valvista</string>
+			<string>Vanadium</string>
+			<string>Varsity Park Condominium</string>
+			<string>Vaughan Garden</string>
+			<string>Venezio</string>
+			<string>Ventana</string>
+			<string>Ventuno Balmoral</string>
+			<string>Ventura Heights</string>
+			<string>Ventura View</string>
+			<string>Veranda</string>
+			<string>Verdana Villas</string>
+			<string>Verdun House</string>
+			<string>Verdure</string>
+			<string>Versailles</string>
+			<string>Versilia On Haig</string>
+			<string>Vertis</string>
+			<string>Vetro</string>
+			<string>Vibes @ East Coast</string>
+			<string>Vibes @ Kovan</string>
+			<string>Vibes@Upper Serangoon</string>
+			<string>Vicenta Lodge</string>
+			<string>Victoria Park</string>
+			<string>Victory Heights</string>
+			<string>Vida</string>
+			<string>Viento</string>
+			<string>Villa Azura</string>
+			<string>Villa Begonia</string>
+			<string>Villa De West</string>
+			<string>Villa Delle Rose</string>
+			<string>Villa Des Flores</string>
+			<string>Villa D&apos;este</string>
+			<string>Villa Indah</string>
+			<string>Villa Marina</string>
+			<string>Villa Martia</string>
+			<string>Villa Ponder Rosa</string>
+			<string>Villa Verde</string>
+			<string>Village At Pasir Panjang</string>
+			<string>Village Tower</string>
+			<string>Villas At Kew</string>
+			<string>Villas La Vue</string>
+			<string>Villas Laguna</string>
+			<string>Villas Six</string>
+			<string>Ville Royale</string>
+			<string>Vina Lodge</string>
+			<string>Visioncrest</string>
+			<string>Vista Garden</string>
+			<string>Vista Park</string>
+			<string>Vista Residences</string>
+			<string>Vitra</string>
+			<string>Viva</string>
+			<string>Viva Vista</string>
+			<string>Vivace</string>
+			<string>Viz At Holland</string>
+			<string>Vogx</string>
+			<string>Volari</string>
+			<string>Wan Tho Lodge</string>
+			<string>Wang Lodge</string>
+			<string>Warner Court</string>
+			<string>Washingtonia Villa</string>
+			<string>Water Place</string>
+			<string>Water Terrace</string>
+			<string>Water Villas</string>
+			<string>Waterbank At Dakota</string>
+			<string>Watercolours</string>
+			<string>Watercrest</string>
+			<string>Waterfall Gardens</string>
+			<string>Waterford Residence</string>
+			<string>Waterfront Gold</string>
+			<string>Waterfront Isle</string>
+			<string>Waterfront Key</string>
+			<string>Waterfront Waves</string>
+			<string>Waterloo Apartments</string>
+			<string>Waterloo View</string>
+			<string>Watermark Robertson Quay</string>
+			<string>Waterscape At Cavenagh</string>
+			<string>Watertown</string>
+			<string>Waterview</string>
+			<string>Watten Estate</string>
+			<string>Watten Estate Condominium</string>
+			<string>Watten Hill</string>
+			<string>Watten Residences</string>
+			<string>Wedgewood Mansions</string>
+			<string>Wellington Park</string>
+			<string>Wembly Residences</string>
+			<string>West Bay Condominium</string>
+			<string>West Coast Gardens</string>
+			<string>West-N</string>
+			<string>Westcove Condominium</string>
+			<string>Westmere</string>
+			<string>Westmont</string>
+			<string>Westpeak Terrace</string>
+			<string>Westside 33</string>
+			<string>Westvale</string>
+			<string>Westville</string>
+			<string>Westwood Park</string>
+			<string>Whitescape</string>
+			<string>Whitevillas Row</string>
+			<string>Whitewater</string>
+			<string>Whitley Heights</string>
+			<string>Whitley Residences</string>
+			<string>Whitley Villas</string>
+			<string>Wilkie 48</string>
+			<string>Wilkie 87</string>
+			<string>Wilkie Apartments</string>
+			<string>Wilkie Court</string>
+			<string>Wilkie Regency</string>
+			<string>Wilkie Studio</string>
+			<string>Wilkinson 8</string>
+			<string>Willyn Ville</string>
+			<string>Windermere</string>
+			<string>Windsor Park Estate</string>
+			<string>Windy Heights</string>
+			<string>Wing Fong Court</string>
+			<string>Wing Fong Mansions</string>
+			<string>Wing On Life Garden</string>
+			<string>Wolskel Lodge</string>
+			<string>Woodgrove Condominium</string>
+			<string>Woodgrove Estate</string>
+			<string>Woodhaven</string>
+			<string>Woodlands Park</string>
+			<string>Woodsvale</string>
+			<string>Woodsville 28</string>
+			<string>Woodsville Mansions</string>
+			<string>Woollerton Park</string>
+			<string>Worthington</string>
+			<string>Yeley Building</string>
+			<string>Yew Lian Park</string>
+			<string>Yew Mei Green</string>
+			<string>Yew Tee Residences</string>
+			<string>Yi Kai Court</string>
+			<string>Yi Mei Gardens</string>
+			<string>Yinchuan Building</string>
+			<string>Ying Mansions</string>
+			<string>Yishun Emerald</string>
+			<string>Yishun Sapphire</string>
+			<string>Yong An Park</string>
+			<string>Yong Seng Estate</string>
+			<string>Yong Siak Court</string>
+			<string>Yong Siak View</string>
+			<string>Yugi Garden</string>
+			<string>Yunnan Gardens</string>
+			<string>Zedge</string>
+			<string>Zenith</string>
+			<string>Zephyr Park</string>
+			<string>Cardiff Residence</string>
+			<string>Caribbean At Keppel Bay</string>
+			<string>Carissa Park Condominium</string>
+			<string>Carlyx Green</string>
+			<string>Carmi Mansion</string>
+			<string>Carmine Collection</string>
+			<string>Casa Aerata</string>
+			<string>Casa Aroma</string>
+			<string>Casa Cairnhill</string>
+			<string>Casa Cambio</string>
+			<string>Casa Emerald</string>
+			<string>Casa Espania</string>
+			<string>Casa Esperanza</string>
+			<string>Casa Feliz</string>
+			<string>Casa Fidelio</string>
+			<string>Casa Flora</string>
+			<string>Casa Fortuna</string>
+			<string>Casa Irrawaddy</string>
+			<string>Casa Jervois</string>
+			<string>Casa Merah</string>
+			<string>Casa Meya</string>
+			<string>Casa Meyfort</string>
+			<string>Casa Nallur</string>
+			<string>Casa Novacrest</string>
+			<string>Casa Pasir Ris</string>
+			<string>Casa Riviera</string>
+			<string>Casa Rosa</string>
+			<string>Casa Sarina</string>
+			<string>Casabella</string>
+			<string>Casablanca</string>
+			<string>Casafina</string>
+			<string>Cascadale</string>
+			<string>Cascata</string>
+			<string>Casero @ Dunman</string>
+			<string>D&apos;Elias</string>
+			<string>D&apos;Evelyn</string>
+			<string>D&apos;Focus Apartments</string>
+			<string>D&apos;Gallery</string>
+			<string>D&apos;Grove Villas</string>
+			<string>D&apos;Heritage Castle</string>
+			<string>D&apos;Hiro@Hillside</string>
+			<string>D&apos;Leedon</string>
+			<string>D&apos;Lotus</string>
+			<string>D&apos;Manor</string>
+			<string>D&apos;Mira</string>
+			<string>D&apos;Nest</string>
+			<string>D&apos;Oasia</string>
+			<string>D&apos;Pavilion</string>
+			<string>D&apos;Saville</string>
+			<string>D&apos;Sunrise</string>
+			<string>D&apos;Weave</string>
+			<string>D&apos;Zire</string>
+			<string>E-Space</string>
+			<string>Ealine Park</string>
+			<string>East 25 Apartments</string>
+			<string>East Bay Gardens</string>
+			<string>East Coast Hill</string>
+			<string>East Coast Park</string>
+			<string>East Coast Residences</string>
+			<string>East Elegance</string>
+			<string>East Galleria</string>
+			<string>East Grove</string>
+			<string>East Meadows</string>
+			<string>East Mews</string>
+			<string>East Moon Park</string>
+			<string>East Palm</string>
+			<string>East Shine</string>
+			<string>East Shore Court</string>
+			<string>East Signature</string>
+			<string>East Treasure</string>
+			<string>East View</string>
+			<string>East View 18</string>
+			<string>East View Garden</string>
+			<string>East View Park</string>
+			<string>East Village</string>
+			<string>Eastbay</string>
+			<string>Eastcove Residences</string>
+			<string>Eastern Lagoon</string>
+			<string>Eastern Residence</string>
+			<string>Eastpac Building</string>
+			<string>Eastpoint Green</string>
+			<string>Eastrees</string>
+			<string>Eastside Loft</string>
+			<string>Eastvale</string>
+			<string>Eastville Apartments</string>
+			<string>Eastwind Mansions</string>
+			<string>Eastwood Centre</string>
+			<string>Eastwood Gardens</string>
+			<string>Eastwood Green</string>
+			<string>Eastwood Green Terraces</string>
+			<string>Eastwood Lodge</string>
+			<string>Eastwood Park</string>
+			<string>Eastwood Regency</string>
+			<string>Eastwood Ville</string>
+			<string>Eaton Park</string>
+			<string>Ebony Mansions</string>
+			<string>eCO</string>
+			<string>Ecoville</string>
+			<string>Eco Sanctuary</string>
+			<string>Edelweiss Park Condominium</string>
+			<string>Eden Crest</string>
+			<string>Eden Park</string>
+			<string>Eden Residences Capitol</string>
+			<string>Eight @ East Coast</string>
+			<string>Eight Courtyards</string>
+			<string>Eight Riversuites</string>
+			<string>Eis Residences</string>
+			<string>Eleven @ Holland</string>
+			<string>Elias Green</string>
+			<string>Elias Terrace</string>
+			<string>Elizabeth Height</string>
+			<string>Elizabeth Tower</string>
+			<string>Elliot At The East Coast</string>
+			<string>Emerald East</string>
+			<string>Emerald Garden</string>
+			<string>Emerald Hill Conservation Area</string>
+			<string>Emerald Park</string>
+			<string>Emery Point</string>
+			<string>Emily Residence</string>
+			<string>Emprado Suites</string>
+			<string>En Fu Mansions</string>
+			<string>Eng Aun Mansion</string>
+			<string>Eng Aun Park</string>
+			<string>Eng Hoon Mansions</string>
+			<string>Gaia</string>
+			<string>Galaxy Towers</string>
+			<string>Gallery 8</string>
+			<string>Gallery Fifteen</string>
+			<string>Gallop Gables</string>
+			<string>Gallop Green</string>
+			<string>Gallop Park</string>
+			<string>Gambier Court</string>
+			<string>Gambir Ridge</string>
+			<string>Gao Min Hua Yuan</string>
+			<string>Garden Apartment</string>
+			<string>Garden View Estate</string>
+			<string>Gardenville</string>
+			<string>Gardenvista</string>
+			<string>Garlick Ville</string>
+			<string>Gemini Apartments</string>
+			<string>Gentle Reflections</string>
+			<string>Gentle Villas</string>
+			<string>Gerald Gardens</string>
+			<string>Gerald Residence</string>
+			<string>Geylang Conservation Area</string>
+			<string>Geylang Heritage</string>
+			<string>Gideon&apos;s Lodge</string>
+			<string>Giffard Mansions</string>
+			<string>Gillenia</string>
+			<string>Gilstead 38</string>
+			<string>Gilstead Brooks</string>
+			<string>Gilstead Mansion</string>
+			<string>Gilstead Two</string>
+			<string>Gisborne Light</string>
+			<string>Glamour Ville</string>
+			<string>Glasgow Green</string>
+			<string>Glasgow Residence</string>
+			<string>Glendale Park</string>
+			<string>Glentrees</string>
+			<string>Global Ville</string>
+			<string>Gloucester Mansions</string>
+			<string>Gold Coast Condominium</string>
+			<string>Gold Leaf Mansions</string>
+			<string>Golden Chuan Ville</string>
+			<string>Golden Heights</string>
+			<string>Golden Hill Estate</string>
+			<string>Golden Mile Complex</string>
+			<string>Golden Rise Estate</string>
+			<string>Goldenhill Park Condominium</string>
+			<string>Goldenhill Villas</string>
+			<string>Goldhill Gardens</string>
+			<string>Goldhill Towers</string>
+			<string>Goldleaf Gardens</string>
+			<string>Goodlink Park</string>
+			<string>Goodluck Garden</string>
+			<string>Goodman Crest</string>
+			<string>Goodview Apartments</string>
+			<string>Goodwill Court</string>
+			<string>Goodwood Gardens</string>
+			<string>Goodwood Residence</string>
+			<string>Govt Co-Op Housing Estate</string>
+			<string>Grace Garden</string>
+			<string>Grace Park</string>
+			<string>Grace Chateau</string>
+			<string>Grand Duchess At St Patrick&apos;s</string>
+			<string>Grand Regalia</string>
+			<string>Grand Regency</string>
+			<string>Grand Tower</string>
+			<string>Grande Vista</string>
+			<string>Grandeur 8</string>
+			<string>Grandioso 8</string>
+			<string>Grandlink Square</string>
+			<string>Grange Heights</string>
+			<string>Grange Infinite</string>
+			<string>Grange Residences</string>
+			<string>Gray Mansions</string>
+			<string>Green Hill Estate</string>
+			<string>Green Lodge</string>
+			<string>Green Park</string>
+			<string>Greenbank Park</string>
+			<string>Greenridge</string>
+			<string>Greenwood Mews</string>
+			<string>Greenwood Villas</string>
+			<string>Grosvenor View</string>
+			<string>Gryphon Terrace</string>
+			<string>Guan Soon Terrace</string>
+			<string>Guilin Court</string>
+			<string>Guilin Mansions</string>
+			<string>Guilin View</string>
+			<string>Guillemard Edge</string>
+			<string>Guillemard View</string>
+			<string>H Residences</string>
+			<string>H2O Residences</string>
+			<string>Hai Sing Park</string>
+			<string>Haig 162</string>
+			<string>Haig Court</string>
+			<string>Haig Eleven</string>
+			<string>Haig Lodge</string>
+			<string>Haig Residences</string>
+			<string>Hamilton Scotts</string>
+			<string>Happy Estate</string>
+			<string>Happy Gardens</string>
+			<string>Happy Park</string>
+			<string>Harbour Suites</string>
+			<string>Harbour View Towers</string>
+			<string>Harbourlights</string>
+			<string>Harmony @ 1A</string>
+			<string>Harmony Mansion</string>
+			<string>Harvest Mansions</string>
+			<string>Harvey View</string>
+			<string>Haus@Serangoon Garden</string>
+			<string>Hawaii Tower</string>
+			<string>Hazel Park Condominium</string>
+			<string>Hazel Park Terrace</string>
+			<string>Hedges Park Condominium</string>
+			<string>Heeton Classic</string>
+			<string>Heeton Park</string>
+			<string>Helios Residences</string>
+			<string>Henley Gardens</string>
+			<string>Henry Park</string>
+			<string>Heritage East</string>
+			<string>Heritage Place</string>
+			<string>Heritage Residences</string>
+			<string>Heritage View</string>
+			<string>Hertford Collection</string>
+			<string>Hertford Mansion</string>
+			<string>High Oak Condominium</string>
+			<string>Highgate</string>
+			<string>Highland Condominium</string>
+			<string>Highland Residences</string>
+			<string>Highland Row</string>
+			<string>Hijauan</string>
+			<string>Hillbrooks</string>
+			<string>Hillcrest Arcadia</string>
+			<string>Hillcrest Park</string>
+			<string>Hillcrest Villa</string>
+			<string>Hillington Green</string>
+			<string>Hillion Residence</string>
+			<string>Hillsgrove</string>
+			<string>Hillside Gardens</string>
+			<string>Hillside Mansions</string>
+			<string>Hillsta</string>
+			<string>Hilltop Grove</string>
+			<string>Hilltops</string>
+			<string>Hillview 128</string>
+			<string>Hillview Apartments</string>
+			<string>Hillview Garden Estate</string>
+			<string>Hillview Green</string>
+			<string>Hillview Heights</string>
+			<string>Hillview Park</string>
+			<string>Hillview Peak</string>
+			<string>Hillview Regency</string>
+			<string>Hillview Residence</string>
+			<string>Hillview Villas</string>
+			<string>Hillvista</string>
+			<string>Hock Mansions</string>
+			<string>Hock Seng Park</string>
+			<string>Hock Swee Hill</string>
+			<string>Holland Court</string>
+			<string>Holland Green</string>
+			<string>Holland Grove</string>
+			<string>Holland Hill Lodge</string>
+			<string>Holland Hill Park</string>
+			<string>Holland Mews</string>
+			<string>Holland Peak</string>
+			<string>Holland Residences</string>
+			<string>Holland Tower</string>
+			<string>Hollandia</string>
+			<string>Hollandswood Court</string>
+			<string>Hollywood Apartments</string>
+			<string>Holt Residences</string>
+			<string>Homey Gardens</string>
+			<string>Hong Heng Garden</string>
+			<string>Hong Heng Mansions</string>
+			<string>Hong Heng Terrace</string>
+			<string>Hong Kong Park</string>
+			<string>Hong Leong Garden Shopping Centre</string>
+			<string>Honolulu Tower</string>
+			<string>Hoot Kiam Mansion</string>
+			<string>Hoover Park</string>
+			<string>Horizon Gardens</string>
+			<string>Horizon Green</string>
+			<string>Horizon Residences</string>
+			<string>Horizon Tower</string>
+			<string>Hougang Green</string>
+			<string>Hua Court</string>
+			<string>Hua Guan Gardens</string>
+			<string>Hua Xin Court</string>
+			<string>Huit</string>
+			<string>Hume Park I</string>
+			<string>Hume Park II</string>
+			<string>Hundred Trees</string>
+			<string>Icon</string>
+			<string>Idyllic East</string>
+			<string>Idyllic Residences</string>
+			<string>Idyllic Suites</string>
+			<string>Illoura</string>
+			<string>Illuminaire On Devonshire</string>
+			<string>Imperial Heights</string>
+			<string>Inggu 6</string>
+			<string>Inova 100</string>
+			<string>International Plaza</string>
+			<string>Intero</string>
+			<string>iResidences</string>
+			<string>Iridium</string>
+			<string>Island Country Villas</string>
+			<string>Island Gardens</string>
+			<string>Island Park</string>
+			<string>Island View</string>
+			<string>iSuites @ Marshall</string>
+			<string>iSuites @ Palm</string>
+			<string>iSuites @ Tani</string>
+			<string>Ivory</string>
+			<string>Ivory Heights</string>
+			<string>J C Draycott</string>
+			<string>Jade Mansion</string>
+			<string>Jade Tower</string>
+			<string>Jade Vine Gardens</string>
+			<string>Jalan Besar Plaza</string>
+			<string>Jansen 28</string>
+			<string>Jansen 8</string>
+			<string>Jansen Mansions</string>
+			<string>Jansen Spring</string>
+			<string>Jardin</string>
+			<string>Jasmine Court</string>
+			<string>Jaya Towers</string>
+			<string>JC Residence</string>
+			<string>JC Ville</string>
+			<string>Jersey Lodge</string>
+			<string>Jervois Gardens</string>
+			<string>Jervois Grove</string>
+			<string>Jervois Jade Apartments</string>
+			<string>Jervois Lodge</string>
+			<string>Jervois Regency</string>
+			<string>Jewel @ Buangkok</string>
+			<string>Jewel @ Chuan Hoe</string>
+			<string>Jewel of Balmoral</string>
+			<string>Ji Xiang Court</string>
+			<string>Jia</string>
+			<string>JLB Residences</string>
+			<string>Joo Chiat Apartment</string>
+			<string>Joo Chiat Mansions</string>
+			<string>Jool Suites</string>
+			<string>Jubilee Residence</string>
+			<string>Juluca</string>
+			<string>Juniper At Ardmore</string>
+			<string>Jupiter 18</string>
+			<string>Kasturina Lodge</string>
+			<string>Katong Apartments</string>
+			<string>Katong Gardens</string>
+			<string>Katong Park Towers</string>
+			<string>Katong Plaza</string>
+			<string>Katong Regency</string>
+			<string>Kellett Court</string>
+			<string>Kellock Lodge</string>
+			<string>Kelulut Hill</string>
+			<string>Kemaman Point</string>
+			<string>Kemaman View</string>
+			<string>Kembangan Court</string>
+			<string>Kembangan Plaza</string>
+			<string>Kembangan Suites</string>
+			<string>Keng Lee Court</string>
+			<string>Keng Yee Garden</string>
+			<string>Kensington Park Condominium</string>
+			<string>Kent Residences</string>
+			<string>Kentish Court</string>
+			<string>Kentish Green</string>
+			<string>Kentish Lodge</string>
+			<string>Kentview Park</string>
+			<string>Kerrisdale</string>
+			<string>Kew Gate</string>
+			<string>Kew Green</string>
+			<string>Kew Grove</string>
+			<string>Kew Place</string>
+			<string>Kew Residencia</string>
+			<string>Kew Vale</string>
+			<string>Kheam Hock Gardens</string>
+			<string>Kiara Ten</string>
+			<string>Kilat 19</string>
+			<string>Kilburn Estate</string>
+			<string>Killiney 118</string>
+			<string>Kim Keat Gardens</string>
+			<string>Kim Keat House</string>
+			<string>Kim Keat Lodge</string>
+			<string>Kim Sia Court</string>
+			<string>Kimnan Park</string>
+			<string>Kings Apartments</string>
+			<string>Kingsley Mansions</string>
+			<string>Kingston Terrace</string>
+			<string>Kingsville</string>
+			<string>King&apos;s 8</string>
+			<string>King&apos;s Arcade</string>
+			<string>King&apos;s Mansion</string>
+			<string>Kismis Court</string>
+			<string>Kismis View</string>
+			<string>Knox View</string>
+			<string>Koon Seng Court</string>
+			<string>Kovan 81</string>
+			<string>Kovan Apartments</string>
+			<string>Kovan Court</string>
+			<string>Kovan Esquire</string>
+			<string>Kovan Grandeur</string>
+			<string>Kovan Lodge</string>
+			<string>Kovan Melody</string>
+			<string>Kovan Primera</string>
+			<string>Kovan Regency</string>
+			<string>Kovan Residences</string>
+			<string>Kovana</string>
+			<string>Kum Hing Court</string>
+			<string>La Belle</string>
+			<string>La Brisa</string>
+			<string>La Casa</string>
+			<string>La Crystal</string>
+			<string>La Dolce Vita</string>
+			<string>La Fiesta</string>
+			<string>La Fleur</string>
+			<string>La Maison</string>
+			<string>La Meyer</string>
+			<string>La Quinta Park</string>
+			<string>La Suisse</string>
+			<string>La Vida @ 130</string>
+			<string>Lagoon View</string>
+			<string>Laguna 88</string>
+			<string>Laguna Green</string>
+			<string>Lakeholmz</string>
+			<string>Lakepoint Condominium</string>
+			<string>Lakeside Apartments</string>
+			<string>Lakeside Grove</string>
+			<string>Lakeside Tower</string>
+			<string>Lakeview Estate</string>
+			<string>Lakeview Gardens</string>
+			<string>Landbay Condominium</string>
+			<string>Landbay Condominium</string>
+			<string>Landed Housing Development</string>
+			<string>Landmark Towers</string>
+			<string>Landridge Condominium</string>
+			<string>Lange 28</string>
+			<string>Langston Ville</string>
+			<string>Latitude</string>
+			<string>Laurel Tree</string>
+			<string>Lauw And Sons Garden</string>
+			<string>Laverne&apos;s Loft</string>
+			<string>Le Arc</string>
+			<string>Le Conney Park</string>
+			<string>Le Crescendo</string>
+			<string>Le Hill Condominium</string>
+			<string>Le Loyang</string>
+			<string>Le M Residence</string>
+			<string>Le Marican</string>
+			<string>Le Merritt</string>
+			<string>Le Regal</string>
+			<string>Le Reve</string>
+			<string>Le Shantier</string>
+			<string>Le Wilkie</string>
+			<string>Le Wood</string>
+			<string>Leedon 2</string>
+			<string>Leedon Residence</string>
+			<string>Legenda At Joo Chiat</string>
+			<string>Leicester Lodge</string>
+			<string>Leicester Suites</string>
+			<string>Leighwoods</string>
+			<string>Leith Grove</string>
+			<string>Leith Park</string>
+			<string>Lengkong Court</string>
+			<string>Lentor View</string>
+			<string>Lentor Villas</string>
+			<string>Leong Bee Court</string>
+			<string>Leong Bee Court</string>
+			<string>Leonie Gardens</string>
+			<string>Leonie Hill Residences</string>
+			<string>Leonie Parc View</string>
+			<string>Leonie Studio</string>
+			<string>Leonie Towers</string>
+			<string>Levenue</string>
+			<string>Leville iSuites</string>
+			<string>Liang Seah Court</string>
+			<string>Liberte @ Newton</string>
+			<string>Liberte @ Scotts precint</string>
+			<string>Lien Towers</string>
+			<string>Lighthouse</string>
+			<string>Lilac Park</string>
+			<string>Lilydale</string>
+			<string>Limau Grove</string>
+			<string>Limau Park</string>
+			<string>Limau Villas</string>
+			<string>Lincoln Suites</string>
+			<string>Lion Towers</string>
+			<string>Liria Terrace</string>
+			<string>Little India Conservation Area</string>
+			<string>Livia</string>
+			<string>Livingston Mansions</string>
+			<string>Lloyd Court</string>
+			<string>Llyn Gardens</string>
+			<string>Loft @ Nathan</string>
+			<string>Loft @ Rangoon</string>
+			<string>Loft @ Stevens</string>
+			<string>Loft @ Holland</string>
+			<string>Lornie 18</string>
+			<string>Lornie Gardens</string>
+			<string>Lowland View</string>
+			<string>Loyang Court</string>
+			<string>Loyang Gardens</string>
+			<string>Loyang Green</string>
+			<string>Loyang Townhouses</string>
+			<string>Loyang Valley</string>
+			<string>Loyang Villas</string>
+			<string>Lucida</string>
+			<string>Lucky Court</string>
+			<string>Lucky Hill</string>
+			<string>Lucky Park</string>
+			<string>Lucky Plaza</string>
+			<string>Luma</string>
+			<string>Lumiere</string>
+			<string>Lush On Holland Hill</string>
+			<string>Lushan Garden</string>
+			<string>Lutheran Towers</string>
+			<string>Luxe Ville</string>
+			<string>Luxus Hills</string>
+			<string>Lynnsville 331</string>
+			<string>Lynwood 8</string>
+			<string>L&apos;VIV</string>
+			<string>M21</string>
+			<string>M66</string>
+			<string>Mabelle</string>
+			<string>Machuan Terrace</string>
+			<string>Mackenzie 138</string>
+			<string>Mackenzie 88</string>
+			<string>Mackenzie Mansions</string>
+			<string>Mackenzie Regency</string>
+			<string>Mackenzie Regency</string>
+			<string>Macpherson Garden Estate</string>
+			<string>Macpherson Green</string>
+			<string>Madeira Court</string>
+			<string>Madison Residences</string>
+			<string>Maison Royale</string>
+			<string>Makeway View</string>
+			<string>Malaysia Park</string>
+			<string>Malvern Springs</string>
+			<string>Mandai Garden</string>
+			<string>Mandalay Mansion</string>
+			<string>Mandalay Towers</string>
+			<string>Mandale Heights</string>
+			<string>Mandarin Garden Condominium</string>
+			<string>Mandarin Park</string>
+			<string>Manila Gardens</string>
+			<string>Mansions 28</string>
+			<string>Maplewoods</string>
+			<string>Mar Thoma Mansions</string>
+			<string>Margate Point</string>
+			<string>Margate Terrace</string>
+			<string>Marina Bay Residences</string>
+			<string>Marina Bay Suites</string>
+			<string>Marina Collection</string>
+			<string>Marine Garden</string>
+			<string>Marine Point</string>
+			<string>Marine Ville</string>
+			<string>Marlene Ville</string>
+			<string>Marshall Lodge</string>
+			<string>Martia 8</string>
+			<string>Martia Residence</string>
+			<string>Martin Edge</string>
+			<string>Martin No 38</string>
+			<string>Martin Place Residences</string>
+			<string>Martina Mansions</string>
+			<string>Maryland Estate</string>
+			<string>Marymount View</string>
+			<string>Matlock Residences</string>
+			<string>Maya</string>
+			<string>Maybelle Lodge</string>
+			<string>Mayfair Gardens</string>
+			<string>Mayfair Park</string>
+			<string>Mayflower Gardens</string>
+			<string>Mayflower Ville</string>
+			<string>Maysprings</string>
+			<string>Mayview Townhouses</string>
+			<string>McMahon Park</string>
+			<string>Meadow Lodge</string>
+			<string>Meadows @ Peirce</string>
+			<string>Medallion</string>
+			<string>Medge</string>
+			<string>Meier Suites</string>
+			<string>Melinia Court</string>
+			<string>Melosa</string>
+			<string>Melrose Park</string>
+			<string>Melrose Ville</string>
+			<string>Melville Park</string>
+			<string>Mendon Spring</string>
+			<string>Mera East</string>
+			<string>Mera Gardens</string>
+			<string>Mera Springs</string>
+			<string>Mera Terrace</string>
+			<string>Meralodge</string>
+			<string>Meraprime</string>
+			<string>Merawoods</string>
+			<string>Merlot Ville</string>
+			<string>Metro Loft</string>
+			<string>Metro Loft</string>
+			<string>Meyer Residence</string>
+			<string>Mi Casa</string>
+			<string>Milford Villas</string>
+			<string>Mill Creek</string>
+			<string>Mill Point</string>
+			<string>Millage</string>
+			<string>Mimosa Gardens</string>
+			<string>Mimosa Park</string>
+			<string>Mimosa Terrace</string>
+			<string>Mimosa Vale</string>
+			<string>Mimosa Villas</string>
+			<string>Min Yuan</string>
+			<string>Minbu Court</string>
+			<string>Minbu Villa</string>
+			<string>Ming Park</string>
+			<string>Ming Teck Park</string>
+			<string>Mint Residences @ Jansen</string>
+			<string>Mirage Tower</string>
+			<string>Miro</string>
+			<string>Mistral Park</string>
+			<string>Moda</string>
+			<string>Modena</string>
+			<string>Mon Jervois</string>
+			<string>Monarchy Apartments</string>
+			<string>Mont Timah</string>
+			<string>Montclair @ Whitley</string>
+			<string>Montebleu</string>
+			<string>Monterey Park Condominium</string>
+			<string>Montrosa</string>
+			<string>Montview</string>
+			<string>Moonstone Residences</string>
+			<string>Moonstone Royale</string>
+			<string>Moonstone View</string>
+			<string>Morimasa Gardens</string>
+			<string>Moro Mansions</string>
+			<string>Mosella</string>
+			<string>Moulmein Court</string>
+			<string>Mount Echo Park</string>
+			<string>Mount Faber Lodge</string>
+			<string>Mount Rosie Garden</string>
+			<string>Mount Sinai</string>
+			<string>Mount Sophia Suites</string>
+			<string>Mountbatten Lodge</string>
+			<string>Mountbatten Regency</string>
+			<string>Mountbatten Suites</string>
+			<string>Mt Sinai Residences</string>
+			<string>Mugliston Hill</string>
+			<string>Mulberry Tree</string>
+			<string>Mun Wah Garden</string>
+			<string>Murano</string>
+			<string>Mutiara Crest</string>
+			<string>Mutiara View</string>
+			<string>My Manhattan</string>
+			<string>Nadia Mansions</string>
+			<string>Nam Peng Centre</string>
+			<string>Nanyang Park</string>
+			<string>Nassim 9</string>
+			<string>Nassim Jade</string>
+			<string>Nassim Mansion</string>
+			<string>Nassim Park Residences</string>
+			<string>Nathan Place</string>
+			<string>Nathan Residences</string>
+			<string>Nathan Suites</string>
+			<string>Natura@Hillview</string>
+			<string>Naturalis</string>
+			<string>Nature Mansions</string>
+			<string>Naung Residence</string>
+			<string>Neptune Court</string>
+			<string>Ness</string>
+			<string>New Court</string>
+			<string>New Soo Chow Gardens</string>
+			<string>Newton 18</string>
+			<string>Newton Edge</string>
+			<string>Newton Euro-Asia</string>
+			<string>Newton Imperial</string>
+			<string>Newton Lodge</string>
+			<string>Newton One</string>
+			<string>Newton Suites</string>
+			<string>Newton View</string>
+			<string>Nicole Green</string>
+			<string>Nicon Gardens</string>
+			<string>Nim Gardens</string>
+			<string>Nin Residence</string>
+			<string>Nineteen Shelford Road</string>
+			<string>Nomu</string>
+			<string>Normanton Park</string>
+			<string>Northill</string>
+			<string>Northoaks</string>
+			<string>Northshore Bungalows</string>
+			<string>Northvale</string>
+			<string>Northwood</string>
+			<string>Nottinghill Suites</string>
+			<string>Nouvelle Park</string>
+			<string>Nova 48</string>
+			<string>Nova 88</string>
+			<string>Novelis</string>
+			<string>Novena Court</string>
+			<string>Novena Hill</string>
+			<string>Novena Lodge</string>
+			<string>Novena Suites</string>
+			<string>Novena Ville</string>
+			<string>Nuovo</string>
+			<string>NV Residences</string>
+			<string>Oasis @ Elias</string>
+			<string>Oasis @ Mulberry</string>
+			<string>Oasis Garden</string>
+			<string>Ocean Apartments</string>
+			<string>Ocean Park</string>
+			<string>Octaville</string>
+			<string>Odeon Katong Shopping Complex</string>
+			<string>Odeon Seaside Park</string>
+			<string>Oei Tiong Ham Park</string>
+			<string>Okio</string>
+			<string>Ola Residences</string>
+			<string>Oleanas Residence</string>
+			<string>Oleander Towers</string>
+			<string>Olina Lodge</string>
+			<string>Onan Suites</string>
+			<string>One @ Pulasan</string>
+			<string>One Amber</string>
+			<string>One Chatsworth</string>
+			<string>One Devonshire</string>
+			<string>One Dusun Residences</string>
+			<string>One Fort</string>
+			<string>One Jervois</string>
+			<string>One K Greenlane</string>
+			<string>One Leicester</string>
+			<string>One Lynwood</string>
+			<string>One North Bridge</string>
+			<string>One Oxley Rise</string>
+			<string>One Robey</string>
+			<string>One Robin</string>
+			<string>One Rosyth</string>
+			<string>One Shenton</string>
+			<string>One St Michael&apos;s</string>
+			<string>One Tree Hill Mansions</string>
+			<string>One Tree Hill Residence</string>
+			<string>One-North Residences</string>
+			<string>Onerobey</string>
+			<string>Opal Suites</string>
+			<string>Opera Estate</string>
+			<string>Optima @ Tanah Merah</string>
+			<string>Orange Grove Residences</string>
+			<string>Orchard Bel Air</string>
+			<string>Orchard Court</string>
+			<string>Orchard Scotts</string>
+			<string>Orchard View</string>
+			<string>Orchid Apartments</string>
+			<string>Orchid Park Condominium</string>
+			<string>Orchid Village</string>
+			<string>Orion</string>
+			<string>Ovada 8</string>
+			<string>Owen Court</string>
+			<string>Oxford Suites</string>
+			<string>Oxley Edge</string>
+			<string>Oxley Garden</string>
+			<string>Pacific Mansion</string>
+			<string>Paddy Green</string>
+			<string>Palacio</string>
+			<string>Palazzetto</string>
+			<string>Palisades</string>
+			<string>Palm Galleria</string>
+			<string>Palm Gardens</string>
+			<string>Palm Green</string>
+			<string>Palm Grove Condominium</string>
+			<string>Palm Grove Regency</string>
+			<string>Palm Grove Terrace</string>
+			<string>Palm Haven</string>
+			<string>Palm Isles</string>
+			<string>Palm Lodge</string>
+			<string>Palm Loft</string>
+			<string>Palm Mansions</string>
+			<string>Palm Oasis</string>
+			<string>Palm Residence</string>
+			<string>Palm Spring</string>
+			<string>Palm Vista</string>
+			<string>Palmera East</string>
+			<string>Palmera Residence</string>
+			<string>Palmwoods</string>
+			<string>Pandan Valley</string>
+			<string>Papillon</string>
+			<string>Paradise Island</string>
+			<string>Paradise Palms</string>
+			<string>Parbury Hill Condominium</string>
+			<string>Parc Aston</string>
+			<string>Parc Bleu</string>
+			<string>Parc Centennial</string>
+			<string>Parc Centros</string>
+			<string>Parc Elegance</string>
+			<string>Parc Emily</string>
+			<string>Parc Haven</string>
+			<string>Parc Imperial</string>
+			<string>Parc Mackenzie</string>
+			<string>Parc Mondrian</string>
+			<string>Parc Oasis</string>
+			<string>Parc Olympia</string>
+			<string>Parc Palais</string>
+			<string>Parc Regency</string>
+			<string>Parc Rosewood</string>
+			<string>Parc Seabreeze</string>
+			<string>Parc Somme</string>
+			<string>Parc Sophia</string>
+			<string>Parc Stevens</string>
+			<string>Parc Vera</string>
+			<string>Parc Vista</string>
+			<string>Park Court</string>
+			<string>Park East</string>
+			<string>Park Green</string>
+			<string>Park House</string>
+			<string>Park Infinia At Wee Nam</string>
+			<string>Park Natura</string>
+			<string>Park Residences Kovan</string>
+			<string>Park View Mansion</string>
+			<string>Park Villas</string>
+			<string>Park West</string>
+			<string>Parkview Apartments</string>
+			<string>Parkview Eclat</string>
+			<string>Parkway Mansion</string>
+			<string>Parkway View</string>
+			<string>Parry Court</string>
+			<string>Parry Green</string>
+			<string>Parry Park</string>
+			<string>Parryville</string>
+			<string>Parvis</string>
+			<string>Pasadena</string>
+			<string>Pasir Panjang Court</string>
+			<string>Pasir Panjang Gardens</string>
+			<string>Pasir Panjang Lodge</string>
+			<string>Pasir Ris Beach Park</string>
+			<string>Pasir View Park</string>
+			<string>Paterson Linc</string>
+			<string>Paterson Residence</string>
+			<string>Paterson Suites</string>
+			<string>Pavilion 11</string>
+			<string>Pavilion Park</string>
+			<string>Paya Lebar Gardens</string>
+			<string>Paya Lebar Residences</string>
+			<string>Peace Centre/Mansions</string>
+			<string>Peach Garden</string>
+			<string>Peak Court Condominium</string>
+			<string>Peakview Estate</string>
+			<string>Peakville Park</string>
+			<string>Pearl Bank Apartment</string>
+			<string>Pearls Centre</string>
+			<string>Pebble Bay</string>
+			<string>Peirce View</string>
+			<string>Peirce Villas</string>
+			<string>Pelikat Mansions</string>
+			<string>People&apos;s Garden</string>
+			<string>People&apos;s Park Centre</string>
+			<string>People&apos;s Park Complex</string>
+			<string>Peppermint Grove</string>
+			<string>Pepys Hill Condominium</string>
+			<string>Permai Court</string>
+			<string>Perpetual Apartments</string>
+			<string>Petain Court</string>
+			<string>Phillips Residence</string>
+			<string>Phoenix Heights</string>
+			<string>Picardy Gardens</string>
+			<string>Pin Mansions</string>
+			<string>Pine Grove</string>
+			<string>Pine Villas</string>
+			<string>Pinehurst Condominium</string>
+			<string>Pinetree Condominium</string>
+			<string>Pinevale</string>
+			<string>Pinewood Gardens</string>
+			<string>Pinnacle 16</string>
+			<string>Platina Gardens</string>
+			<string>Platinum Edge</string>
+			<string>Poets Villas</string>
+			<string>Poh Heng Court</string>
+			<string>Poh Huat Gardens</string>
+			<string>Portofino</string>
+			<string>Poshgrove East</string>
+			<string>President Gardens</string>
+			<string>Prestige Heights</string>
+			<string>Prestige Loft</string>
+			<string>Prestige Residence</string>
+			<string>Presto@Upper Serangoon</string>
+			<string>Prime Residence</string>
+			<string>Primedge</string>
+			<string>Primo Residences</string>
+			<string>Princess Of Wales Park</string>
+			<string>Princeton Vale</string>
+			<string>Pristine Heights</string>
+			<string>Prive</string>
+			<string>Prosper Gardens</string>
+			<string>Prospero Ville</string>
+			<string>Proximo</string>
+			<string>Public Mansion</string>
+			<string>Qbay Residences</string>
+			<string>Qube Suites</string>
+			<string>Queen Astrid Park</string>
+			<string>Queens</string>
+			<string>Queensberry Lodge</string>
+			<string>Queensway Tower</string>
+			<string>Questa @ Dunman</string>
+			<string>Quinterra</string>
+			<string>Race Course Road/Owen Road Conservation Area</string>
+			<string>Radix</string>
+			<string>Raffles Park</string>
+			<string>Rafflesia Condominium</string>
+			<string>Raintree Valley</string>
+			<string>Rajah Towers</string>
+			<string>Rangoon 88</string>
+			<string>Rangoon Apartments</string>
+			<string>Rangoon Court</string>
+			<string>Rangoon View</string>
+			<string>Raya Garden</string>
+			<string>Re Charge @ 303</string>
+			<string>Rebecca Park</string>
+			<string>Reflections At Keppel Bay</string>
+			<string>Regal 35</string>
+			<string>Regal Court</string>
+			<string>Regency Lodge</string>
+			<string>Regency Park</string>
+			<string>Regency Suites</string>
+			<string>Regent Court</string>
+			<string>Regent Grove</string>
+			<string>Regent Heights</string>
+			<string>Regent Park</string>
+			<string>Regent Residences</string>
+			<string>Regent Villas</string>
+			<string>Regentville</string>
+			<string>Regina Hill</string>
+			<string>Regis Mansions</string>
+			<string>Reservoir Villas</string>
+			<string>Residence 118</string>
+			<string>Residence 66</string>
+			<string>Residences 88</string>
+			<string>Residences @ Evelyn</string>
+			<string>Residences @ Jansen</string>
+			<string>Residences @ Killiney</string>
+			<string>Residences @ Limau</string>
+			<string>Residences @ Novena</string>
+			<string>Residences @ Somme</string>
+			<string>Residences @ Stangee</string>
+			<string>Residences At 338A</string>
+			<string>Residences At W Singapore Sentosa Cove</string>
+			<string>Residences Botanique</string>
+			<string>Residential Apartments</string>
+			<string>Rezi 26</string>
+			<string>Rhapsody On Mount Elizabeth</string>
+			<string>Ria Apartments</string>
+			<string>Ricchezza</string>
+			<string>Rich East Garden</string>
+			<string>Rich Mansion</string>
+			<string>Richard&apos;s Park</string>
+			<string>Richmond Park</string>
+			<string>Richmond View</string>
+			<string>Ridge Court</string>
+			<string>Ridgevale Gardens</string>
+			<string>Ridgewood</string>
+			<string>Rio Gardens</string>
+			<string>Rio Vista</string>
+			<string>Ripple Bay</string>
+			<string>Ris Grandeur</string>
+			<string>Rising Suites</string>
+			<string>Ritz Mansions</string>
+			<string>Ritz Regency</string>
+			<string>Riva Lodge</string>
+			<string>Rivage</string>
+			<string>Rivan Court</string>
+			<string>River Isles</string>
+			<string>River Place</string>
+			<string>River Valley Apartments</string>
+			<string>River Valley Court</string>
+			<string>Riveredge</string>
+			<string>Rivergate</string>
+			<string>Riveria Gardens</string>
+			<string>Riverparc Residence</string>
+			<string>Riversails</string>
+			<string>Rivershire</string>
+			<string>Riverside 48</string>
+			<string>Riversound Residence</string>
+			<string>Rivervale Crest</string>
+			<string>Riverwalk Apartment</string>
+			<string>Riviera 38</string>
+			<string>Riviera Residences</string>
+			<string>Riz Haven</string>
+			<string>Robertson 100</string>
+			<string>Robertson Blue</string>
+			<string>Robertson Edge</string>
+			<string>Robin Regalia</string>
+			<string>Robin Star</string>
+			<string>Robin Village</string>
+			<string>Robinson Suites</string>
+			<string>Rocca Balestier</string>
+			<string>Rochelle At Newton</string>
+			<string>Rosalia Park</string>
+			<string>Rose Ville</string>
+			<string>Rosedale</string>
+			<string>Rosevale</string>
+			<string>Rosewood</string>
+			<string>Rosewood Suites</string>
+			<string>Rosyth Lodge</string>
+			<string>Rosyth Residence</string>
+			<string>Rosyth Ville</string>
+			<string>Rovgale Mansions</string>
+			<string>Royal Court</string>
+			<string>Royale Mansions</string>
+			<string>Royalville</string>
+			<string>Royce Residences</string>
+			<string>RV Edge</string>
+			<string>RV Point</string>
+			<string>RV Suites</string>
+			<string>Sage</string>
+			<string>Sam Kiang Mansions</string>
+			<string>Sam Leong Mansion</string>
+			<string>Sanctuary @813</string>
+			<string>Sanctuary Green</string>
+			<string>Sandalwood</string>
+			<string>Sandilands Residences</string>
+			<string>Sandy Island</string>
+			<string>Sandy Palm</string>
+			<string>Sanford Park</string>
+			<string>Sanny Park</string>
+			<string>Sant Ritz</string>
+			<string>Santa Fe Mansions</string>
+			<string>Saraca Gardens</string>
+			<string>Saraca Villas</string>
+			<string>Sarhad Ville</string>
+			<string>Sarina Terrace</string>
+			<string>Savannah Condopark</string>
+			<string>Savoy Park</string>
+			<string>Scenic Heights</string>
+			<string>Sck Ville</string>
+			<string>Scotts 28</string>
+			<string>Scotts Highpark</string>
+			<string>Scotts Square</string>
+			<string>Sea Avenue Residences</string>
+			<string>Sea Breeze Terrace</string>
+			<string>Sea Esta</string>
+			<string>Sea View Park</string>
+			<string>Seahill</string>
+			<string>Seascape</string>
+			<string>Seaside Park</string>
+			<string>Seasons Park</string>
+			<string>Seasons View</string>
+			<string>Seastrand</string>
+			<string>Seaview Park</string>
+			<string>Seaview Point</string>
+			<string>Second Avenue Junction</string>
+			<string>Selanting Green</string>
+			<string>Seletar Garden</string>
+			<string>Seletar Hills Estate</string>
+			<string>Seletar Park</string>
+			<string>Seletar Park Residence</string>
+			<string>Seletar Springs Condominium</string>
+			<string>Seletaris</string>
+			<string>Sembawang Cottage</string>
+			<string>Sembawang Gardens Arcade</string>
+			<string>Sembawang Hills Estate</string>
+			<string>Sembawang Park</string>
+			<string>Sembawang Springs Estate</string>
+			<string>Sembawang Square Estate</string>
+			<string>Sembawang Straits Estate</string>
+			<string>Seng Hua Gardens</string>
+			<string>Seng Yong Villas</string>
+			<string>Sennett Estate</string>
+			<string>Sennett Residence</string>
+			<string>Sentosa Cove</string>
+			<string>Seran Court</string>
+			<string>Serangoon Garden Estate</string>
+			<string>Serangoon Garden Park</string>
+			<string>Serangoon Park</string>
+			<string>Seraya 9</string>
+			<string>Seraya Breeze</string>
+			<string>Seraya Court</string>
+			<string>Seraya Ville</string>
+			<string>Serene Park</string>
+			<string>Serenity Park</string>
+			<string>Seven Holt Road</string>
+			<string>Seven Palms Sentosa Cove</string>
+			<string>Shamrock Park</string>
+			<string>Shanghai One</string>
+			<string>Shangri-La Park</string>
+			<string>Sheares Ville</string>
+			<string>Sheba Lodge</string>
+			<string>Shelford 23</string>
+			<string>Shelford Green</string>
+			<string>Shelford Regency</string>
+			<string>Shelford Suites</string>
+			<string>Shepherd&apos;s Hill Estate</string>
+			<string>Sherwood Condominium</string>
+			<string>Sherwood Tower</string>
+			<string>Shiro</string>
+			<string>Siew Lim Park</string>
+			<string>Siglap Garden</string>
+			<string>Siglap Hill 33</string>
+			<string>Siglap Lodge</string>
+			<string>Siglap Park</string>
+			<string>Siglap V</string>
+			<string>Signature At Lewis</string>
+			<string>Signature Crest</string>
+			<string>Signature Park</string>
+			<string>Silahis Apartment</string>
+			<string>Silahis Ville</string>
+			<string>Silver Hill</string>
+			<string>Silverscape</string>
+			<string>Silversea</string>
+			<string>Simei Garden</string>
+			<string>Simei Green Condominium</string>
+			<string>Simon Lodge</string>
+			<string>Simon Plaza</string>
+			<string>Simon Terrace</string>
+			<string>Sims Dorado</string>
+			<string>Sims Edge</string>
+			<string>Sims Green</string>
+			<string>Sims Meadows</string>
+			<string>Sims Point</string>
+			<string>Sims Residences</string>
+			<string>Simsville</string>
+			<string>Sin Chuan Garden</string>
+			<string>Sin Ming Plaza</string>
+			<string>Singa Court</string>
+			<string>Sixth Avenue Centre</string>
+			<string>Sixth Avenue Ville</string>
+			<string>Skies Miltonia</string>
+			<string>Skt Mansions</string>
+			<string>Sky Green</string>
+			<string>Sky Habitat</string>
+			<string>Sky@Eleven</string>
+			<string>Skyline 360 @ St Thomas Walk</string>
+			<string>Skyline @ Orchard Boulevard</string>
+			<string>Skyline Residences</string>
+			<string>Skypark</string>
+			<string>Skysuites17</string>
+			<string>Skysuites@Anson</string>
+			<string>Smart Suites</string>
+			<string>Soho 188</string>
+			<string>Soho @ Farrer</string>
+			<string>Solaris Residences</string>
+			<string>Soleil @ Sinaran</string>
+			<string>Sommerville Grandeur</string>
+			<string>Sommerville Loft</string>
+			<string>Sommerville Park</string>
+			<string>Sommerville Regency</string>
+			<string>Sommerville Residences</string>
+			<string>Soo Chow Garden</string>
+			<string>Sophia 98</string>
+			<string>Sophia Lodge</string>
+			<string>Sophia Mansion</string>
+			<string>Sophia Residence</string>
+			<string>Sophia Villa</string>
+			<string>South Beach</string>
+			<string>South Union Park</string>
+			<string>Southaven I</string>
+			<string>Southaven II</string>
+			<string>Southbank</string>
+			<string>Sovereign @ Simon</string>
+			<string>Space @ Kovan</string>
+			<string>Spanish Village</string>
+			<string>Spottiswoode 18</string>
+			<string>Spottiswoode Park</string>
+			<string>Spottiswoode Suites</string>
+			<string>Spottiswoode Residences</string>
+			<string>Spring @ Katong</string>
+			<string>Spring @ Langsat</string>
+			<string>Spring Grove</string>
+			<string>Spring Park Estate</string>
+			<string>Springbrook Terrace</string>
+			<string>Springdale Condominium</string>
+			<string>Springdew Terrace</string>
+			<string>Springhill</string>
+			<string>Springleaf Garden</string>
+			<string>Springleaf Green</string>
+			<string>Springleaf Villas</string>
+			<string>Springvale</string>
+			<string>Springwood</string>
+			<string>St Anne&apos;s Wood</string>
+			<string>St Francis Court</string>
+			<string>St Francis Lodge</string>
+			<string>St Martin Residence</string>
+			<string>St Martin&apos;s Apartment</string>
+			<string>St Martin&apos;s Residences</string>
+			<string>St Michael Regency</string>
+			<string>St Michael&apos;s Condominium</string>
+			<string>St Michael&apos;s Place</string>
+			<string>St Nicholas View</string>
+			<string>St Patrick&apos;s Court</string>
+			<string>St Patrick&apos;s Garden</string>
+			<string>St Patrick&apos;s Green</string>
+			<string>St Patrick&apos;s Loft</string>
+			<string>St Patrick&apos;s Residences</string>
+			<string>St Patrick&apos;s Row</string>
+			<string>St Regis Residences Singapore</string>
+			<string>St Thomas Lodge</string>
+			<string>St Thomas Suites</string>
+			<string>Stadia</string>
+			<string>Starlight Suites</string>
+			<string>Starville</string>
+			<string>Stellar RV</string>
+			<string>Stevens Court</string>
+			<string>Stevens Loft</string>
+			<string>Stevens Suites</string>
+			<string>Still Mansions</string>
+			<string>Stillz Residence</string>
+			<string>Straits Gardens</string>
+			<string>Straits Residences</string>
+			<string>Strata</string>
+			<string>Stratford Court</string>
+			<string>Stratton Green</string>
+			<string>Stratton Park</string>
+			<string>Studio 3</string>
+			<string>Studio8</string>
+			<string>Studios @ Marne</string>
+			<string>Studios@Tembeling</string>
+			<string>Sturdee View</string>
+			<string>Suffolk Premier</string>
+			<string>Suites 123</string>
+			<string>Suites 28</string>
+			<string>Suites @ Amber</string>
+			<string>Suites @ Cairnhill</string>
+			<string>Suites @ EastCoast</string>
+			<string>Suites @ Eunos</string>
+			<string>Suites @ Guillemard</string>
+			<string>Suites @ Katong</string>
+			<string>Suites @ Kovan</string>
+			<string>Suites @ Newton</string>
+			<string>Suites @ Owen</string>
+			<string>Suites @ Paya Lebar</string>
+			<string>Suites @ Shrewsbury</string>
+			<string>Suites @ Sims</string>
+			<string>Suites @ Surrey</string>
+			<string>Suites @ Topaz</string>
+			<string>Suites At Bukit Timah</string>
+			<string>Suites At Orchard</string>
+			<string>Suites De Laurel</string>
+			<string>Suites Twenty-Two</string>
+			<string>Suites@Braddell</string>
+			<string>Suites@Changi</string>
+			<string>Sultan Gate Place</string>
+			<string>Summer Gardens</string>
+			<string>Summer Green</string>
+			<string>Summer Grove</string>
+			<string>Summer Scent</string>
+			<string>Summer View</string>
+			<string>Summer Villas</string>
+			<string>Summerdale</string>
+			<string>Summerhill</string>
+			<string>Summerlea Green</string>
+			<string>Summit Ville</string>
+			<string>Sun Plaza</string>
+			<string>Sun Rosier</string>
+			<string>Sunbird Park</string>
+			<string>Suncottages</string>
+			<string>Sunflower Court</string>
+			<string>Sunflower Grandeur</string>
+			<string>Sunflower Lodge</string>
+			<string>Sunflower Mansions</string>
+			<string>Sunflower Regency</string>
+			<string>Sunflower View</string>
+			<string>Sunglade</string>
+			<string>Sungrove</string>
+			<string>Sunhaven</string>
+			<string>Sunny Grove</string>
+			<string>Sunny Palms</string>
+			<string>Sunny Parc</string>
+			<string>Sunrise Gardens</string>
+			<string>Sunrise Villa</string>
+			<string>Sunset Lodge</string>
+			<string>Sunshine Grandeur</string>
+			<string>Sunshine Grove</string>
+			<string>Sunshine Lodge</string>
+			<string>Sunshine Loft</string>
+			<string>Tai Hwan Garden</string>
+			<string>Tai Hwan Park</string>
+			<string>Tai Keng Gardens</string>
+			<string>Tai Keng Villas</string>
+			<string>Tai Peng Gardens</string>
+			<string>Taipan Grand</string>
+			<string>Taipan Jade</string>
+			<string>Taipan Regency</string>
+			<string>Tampines Court</string>
+			<string>Tan Tong Meng Tower</string>
+			<string>Tanah Merah Green</string>
+			<string>Tanah Merah Mansion</string>
+			<string>Tanah Merah Park</string>
+			<string>Tanamera Crest</string>
+			<string>Tangerine Grove</string>
+			<string>Tanglin Park</string>
+			<string>Tanglin Regency</string>
+			<string>Tanglin Residences</string>
+			<string>Tanglin View</string>
+			<string>Tanjong Ria Condominium</string>
+			<string>Tatiana Terrace</string>
+			<string>Teacher&apos;s Housing Estate</string>
+			<string>Telok Blangah House</string>
+			<string>Telok Kurau Lodge</string>
+			<string>Telok Kurau Mansion</string>
+			<string>Telok Mansion</string>
+			<string>Telok Ville</string>
+			<string>Tembelina</string>
+			<string>Tembeling Court</string>
+			<string>Tembeling Grove</string>
+			<string>Tembeling Mansions</string>
+			<string>Tembeling Residence</string>
+			<string>Ten @ Suffolk</string>
+			<string>Tenggiria</string>
+			<string>Teresa 8</string>
+			<string>Teresa Ville</string>
+			<string>Terrasse</string>
+			<string>Terrene At Bukit Timah</string>
+			<string>Tessa Lodge</string>
+			<string>Textile Centre</string>
+			<string>TG Mansion</string>
+			<string>The 101</string>
+			<string>The Aberdeen</string>
+			<string>The Abode At Devonshire</string>
+			<string>The Acacias</string>
+			<string>The Adara</string>
+			<string>The Alcove</string>
+			<string>The Amarelle</string>
+			<string>The Ambience</string>
+			<string>The Ambra</string>
+			<string>The Ambrosia</string>
+			<string>The Amerald Studio</string>
+			<string>The Amery</string>
+			<string>The Amston</string>
+			<string>The Anchorage</string>
+			<string>The Ansley</string>
+			<string>The Arc At Draycott</string>
+			<string>The Arcadia</string>
+			<string>The Areca</string>
+			<string>The Ariel</string>
+			<string>The Aristo @ Amber</string>
+			<string>The Arizon</string>
+			<string>The Armadale</string>
+			<string>The Arris</string>
+			<string>The Arte</string>
+			<string>The Aston</string>
+			<string>The Atria At Meyer</string>
+			<string>The Axis</string>
+			<string>The Azure</string>
+			<string>The Azzuro</string>
+			<string>The Bale</string>
+			<string>The Balmoral</string>
+			<string>The Balmoral Spring</string>
+			<string>The Baycourt</string>
+			<string>The Bayron</string>
+			<string>The Bayshore</string>
+			<string>The Beacon</string>
+			<string>The Beacon Edge</string>
+			<string>The Beccagayle</string>
+			<string>The Belleforte</string>
+			<string>The Belvedere</string>
+			<string>The Bencoolen</string>
+			<string>The Berth By The Cove</string>
+			<string>The Beverly</string>
+			<string>The Blossomvale</string>
+			<string>The Botanic On Lloyd</string>
+			<string>The Boulevard Residence</string>
+			<string>The Boutiq</string>
+			<string>The Callista</string>
+			<string>The Calrose</string>
+			<string>The Calypso</string>
+			<string>The Canopy</string>
+			<string>The Cape</string>
+			<string>The Capri</string>
+			<string>The Carpmaelina</string>
+			<string>The Cascadia</string>
+			<string>The Cassandra</string>
+			<string>The Centrio</string>
+			<string>The Centris</string>
+			<string>The Champagne</string>
+			<string>The Chancery Residence</string>
+			<string>The Cherrywood</string>
+			<string>The Chuan</string>
+			<string>The Citrine</string>
+			<string>The Claymore</string>
+			<string>The Clearwater</string>
+			<string>The Clementvale</string>
+			<string>The Clift</string>
+			<string>The Coast At Sentosa Cove</string>
+			<string>The Cornwall</string>
+			<string>The Cosmopolitan</string>
+			<string>The Coterie @ Holland</string>
+			<string>The Cotz</string>
+			<string>The Countryside</string>
+			<string>The Courtyard</string>
+			<string>The Cristallo</string>
+			<string>The Daffodil</string>
+			<string>The Dairy Farm</string>
+			<string>The Dew</string>
+			<string>The Domain</string>
+			<string>The Draycott</string>
+			<string>The Eastside</string>
+			<string>The Ebony</string>
+			<string>The Eden At Tampines</string>
+			<string>The Edge On Cairnhill</string>
+			<string>The Edgewater</string>
+			<string>The Elegance @ Changi</string>
+			<string>The Element @ Stevens</string>
+			<string>The Elysia</string>
+			<string>The Equatorial</string>
+			<string>The Esparis</string>
+			<string>The Espira</string>
+			<string>The Esta</string>
+			<string>The Estiva</string>
+			<string>The Estoril</string>
+			<string>The Estuary</string>
+			<string>The Floravale</string>
+			<string>The Florentine</string>
+			<string>The Florida</string>
+			<string>The Foliage</string>
+			<string>The Foresta @ Mount Faber</string>
+			<string>The Gale</string>
+			<string>The Gardens At Bishan</string>
+			<string>The Gardens At Gerald</string>
+			<string>The Geranium</string>
+			<string>The Glacier</string>
+			<string>The Glyndebourne</string>
+			<string>The Grandhill</string>
+			<string>The Grandiflora</string>
+			<string>The Grange</string>
+			<string>The Greenwich</string>
+			<string>The Greenwood</string>
+			<string>The Hacienda</string>
+			<string>The Heliconia</string>
+			<string>The Hermitage</string>
+			<string>The Hillier</string>
+			<string>The Hilloft</string>
+			<string>The Hillside</string>
+			<string>The Holland Collection</string>
+			<string>The Horizon</string>
+			<string>The Huntington</string>
+			<string>The Imperial</string>
+			<string>The Infiniti</string>
+			<string>The Inglewood</string>
+			<string>The Inspira</string>
+			<string>The Interlace</string>
+			<string>The Interweave</string>
+			<string>The Jade</string>
+			<string>The Ladyhill</string>
+			<string>The Lakefront Residences</string>
+			<string>The Lakeshore</string>
+			<string>The Lanai</string>
+			<string>The Lattiz</string>
+			<string>The Laurels</string>
+			<string>The Legacy</string>
+			<string>The Legend</string>
+			<string>The Lenox</string>
+			<string>The Levelz</string>
+			<string>The Light @ Cairnhill</string>
+			<string>The Linc</string>
+			<string>The Lincoln Modern</string>
+			<string>The Lincoln Residences</string>
+			<string>The Line @ Tanjong Rhu</string>
+			<string>The Linear</string>
+			<string>The Loft</string>
+			<string>The Lucent</string>
+			<string>The Lush</string>
+			<string>The Luxurie</string>
+			<string>The Madeira</string>
+			<string>The Makena</string>
+			<string>The Marbella</string>
+			<string>The Marq On Paterson Hill</string>
+			<string>The Marque @ Irrawaddy</string>
+			<string>The Mayfair</string>
+			<string>The Maylea</string>
+			<string>The Medley</string>
+			<string>The Merasaga</string>
+			<string>The Mercury</string>
+			<string>The Merlot</string>
+			<string>The Metropolitan Condominium</string>
+			<string>The Metz</string>
+			<string>The Meyer Place</string>
+			<string>The Meyerise</string>
+			<string>The Mezzo</string>
+			<string>The Midas</string>
+			<string>The Miltonia Residences</string>
+			<string>The Mint Residences</string>
+			<string>The Minton</string>
+			<string>The MKZ</string>
+			<string>The Montage</string>
+			<string>The Montana</string>
+			<string>The Morning Dew</string>
+			<string>The Morning Glory</string>
+			<string>The Morningside</string>
+			<string>The Mornington</string>
+			<string>The Nautical</string>
+			<string>The Nclave</string>
+			<string>The Nexus</string>
+			<string>The Oceanfront @ Sentosa Cove</string>
+			<string>The Old House</string>
+			<string>The Oliv</string>
+			<string>The Orange Grove</string>
+			<string>The Orchard Residences</string>
+			<string>The Oxley</string>
+			<string>The Palette</string>
+			<string>The Palladium</string>
+			<string>The Parc Condominium</string>
+			<string>The Park Vale</string>
+			<string>The Paterson</string>
+			<string>The Paterson Edge</string>
+			<string>The Peak</string>
+			<string>The Peak @ Cairnhill I</string>
+			<string>The Peak@Balmeg</string>
+			<string>The Pearl @ Mount Faber</string>
+			<string>The Petals</string>
+			<string>The Pier At Robertson</string>
+			<string>The Plaza</string>
+			<string>The Prestige Collection</string>
+			<string>The Princeton</string>
+			<string>The Promenade@Pelikat</string>
+			<string>The Prominence</string>
+			<string>The Promont</string>
+			<string>The Quartz</string>
+			<string>The Quayside</string>
+			<string>The Quintet</string>
+			<string>The Rainforest</string>
+			<string>The Raintree</string>
+			<string>The Regalia</string>
+			<string>The Regency At Tiong Bahru</string>
+			<string>The Richmond</string>
+			<string>The Ritz-Carlton Residences Singapore</string>
+			<string>The Riverina</string>
+			<string>The Riverine By The Park</string>
+			<string>The Riverside Piazza</string>
+			<string>The Rivervale</string>
+			<string>The Rochester</string>
+			<string>The Sail @ Marina Bay</string>
+			<string>The Sanctuary @ Geylang</string>
+			<string>The Scala</string>
+			<string>The Scenic @ Braddell</string>
+			<string>The Scotts Tower</string>
+			<string>The Sea View</string>
+			<string>The Seafront On Meyer</string>
+			<string>The Seawind</string>
+			<string>The Sensoria</string>
+			<string>The Serenade @ Holland</string>
+			<string>The Serennia</string>
+			<string>The Shaughnessy</string>
+			<string>The Shelford</string>
+			<string>The Shore Residences</string>
+			<string>The Shoreline Residences I</string>
+			<string>The Shoreline Residences II</string>
+			<string>The Sierra</string>
+			<string>The Silva Gardens</string>
+			<string>The Silver Fir</string>
+			<string>The Silver Spurz</string>
+			<string>The Silverton</string>
+			<string>The Sixth Avenue Residences</string>
+			<string>The Solitaire</string>
+			<string>The Sound</string>
+			<string>The Sovereign</string>
+			<string>The Spectrum</string>
+			<string>The Spinnaker</string>
+			<string>The Springbloom</string>
+			<string>The Springfield</string>
+			<string>The Springs</string>
+			<string>The Springside</string>
+			<string>The Stellar</string>
+			<string>The Sterling</string>
+			<string>The Stradia</string>
+			<string>The Suites At Central</string>
+			<string>The Summit</string>
+			<string>The Sunflower</string>
+			<string>The Sunnidora</string>
+			<string>The Sunniflora</string>
+			<string>The Sunny Legend</string>
+			<string>The Sunny Spring</string>
+			<string>The Sunnydale</string>
+			<string>The Sunshine</string>
+			<string>The Taipan</string>
+			<string>The Tampines Trilliant</string>
+			<string>The Tanamera</string>
+			<string>The Tate Residences</string>
+			<string>The Tembusu</string>
+			<string>The Teneriffe</string>
+			<string>The Tennery</string>
+			<string>The Tessarina</string>
+			<string>The Thomson Duplex</string>
+			<string>The Tier</string>
+			<string>The Tomlinson</string>
+			<string>The Top Residence</string>
+			<string>The Treeline</string>
+			<string>The Tresor</string>
+			<string>The Trevose</string>
+			<string>The Trillium</string>
+			<string>The Trizon</string>
+			<string>The Tropic Gardens</string>
+			<string>The Tropica</string>
+			<string>The Trumps</string>
+			<string>The Twins</string>
+			<string>The Urbanite</string>
+			<string>The Vanderlint</string>
+			<string>The Vermont On Cairnhill</string>
+			<string>The Verte</string>
+			<string>The Verv @ RV</string>
+			<string>The Verve</string>
+			<string>The Vesta</string>
+			<string>The View @ Meyer</string>
+			<string>The Village</string>
+			<string>The Villas @ Sentosa Cove</string>
+			<string>The Vines</string>
+			<string>The Viridian</string>
+			<string>The Vision</string>
+			<string>The Vue</string>
+			<string>The Warren</string>
+			<string>The Water Edge</string>
+			<string>The Waterina</string>
+			<string>The Waterline</string>
+			<string>The Waterside</string>
+			<string>The Westridge</string>
+			<string>The Wharf Residence</string>
+			<string>The Whitley Residences</string>
+			<string>The Wilshire</string>
+			<string>The Windsor</string>
+			<string>The Woodgrove</string>
+			<string>The Woods</string>
+			<string>The Yardley</string>
+			<string>Thomson 800</string>
+			<string>Thomson Euro-Asia</string>
+			<string>Thomson Garden Estate</string>
+			<string>Thomson Grand</string>
+			<string>Thomson Grove</string>
+			<string>Thomson Hills</string>
+			<string>Thomson Hills Estate</string>
+			<string>Thomson Imperial Court</string>
+			<string>Thomson Park</string>
+			<string>Thomson Plaza</string>
+			<string>Thomson Ridge Estate</string>
+			<string>Thomson Rise Estate</string>
+			<string>Thomson V One</string>
+			<string>Thomson V Two</string>
+			<string>Thomson Vale</string>
+			<string>Thomson View Condominium</string>
+			<string>Thong Sia Building</string>
+			<string>Three Balmoral</string>
+			<string>Three Three Robin</string>
+			<string>Tiara</string>
+			<string>Tierra Vue</string>
+			<string>Tiong Bahru Estate</string>
+			<string>Tivoli Gardens</string>
+			<string>Tivoli Grande</string>
+			<string>Tivoli Lodge</string>
+			<string>Toh Estate</string>
+			<string>Toh Tuck Lodge</string>
+			<string>Toho Green</string>
+			<string>Tomlinson Heights</string>
+			<string>Top Ten</string>
+			<string>Topaz Mansions</string>
+			<string>Torie Mansions</string>
+			<string>Torieview Mansions</string>
+			<string>Torieville</string>
+			<string>Townhouse Apartments</string>
+			<string>Treasure Gardens</string>
+			<string>Treasure Mansions</string>
+			<string>Treasure on Balmoral</string>
+			<string>Treasure Place</string>
+			<string>Treasures@G19</string>
+			<string>Tree House</string>
+			<string>Treescape</string>
+			<string>Trellis Towers</string>
+			<string>Trendale Tower</string>
+			<string>Tresalveo</string>
+			<string>Trevista</string>
+			<string>Trevose 12</string>
+			<string>Trevose Park</string>
+			<string>Tribeca</string>
+			<string>Trilight</string>
+			<string>Trilinq</string>
+			<string>Tropical Spring</string>
+			<string>Tropicana Condominium</string>
+			<string>Tropics @ Haigsville</string>
+			<string>Tropika East</string>
+			<string>Tuan Sing Park</string>
+			<string>Tudor Ten</string>
+			<string>Tudor View</string>
+			<string>Tulip Garden</string>
+			<string>Turquoise</string>
+			<string>Twentyone Angullia Park</string>
+			<string>Twin Heights</string>
+			<string>Twin Peaks</string>
+			<string>Twin Regency</string>
+			<string>Twin Waterfalls</string>
+			<string>Two8one Studio</string>
+			<string>Tyrwhitt 139</string>
+			<string>Uber 388</string>
+			<string>UE Square</string>
+			<string>Uni Building</string>
+			<string>United Mansion</string>
+			<string>University Park</string>
+			<string>UP@Robertson Quay</string>
+			<string>Upper Serangoon Shopping Centre</string>
+			<string>Urban Edge @ Holland V</string>
+			<string>Urban Heritage</string>
+			<string>Urban Lofts</string>
+			<string>Urban Residences</string>
+			<string>Urban Resort Condominium</string>
+			<string>Urban Suites</string>
+			<string>Urban Vista</string>
+			<string>Urbana</string>
+			<string>V On Shenton</string>
+			<string>Vacanza @ East</string>
+			<string>Valley Park</string>
+			<string>Valvista</string>
+			<string>Vanadium</string>
+			<string>Varsity Park Condominium</string>
+			<string>Vaughan Garden</string>
+			<string>Venezio</string>
+			<string>Ventana</string>
+			<string>Ventuno Balmoral</string>
+			<string>Ventura Heights</string>
+			<string>Ventura View</string>
+			<string>Veranda</string>
+			<string>Verdana Villas</string>
+			<string>Verdun House</string>
+			<string>Verdure</string>
+			<string>Versailles</string>
+			<string>Versilia On Haig</string>
+			<string>Vertis</string>
+			<string>Vetro</string>
+			<string>Vibes @ East Coast</string>
+			<string>Vibes @ Kovan</string>
+			<string>Vibes@Upper Serangoon</string>
+			<string>Vicenta Lodge</string>
+			<string>Victoria Park</string>
+			<string>Victory Heights</string>
+			<string>Vida</string>
+			<string>Viento</string>
+			<string>Villa Azura</string>
+			<string>Villa Begonia</string>
+			<string>Villa De West</string>
+			<string>Villa Delle Rose</string>
+			<string>Villa Des Flores</string>
+			<string>Villa D&apos;este</string>
+			<string>Villa Indah</string>
+			<string>Villa Marina</string>
+			<string>Villa Martia</string>
+			<string>Villa Ponder Rosa</string>
+			<string>Villa Verde</string>
+			<string>Village At Pasir Panjang</string>
+			<string>Village Tower</string>
+			<string>Villas At Kew</string>
+			<string>Villas La Vue</string>
+			<string>Villas Laguna</string>
+			<string>Villas Six</string>
+			<string>Ville Royale</string>
+			<string>Vina Lodge</string>
+			<string>Visioncrest</string>
+			<string>Vista Garden</string>
+			<string>Vista Park</string>
+			<string>Vista Residences</string>
+			<string>Vitra</string>
+			<string>Viva</string>
+			<string>Viva Vista</string>
+			<string>Vivace</string>
+			<string>Viz At Holland</string>
+			<string>Vogx</string>
+			<string>Volari</string>
+			<string>Wan Tho Lodge</string>
+			<string>Wang Lodge</string>
+			<string>Warner Court</string>
+			<string>Washingtonia Villa</string>
+			<string>Water Place</string>
+			<string>Water Terrace</string>
+			<string>Water Villas</string>
+			<string>Waterbank At Dakota</string>
+			<string>Watercolours</string>
+			<string>Watercrest</string>
+			<string>Waterfall Gardens</string>
+			<string>Waterford Residence</string>
+			<string>Waterfront Gold</string>
+			<string>Waterfront Isle</string>
+			<string>Waterfront Key</string>
+			<string>Waterfront Waves</string>
+			<string>Waterloo Apartments</string>
+			<string>Waterloo View</string>
+			<string>Watermark Robertson Quay</string>
+			<string>Waterscape At Cavenagh</string>
+			<string>Watertown</string>
+			<string>Waterview</string>
+			<string>Watten Estate</string>
+			<string>Watten Estate Condominium</string>
+			<string>Watten Hill</string>
+			<string>Watten Residences</string>
+			<string>Wedgewood Mansions</string>
+			<string>Wellington Park</string>
+			<string>Wembly Residences</string>
+			<string>West Bay Condominium</string>
+			<string>West Coast Gardens</string>
+			<string>West-N</string>
+			<string>Westcove Condominium</string>
+			<string>Westmere</string>
+			<string>Westmont</string>
+			<string>Westpeak Terrace</string>
+			<string>Westside 33</string>
+			<string>Westvale</string>
+			<string>Westville</string>
+			<string>Westwood Park</string>
+			<string>Whitescape</string>
+			<string>Whitevillas Row</string>
+			<string>Whitewater</string>
+			<string>Whitley Heights</string>
+			<string>Whitley Residences</string>
+			<string>Whitley Villas</string>
+			<string>Wilkie 48</string>
+			<string>Wilkie 87</string>
+			<string>Wilkie Apartments</string>
+			<string>Wilkie Court</string>
+			<string>Wilkie Regency</string>
+			<string>Wilkie Studio</string>
+			<string>Wilkinson 8</string>
+			<string>Willyn Ville</string>
+			<string>Windermere</string>
+			<string>Windsor Park Estate</string>
+			<string>Windy Heights</string>
+			<string>Wing Fong Court</string>
+			<string>Wing Fong Mansions</string>
+			<string>Wing On Life Garden</string>
+			<string>Wolskel Lodge</string>
+			<string>Woodgrove Condominium</string>
+			<string>Woodgrove Estate</string>
+			<string>Woodhaven</string>
+			<string>Woodlands Park</string>
+			<string>Woodsvale</string>
+			<string>Woodsville 28</string>
+			<string>Woodsville Mansions</string>
+			<string>Woollerton Park</string>
+			<string>Worthington</string>
+			<string>Yeley Building</string>
+			<string>Yew Lian Park</string>
+			<string>Yew Mei Green</string>
+			<string>Yew Tee Residences</string>
+			<string>Yi Kai Court</string>
+			<string>Yi Mei Gardens</string>
+			<string>Yinchuan Building</string>
+			<string>Ying Mansions</string>
+			<string>Yishun Emerald</string>
+			<string>Yishun Sapphire</string>
+			<string>Yong An Park</string>
+			<string>Yong Seng Estate</string>
+			<string>Yong Siak Court</string>
+			<string>Yong Siak View</string>
+			<string>Yugi Garden</string>
+			<string>Yunnan Gardens</string>
+			<string>Zedge</string>
+			<string>Zenith</string>
+			<string>Zephyr Park</string>
+		</array>
+		<key>District</key>
+		<array>
+			<string>D01 Boat Quay/Raffles Place</string>
+			<string>D02 Chinatown/Tanjong Pagar</string>
+			<string>D03 Alexandra/Commonwealth</string>
+			<string>D04 Harbourfront/Telok Blangah</string>
+			<string>D05 Buona Vista/West Coast</string>
+			<string>D06 City Hall/Clarke Quay</string>
+			<string>D07 Beach Road/Bugis/Rochor</string>
+			<string>D08 Farrer Park/Serangoon Road</string>
+			<string>D09 Orchard/River Valley</string>
+			<string>D10 Tanglin/Holland</string>
+			<string>D11 Newton/Novena</string>
+			<string>D12 Balestier/Toa Payoh</string>
+			<string>D13 Macpherson/Potong Pasir</string>
+			<string>D14 Eunos/Geylang/Paya Lebar</string>
+			<string>D15 East Coast/Marine Parade</string>
+			<string>D16 Bedok/Upper East Coast</string>
+			<string>D17 Changi Airport/Changi Village</string>
+			<string>D18 Pasir Ris/Tampines</string>
+			<string>D19 Hougang/Punggol/Sengkang</string>
+			<string>D20 Ang Mo Kio/Bishan/Thomson</string>
+			<string>D21 Clementi/Upper Bukit Timah</string>
+			<string>D22 Boon Lay/Jurong/Tuas</string>
+			<string>D23 Bukit Batok/Bukit Panjang</string>
+			<string>D24 Choa Chu Kang/Tengah</string>
+			<string>D25 Admiralty/Woodlands</string>
+			<string>D26 Mandai/Upper Thomson</string>
+			<string>D27 Sembawang/Yishun</string>
+			<string>D28 Seletar/Yio Chu Kang</string>
+		</array>
+		<key>Tenure</key>
+		<array>
+			<string>FreeHold</string>
+			<string>60-Years Leasehold</string>
+			<string>99-Years Leasehold</string>
+			<string>103-Years Leasehold</string>
+			<string>999-Years Leasehold</string>
+		</array>
+	</dict>
+	<key>Commercial Post</key>
+	<dict>
+		<key>Property Details</key>
+		<array>
+			<string>Property Status *</string>
+			<string>Ad Owner *</string>
+			<string>District *</string>
+			<string>Tenure *</string>
+			<string>No. of Bedrooms *</string>
+			<string>No. of Washrooms *</string>
+			<string>Price (S$)</string>
+			<string>Size (sq ft) *</string>
+			<string>Size (sqm) *</string>
+			<string>Valuation Price (S$)</string>
+			<string>Building Completion</string>
+		</array>
+		<key>Address of Property</key>
+		<array>
+			<string>Address *</string>
+		</array>
+		<key>Description of Property</key>
+		<array>
+			<string>Description of Property</string>
+		</array>
+		<key>Pictures, URLs &amp; Videos</key>
+		<array>
+			<string>Upload Images</string>
+			<string>Insert URLs</string>
+			<string>Insert Videos</string>
+		</array>
+		<key>Special Features</key>
+		<array>
+			<string>Furnishing</string>
+			<string>Condition </string>
+			<string>Others</string>
+		</array>
+		<key>Indoor &amp; Outdoors</key>
+		<array>
+			<string>Balcony</string>
+			<string>Private Garden</string>
+			<string>Walk-in Wardrobe</string>
+			<string>Garage</string>
+			<string>Roof Terrace</string>
+			<string>Maid&apos;s Room</string>
+			<string>Storeroom</string>
+		</array>
+		<key>Fixtures &amp; Fittings</key>
+		<array>
+			<string>Air Conditioning</string>
+			<string>Cooker Hob / Hood</string>
+			<string>Balcony</string>
+			<string>Walk-in Wardrobe</string>
+			<string>Child Safety Grilles</string>
+			<string>Flooring</string>
+			<string>Water Heater</string>
+			<string>Ceiling Fan</string>
+			<string>Storeroom</string>
+			<string>Window Grilles</string>
+		</array>
+		<key>Default Value</key>
+		<array>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string>Select One</string>
+			<string></string>
+			<string></string>
+			<string></string>
+			<string>Select One</string>
+		</array>
+	</dict>
 </dict>
 </plist>

@@ -69,6 +69,20 @@ static NSString * const ItemTitleIdentifier = @"ItemTitle";
     frame.size.height = self.collectionView.collectionViewLayout.collectionViewContentSize.height;
     self.view.frame = frame;
 }
+- (void)setTitle:(NSString *)title
+{
+    UILabel *titleView = (UILabel *)self.navigationItem.titleView;
+    if (!titleView) {
+        titleView = [[UILabel alloc] init];
+        titleView.backgroundColor = [UIColor clearColor];
+        titleView.font = [UIFont boldSystemFontOfSize:16.0]; // Set the Title Font Size
+        titleView.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5]; // Set the Title Shadow
+        titleView.textColor = [UIColor colorWithRed:0.25 green:0.25 blue:0.25 alpha:0.5]; // Set the Title Color
+        self.navigationItem.titleView = titleView;
+    }
+    titleView.text = title;
+    [titleView sizeToFit];
+}
 
 #pragma mark - UICollectionViewDataSource
 

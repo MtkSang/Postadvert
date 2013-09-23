@@ -263,7 +263,7 @@
                 internalID = 8;//rent off
     }
 
-    if ([itemName isEqualToString:@"Rooms For Rent Search"]) {
+    if ([itemName isEqualToString:@"Commercial Search"]) {
         if (currentButton == leftButton) {
             if (isMoreOptionOn) {
                 internalID = 109;//sale on
@@ -276,7 +276,6 @@
             }else
                 internalID = 10;//rent off
     }
-
     return internalID;
 }
 
@@ -379,6 +378,9 @@
     }
     if ([self.itemName isEqualToString:@"Rooms For Rent Search"]) {
         staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Rooms For Rent Search"]];
+    }
+    if ([self.itemName isEqualToString:@"Commercial Search"]) {
+        staticData = [NSDictionary dictionaryWithDictionary: [staticData objectForKey:@"Commercial Search"]];
     }
     NSDictionary *dict;
     if ((internalItemID % 2) == 1) {
@@ -639,38 +641,39 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    NSInteger numberOfRowsInSection = 1;
     if (isMoreOptionOn) {
         switch (section) {
             case 0:
-                return mainFiles.count;
+                numberOfRowsInSection = mainFiles.count;
                 break;
             case 3:
-                return filters.count;
+                numberOfRowsInSection = filters.count;
                 break;
             default:
-                return 1;
+                numberOfRowsInSection = 1;
                 break;
         }
     }else
     {
         switch (section) {
             case 0:
-                return mainFiles.count;
+                numberOfRowsInSection = mainFiles.count;
                 break;
             default:
-                return 1;
+                numberOfRowsInSection = 1;
                 break;
         }
     }
     
     
-    return 01;
+    return numberOfRowsInSection;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-#pragma mark . item = 1, 3, 5
-    if (internalItemID == 1 || internalItemID == 3 || internalItemID == 5) {// SALE off
+#pragma mark . item = 1, 3, 5, 9
+    if (internalItemID == 1 || internalItemID == 3 || internalItemID == 5 || internalItemID == 9) {// SALE off
         if (indexPath.section == 0) {
             static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
@@ -810,8 +813,8 @@
         }
     }
 //////////////////////////////////////////////////////////////////
-#pragma mark . item = 2, 4, 6, 8
-    if (internalItemID == 2 || internalItemID == 4 || internalItemID == 6 || internalItemID == 8) {// RENT off
+#pragma mark . item = 2, 4, 6, 8, 10
+    if (internalItemID == 2 || internalItemID == 4 || internalItemID == 6 || internalItemID == 8 || internalItemID == 10) {// RENT off
         if (indexPath.section == 0) {
             static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
@@ -950,8 +953,8 @@
     }
     
 //  //////////////////////////////////////////////////////
-#pragma mark . item = 101, 103, 105
-    if (internalItemID == 101 || internalItemID == 103 || internalItemID == 105) { //Sale on
+#pragma mark . item = 101, 103, 105, 109
+    if (internalItemID == 101 || internalItemID == 103 || internalItemID == 105 || internalItemID == 109) { //Sale on
         if (indexPath.section == 0) {
             static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
@@ -1154,8 +1157,8 @@
     }
     
     //  //////////////////////////////////////////////////////
-#pragma mark . item = 102, 104, 106, 108
-    if (internalItemID == 102 || internalItemID == 104 || internalItemID == 106 || internalItemID == 108) { //Rent on
+#pragma mark . item = 102, 104, 106, 108, 110
+    if (internalItemID == 102 || internalItemID == 104 || internalItemID == 106 || internalItemID == 108 || internalItemID == 110) { //Rent on
         if (indexPath.section == 0) {
             static NSString *CellIdentifier1 = @"CellStartUpJobsWithOption";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
@@ -1358,7 +1361,7 @@
         }
     }
 
-    return nil;
+    return [[UITableViewCell alloc]init];
 }
 
 - (float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

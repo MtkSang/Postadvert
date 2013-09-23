@@ -13,7 +13,8 @@
 enum Q_AType {
     Q_ALastestAnswer = 0,
     Q_APopularQuestion = 1
-}; 
+};
+@class Q_ACellDetailViewController;
 
 @interface Q_AViewController :  UIViewController<UITableViewDataSource, UITableViewDelegate, UITabBarDelegate>
 {
@@ -27,6 +28,7 @@ enum Q_AType {
     MBProgressHUD *mbpLastest;
     
     MyQ_AViewController *myQ_A;
+    Q_ACellDetailViewController *cellDetailViewCtr;
 }
 @property (strong, nonatomic) NSString *itemName;
 @property (nonatomic, strong) UINavigationController *navigationController;

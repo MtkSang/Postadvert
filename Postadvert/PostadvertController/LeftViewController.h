@@ -6,6 +6,7 @@
 #import "WEPopoverController.h"
 @class DetailViewController;
 @class SubLeftViewController;
+@class HDBSubItemsViewController;
 @interface LeftViewController : UIViewController<WEPopoverControllerDelegate, UIPopoverControllerDelegate, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate>
 
 {
@@ -18,6 +19,8 @@
     CGPoint previousPoint;
     NSArray *appSettings;
     SubLeftViewController *subLeftView;
+    HDBSubItemsViewController *subItem;
+    NSMutableArray *listSubMemus;
 }
 @property (nonatomic, strong) UIView             *overlay;
 @property (nonatomic, strong) NSMutableArray     *listItems;

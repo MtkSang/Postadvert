@@ -21,4 +21,5 @@
 - (id)initWithItems:(NSMutableArray *)items;
 - (CGSize)getSizeToFit;
 - (void) setupForItemName:(NSString*)itemName_;
+- (void)setTitle:(NSString *)title;
 @end

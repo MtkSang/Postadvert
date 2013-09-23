@@ -25,4 +25,5 @@
 @property (nonatomic, strong) NSString       *itemName;
 
 - (void) getSubNums;
+- (CGSize) viewContentSize;
 @end

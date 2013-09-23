@@ -151,6 +151,10 @@
     return passwordPU;
 }
 
+- (NSString*) getRegistrationIDString
+{
+    return [NSString stringWithFormat:@"%ld", registrationID];
+}
 
 - (int)getAge /*:(NSDate *)dateOfBirth*/
 {

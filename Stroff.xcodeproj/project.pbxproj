@@ -164,6 +164,8 @@
 		D4A6FC71165CBAAA0071D2CE /* account_setting_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A6FC6F165CBAAA0071D2CE /* account_setting_icon.png */; };
 		D4A99DE116DE077E002D0B81 /* bedroom.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A99DDF16DE077D002D0B81 /* bedroom.png */; };
 		D4A99DE216DE077E002D0B81 /* washroom.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A99DE016DE077E002D0B81 /* washroom.png */; };
+		D4AC30CD17E1A0FC00DE4768 /* Q_ACellDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4AC30CB17E1A0FC00DE4768 /* Q_ACellDetailViewController.m */; };
+		D4AC30CE17E1A0FC00DE4768 /* Q_ACellDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4AC30CC17E1A0FC00DE4768 /* Q_ACellDetailViewController.xib */; };
 		D4B20913166467270024EBF3 /* clap_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4B20911166467270024EBF3 /* clap_icon.png */; };
 		D4B20914166467270024EBF3 /* comment_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D4B20912166467270024EBF3 /* comment_icon.png */; };
 		D4B26E53178FE883003267E9 /* titleHDB@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4B26E52178FE883003267E9 /* titleHDB@2x.png */; };
@@ -181,6 +183,18 @@
 		D4DD9037165F60C9004033E4 /* MyUIImagePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4DD9035165F60C9004033E4 /* MyUIImagePickerViewController.xib */; };
 		D4E38EEE167F207B00FDB63B /* NewAccountVwCtrl_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4E38EED167F207B00FDB63B /* NewAccountVwCtrl_iPad.xib */; };
 		D4E3E8A4173CCAF700653B0D /* 30x25.png in Resources */ = {isa = PBXBuildFile; fileRef = D4E3E8A3173CCAF700653B0D /* 30x25.png */; };
+		D4FA156717BCBAD700556FFE /* icon_Co-Broke-Xpress.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FA155B17BCBAD700556FFE /* icon_Co-Broke-Xpress.png */; };
+		D4FA156817BCBAD700556FFE /* icon_Co-Broke-Xpress@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FA155C17BCBAD700556FFE /* icon_Co-Broke-Xpress@2x.png */; };
+		D4FA156917BCBAD700556FFE /* icon_Commercial.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FA155D17BCBAD700556FFE /* icon_Commercial.png */; };
+		D4FA156A17BCBAD700556FFE /* icon_Commercial@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FA155E17BCBAD700556FFE /* icon_Commercial@2x.png */; };
+		D4FA156B17BCBAD700556FFE /* icon_Condos.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FA155F17BCBAD700556FFE /* icon_Condos.png */; };
+		D4FA156C17BCBAD700556FFE /* icon_Condos@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FA156017BCBAD700556FFE /* icon_Condos@2x.png */; };
+		D4FA156D17BCBAD700556FFE /* icon_HDB.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FA156117BCBAD700556FFE /* icon_HDB.png */; };
+		D4FA156E17BCBAD700556FFE /* icon_HDB@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FA156217BCBAD700556FFE /* icon_HDB@2x.png */; };
+		D4FA156F17BCBAD700556FFE /* icon_Landed-Property.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FA156317BCBAD700556FFE /* icon_Landed-Property.png */; };
+		D4FA157017BCBAD700556FFE /* icon_Landed-Property@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FA156417BCBAD700556FFE /* icon_Landed-Property@2x.png */; };
+		D4FA157117BCBAD700556FFE /* icon_Rooms.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FA156517BCBAD700556FFE /* icon_Rooms.png */; };
+		D4FA157217BCBAD700556FFE /* icon_Rooms@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4FA156617BCBAD700556FFE /* icon_Rooms@2x.png */; };
 		D4FE7035178A552000DF8B5F /* HDBSubItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4FE7033178A552000DF8B5F /* HDBSubItemsViewController.m */; };
 		D4FE7036178A552000DF8B5F /* HDBSubItemsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4FE7034178A552000DF8B5F /* HDBSubItemsViewController.xib */; };
 		D4FE7039178A7BAB00DF8B5F /* HDBItemCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D4FE7038178A7BAB00DF8B5F /* HDBItemCollectionViewLayout.m */; };
@@ -894,6 +908,9 @@
 		D4A6FC6F165CBAAA0071D2CE /* account_setting_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account_setting_icon.png; sourceTree = "<group>"; };
 		D4A99DDF16DE077D002D0B81 /* bedroom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bedroom.png; sourceTree = "<group>"; };
 		D4A99DE016DE077E002D0B81 /* washroom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = washroom.png; sourceTree = "<group>"; };
+		D4AC30CA17E1A0FC00DE4768 /* Q_ACellDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Q_ACellDetailViewController.h; sourceTree = "<group>"; };
+		D4AC30CB17E1A0FC00DE4768 /* Q_ACellDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Q_ACellDetailViewController.m; sourceTree = "<group>"; };
+		D4AC30CC17E1A0FC00DE4768 /* Q_ACellDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Q_ACellDetailViewController.xib; sourceTree = "<group>"; };
 		D4B20911166467270024EBF3 /* clap_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clap_icon.png; sourceTree = "<group>"; };
 		D4B20912166467270024EBF3 /* comment_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comment_icon.png; sourceTree = "<group>"; };
 		D4B26E52178FE883003267E9 /* titleHDB@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "titleHDB@2x.png"; sourceTree = "<group>"; };
@@ -913,6 +930,18 @@
 		D4DD9035165F60C9004033E4 /* MyUIImagePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyUIImagePickerViewController.xib; sourceTree = "<group>"; };
 		D4E38EED167F207B00FDB63B /* NewAccountVwCtrl_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewAccountVwCtrl_iPad.xib; sourceTree = "<group>"; };
 		D4E3E8A3173CCAF700653B0D /* 30x25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 30x25.png; sourceTree = "<group>"; };
+		D4FA155B17BCBAD700556FFE /* icon_Co-Broke-Xpress.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_Co-Broke-Xpress.png"; sourceTree = "<group>"; };
+		D4FA155C17BCBAD700556FFE /* icon_Co-Broke-Xpress@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_Co-Broke-Xpress@2x.png"; sourceTree = "<group>"; };
+		D4FA155D17BCBAD700556FFE /* icon_Commercial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_Commercial.png; sourceTree = "<group>"; };
+		D4FA155E17BCBAD700556FFE /* icon_Commercial@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_Commercial@2x.png"; sourceTree = "<group>"; };
+		D4FA155F17BCBAD700556FFE /* icon_Condos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_Condos.png; sourceTree = "<group>"; };
+		D4FA156017BCBAD700556FFE /* icon_Condos@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_Condos@2x.png"; sourceTree = "<group>"; };
+		D4FA156117BCBAD700556FFE /* icon_HDB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_HDB.png; sourceTree = "<group>"; };
+		D4FA156217BCBAD700556FFE /* icon_HDB@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_HDB@2x.png"; sourceTree = "<group>"; };
+		D4FA156317BCBAD700556FFE /* icon_Landed-Property.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_Landed-Property.png"; sourceTree = "<group>"; };
+		D4FA156417BCBAD700556FFE /* icon_Landed-Property@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_Landed-Property@2x.png"; sourceTree = "<group>"; };
+		D4FA156517BCBAD700556FFE /* icon_Rooms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_Rooms.png; sourceTree = "<group>"; };
+		D4FA156617BCBAD700556FFE /* icon_Rooms@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_Rooms@2x.png"; sourceTree = "<group>"; };
 		D4FE7032178A552000DF8B5F /* HDBSubItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HDBSubItemsViewController.h; sourceTree = "<group>"; };
 		D4FE7033178A552000DF8B5F /* HDBSubItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDBSubItemsViewController.m; sourceTree = "<group>"; };
 		D4FE7034178A552000DF8B5F /* HDBSubItemsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HDBSubItemsViewController.xib; sourceTree = "<group>"; };
@@ -1640,6 +1669,9 @@
 				D413A77717951E16008EF92B /* Q_ACellList.xib */,
 				D413A779179533CC008EF92B /* Q_ACellList.h */,
 				D413A77A179533CC008EF92B /* Q_ACellList.m */,
+				D4AC30CA17E1A0FC00DE4768 /* Q_ACellDetailViewController.h */,
+				D4AC30CB17E1A0FC00DE4768 /* Q_ACellDetailViewController.m */,
+				D4AC30CC17E1A0FC00DE4768 /* Q_ACellDetailViewController.xib */,
 			);
 			path = "Q&A";
 			sourceTree = "<group>";
@@ -1832,6 +1864,25 @@
 				D4541A8716AF8B4A008E720E /* DCAPickerViewController.xib */,
 			);
 			path = ModalViewCtr;
+			sourceTree = "<group>";
+		};
+		D4FA155A17BCBAD700556FFE /* Property */ = {
+			isa = PBXGroup;
+			children = (
+				D4FA155B17BCBAD700556FFE /* icon_Co-Broke-Xpress.png */,
+				D4FA155C17BCBAD700556FFE /* icon_Co-Broke-Xpress@2x.png */,
+				D4FA155D17BCBAD700556FFE /* icon_Commercial.png */,
+				D4FA155E17BCBAD700556FFE /* icon_Commercial@2x.png */,
+				D4FA155F17BCBAD700556FFE /* icon_Condos.png */,
+				D4FA156017BCBAD700556FFE /* icon_Condos@2x.png */,
+				D4FA156117BCBAD700556FFE /* icon_HDB.png */,
+				D4FA156217BCBAD700556FFE /* icon_HDB@2x.png */,
+				D4FA156317BCBAD700556FFE /* icon_Landed-Property.png */,
+				D4FA156417BCBAD700556FFE /* icon_Landed-Property@2x.png */,
+				D4FA156517BCBAD700556FFE /* icon_Rooms.png */,
+				D4FA156617BCBAD700556FFE /* icon_Rooms@2x.png */,
+			);
+			path = Property;
 			sourceTree = "<group>";
 		};
 		D4FE702E178A50F500DF8B5F /* HDB SubItems */ = {
@@ -2361,6 +2412,7 @@
 		FA032342157752AE002EB93D /* images */ = {
 			isa = PBXGroup;
 			children = (
+				D4FA155A17BCBAD700556FFE /* Property */,
 				D46D705316819C9A004B90B0 /* privacy-icons */,
 				FA388B78162674440000E9BB /* AppIcon_LaunchApp */,
 				FA5EFEC315D259B800EBDCFB /* Other Icon */,
@@ -3648,6 +3700,19 @@
 				D40B4A5E17AFBB1500570119 /* MyQ_AViewController.xib in Resources */,
 				D4069D0F17B1D4C1008CB587 /* BG_My-Q&A.png in Resources */,
 				D4069D1017B1D4C1008CB587 /* BG_My-Q&A@2x.png in Resources */,
+				D4FA156717BCBAD700556FFE /* icon_Co-Broke-Xpress.png in Resources */,
+				D4FA156817BCBAD700556FFE /* icon_Co-Broke-Xpress@2x.png in Resources */,
+				D4FA156917BCBAD700556FFE /* icon_Commercial.png in Resources */,
+				D4FA156A17BCBAD700556FFE /* icon_Commercial@2x.png in Resources */,
+				D4FA156B17BCBAD700556FFE /* icon_Condos.png in Resources */,
+				D4FA156C17BCBAD700556FFE /* icon_Condos@2x.png in Resources */,
+				D4FA156D17BCBAD700556FFE /* icon_HDB.png in Resources */,
+				D4FA156E17BCBAD700556FFE /* icon_HDB@2x.png in Resources */,
+				D4FA156F17BCBAD700556FFE /* icon_Landed-Property.png in Resources */,
+				D4FA157017BCBAD700556FFE /* icon_Landed-Property@2x.png in Resources */,
+				D4FA157117BCBAD700556FFE /* icon_Rooms.png in Resources */,
+				D4FA157217BCBAD700556FFE /* icon_Rooms@2x.png in Resources */,
+				D4AC30CE17E1A0FC00DE4768 /* Q_ACellDetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3860,6 +3925,7 @@
 				D413A77B179533CC008EF92B /* Q_ACellList.m in Sources */,
 				D40B4A5D17AFBB1500570119 /* MyQ_AViewController.m in Sources */,
 				D4069D1617B1E30E008CB587 /* UILable_Margin.m in Sources */,
+				D4AC30CD17E1A0FC00DE4768 /* Q_ACellDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

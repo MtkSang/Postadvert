@@ -15,7 +15,8 @@
 enum MyQ_AType {
     myQ_A = 1,
     askQ_A = 2,
-    browse = 3
+    browse = 3,
+    browseByCategory = 4
 };
 @interface MyQ_AViewController :  UIViewController<UITableViewDataSource, UITableViewDelegate, UITabBarDelegate, PullRefreshTableViewControllerDelegate>
 {
@@ -27,6 +28,9 @@ enum MyQ_AType {
     MBProgressHUD *mbpLoadQ_A;
     NSMutableArray *listCategoriesAskQ_A;
     NSMutableArray *listLocationsAskQ_A;
+    NSMutableArray *listValues;
+    NSDictionary *dictBrowse;
+    MyQ_AViewController *browseView;
     
 }
 @property (nonatomic) enum MyQ_AType type;
@@ -40,4 +44,6 @@ enum MyQ_AType {
 @property (weak, nonatomic) IBOutlet UILabel *lbTitle;
 @property (weak, nonatomic) IBOutlet UILable_Margin *lbQ_A;
 @property (strong, nonatomic) IBOutlet PullRefreshTableViewController *pullTableViewCtrl;
+
+- (id) initForBrowseWithData:(id)data;
 @end

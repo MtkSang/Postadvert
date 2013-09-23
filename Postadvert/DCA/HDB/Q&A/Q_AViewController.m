@@ -16,6 +16,7 @@
 #import "NSData+Base64.h"
 #import <QuartzCore/QuartzCore.h>
 #import "MyQ_AViewController.h"
+#import "Q_ACellDetailViewController.h"
 @interface Q_AViewController ()
 
 @end
@@ -140,6 +141,14 @@
         myQ_A.itemBarName = item.title;
         [_navigationController pushViewController:myQ_A animated:YES];
     }
+    if ([item.title isEqualToString:@"Browse Q&A"]) {
+        myQ_A = [[MyQ_AViewController alloc]init];
+        myQ_A.navigationController = self.navigationController;
+        myQ_A.itemName = self.itemName;
+        myQ_A.itemBarName = item.title;
+        [_navigationController pushViewController:myQ_A animated:YES];
+    }
+    [tabBar performSelector:@selector(setSelectedItem:) withObject:nil afterDelay:1];
 }
 
 #pragma mark - Table view data source
@@ -230,7 +239,8 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.navigationController pushViewController: [[Q_AViewController alloc] init] animated:YES];
+    cellDetailViewCtr = [[Q_ACellDetailViewController alloc]initWithData:[listLastestAnswers objectAtIndex:indexPath.row]  andType:Q_ADetailTypeViewDetail];
+    [self.navigationController pushViewController: cellDetailViewCtr animated:YES];
 }
 
 
@@ -387,7 +397,7 @@
         
         UILabel *lbTotalView = (UILabel*)[cell viewWithTag:9];
         lbTotalView.hidden = NO;
-        lbTotalView.text = @"12345";
+        lbTotalView.text = [dict objectForKey:@"hits"];
         
         UILabel *created = (UILabel*)[cell viewWithTag:4];
         created.text =  [NSData stringDecodeFromBase64String: [dict objectForKey:@"created_on_lapseTime"]];
